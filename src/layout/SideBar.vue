@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const open = ref(['Member']);
 
@@ -8,18 +10,30 @@ const memberItem = ref([
   '會員',
   '感謝函',
 ]);
+
 const newsGroup = ref('New')
 const newsItem = ref('消息管理')
+
 const sponsorGroup = ref('Sponsor');
 const sponsorItem = ref([
   '認養據點',
   '認養訂單',
 ]);
+
 const donationGroup = ref('Donation');
-const donationItem = ref([
-  '捐款專案',
-  '捐款訂單'
-])
+const donationItem = reactive([
+  {
+    id: "donate-project",
+    name: "捐款專案"
+  },
+  {
+    id: "donate-order",
+    name: "捐款訂單"
+  }]
+  // '捐款專案',
+  // '捐款訂單'
+)
+
 const activityGroup = ref('Activity');
 const activityItem = ref([
   '星火活動',
@@ -27,12 +41,14 @@ const activityItem = ref([
   '夢想之星投票',
   '夢想之星留言'
 ])
+
 const resultGroup = ref('Result');
 const resultItem = ref([
   '溫馨事紀',
   '歷年報告',
   '服務里程碑',
 ])
+
 const backstageGroup = ref('Backstage');
 const backstageItem = ref('後台人員')
 
@@ -74,9 +90,15 @@ const backstageItem = ref('後台人員')
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="(title, i) in donationItem" :key="i" :value="title" :title="title"></v-list-item>
+
+
+            <v-list-item v-for="item in donationItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })">
+
+            </v-list-item>
+
           </v-list-group>
-          <v-list-group class="title  mt-1" :value="activityGroup">
+          <v-list-group class=" title mt-1" :value="activityGroup">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="活動管理">
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
@@ -162,4 +184,5 @@ div.title {
 div.bottom {
   position: fixed;
   bottom: 0;
-}</style>
+}
+</style>

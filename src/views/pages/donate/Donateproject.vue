@@ -1,5 +1,4 @@
 <script setup>
-import SideBar from '../spark-back/SideBar.vue';
 import { ref, reactive,computed  } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -217,9 +216,6 @@ const donateList = reactive([
 <template>
   <div class="container">
 
-    <div class="sidebar">
-      <SideBar />
-    </div>
     <div class="table_body">
 
       <h1>捐款管理｜捐款專案</h1>
@@ -293,5 +289,5 @@ const donateList = reactive([
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/sass/pages/spark-back/donation-project";
+@import "@/assets/sass/pages/donate/donate-project";
 </style>

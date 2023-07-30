@@ -88,7 +88,7 @@ const router = createRouter({
     {
       path: '/cms-staff',
       name: 'cms-staff',
-      component: () => import('@/views/pages/activity/CmsStaff.vue')
+      component: () => import('@/views/pages/cms/CmsStaff.vue')
     },
   ]
 })

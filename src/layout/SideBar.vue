@@ -96,11 +96,10 @@ const resultItem = reactive(
 
 const backstageGroup = ref('Backstage');
 const backstageItem = reactive(
-  [
-    {
-      id: "cms-staff",
-      name: "後台人員"
-    }
+  [{
+    id: "cms-staff",
+    name: "後台人員"
+  }
   ])
 
 </script>
@@ -121,12 +120,14 @@ const backstageItem = reactive(
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="item in memberItem" :key="item.id" :value="item.id" :title="item.name" @click="router.push({ path: '/' + item.id })"></v-list-item>
+            <v-list-item v-for="item in memberItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
 
           <v-list-group class="title  mt-1" :value="newsGroup">
             <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" v-for="item in newsItem" :key="item.id" :value="item.id" :title="item.name" @click="router.push({ path: '/' + item.id })">
+              <v-list-item v-bind="props" v-for="item in newsItem" :key="item.id" :value="item.id" :title="item.name"
+                @click="router.push({ path: '/' + item.id })">
               </v-list-item>
             </template>
           </v-list-group>
@@ -137,7 +138,8 @@ const backstageItem = reactive(
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="item in sponsorItem" :key="item.id" :value="item.id" :title="item.name" @click="router.push({ path: '/' + item.id })"></v-list-item>
+            <v-list-item v-for="item in sponsorItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
 
           <v-list-group class="title mt-1" :value="donationGroup">
@@ -159,7 +161,8 @@ const backstageItem = reactive(
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="item in activityItem" :key="item.id" :value="item.id" :title="item.name" @click="router.push({ path: '/' + item.id })"></v-list-item>
+            <v-list-item v-for="item in activityItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
 
           <v-list-group class="title mt-1" :value="resultGroup">
@@ -168,7 +171,8 @@ const backstageItem = reactive(
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="item in resultItem" :key="item.id" :value="item.id" :title="item.name" @click="router.push({ path: '/' + item.id })"></v-list-item>
+            <v-list-item v-for="item in resultItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
 
           <v-list-group class="title mt-1" :value="backstageGroup">
@@ -177,7 +181,8 @@ const backstageItem = reactive(
                 <v-icon icon="mdi-chevron-down" color="#1D3D6C" size="large"></v-icon>
               </v-list-item>
             </template>
-            <v-list-item v-for="item in backstageItem" :key="item.id" :value="item.id" :title="item.name"  @click="router.push({ path: '/' + item.id })"></v-list-item>
+            <v-list-item v-for="item in backstageItem" :key="item.id" :value="item.id" :title="item.name"
+              @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
         </v-list>
         <v-sheet color="#1D3D6C" class="justify-center text-center bottom" width="250">
@@ -240,5 +245,4 @@ div.title {
 div.bottom {
   position: fixed;
   bottom: 0;
-}
-</style>
+}</style>

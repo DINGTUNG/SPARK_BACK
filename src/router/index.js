@@ -32,8 +32,8 @@ const router = createRouter({
     },
     {
       path: '/sponsor-location',
-      name: 'sponsor-project',
-      component: () => import('@/views/pages/sponsor/SponsorProject.vue')
+      name: 'SponsorLocation',
+      component: () => import('@/views/pages/sponsor/SponsorLocation.vue')
     },
     {
       path: '/sponsor-order',

@@ -1,0 +1,120 @@
+/* 🚩捷徑🚩 */
+
+//字體 font-family 13
+//字型 font-size 21
+//字重 font-weight 38
+//字距 letter-spacing 60
+//行距 line height 72
+//使用說明 92
+
+//
+// 
+//---------------------------------------------------------------------------------------
+/* ⭐字型 font-size⭐ */
+
+$h1Fs_PC: 32px;
+$h2Fs_PC: 28px;
+$h3Fs_PC: 24px;
+$h4Fs_PC: 20px;
+$h5Fs_PC: 18px;
+$h6Fs_PC: 16px;
+
+//h1-h6_MB
+$h1Fs_MB: 2.1875rem;
+$h2Fs_MB: 1.75rem;
+$h3Fs_MB: 1.53125rem;
+$h4Fs_MB: 1.3125rem;
+$h5Fs_MB: 1.09375rem;
+$h6Fs_MB: 0.875rem;
+
+
+//button_PC
+
+$regularBtnFs_PC:20px;
+$smallBtnFs_PC:16px;
+
+//button_MB
+
+$regularBtnFs_MB:17.5px;
+$smallBtnFs_MB:16px;
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐字重 font-weight⭐ */
+
+$fWRegular: 400;
+$fWBold: 700;
+
+//h1-h6_PC
+$h1Fw_PC: $fWBold;
+$h2Fw_PC: $fWBold;
+$h3Fw_PC: $fWBold;
+$h4Fw_B_PC: $fWBold; //小標
+$h4Fw_PC: $fWRegular;
+$h5Fw_B_PC: $fWBold; //小標
+$h5Fw_PC: $fWRegular;
+$h6Fw_PC: $fWRegular;
+
+//h1-h6_MB
+$h1Fw_MB: $fWBold;
+$h2Fw_MB: $fWBold;
+$h3Fw_MB: $fWBold;
+$h4Fw_B_MB: $fWBold; //小標
+$h4Fw_MB: $fWRegular;
+$h5Fw_B_MB: $fWBold; //小標
+$h5Fw_MB: $fWRegular;
+$h6Fw_MB: $fWRegular;
+
+//---------------------------------------------------------------------------------------
+/* ⭐字距 letter-spacing⭐ */
+
+//h1-h6_PC & MB
+$h1Ls: .2rem;
+$h2Ls: .2rem;
+$h3Ls: .2rem;
+$h4Ls: .2rem;
+$h5Ls: .1rem;
+$h6Ls: .05rem;
+
+//button_PC
+
+$regularBtnLs_PC:.2rem;
+$smallBtnLs_PC:.2rem;
+
+//button_MB
+
+$regularBtnLs_MB:.2rem;
+$smallBtnLs_MB:.2rem;
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐行距 line height⭐ */
+
+$h1Lh_PC: auto;
+$h2Lh_PC: auto;
+$h3Lh_PC: auto;
+$h4Lh_B_PC: 48px; //小標
+$h4Lh_PC: 48px;
+$h5Lh_B_PC: auto; //小標
+$h5Lh_PC: 36px;
+$h6Lh_PC: 30px;
+
+$h1Lh_MB: auto;
+$h2Lh_MB: auto;
+$h3Lh_MB: auto;
+$h4Lh_B_MB: auto; //小標
+$h4Lh_MB: auto;
+$h5Lh_B_MB: auto; //小標
+$h5Lh_MB: auto;
+$h6Lh_MB: 30px;
+
+//---------------------------------------------------------------------------------------
+
+/* ⭐使用說明⭐ */
+
+.sassUsageExample {
+  font-size: $h6Fs_PC;
+  font-weight: $fWBold;
+  letter-spacing: $h6Ls;
+  line-height: $h4Lh_B_PC;
+}

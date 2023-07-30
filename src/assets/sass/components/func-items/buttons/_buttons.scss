@@ -1,0 +1,102 @@
+button {
+  cursor: pointer;
+  font-weight: $fWRegular;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+  }
+
+}
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐regular buttons size⭐ */
+
+
+@mixin regularBtnSize_PC {
+  width: 280px;
+  height: 55px;
+}
+
+@mixin regularBtnSize_MB {
+  width: 168px;
+  height: 40px;
+}
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐small buttons size⭐ */
+
+@mixin smallBtnSize_PC {
+  width: 240px;
+  height: 50px;
+}
+
+@mixin smallBtnSize_MB {
+  width: 150px;
+  height: 35px;
+}
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐checkout-sidelist buttons size⭐ */
+
+
+@mixin checkoutSideListBtnSize_PC {
+  width: 12vw;
+  height: 6vh;
+}
+
+@mixin checkoutSideListBtnSize_MB {
+  width: 150px;
+  height: 35px;
+}
+
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐checkout-cards buttons size⭐ */
+
+
+@mixin checkoutCardsBtnSize_PC {
+  width: 10vw;
+  height: 6vh;
+}
+
+@mixin checkoutCardsBtnSize_MB {
+  width: 150px;
+  height: 35px;
+}
+
+
+//---------------------------------------------------------------------------------------
+/* ⭐spark-activity buttons size⭐ */
+
+
+@mixin sparkActivityBtnSize_PC {
+  width: 14vw;
+  height: 7vh;
+}
+
+@mixin sparkActivityBtnSize_MB {
+  width: 50vw;
+  height: 5vh;
+}
+
+//---------------------------------------------------------------------------------------
+/* ⭐dream-star buttons size⭐ */
+
+
+@mixin dreamStarPlanBtnSize_PC {
+  width: 11vw;
+  height: 5vh;
+}
+
+@mixin dreamStarPlanBtnSize_MB {
+  width: 45vw;
+  height: 5vh;
+}

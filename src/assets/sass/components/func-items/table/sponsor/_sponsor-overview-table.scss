@@ -1,0 +1,150 @@
+div.table_wrap {
+  @include flex_vm;
+
+  @include custom-responsive("xs sm") {
+    gap: 3vh;
+
+    table.sponsor_info_PC {
+      display: none;
+    }
+
+    table.sponsor_info_MB {
+      display: block;
+    }
+  }
+
+  @include custom-responsive("xl xx-l") {
+    table.sponsor_info_PC {
+      display: block;
+    }
+
+    table.sponsor_info_MB {
+      display: none;
+    }
+  }
+
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    @include table_PC;
+    border: 1px solid $primaryBrandBlue;
+    border-top: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: $primaryBgWhite;
+
+    @include custom-responsive("xs sm") {
+      width: 80vw;
+    }
+
+    @include custom-responsive("xl xx-l") {
+      width: 50vw;
+    }
+
+
+    th {
+      background-color: $primaryBgBlue;
+      color: $primaryBrandWhite;
+      @include h5_PC;
+      text-align: left;
+      padding-left: 30px;
+
+
+      @include custom-responsive("xs sm") {
+        width: 80vw;
+      }
+
+      @include custom-responsive("xl xx-l") {
+        width: 50vw;
+      }
+    }
+
+    td {
+      border-bottom: 1px solid $functionalLightGrey2;
+      @include h6_PC;
+      text-align: center;
+
+      @include custom-responsive("xs sm") {
+        padding: 0vh 2vw;
+      }
+
+      @include custom-responsive("xl xx-l") {
+        padding: 2vh 2vw;
+      }
+
+    }
+
+    td.title {
+      font-weight: bold;
+
+      @include custom-responsive("xs sm") {
+        @include h6_MB;
+        font-weight: bold;
+        padding-left: 5vw;
+      }
+
+      @include custom-responsive("xl xx-l") {
+        @include h5_PC;
+        font-weight: bold;
+        padding-left: 3vw;
+      }
+    }
+
+    tfoot {
+      td.total {
+        background-color: $functionalLightGrey1;
+        ;
+        text-align: right;
+
+  
+        @include custom-responsive("xs sm") {
+          @include h6_MB;
+          font-weight: bold;
+        }
+
+        @include custom-responsive("xl xx-l") {
+          @include h4_B_PC;
+        }
+
+
+
+        div {
+          display: flex;
+          justify-content: flex-end;
+
+          span {
+            margin: 0 10px;
+          }
+
+          img.star {
+
+            margin: 0 1vw;
+
+            @include custom-responsive("xs sm") {
+              width: 3vw;
+            }
+
+            @include custom-responsive("xl xx-l") {
+              width: 1vw;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+
+  table.sponsor_info {
+    @include custom-responsive("xs sm") {}
+
+    @include custom-responsive("xl xx-l") {}
+
+
+    td,
+    th {
+      text-align: left;
+    }
+  }
+}

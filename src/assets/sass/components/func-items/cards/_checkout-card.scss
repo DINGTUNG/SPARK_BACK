@@ -1,0 +1,151 @@
+div.check_out_card {
+  position: relative;
+
+  @include boxShadow_PC;
+  border-radius: $br_PC;
+
+  @include custom-responsive("xs sm") {
+    width: 80vw;
+    height: 80vw;
+  }
+
+  @include custom-responsive("xl xx-l") {
+    width: 30vw;
+    height: 28vw;
+  }
+
+
+  h2.check_out_overview_title {
+    color: $primaryBrandBlue;
+
+    @include custom-responsive("xs sm") {
+      margin: 2vh 8vw 1vh;
+      @include h4_B_PC;
+    }
+
+    @include custom-responsive("xl") {
+      margin: 2vh 3vw 1vh;
+      @include h4_B_PC;
+    }
+
+    @include custom-responsive("xx-l") {
+      margin: 5vh 3vw 1vh;
+      @include h3_PC;
+    }
+
+
+  }
+
+  div.checkout_datalist {
+    display: flex;
+    flex-direction: column;
+
+    div.checkout_data_wrap {
+
+      div.checkout_data {
+        display: flex;
+        justify-content: space-evenly;
+
+
+        span {
+          display: block;
+          text-align: center;
+
+          @include custom-responsive("xs sm") {
+            font-size: 14px;
+            margin: 0.8vh 0;
+            width: 25%;
+          }
+        
+
+
+          @include custom-responsive("xl") {
+            @include h6_PC;
+            font-size: 14px;
+            margin: 0.5vh 0;
+            width: 33%;
+          }
+
+          @include custom-responsive("xx-l") {
+            @include h5_PC;
+            margin: 1vh 0;
+            width: 33%;
+          }
+        }
+        span.name {
+
+          @include custom-responsive("xs sm") {
+            padding-left: 0;
+          }
+        
+          @include custom-responsive("xl xx-l") {
+            padding-left: 20px;
+          }
+        
+
+        }
+
+      }
+    }
+  }
+
+  div.payment {
+
+    div.payment_info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5vw;
+      position: absolute;
+      bottom: 0;
+
+      background-color: $functionalLightGrey1;
+      border-radius: 0 0 $br_PC $br_PC;
+
+      @include custom-responsive("xs sm") {
+        width: 80vw;
+        height: 10vh;
+      }
+
+      @include custom-responsive("xl xx-l") {
+        width: 30vw;
+        height: 15vh;
+      }
+
+      span.payment_title,
+      span.total_price {
+        @include custom-responsive("xs sm") {
+          @include h5_B_PC;
+        }
+
+        @include custom-responsive("xl") {
+          @include h4_B_PC;
+        }
+
+        @include custom-responsive("xx-l") {
+          @include h3_PC;
+        }
+      }
+    }
+  }
+}
+
+div.chosen_donate_project_wrap {
+  @include flex_hm;
+
+    @include custom-responsive("xs sm") {
+      gap: 10vw;
+  }
+
+  @include custom-responsive("xl xx-l") {
+    gap: 5vw;
+  }
+
+
+  span.chosen_donate_project {
+    display: inline-block;
+
+    @include h4_PC;
+  }
+
+}

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-const page = ref(1)
+const page = ref("")
 
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
@@ -32,7 +32,7 @@ function closeDelete() {
 // 換頁
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (donateList.length)/ itemsPerPage + 1;
+  return (donateList.length) / itemsPerPage + 1;
 }
 const displayedDonateList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
@@ -234,8 +234,8 @@ const donateList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in displayedDonateList" :key="item.id" class="no-border">
-              <td class="td_no">{{index+1}}</td>
+            <tr v-for="(item, index) in displayedDonateList" :key="index" class="no-border">
+              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.id }}</td>
               <td class="name">{{ item.name }}</td>
               <td class="start_date">{{ item.start_date }}</td>

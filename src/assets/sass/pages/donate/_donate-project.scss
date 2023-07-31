@@ -3,8 +3,11 @@ div.container {
   height: 100vh;
   @include flex_vm;
 
+
   div.table_container {
+
     width: 70vw;
+    height: 80vh;
     position: relative;
     right: -7vw;
 
@@ -121,4 +124,9 @@ div.container {
     transform: translateX(1vw);
   }
 
+}
+
+:deep(.v-pagination__list) {
+  display: flex;
+  align-items: flex-end;
 }

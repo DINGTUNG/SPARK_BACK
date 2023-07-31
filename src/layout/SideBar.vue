@@ -113,7 +113,7 @@ const backstageItem = reactive(
             path: '/home'
           })">>
         </div>
-        <v-list :v-model="open" density="compact" style="padding-top: 10vh;">
+        <v-list :v-model="open" density="compact" style="padding-top: 10vh;padding-bottom: 0;">
           <v-list-group class="title mt-1 mb-1" :value="memberGroup">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="會員管理">
@@ -187,8 +187,8 @@ const backstageItem = reactive(
               @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
         </v-list>
-        <v-sheet color="#1D3D6C" class="justify-center text-center bottom" style="width: 15vw;height:8vh">
-          <p class="pa-3 text-white">
+        <v-sheet color="#1D3D6C" class="bottom" style="width: 15vw;height:8vh">
+          <p class="text-white">
             管理員<a href="#" class="text-white ms-4">登出</a></p>
         </v-sheet>
       </v-navigation-drawer>
@@ -246,7 +246,6 @@ div.title {
 }
 
 :deep(.v-navigation-drawer__content) {
-
   height: 91vh;
 }
 
@@ -261,6 +260,7 @@ div.title {
 }
 
 div.bottom {
+  @include flex_vm;
   position: fixed;
   bottom: 0;
 }

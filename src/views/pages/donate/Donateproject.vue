@@ -255,8 +255,7 @@ const donateList = reactive([
           </tbody>
         </v-table>
 
-        <v-btn class="add" color="#1D3D6C" :ripple="false" rounded="xl" size="x-large"
-          variant="flat">新增</v-btn>
+        <v-btn class="add" color="#1D3D6C" :ripple="false" rounded="xl" size="x-large" variant="flat">新增</v-btn>
 
         <!-- 分頁 -->
         <div class="text-center">

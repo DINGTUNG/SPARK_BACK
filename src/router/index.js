@@ -90,6 +90,11 @@ const router = createRouter({
       name: 'cms-staff',
       component: () => import('@/views/pages/cms/CmsStaff.vue')
     },
+    {
+      path: '/text',
+      name: 'text',
+      component: () => import('@/views/templates/Test.vue')
+    },
   ]
 })
 

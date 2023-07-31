@@ -4,7 +4,7 @@ const dialog = ref(false);
 </script>
 
 <template>
-  <v-row justify="center">
+  <v-row justify="end">
     <v-dialog v-model="dialog" persistent width="50%">
       <template v-slot:activator="{ props }">
         <v-btn color="primary" v-bind="props">
@@ -71,11 +71,6 @@ const dialog = ref(false);
   </v-row>
 </template>
 <style scoped lang="scss">
-
-:deep(.v-btn.v-btn--density-default){
-  background-color:$primaryBrandBlue !important;
-
-}
 :deep(.v-dialog > .v-overlay__content) {
   width: 50%;
 }
@@ -91,6 +86,10 @@ const dialog = ref(false);
 :deep(.v-card .v-card-title) {
   padding: 20px;
   text-align: center;
+}
+:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text)
+{
+padding: 500px;
 }
 
 .text-h5 {
@@ -144,5 +143,15 @@ label {
     border-radius: $br_MB;
 
   }
+}
+
+:deep(.v-btn.v-btn--density-default){
+  background-color:$primaryBrandBlue !important;
+  width: 5.5vw;
+  height: 6vh;
+  border-radius: 50px;
+  margin-bottom: 50px;
+  margin-right: 20px;
+
 }
 </style>

@@ -203,7 +203,7 @@ div.logo {
   background-color: $primaryBgBlue;
   @include flex_hm;
   padding: 8%;
-z-index: 999;
+  z-index: 999;
 
   img {
     width: 80%;
@@ -264,4 +264,6 @@ div.bottom {
   position: fixed;
   bottom: 0;
 }
+
+
 </style>

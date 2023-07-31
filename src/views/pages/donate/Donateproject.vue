@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
-const dialog = ref(false)
 
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
@@ -32,6 +31,9 @@ function closeDelete() {
 
 // 換頁
 const itemsPerPage = 10;
+const pageCount = () => {
+  return (donateList.length)/ itemsPerPage + 1;
+}
 const displayedDonateList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
@@ -42,168 +44,168 @@ const displayedDonateList = computed(() => {
 const donateList = reactive([
   {
     no: '1',
-    id: '00001',
+    id: '001',
     name: '扶幼捐款',
     start_date: '2023.01.17',
     end_date: '2028.01.17',
   },
   {
     no: '2',
-    id: '00002',
+    id: '002',
     name: '兒童保護',
     start_date: '2023.03.08',
     end_date: '2028.03.08',
   },
   {
     no: '3',
-    id: '00003',
+    id: '003',
     name: '助養召集令',
     start_date: '2023.05.22',
     end_date: '2028.05.22',
   },
   {
     no: '4',
-    id: '00004',
+    id: '004',
     name: '獎助學金',
     start_date: '2023.06.27',
     end_date: '2028.06.27',
   },
   {
     no: '5',
-    id: '00005',
+    id: '005',
     name: '急難救助金',
     start_date: '2023.08.05',
     end_date: '2028.08.05',
   },
   {
     no: '6',
-    id: '00006',
+    id: '006',
     name: '營養補助',
     start_date: '2023.11.13',
     end_date: '2028.11.13',
   },
   {
     no: '7',
-    id: '00007',
+    id: '007',
     name: '特殊醫療照顧',
     start_date: '2023.12.26',
     end_date: '2028.12.26',
   },
   {
     no: '8',
-    id: '00008',
+    id: '008',
     name: '特殊節日送暖金',
     start_date: '2024.01.10',
     end_date: '2028.01.10',
   },
   {
     no: '9',
-    id: '00001',
+    id: '009',
     name: '扶幼捐款',
     start_date: '2023.01.17',
     end_date: '2028.01.17',
   },
   {
     no: '10',
-    id: '00002',
+    id: '010',
     name: '助養召集令',
     start_date: '2023.03.08',
     end_date: '2028.03.08',
   },
   {
     no: '11',
-    id: '00003',
+    id: '011',
     name: '獎助學金',
     start_date: '2023.05.22',
     end_date: '2028.05.22',
   },
   {
     no: '12',
-    id: '00004',
+    id: '012',
     name: '急難救助金',
     start_date: '2023.06.27',
     end_date: '2028.06.27',
   },
   {
     no: '13',
-    id: '00005',
+    id: '013',
     name: '獎助學金',
     start_date: '2023.08.05',
     end_date: '2028.08.05',
   },
   {
     no: '14',
-    id: '00006',
+    id: '014',
     name: '營養補助',
     start_date: '2023.11.13',
     end_date: '2028.11.13',
   },
   {
     no: '15',
-    id: '00007',
+    id: '015',
     name: '特殊醫療照顧',
     start_date: '2023.12.26',
     end_date: '2028.12.26',
   },
   {
     no: '16',
-    id: '00008',
+    id: '016',
     name: '營養補助',
     start_date: '2024.01.10',
     end_date: '2028.01.10',
   },
   {
     no: '17',
-    id: '00005',
+    id: '017',
     name: '助養召集令',
     start_date: '2023.08.05',
     end_date: '2028.08.05',
   },
   {
     no: '18',
-    id: '00006',
+    id: '018',
     name: '特殊醫療照顧',
     start_date: '2023.11.13',
     end_date: '2028.11.13',
   },
   {
     no: '19',
-    id: '00007',
+    id: '019',
     name: '扶幼捐款',
     start_date: '2023.12.26',
     end_date: '2028.12.26',
   },
   {
     no: '20',
-    id: '00008',
+    id: '020',
     name: '兒童保護',
     start_date: '2024.01.10',
     end_date: '2028.01.10',
   },
   {
     no: '21',
-    id: '00005',
+    id: '021',
     name: '助養召集令',
     start_date: '2023.08.05',
     end_date: '2028.08.05',
   },
   {
     no: '22',
-    id: '00006',
+    id: '022',
     name: '兒童保護',
     start_date: '2023.11.13',
     end_date: '2028.11.13',
   },
   {
     no: '23',
-    id: '00007',
+    id: '023',
     name: '營養補助',
     start_date: '2023.12.26',
     end_date: '2028.12.26',
   },
   {
     no: '24',
-    id: '00008',
+    id: '024',
     name: '特殊節日送暖金',
     start_date: '2024.01.10',
     end_date: '2028.01.10',
@@ -232,8 +234,8 @@ const donateList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in displayedDonateList" :key="item.id" class="no-border">
-              <td class="td_no">{{ item.no }}</td>
+            <tr v-for="(item,index) in displayedDonateList" :key="item.id" class="no-border">
+              <td class="td_no">{{index+1}}</td>
               <td class="id">{{ item.id }}</td>
               <td class="name">{{ item.name }}</td>
               <td class="start_date">{{ item.start_date }}</td>
@@ -258,7 +260,7 @@ const donateList = reactive([
 
         <!-- 分頁 -->
         <div class="text-center">
-          <v-pagination v-model="page" :length="3" rounded="circle" prev-icon="mdi-chevron-left"
+          <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
         </div>
       </div>

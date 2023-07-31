@@ -96,29 +96,6 @@ div.container {
   @include custom-responsive("xx-l") {
     left: 0.5vw;
   }
-}
 
-
-:deep(.v-switch .v-selection-control__input) {
-  @include custom-responsive("xl") {
-    transform: translateX(-0.8vw);
-  }
-
-  @include custom-responsive("xx-l") {
-    transform: translateX(-0.5vw);
-  }
-
-}
-
-:deep(.v-switch .v-selection-control--dirty .v-selection-control__input) {
-  @include custom-responsive("xl") {
-
-    transform: translateX(0.5vw);
-  }
-
-  @include custom-responsive("xx-l") {
-
-    transform: translateX(1vw);
-  }
 
 }

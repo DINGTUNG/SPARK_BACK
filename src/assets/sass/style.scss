@@ -5,7 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
 $font-family: 'Lato',
-'Noto Sans TC','Font Awesome 6 Free';
+'Noto Sans TC',
+'Font Awesome 6 Free';
 
 //---------------------------------------------------------------------------------------
 /* ⭐base⭐ */
@@ -46,7 +47,7 @@ $font-family: 'Lato',
 * {
   margin: 0;
   padding: 0;
-  // font-family: $font-family;
+  font-family: $font-family;
   color: $basicFontColor
 }
 
@@ -70,7 +71,11 @@ h1 {
 
   @include custom-responsive("md lg") {}
 
-  @include custom-responsive("xl xxl") {
+  @include custom-responsive("xl") {
+    @include h3_PC
+  }
+
+  @include custom-responsive("xx-l") {
     @include h1_PC
   }
 }

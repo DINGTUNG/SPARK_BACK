@@ -1,97 +1,101 @@
 div.container {
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
+  height: 100vh;
+  @include flex_vm;
+
+  div.table_container {
+    width: 70vw;
+    position: relative;
+    right: -7vw;
+
+    div.table_body {
+
+      .v-table {
+        margin-bottom: 5vh;
+      }
+
+      h1 {
+        color: $primaryBrandBlue;
+        margin-bottom: 4vh;
+      }
 
 
-  div.sidebar {
-    z-index: 100;
+      td {
+        height: 6vh;
+      }
 
-    div.logo {
-      background-color: $primaryBgBlue;
-      padding: 20px 0;
-    }
-  }
+      tbody tr:nth-child(odd) {
+        background-color: $functionalLightGrey1;
+      }
 
-
-    div.table_body{
-        width: 70%;
-        margin: 150px auto 150px 330px;
-
-        .v-table{
-            margin-bottom: 50px;
-        }
-
-        th{
-            @include h5_B_PC;
-            color: $basicFontColor;
-        }
-        td{
-            @include h6_PC;
-            color: $basicFontColor;       
-        }
-        tbody tr:nth-child(odd) {
-            background-color:$functionalLightGrey1;
-        }      
-        tbody tr:nth-child(even) {
+      tbody tr:nth-child(even) {
         background-color: $primaryBrandWhite;
-        }
-        .no-border td{
-            border: none;
-        }
+      }
 
-        :deep(.v-table .v-table__wrapper > table > thead > tr > th){
-          border-bottom: 4px solid $primaryBrandBlue;
-        }
-        :deep(.v-switch--inset .v-switch__track){
-          background-color:$primaryBrandBlue;
-          opacity: 1;
-        }
-        :deep(.v-pagination__item--is-active .v-btn__overlay){
-          border: 1px solid $secondaryDarkBlue;
-          color:white;
-          opacity: 0.2;
-        }
-        :deep(.mdi:before){
-            color:$primaryBrandBlue;
-        }
-    }
+      .no-border td {
+        border: none;
+      }
 
-    h1{
-      color:$primaryBrandBlue;
-      margin-bottom: 40px;
-    }
+      :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
+        border-bottom: 4px solid $primaryBrandBlue;
+      }
 
-    th {
-      @include h5_B_PC;
-      color: $basicFontColor;
-    }
+      :deep(.v-switch--inset .v-switch__track) {
+        background-color: $primaryBrandBlue;
+        opacity: 1;
+      }
 
-    td {
-      @include h6_PC;
-      color: $basicFontColor;
-    }
+      :deep(.v-pagination__item--is-active .v-btn__overlay) {
+        border: 1px solid $secondaryDarkBlue;
+        color: white;
+        opacity: 0.2;
+      }
 
-    tbody tr:nth-child(odd) {
-      background-color: $functionalLightGrey1;
+      :deep(.mdi:before) {
+        color: $primaryBrandBlue;
+      }
     }
-
-    tbody tr:nth-child(even) {
-      background-color: $primaryBrandWhite;
-    }
-
-    .no-border td {
-      border: none;
-    }
-    :deep(.v-card .v-card-title){
-      line-height: 3em;
-    }
-
   }
 
+  .no-border td {
+    border: none;
+  }
 
-:deep(.text){
+  :deep(.v-card .v-card-title) {
+    line-height: 3em;
+  }
+
+}
+
+
+:deep(.text) {
   span.v-btn__content {
     color: white;
   }
+}
+
+
+:deep(.add) {
+  position: absolute;
+  right: 0;
+  width: 5.5vw;
+  height: 6vh;
+  border-radius: 50px;
+
+  span.v-btn__content {
+    font-size: 1.2vw;
+    color: white;
+  }
+}
+
+:deep(.v-switch .v-selection-control__input) {
+  @include custom-responsive("xl") {
+    left: 0.5vw
+  }
+
+  @include custom-responsive("xx-l") {
+    left: 0.5vw;
+  }
+
+
 }

@@ -107,13 +107,13 @@ const backstageItem = reactive(
 <template>
   <v-card>
     <v-layout>
-      <v-navigation-drawer permanent width="250">
+      <v-navigation-drawer class="side_bar" style="width: 15vw">
         <div class="logo">
           <img :src="'pictures/logo/logo_white.svg'" alt="星火logo" @click="router.push({
             path: '/home'
           })">>
         </div>
-        <v-list :v-model="open" density="compact" class="mt-4">
+        <v-list :v-model="open" density="compact" style="padding-top: 10vh;">
           <v-list-group class="title mt-1 mb-1" :value="memberGroup">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="會員管理">
@@ -128,6 +128,8 @@ const backstageItem = reactive(
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" v-for="item in newsItem" :key="item.id" :value="item.id" :title="item.name"
                 @click="router.push({ path: '/' + item.id })">
+                <v-icon></v-icon>
+
               </v-list-item>
             </template>
           </v-list-group>
@@ -185,8 +187,8 @@ const backstageItem = reactive(
               @click="router.push({ path: '/' + item.id })"></v-list-item>
           </v-list-group>
         </v-list>
-        <v-sheet color="#1D3D6C" class="justify-center text-center bottom" width="250">
-          <p class="pa-6 text-white">
+        <v-sheet color="#1D3D6C" class="justify-center text-center bottom" style="width: 15vw;height:8vh">
+          <p class="pa-3 text-white">
             管理員<a href="#" class="text-white ms-4">登出</a></p>
         </v-sheet>
       </v-navigation-drawer>
@@ -196,10 +198,12 @@ const backstageItem = reactive(
 
 <style scoped lang="scss">
 div.logo {
+  position: fixed;
   cursor: pointer;
   background-color: $primaryBgBlue;
   @include flex_hm;
   padding: 8%;
+z-index: 999;
 
   img {
     width: 80%;
@@ -208,36 +212,50 @@ div.logo {
 
 div.title {
   text-align: center;
-
 }
+
+:deep(.v-list-item__content .v-list-item-title) {
+  height: 5vh;
+}
+
+:deep(.v-list-item-title) {
+  @include flex_vm;
+}
+
+:deep(.v-list-item__content) {
+  @include flex_hm;
+}
+
 
 ::v-deep .v-list-item__append .v-icon {
   display: none;
 }
 
 :deep(.v-list-group__items) {
+
   background-color: #F5F4EF;
 
   .v-list-item__content {
     .v-list-item-title {
-      font-size: 16px;
+
+      font-size: 1vw;
       color: #3D3A35;
     }
   }
 
 }
 
-:deep(.v-icon) {
-  position: absolute;
-  top: 4px;
-  right: 50px;
+:deep(.v-navigation-drawer__content) {
+
+  height: 91vh;
 }
 
 :deep(.v-list-item__content) {
+
   .v-list-item-title {
     color: $primaryBgBlue;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.2vw;
   }
 
 }
@@ -245,4 +263,5 @@ div.title {
 div.bottom {
   position: fixed;
   bottom: 0;
-}</style>
+}
+</style>

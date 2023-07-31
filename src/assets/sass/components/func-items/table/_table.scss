@@ -11,6 +11,27 @@ td {
   border-collapse: collapse;
 }
 
+.v-table>.v-table__wrapper>table>tbody>tr>th,
+.v-table>.v-table__wrapper>table>thead>tr>th,
+.v-table>.v-table__wrapper>table>tfoot>tr>th {
+  font-weight: bold;
+  color: $basicFontColor;
+  font-size: 1vw;
+  height: 0;
+  padding-bottom: 0.5vh;
+}
+
+td {
+  color: $basicFontColor;
+  font-size: 1vw;
+}
+
+:deep(.v-switch--inset .v-switch__track) {
+  width: 3vw;
+  height: 3.5vh;
+  border-radius: 30px;
+}
+
 
 @mixin table_PC {
 

@@ -469,4 +469,8 @@ p {
     line-height: 30px;
     font-family: "Lato", "Noto Sans TC", "Font Awesome 6 Free";
   }
+}
+
+td, th {
+  color: #3d3a35;
 }/*# sourceMappingURL=style.css.map */

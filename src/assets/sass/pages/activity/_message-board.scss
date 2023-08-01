@@ -164,6 +164,8 @@ div.container {
 
 
 :deep(.title) {
+  font-weight: bold;
+  color: $primaryBrandBlue;
   font-size: 1.5vw;
   margin: 2vw;
 }

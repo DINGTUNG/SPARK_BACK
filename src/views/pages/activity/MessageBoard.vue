@@ -10,22 +10,18 @@ function showDeleteDialog(item) {
 }
 
 function deleteItemConfirm() {
-  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
-  closeDelete(); // 關閉刪除對話框
+  if (itemToDelete.value) {
+    const index = messageList.indexOf(itemToDelete.value);
+    if (index !== -1) {
+      messageList.splice(index, 1); // 從列表中刪除項目沒效 
+    }
+    itemToDelete.value = null;
+    dialogDelete.value = false; // 隱藏刪除對話框
+  }
 }
 
 function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
-  if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = messageList.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        messageList.splice(index, 1); // 從列表中刪除項目沒效 
-      }
-    }
-    itemToDelete.value = null; // 清空要刪除的項目
-  }
 }
 
 
@@ -183,7 +179,7 @@ const messageList = reactive([
               <td class="memID">{{ item.memID }}</td>
               <td class="messageDate">{{ item.messageDate }}</td>
               <td>
-                <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
+                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
@@ -197,7 +193,6 @@ const messageList = reactive([
       </div>
     </div>
     <v-dialog v-model="dialogDelete" persistent="true">
-
       <v-card class="delete_dialog" style="border-radius: 50px;">
         <v-card-title class="text-center title">
           確定是否要刪除此捐款專案？

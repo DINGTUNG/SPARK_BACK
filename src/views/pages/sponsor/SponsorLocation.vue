@@ -30,11 +30,10 @@ function closeDelete() {
 
 
 // 換頁
-const pageCount = () => {
-  return (location.length)/ itemsPerPage + 1;
-}
-// 換頁
 const itemsPerPage = 10;
+const pageCount = () => {
+  return (location.length) / itemsPerPage + 1;
+}
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
@@ -108,7 +107,7 @@ const location = reactive([
         <popUpLocation class="add"/> 
         <!-- 分頁 -->
         <div class="text-center">
-          <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
+          <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
         </div>
       </div>

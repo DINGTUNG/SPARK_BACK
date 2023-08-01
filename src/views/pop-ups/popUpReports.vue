@@ -14,7 +14,7 @@ const dialog = ref(false);
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">新增歷年據點</span>
+                    <span class="text-h5">新增報告</span>
                 </v-card-title>
                 <v-card-text>
                     <form action="">
@@ -24,14 +24,13 @@ const dialog = ref(false);
                         <label for="" class="report_title">標題
                             <input type="text">
                         </label>
-                        <label for="">封面照片
-                            <input type="file">
-                        </label>
-                        <div>
-                            <input type="file" name="" id="file1">
-                        </div>
-                        <div>
-                            <label for="">選擇文件</label>
+                        <div class="imgblock">
+                            <span>封面照片</span>
+                            <v-file-input variant="outlined" id="book" prepend-icon="none">
+                                <template v-slot:prepend-inner>
+                                    <label for="book">上傳圖檔</label>
+                                </template>
+                            </v-file-input>
                         </div>
                     </form>
                 </v-card-text>
@@ -72,12 +71,57 @@ const dialog = ref(false);
     text-align: center;
 }
 
-
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
+  position: relative;
+  right: 20px;
+}
 
 .text-h5 {
     color: $primaryBrandBlue;
     @include h5_PC;
     font-weight: 900;
+
+}
+
+.imgblock {
+  display: flex;
+
+  span {
+    @include flex_vm();
+    justify-content: start;
+  }
+
+  input {
+    height: 5vh;
+    padding-left: 10px;
+    padding-top: 5px;
+    margin-left: 1vw;
+    width: 2vw;
+    width: 50%;
+    border: 1px solid;
+    border-radius: $br_MB;
+  }
+
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+
+  :deep(.v-input__control) {
+    width: 50%;
+    height: 5vh;
+  }
+
+  label{
+    @include flex_vm();
+    margin-bottom: 0;
+    position: relative;
+    left: 22vw;
+    padding: 10px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    width: 6vw;
+    color: #ffff;
+  }
 
 }
 

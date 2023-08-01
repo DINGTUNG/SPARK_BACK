@@ -1,6 +1,7 @@
 <script setup>
+import popUpNews from '@/views/pop-ups/popUpNews.vue';
+
 import { ref, reactive, computed } from 'vue'
-import popUpNews from '@/views/templates/popUpNews.vue';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -43,7 +44,6 @@ const displayedNewsList = computed(() => {
 
 const news = reactive([
   {
-    no: '1',
     id: '001',
     name: '星火30，感謝有您',
     date: '2023.01.17',
@@ -71,8 +71,8 @@ const news = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in displayedNewsList" :key="item.id" class="no-border">
-              <td class="td_no">{{ item.no }}</td>
+            <tr v-for="(item, index) in displayedNewsList" :key="item.id" class="no-border">
+              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="td_id">{{ item.id }}</td>
               <td class="name">{{ item.name }}</td>
               <td class="date">{{ item.date }}</td>

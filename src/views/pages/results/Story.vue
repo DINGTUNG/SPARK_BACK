@@ -1,24 +1,31 @@
 <script setup>
+import popUpStory from '@/views/pop-ups/popUpStory.vue';
+
 import { ref, reactive,computed  } from 'vue'
 const page = ref(1)
-
+const pageCount = () => {
+  return (storyList.length) / itemsPerPage + 1;
+}
+const itemsPerPage = 10;
+const displayStoryList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return storyList.slice(startIdx, endIdx);
+});
 const storyList = reactive([
   {
-    no : 1,
     id : "ST001",
     title : "遊戲場上的友誼結盟",
     date : '2023.04.12',
     online : 0
   },
   {
-    no : 2,
     id : "ST002",
     title : "音樂天使的樂章演奏",
     date : '2023.04.16',
     online : 0
   },
   {
-    no : 3,
     id : "ST003",
     title : "探索奇妙的科學之旅",
     date : '2023.04.20',
@@ -33,26 +40,15 @@ const storyList = reactive([
   },
 ])
 
-
-// 換頁
-const itemsPerPage = 8;
-  const displayedDonateList = computed(() => {
-    const startIdx = (page.value - 1) * itemsPerPage;
-    const endIdx = startIdx + itemsPerPage;
-    return donateList.slice(startIdx, endIdx);
-  });
-
-
 </script>
 
 
 <template>
   <div class="container">
-
-    <div class="table_body">
-
-      <h1>捐款管理｜捐款專案</h1>
-      <v-table>
+    <div class="content_wrap">
+      <h1>成果管理｜溫馨事紀</h1>
+      <div class="table_container">
+        <v-table>
         <thead>
           <tr>
             <th>No.</th>
@@ -65,8 +61,8 @@ const itemsPerPage = 8;
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in storyList" :key="item.id" class="no-border">
-            <td class="td_no">{{ item.no }}</td>
+          <tr v-for="(item, index) in displayStoryList" :key="item.id" class="no-border">
+            <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
             <td class="id">{{ item.id }}</td>
             <td class="name">{{ item.title }}</td>
             <td class="start_date">{{ item.date }}</td>
@@ -84,12 +80,12 @@ const itemsPerPage = 8;
           </tr>
         </tbody>
       </v-table>
-
-      <v-btn class="text" min-width="100" color="#1D3D6C" :ripple="false" rounded="xl" size="x-large" variant="flat">新增</v-btn>
+    </div>
+    <popUpStory class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">
-        <v-pagination v-model="page" :length="3" rounded="circle" prev-icon="mdi-chevron-left"
+        <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
@@ -120,5 +116,5 @@ const itemsPerPage = 8;
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/sass/pages/donate/donate-project";
+@import "@/assets/sass/pages/results/story";
 </style>

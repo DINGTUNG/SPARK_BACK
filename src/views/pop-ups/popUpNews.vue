@@ -101,6 +101,9 @@ const dialog = ref(false);
   
 
 }
+:deep(.v-icon) {
+  display: none;
+}
 
 :deep(.v-btn__content) {
   color: #ffff !important;
@@ -165,8 +168,8 @@ const dialog = ref(false);
     padding: 10px;
     background-color: $primaryBrandBlue;
     border-radius: 50px;
-    width: 6vw;
     color: #ffff;
+    cursor: pointer;
   }
 
 }

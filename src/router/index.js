@@ -8,7 +8,10 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        hideSideBar: true,
+      }
     },
     {
       path: '/home',

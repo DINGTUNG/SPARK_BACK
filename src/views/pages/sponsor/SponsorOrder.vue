@@ -216,8 +216,7 @@ const sponsorOrderList = reactive([
           </tbody>
         </v-table>
       </div>
-      <v-btn class="add" color="#1D3D6C" :ripple="false" rounded="xl" size="x-large" variant="flat">新增</v-btn>
-
+  
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

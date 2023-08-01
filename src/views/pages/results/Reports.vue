@@ -1,6 +1,7 @@
 <script setup>
+import popUpReports from '@/views/pop-ups/popUpReports.vue';
+
 import { ref, reactive, computed } from 'vue'
-import popUpReportsResult from '@/views/templates/popUpReportsResult.vue';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -33,7 +34,7 @@ const pageCount = () => {
 }
 // 換頁
 const itemsPerPage = 10;
-const displayedDonateList = computed(() => {
+const displayReportsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return reports.slice(startIdx, endIdx);
@@ -43,84 +44,73 @@ const displayedDonateList = computed(() => {
 
 const reports = reactive([
   {
-    no: '1',
+
     id: '001',
     class: '年度',
     year: '2018',
     name: "星火執行年度報告"
   },
   {
-    no: '2',
     id: '002',
     class: '年度',
     year: '2019',
     name: "星火執行年度報告"
   },
   {
-    no: '3',
     id: '003',
     class: '年度',
     year: '2020',
     name: "星火執行年度報告"
   },
   {
-    no: '4',
     id: '004',
     class: '年度',
     year: '2021',
     name: "星火執行年度報告"
   },
   {
-    no: '5',
     id: '005',
     class: '年度',
     year: '2022',
     name: "星火執行年度報告"
   },
   {
-    no: '6',
     id: '006',
     class: '年度',
     year: '2023',
     name: "星火執行年度報告"
   },
   {
-    no: '7',
     id: '007',
     class: '財務',
     year: '2018',
     name: "星火執行業務報告"
   },
   {
-    no: '8',
     id: '008',
     class: '財務',
     year: '2019',
     name: "星火執行業務報告",
   },
   {
-    no: '9',
     id: '009',
     class: '財務',
     year: '2020',
     name: "星火執行業務報告"
   },
   {
-    no: '10',
     id: '010',
     class: '財務',
     year: '2021',
     name: "星火執行業務報告"
   },
   {
-    no: '11',
     id: '011',
     class: '財務',
     year: '2022',
     name: "星火執行業務報告"
   },
   {
-    no: '12',
     id: '012',
     class: '財務',
     year: '2023',
@@ -132,9 +122,9 @@ const reports = reactive([
 
 <template>
   <div class="container">
-    <div class="table_container">
-      <div class="table_body">
-        <h1>歷年報告</h1>
+    <div class="content_wrap">
+      <h1>成果管理｜歷年報告</h1>
+      <div class="table_container">
         <v-table>
           <thead>
             <tr>
@@ -150,8 +140,8 @@ const reports = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in displayedDonateList" :key="item.id" class="no-border">
-              <td class="no">{{ item.no }}</td>
+            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
+              <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.id }}</td>
               <td class="class">{{ item.class }}</td>
               <td class="year">{{ item.year }}</td>
@@ -170,38 +160,37 @@ const reports = reactive([
             </tr>
           </tbody>
         </v-table>
-
-        <popUpReportsResult />
-
-        <!-- 分頁 -->
-        <div class="text-center">
-          <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
-            next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
-        </div>
       </div>
+      <popUpReports class="add" />
 
-      <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
-
-        <v-card class="delete_dialog">
-          <v-card-title class="text-center">
-            確定是否要刪除此報告？
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-              取消
-            </v-btn>
-            <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-              刪除
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <!-- 分頁 -->
+      <div class="text-center">
+        <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
+      </div>
     </div>
+
+    <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
+
+      <v-card class="delete_dialog">
+        <v-card-title class="text-center">
+          確定是否要刪除此報告？
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
+            取消
+          </v-btn>
+          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
+            刪除
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/sass/pages/donate/donate-project";
+@import "@/assets/sass/pages/results/reports";
 </style>

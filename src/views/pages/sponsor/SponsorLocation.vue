@@ -1,5 +1,5 @@
 <script setup>
-import popUpLocation from '@/views/templates/popUpLocation.vue';
+import popUpLocation from '@/views/pop-ups/popUpLocation.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -35,7 +35,7 @@ const pageCount = () => {
 }
 // 換頁
 const itemsPerPage = 10;
-const displayedLocationList = computed(() => {
+const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return location.slice(startIdx, endIdx);
@@ -86,8 +86,8 @@ const location = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in displayedLocationList" :key="item.id" class="no-border">
-              <td class="td_no">{{ item.no }}</td>
+            <tr v-for="(item, index) in displayLocationList" :key="item.id" class="no-border">
+              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.id }}</td>
               <td class="name">{{ item.name }}</td>
               <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>

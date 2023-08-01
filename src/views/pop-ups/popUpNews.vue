@@ -26,19 +26,19 @@ const dialog = ref(false);
         <v-card-text>
           <form action="">
             <div class="form_item">
-              <label for="title"><span>標題</span></label>
+             <div class="name"><span>標題</span></div>
               <input type="text" id="title">
             </div>
             <div class="form_item">
-              <label for="date"><span>日期</span></label>
+              <div class="name"><span>日期</span></div>
               <input type="date" id="date">
             </div>                       
             <div class="form_item">
-              <label for="paragraph1"><span>段落1</span></label>
+              <div class="name"><span>段落1</span></div>
               <textarea id="paragraph1" cols="70" rows="10"></textarea>
             </div>
             <div class="imgblock form_item">
-              <label for="photo1"><span>圖檔1</span></label>
+              <div class="name"><span>圖檔1</span></div>
               <v-file-input  id="photo1" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
@@ -46,11 +46,11 @@ const dialog = ref(false);
               </v-file-input>
             </div>
             <div class="form_item">
-              <label for="paragraph2"><span>段落2</span></label>
+              <div class="name"><span>段落2</span></div>
               <textarea id="paragraph2" cols="70" rows="10"></textarea>
             </div>
             <div class="imgblock form_item">
-              <label for="photo2"><span>圖檔2</span></label>
+              <div class="name"><span>圖檔2</span></div>
               <v-file-input  id="photo2" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
@@ -58,11 +58,11 @@ const dialog = ref(false);
               </v-file-input>
             </div>
             <div class="form_item">
-              <label for="paragraph3"><span>段落3</span></label>
+              <div class="name"><span>段落3</span></div>
               <textarea id="paragraph3" cols="70" rows="10"></textarea>
             </div>
             <div class="imgblock form_item">
-              <label for="photo3"><span>圖檔3</span></label>
+              <div class="name"><span>圖檔3</span></div>
               <v-file-input id="photo3" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="photo3" id="photo">上傳圖檔</label>
@@ -70,11 +70,11 @@ const dialog = ref(false);
               </v-file-input>
             </div>
             <div class="form_item">
-              <label for="paragraph4"><span>段落4</span></label>
+              <div class="name"><span>段落4</span></div>
               <textarea id="paragraph4" cols="70" rows="10"></textarea>
             </div>
             <div class="imgblock form_item">
-              <label for="photo4"><span>圖檔4</span></label>
+              <div class="name"><span>圖檔4</span></div>
               <v-file-input  id="photo4" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="photo4" id="photo">上傳圖檔</label>
@@ -149,13 +149,12 @@ const dialog = ref(false);
   width: 80%;
   margin: 0 auto 2%;
   gap: 6%;
-  label{
-     &:nth-child(1){
-      width: 20%;
-     }
-     span{
-      margin-left: auto;
-     }
+  div.name{
+    width: 20%;
+    display: flex;
+    span{
+      margin-left:auto;
+    }
   }
  
 }
@@ -211,7 +210,8 @@ textarea {
     border: 1px solid $primaryBrandBlue;
     border-radius: $br_MB;
     width: 70%;
-
+    box-sizing: border-box;
+    padding: 1vw;
   }
 
 

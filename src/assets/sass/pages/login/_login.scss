@@ -75,11 +75,69 @@ div.login_container {
   }
 
 
-  h2 {
-    padding-top: 20px;
-    @include h2_PC;
-    @include flex_hm;
-    color: $primaryBrandWhite;
-  }
 
+
+  div.login_wrap {
+    margin: 0 auto;
+    width: 50vw;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    h2 {
+      color: $primaryBrandWhite;
+      display: block;
+      margin-bottom: 2vh;
+    }
+
+    div.account_wrap {}
+
+
+    div.password_wrap {
+      position: relative;
+    }
+
+    div.btn_wrapper {
+      margin-top: 3vh;
+      @include flex_hm;
+      button.login_btn {
+        width: 12vw;
+        height: 6vh;
+        background-color: white;
+        color: $primaryBrandBlue;
+        border-radius: 30px;
+        align-self: flex-end;
+        font-size: 1vw;
+      }
+    }
+  }
+}
+
+label {
+  display: block;
+  color: white;
+  font-size: 1vw;
+  margin-bottom: 0.5vh;
+}
+
+input {
+  width: 26vw;
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 1vw;
+  background-color: white;
+  margin-bottom: 3vh;
+  font-size: 1.2vw;
+}
+
+span {
+  position: absolute;
+  top: 6.5vh;
+  right: 1vw;
+
+  img.eye {
+    width: 2vw;
+  }
 }

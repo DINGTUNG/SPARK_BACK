@@ -36,31 +36,44 @@ const dialog = ref(false);
             </label>
             <div class="imgblock">
               <span>圖檔1</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
+              <v-file-input variant="outlined" id="book" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="book">上傳圖檔</label>
+                </template>
+              </v-file-input>
             </div>
             <label for="">段落2
               <textarea name="" id="" cols="70" rows="10"></textarea>
             </label>
             <div class="imgblock">
               <span>圖檔2</span>
-              <input type="file" id="upImg" placeholder="">
-              <label for="upImg">上傳圖檔</label>
+              <v-file-input variant="outlined" id="book" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="book">上傳圖檔</label>
+                </template>
+              </v-file-input>
             </div>
             <label for="">段落3
               <textarea name="" id="" cols="70" rows="10"></textarea>
             </label>
             <div class="imgblock">
               <span>圖檔3</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
+              <v-file-input variant="outlined" id="book" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="book">上傳圖檔</label>
+                </template>
+              </v-file-input>
             </div>
             <label for="">段落4
               <textarea name="" id="" cols="70" rows="10"></textarea>
             </label>
             <div class="imgblock">
               <span>圖檔4</span>
-              <input type="file" id="upImg">
+              <v-file-input variant="outlined" id="book" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="book">上傳圖檔</label>
+                </template>
+              </v-file-input>
             </div>
           </form>
         </v-card-text>
@@ -85,6 +98,8 @@ const dialog = ref(false);
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
+  
+
 }
 
 :deep(.v-btn__content) {
@@ -98,6 +113,13 @@ const dialog = ref(false);
 
 :deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
   padding: 500px;
+  
+}
+
+
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
+  position: relative;
+  right: 20px;
 }
 
 .text-h5 {
@@ -110,10 +132,10 @@ const dialog = ref(false);
 .imgblock {
   display: flex;
 
-  input[type="file"] {
-    border: 1px transparent;
+  span {
+    @include flex_vm();
+    justify-content: start;
   }
-
 
   input {
     height: 5vh;
@@ -124,6 +146,27 @@ const dialog = ref(false);
     width: 50%;
     border: 1px solid;
     border-radius: $br_MB;
+  }
+
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+
+  :deep(.v-input__control) {
+    width: 50%;
+    height: 5vh;
+  }
+
+  label{
+    @include flex_vm();
+    margin-bottom: 0;
+    position: relative;
+    left: 22vw;
+    padding: 10px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    width: 6vw;
+    color: #ffff;
   }
 
 }
@@ -153,6 +196,13 @@ label {
   }
 }
 
+
+
+:deep(.v-field__outline) {
+  border: 1px solid;
+  border-radius: $br_MB;
+}
+
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
   width: 5.5vw;
@@ -162,11 +212,4 @@ label {
   margin-right: 20px;
 
 }
-
-
-// #upImg {
-//     opacity: 0;
-//     position: absolute;
-//     z-index: -1;
-//   }
 </style>

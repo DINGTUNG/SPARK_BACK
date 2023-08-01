@@ -1,6 +1,35 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 
+const dialogDelete = ref(false); // 控制刪除對話框的顯示
+const itemToDelete = ref(null); // 存儲要刪除的項目
+
+function showDeleteDialog(item) {
+  itemToDelete.value = item; // 存儲要刪除的項目
+  dialogDelete.value = true; // 顯示刪除對話框
+}
+
+function deleteItemConfirm() {
+  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
+  closeDelete(); // 關閉刪除對話框
+}
+
+function closeDelete() {
+  dialogDelete.value = false; // 隱藏刪除對話框
+  if (itemToDelete.value) {
+    const confirmDelete = confirm("是否確定要刪除？");
+    if (confirmDelete) {
+      const index = messageList.indexOf(itemToDelete.value);
+      if (index !== -1) {
+        messageList.splice(index, 1); // 從列表中刪除項目沒效 
+      }
+    }
+    itemToDelete.value = null; // 清空要刪除的項目
+  }
+}
+
+
+
 const page = ref(1)
 
 // 換頁
@@ -160,13 +189,31 @@ const messageList = reactive([
           </tbody>
         </v-table>
       </div>
-  
+
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
+    <v-dialog v-model="dialogDelete" persistent="true">
+
+      <v-card class="delete_dialog" style="border-radius: 50px;">
+        <v-card-title class="text-center title">
+          確定是否要刪除此捐款專案？
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="cancel btn" variant="text" @click="closeDelete">
+            取消
+          </v-btn>
+          <v-btn class="delete btn" variant="text" @click="deleteItemConfirm">
+            刪除
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 

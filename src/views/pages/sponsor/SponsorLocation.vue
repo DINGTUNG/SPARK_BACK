@@ -69,10 +69,10 @@ const location = reactive([
 
 
 <template>
-  <div class="container">
-    <div class="table_container">
-      <div class="table_body">
-        <h1>認養據點</h1>
+ <div class="container">
+    <div class="content_wrap">
+      <h1>認養管理｜認養據點</h1>
+      <div class="table_container">
         <v-table>
           <thead>
             <tr>
@@ -104,7 +104,8 @@ const location = reactive([
             </tr>
           </tbody>
         </v-table>
-        <popUpLocation/> 
+      </div>
+        <popUpLocation class="add"/> 
         <!-- 分頁 -->
         <div class="text-center">
           <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
@@ -130,9 +131,9 @@ const location = reactive([
         </v-card>
       </v-dialog>
     </div>
-  </div>
+
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/sass/pages/donate/donate-project";
+@import "@/assets/sass/pages/sponsor/sponsor-location";
 </style>

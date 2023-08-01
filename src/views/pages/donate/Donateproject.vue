@@ -283,6 +283,7 @@ const donateList = reactive([
       </v-card>
     </v-dialog>
   </div>
+  
 </template>
 
 <style scoped lang="scss">

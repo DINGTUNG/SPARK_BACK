@@ -1,5 +1,5 @@
 <script setup>
-import locationWindow from '@/views/templates/LocationWindow.vue';
+import popUpLocation from '@/views/templates/popUpLocation.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -13,19 +13,14 @@ function showDeleteDialog(item) {
 }
 
 function deleteItemConfirm() {
-  
-  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
   if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = location.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        location.splice(index, 1); // 從列表中刪除項目沒效 
-      }
+    const index = location.indexOf(itemToDelete.value);
+    if (index !== -1) {
+      location.splice(index, 1); // 從列表中刪除項目沒效 
     }
-    itemToDelete.value = null; // 清空要刪除的項目
-  } 
-  dialogDelete.value = false;// 關閉刪除對話框
+    itemToDelete.value = null;
+    dialogDelete.value = false; // 隱藏刪除對話框
+  }
 }
 
 function closeDelete() {
@@ -109,7 +104,7 @@ const location = reactive([
             </tr>
           </tbody>
         </v-table>
-        <locationWindow/> 
+        <popUpLocation/> 
         <!-- 分頁 -->
         <div class="text-center">
           <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"

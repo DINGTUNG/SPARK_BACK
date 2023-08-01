@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import ReportsResult from '@/views/templates/ReportsResult.vue';
+import popUpReportsResult from '@/views/templates/popUpReportsResult.vue';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -14,24 +14,22 @@ function showDeleteDialog(item) {
 
 function deleteItemConfirm() {
   if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = reports.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        reports.splice(index, 1); // 從列表中刪除項目沒效 
-      }
+    const index = reports.indexOf(itemToDelete.value);
+    if (index !== -1) {
+      reports.splice(index, 1); // 從列表中刪除項目沒效 
     }
-  dialogDelete.value = false; // 隱藏刪除對話框
-}
+    itemToDelete.value = null;
+    dialogDelete.value = false; // 隱藏刪除對話框
+  }
 }
 function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
- 
+
 }
 
 
 const pageCount = () => {
-  return (reports.length)/ itemsPerPage + 1;
+  return (reports.length) / itemsPerPage + 1;
 }
 // 換頁
 const itemsPerPage = 10;
@@ -46,84 +44,84 @@ const displayedDonateList = computed(() => {
 const reports = reactive([
   {
     no: '1',
-    id:'001',
+    id: '001',
     class: '年度',
     year: '2018',
     name: "星火執行年度報告"
   },
   {
     no: '2',
-    id:'002',
+    id: '002',
     class: '年度',
     year: '2019',
     name: "星火執行年度報告"
   },
   {
     no: '3',
-    id:'003',
+    id: '003',
     class: '年度',
     year: '2020',
     name: "星火執行年度報告"
   },
   {
     no: '4',
-    id:'004',
+    id: '004',
     class: '年度',
     year: '2021',
     name: "星火執行年度報告"
   },
   {
     no: '5',
-    id:'005',
+    id: '005',
     class: '年度',
     year: '2022',
     name: "星火執行年度報告"
   },
   {
     no: '6',
-    id:'006',
+    id: '006',
     class: '年度',
     year: '2023',
     name: "星火執行年度報告"
   },
   {
     no: '7',
-    id:'007',
+    id: '007',
     class: '財務',
     year: '2018',
     name: "星火執行業務報告"
   },
   {
     no: '8',
-    id:'008',
+    id: '008',
     class: '財務',
     year: '2019',
     name: "星火執行業務報告",
   },
   {
     no: '9',
-    id:'009',
+    id: '009',
     class: '財務',
     year: '2020',
     name: "星火執行業務報告"
   },
   {
     no: '10',
-    id:'010',
+    id: '010',
     class: '財務',
     year: '2021',
     name: "星火執行業務報告"
   },
   {
     no: '11',
-    id:'011',
+    id: '011',
     class: '財務',
     year: '2022',
     name: "星火執行業務報告"
   },
   {
     no: '12',
-    id:'012',
+    id: '012',
     class: '財務',
     year: '2023',
     name: "星火執行業務報告"
@@ -173,7 +171,7 @@ const reports = reactive([
           </tbody>
         </v-table>
 
-        <ReportsResult/>
+        <popUpReportsResult />
 
         <!-- 分頁 -->
         <div class="text-center">

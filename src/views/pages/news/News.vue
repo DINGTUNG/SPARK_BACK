@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import NewsCard from '@/views/templates/NewsCard.vue';
+import popUpNews from '@/views/templates/popUpNews.vue';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -14,18 +14,14 @@ function showDeleteDialog(item) {
 }
 
 function deleteItemConfirm() {
-  console.log(itemToDelete)
   if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = news.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        news.splice(index, 1); // 從列表中刪除項目沒效 
-      }
+    const index = news.indexOf(itemToDelete.value);
+    if (index !== -1) {
+      news.splice(index, 1); // 從列表中刪除項目沒效 
     }
-    itemToDelete.value = null; // 清空要刪除的項目
+    itemToDelete.value = null;
+    dialogDelete.value = false; // 隱藏刪除對話框
   }
-  dialogDelete.value = false;
 }
 
 function closeDelete() {
@@ -94,7 +90,7 @@ const news = reactive([
             </tr>
           </tbody>
         </v-table>
-        <NewsCard />
+        <popUpNews />
         <!-- 分頁 -->
         <div class="text-center">
           <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"

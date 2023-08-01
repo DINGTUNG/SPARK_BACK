@@ -25,53 +25,59 @@ const dialog = ref(false);
         </v-card-title>
         <v-card-text>
           <form action="">
-            <label for="">標題
-              <input type="text">
-            </label>
-            <label for="">日期
-              <input type="date">
-            </label>
-            <label for="">段落1
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔1</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+            <div class="form_item">
+              <label for="title"><span>標題</span></label>
+              <input type="text" id="title">
+            </div>
+            <div class="form_item">
+              <label for="date"><span>日期</span></label>
+              <input type="date" id="date">
+            </div>                       
+            <div class="form_item">
+              <label for="paragraph1"><span>段落1</span></label>
+              <textarea id="paragraph1" cols="70" rows="10"></textarea>
+            </div>
+            <div class="imgblock form_item">
+              <label for="photo1"><span>圖檔1</span></label>
+              <v-file-input  id="photo1" prepend-icon="none">
                 <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
+                  <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
-            <label for="">段落2
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔2</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+            <div class="form_item">
+              <label for="paragraph2"><span>段落2</span></label>
+              <textarea id="paragraph2" cols="70" rows="10"></textarea>
+            </div>
+            <div class="imgblock form_item">
+              <label for="photo2"><span>圖檔2</span></label>
+              <v-file-input  id="photo2" prepend-icon="none">
                 <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
+                  <label for="photo2" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
-            <label for="">段落3
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔3</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+            <div class="form_item">
+              <label for="paragraph3"><span>段落3</span></label>
+              <textarea id="paragraph3" cols="70" rows="10"></textarea>
+            </div>
+            <div class="imgblock form_item">
+              <label for="photo3"><span>圖檔3</span></label>
+              <v-file-input id="photo3" prepend-icon="none">
                 <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
+                  <label for="photo3" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
-            <label for="">段落4
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔4</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+            <div class="form_item">
+              <label for="paragraph4"><span>段落4</span></label>
+              <textarea id="paragraph4" cols="70" rows="10"></textarea>
+            </div>
+            <div class="imgblock form_item">
+              <label for="photo4"><span>圖檔4</span></label>
+              <v-file-input  id="photo4" prepend-icon="none">
                 <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
+                  <label for="photo4" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
@@ -95,6 +101,9 @@ const dialog = ref(false);
   width: 50%;
 }
 
+:deep(.v-field__overlay) {
+  background-color: #fff;
+}
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
@@ -125,6 +134,9 @@ const dialog = ref(false);
   right: 20px;
 }
 
+#data{
+  padding: 0;
+}
 .text-h5 {
   color: $primaryBrandBlue;
   @include h5_PC;
@@ -132,77 +144,79 @@ const dialog = ref(false);
 
 }
 
-.imgblock {
+.form_item{
   display: flex;
-
-  span {
-    @include flex_vm();
-    justify-content: start;
+  width: 80%;
+  margin: 0 auto 2%;
+  gap: 6%;
+  label{
+     &:nth-child(1){
+      width: 20%;
+     }
+     span{
+      margin-left: auto;
+     }
   }
-
-  input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-  }
-
+ 
+}
+.imgblock {
+  margin: 5% auto 2%;
   :deep(.v-field.v-field--appended) {
     display: flex;
   }
-
+  :deep(.v-field__input){
+    font-size:12px ;
+    line-height: 5vh;
+    padding: 0;
+  }
   :deep(.v-input__control) {
-    width: 50%;
+    width: 70%;
     height: 5vh;
   }
 
-  label{
-    @include flex_vm();
-    margin-bottom: 0;
-    position: relative;
-    left: 22vw;
-    padding: 10px;
-    background-color: $primaryBrandBlue;
-    border-radius: 50px;
-    color: #ffff;
-    cursor: pointer;
+  label#photo{
+      margin-bottom: 0;
+      position: absolute;
+      padding: 10px;
+      width: fit-content;
+      top: -5px;
+      right: -100px;
+      background-color: $primaryBrandBlue;
+      border-radius: 50px;
+      color: #ffff;
+      cursor: pointer;
+      font-size:14px;
   }
 
 }
 
 input {
   height: 5vh;
-  padding-left: 10px;
-  padding-top: 5px;
   margin-left: 1vw;
-  width: 2vw;
+  padding-left:1vw ;
   width: 50%;
-  border: 1px solid;
+  border: 1px solid $primaryBrandBlue;
   border-radius: $br_MB;
+  &:focus{
+    border:2px solid $primaryBrandBlue ;
+  }
 }
 
 label {
   margin-bottom: 20px;
   display: flex;
-
-  textarea {
+}
+textarea {
     margin-left: 1vw;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-top: 10px;
+    border: 1px solid $primaryBrandBlue;
     border-radius: $br_MB;
+    width: 70%;
 
   }
-}
-
 
 
 :deep(.v-field__outline) {
-  border: 1px solid;
+  border: 1px solid $primaryBrandBlue;
   border-radius: $br_MB;
 }
 

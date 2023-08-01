@@ -1,3 +1,20 @@
+@keyframes shooting_star {
+  0% {
+    top: -10%;
+    left: 55%;
+  }
+
+  75% {
+    top: -10%;
+    left: 55%;
+  }
+
+  100% {
+    top: 48%;
+    left: -15%;
+  }
+}
+
 @keyframes star_shine {
   50% {
     filter: drop-shadow(0 0 0 rgba(250, 230, 126, 0));
@@ -18,98 +35,43 @@
   animation-direction: alternate;
 }
 
-
-.body {
+div.login_container {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 100%;
   background-image: url('/pictures/login/background.png');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-}
-
-.title_block {
-  width: 90%;
-  margin: auto;
-
-  div.title_text {
-    position: relative;
-    width: 70vw;
-    margin: auto;
-    @include flex_vm;
 
 
-    img.logo {
-      position: relative;
-      top: 10vh;
-      width: 30vw;
-      margin: auto;
-      margin-bottom: 10vh;
-    }
 
-    img.shoot {
-      width: 20vw;
-      position: absolute;
-      right: -10vw;
-      top: 10vh
-    }
+  img.shooting_star_white {
+    position: absolute;
+    animation: shooting_star 6s 1s ease-in-out infinite;
+    width: 5%;
   }
 
-  div.title_img {
-    @include flex_hm;
-    margin-top: 10vh;
-    gap: 10vw;
 
-    div.title_img_front {
-      position: relative;
+  img.logo {
+    width: 30vw;
+    margin: 10vh auto;
+  }
 
-      img {
+  img.shooting_star_gold {
+    width: 20vw;
+    position: absolute;
+    top: 10vh;
+    right: 6vw;
+  }
 
-        animation: boy_float 1.9s 1s ease-in-out infinite alternate;
-
-        @keyframes boy_float {
-          0% {
-            top: -80%;
-            transform: rotate(8deg);
-          }
-
-          100% {
-            top: -72%;
-            transform: rotate(-6deg);
-          }
-        }
-      }
-
-      .front1:hover {
-        opacity: 0;
-      }
-
-    }
-
-    div.title_img_back {
-      position: relative;
-
-      img {
-        animation: boy_float 1.9s 1s ease-in-out infinite alternate;
-
-        @keyframes boy_float {
-          0% {
-            transform: rotate(8deg);
-          }
-
-          100% {
-            transform: rotate(-6deg);
-          }
-        }
-
-      }
-
-      .back1:hover {
-        opacity: 0;
-      }
-
-    }
-
+  img.three_stars {
+    @include shine(star_shine, 2.5s, 0.5s);
+    width: 15vw;
+    position: absolute;
+    top: 60vh;
+    left: 5vw;
   }
 
 
@@ -120,37 +82,4 @@
     color: $primaryBrandWhite;
   }
 
-
-}
-
-.shooting_star_white {
-  position: absolute;
-  animation: shooting_star 6s 1s ease-in-out infinite;
-  width: 5%;
-
-  @keyframes shooting_star {
-    0% {
-      top: -10%;
-      left: 55%;
-    }
-
-    75% {
-      top: -10%;
-      left: 55%;
-    }
-
-    100% {
-      top: 48%;
-      left: -15%;
-    }
-  }
-
-}
-
-img.star_img {
-  @include shine(star_shine, 2.5s, 0.5s);
-  position: absolute;
-  width: 15vw;
-  top: 60vh;
-  left: 5vw;
 }

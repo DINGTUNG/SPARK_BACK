@@ -1,6 +1,14 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 const dialog = ref(false);
+
+
+// const fileName = ref("");
+
+// function onFileChange(event) {
+//   // 更新檔案名稱
+//   fileName.value = event.target.files[0]?.name || "";
+// }
 </script>
 
 <template>
@@ -53,7 +61,6 @@ const dialog = ref(false);
             <div class="imgblock">
               <span>圖檔4</span>
               <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
             </div>
           </form>
         </v-card-text>
@@ -74,12 +81,13 @@ const dialog = ref(false);
 :deep(.v-dialog > .v-overlay__content) {
   width: 50%;
 }
+
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
 }
 
-:deep(.v-btn__content){
+:deep(.v-btn__content) {
   color: #ffff !important;
 }
 
@@ -87,9 +95,9 @@ const dialog = ref(false);
   padding: 20px;
   text-align: center;
 }
-:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text)
-{
-padding: 500px;
+
+:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
+  padding: 500px;
 }
 
 .text-h5 {
@@ -103,7 +111,7 @@ padding: 500px;
   display: flex;
 
   input[type="file"] {
-     border: 1px transparent;
+    border: 1px transparent;
   }
 
 
@@ -121,15 +129,15 @@ padding: 500px;
 }
 
 input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-  }
+  height: 5vh;
+  padding-left: 10px;
+  padding-top: 5px;
+  margin-left: 1vw;
+  width: 2vw;
+  width: 50%;
+  border: 1px solid;
+  border-radius: $br_MB;
+}
 
 label {
   margin-bottom: 20px;
@@ -145,8 +153,8 @@ label {
   }
 }
 
-:deep(.v-btn.v-btn--density-default){
-  background-color:$primaryBrandBlue !important;
+:deep(.v-btn.v-btn--density-default) {
+  background-color: $primaryBrandBlue !important;
   width: 5.5vw;
   height: 6vh;
   border-radius: 50px;
@@ -154,4 +162,11 @@ label {
   margin-right: 20px;
 
 }
+
+
+// #upImg {
+//     opacity: 0;
+//     position: absolute;
+//     z-index: -1;
+//   }
 </style>

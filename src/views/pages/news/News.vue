@@ -9,34 +9,39 @@ const itemToDelete = ref(null); // 存儲要刪除的項目
 
 function showDeleteDialog(item) {
   itemToDelete.value = item; // 存儲要刪除的項目
+  console.log(itemToDelete)
   dialogDelete.value = true; // 顯示刪除對話框
 }
 
 function deleteItemConfirm() {
-  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
-  closeDelete(); // 關閉刪除對話框
-}
-
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
+  console.log(itemToDelete)
   if (itemToDelete.value) {
     const confirmDelete = confirm("是否確定要刪除？");
     if (confirmDelete) {
-      const index = donateList.indexOf(itemToDelete.value);
+      const index = news.indexOf(itemToDelete.value);
       if (index !== -1) {
-        donateList.splice(index, 1); // 從列表中刪除項目沒效 
+        news.splice(index, 1); // 從列表中刪除項目沒效 
       }
     }
     itemToDelete.value = null; // 清空要刪除的項目
   }
+  dialogDelete.value = false;
+}
+
+function closeDelete() {
+  dialogDelete.value = false; // 隱藏刪除對話框
 }
 
 // 換頁
+const pageCount = () => {
+  return (news.length) / itemsPerPage + 1;
+}
+// 換頁
 const itemsPerPage = 10;
-const displayedDonateList = computed(() => {
+const displayedNewsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return donateList.slice(startIdx, endIdx);
+  return news.slice(startIdx, endIdx);
 });
 
 
@@ -56,7 +61,7 @@ const news = reactive([
   <div class="container">
     <div class="table_container">
       <div class="table_body">
-        <h1>捐款管理｜捐款專案</h1>
+        <h1>最新消息</h1>
         <v-table>
           <thead>
             <tr>
@@ -70,7 +75,7 @@ const news = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in news" :key="item.id" class="no-border">
+            <tr v-for="item in displayedNewsList" :key="item.id" class="no-border">
               <td class="td_no">{{ item.no }}</td>
               <td class="td_id">{{ item.id }}</td>
               <td class="name">{{ item.name }}</td>
@@ -81,10 +86,10 @@ const news = reactive([
                   inset></v-switch>
               </td>
               <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+                <v-icon size="small" class="me-2" @click="editItem(item)">
                   mdi-pencil
                 </v-icon>
-                <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
+                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
@@ -92,14 +97,14 @@ const news = reactive([
         <NewsCard />
         <!-- 分頁 -->
         <div class="text-center">
-          <v-pagination v-model="page" :length="3" rounded="circle" prev-icon="mdi-chevron-left"
+          <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
         </div>
       </div>
-      <v-dialog v-model="dialogDelete" max-width="800px" persistent="true">
+      <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
         <v-card class="delete_dialog">
           <v-card-title class="text-center">
-            確定是否要刪除此捐款專案？
+            確定是否要刪除此消息？
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>

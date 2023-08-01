@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
+
 const dialog = ref(false);
 </script>
 
@@ -13,13 +14,25 @@ const dialog = ref(false);
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">新增認養據點</span>
+                    <span class="text-h5">新增歷年據點</span>
                 </v-card-title>
                 <v-card-text>
                     <form action="">
-                        <label for="">據點名稱
+                        <label for="">報告分類
                             <input type="text">
                         </label>
+                        <label for="" class="report_title">標題
+                            <input type="text">
+                        </label>
+                        <label for="">封面照片
+                            <input type="file">
+                        </label>
+                        <div>
+                            <input type="file" name="" id="file1">
+                        </div>
+                        <div>
+                            <label for="">選擇文件</label>
+                        </div>
                     </form>
                 </v-card-text>
                 <v-card-actions>
@@ -59,9 +72,7 @@ const dialog = ref(false);
     text-align: center;
 }
 
-label {
-    @include flex_hm();
-}
+
 
 .text-h5 {
     color: $primaryBrandBlue;
@@ -70,60 +81,40 @@ label {
 
 }
 
-.imgblock {
+
+label {
+    margin-bottom: 20px;
     display: flex;
-
-    input[type="file"] {
-        border: 1px transparent;
-    }
-
+    @include flex_hm();
 
     input {
         height: 5vh;
         padding-left: 10px;
         padding-top: 5px;
         margin-left: 1vw;
-        width: 2vw;
-        width: 50%;
+        width: 25vw;
         border: 1px solid;
         border-radius: $br_MB;
     }
+}
+
+
+
+label.report_title {
+    margin-right: -30px;
 
 }
 
-input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-}
-
-label {
-    margin-bottom: 20px;
-    display: flex;
-
-    textarea {
-        margin-left: 1vw;
-        border: 1px solid;
-        padding-left: 10px;
-        padding-top: 10px;
-        border-radius: $br_MB;
-
-    }
-}
 :deep(.v-btn.v-btn--density-default) {
-        background-color: $primaryBrandBlue !important;
-        width: 137px;
-        height: 55px;
-        border-radius: 50px;
-        margin-bottom: 50px;
-        margin-right: 20px;
-    }
-:deep(.v-btn__content){
+    background-color: $primaryBrandBlue !important;
+    width: 137px;
+    height: 55px;
+    border-radius: 50px;
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+
+:deep(.v-btn__content) {
     font-size: 20px;
 }
 </style>

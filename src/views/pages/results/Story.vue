@@ -1,6 +1,6 @@
 <script setup>
-import PopUpStory from '@/views/pop-ups/PopUpStory.vue';
-
+import popUpStory from '@/views/pop-ups/popUpStory.vue';
+import axios from 'axios';
 import { ref, reactive,computed  } from 'vue'
 const page = ref(1)
 const pageCount = () => {
@@ -39,6 +39,18 @@ const storyList = reactive([
     online : 0
   },
 ])
+
+axios.get('localhost/practice/test.php')
+  .then(function(res) {
+    if (res.status === 200) {
+      console.log(res);
+      // console.log(res.data); // 這裡將包含後端傳回的實際資料
+    } else {
+      console.log('error');
+    }
+});
+
+
 
 </script>
 

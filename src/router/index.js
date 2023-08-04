@@ -19,6 +19,14 @@ const router = createRouter({
       component: Home
     },
     {
+      path: '/test',
+      name: 'test',
+      component: () => import('@/Test.vue'),
+      meta: {
+        hideSideBar: true,
+      }
+    },
+    {
       path: '/member-info',
       name: 'member-info',
       component: () => import('@/views/pages/member/MemberInfo.vue')

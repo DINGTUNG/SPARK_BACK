@@ -1,5 +1,5 @@
 <script setup>
-import popUpStory from '@/views/pop-ups/popUpStory.vue';
+import PopUpStory from '@/views/pop-ups/PopUpStory.vue';
 
 import { ref, reactive,computed  } from 'vue'
 const page = ref(1)
@@ -81,7 +81,7 @@ const storyList = reactive([
         </tbody>
       </v-table>
     </div>
-    <popUpStory class="add" />
+    <PopUpStory class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

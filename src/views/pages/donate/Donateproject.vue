@@ -1,5 +1,5 @@
 <script setup>
-import popUpDonateProject from '@/views/pop-ups/popUpDonateProject.vue';
+import PopUpDonateProject from '@/views/pop-ups/PopUpDonateProject.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -257,7 +257,7 @@ const donateList = reactive([
           </tbody>
         </v-table>
       </div>
-      <popUpDonateProject  class="add" />
+      <PopUpDonateProject  class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

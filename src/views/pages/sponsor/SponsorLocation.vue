@@ -1,5 +1,5 @@
 <script setup>
-import popUpLocation from '@/views/pop-ups/popUpLocation.vue';
+import PopUpLocation from '@/views/pop-ups/PopUpLocation.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -104,7 +104,7 @@ const location = reactive([
           </tbody>
         </v-table>
       </div>
-        <popUpLocation class="add"/> 
+        <PopUpLocation class="add"/> 
         <!-- 分頁 -->
         <div class="text-center">
           <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

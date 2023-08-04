@@ -1,15 +1,13 @@
 <script setup>
-import { ref } from 'vue'
 import axios from 'axios';
 
-const message = ref("");
 
-async function sendMessage() {
+
+async function testConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/api.php');
-    message.value = response.data;
-    console.log(message.value);
-    console.log("成功");
+    const response = await axios.post('http://localhost/SPARK_BACK/php/try.php');
+    document.write(response.data)
+    console.log(response.data);
   } catch (error) {
     console.error(error);
   }
@@ -19,8 +17,7 @@ async function sendMessage() {
 
 <template>
   <div>
-    <input type="text" v-model="message" placeholder="Enter a message">
-    <button @click="sendMessage">Send Message</button>
+    <button @click="testConnection">testConnection</button>
   </div>
 </template>
 

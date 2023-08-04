@@ -5,6 +5,21 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
+  // server: {
+  //   port: 80,
+  // },
+  devServer: {
+		proxy: {
+			'/api_server': {
+				target: 'http://localhost:5173',//本地
+				// target: 'https://tibamef2e.com/cgd103/g2/back/phpfile',//上線
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api_server': ''
+				}
+			}
+		}
+	},
   css: {
     preprocessorOptions: {
       scss: {

@@ -22,29 +22,22 @@ onMounted(() => {
   testConnection()
 })
 
-const page = ref(1)
-
 // 換頁
+const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = () => {
   console.log("狸貓",Math.floor((dreamStarVoteList.length - 1) / itemsPerPage) + 1);
   return Math.floor((dreamStarVoteList.length - 1) / itemsPerPage) + 1;
 }
-
-
 const displayDreamStarVoteList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return dreamStarVoteList.slice(startIdx, endIdx);
 });
-
-
 </script>
-
 
 <template>
   <div class="container">
-    <button @click="testConnection">testConnection</button>
     <div class="content_wrap">
       <h1>活動管理｜夢想之星投票</h1>
       <div class="table_container">
@@ -53,11 +46,7 @@ const displayDreamStarVoteList = computed(() => {
             <tr>
               <th>No.</th>
               <th>IP</th>
-              <th>星火活動編號</th>
-              <th>星火活動名稱</th>
-              <th>夢想之星編號</th>
-              <th>夢想之星名稱</th>
-
+              <th>夢想之星編號</th> 
             </tr>
           </thead>
 
@@ -66,12 +55,6 @@ const displayDreamStarVoteList = computed(() => {
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="ip">{{ item.vote_ip }}</td>
               <td class="ip">{{ item.dream_star_no }}</td>
-
-              <!-- <td class="sparkActivityNo">{{ item.sparkActivityNo }}</td>
-              <td class="sparkActivityName">{{ item.sparkActivityName }}</td>
-              <td class="dreamStarNo">{{ item.dreamStarNo }}</td>
-              <td class="dreamStarName">{{ item.dreamStarName }}</td> -->
-
             </tr>
           </tbody>
         </v-table>

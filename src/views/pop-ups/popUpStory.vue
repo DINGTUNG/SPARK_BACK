@@ -24,44 +24,30 @@ const dialog = ref(false);
           <span class="text-h5">新增消息</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
+          <form action="../../../public/php/results/story.php">
             <label for="">標題
-              <input type="text">
+              <input type="text" name="story_title">
             </label>
             <label for="">日期
-              <input type="date">
+              <input name="story_date" type="date">
+            </label>
+            <div class="imgblock">
+              <span>圖檔</span>
+              <input type="file" name="story_image" id="upImg">
+              <label for="upImg">上傳圖檔</label>
+            </div>
+            <label for="">
+              <textarea name="story_brief" cols="70" rows="10"></textarea>
             </label>
             <label for="">段落1
-              <textarea name="" id="" cols="70" rows="10"></textarea>
+              <textarea name="story_detail" cols="70" rows="10"></textarea>
             </label>
-            <div class="imgblock">
-              <span>圖檔1</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
-            </div>
             <label for="">段落2
-              <textarea name="" id="" cols="70" rows="10"></textarea>
+              <textarea name="story_detail_second" cols="70" rows="10"></textarea>
             </label>
-            <div class="imgblock">
-              <span>圖檔2</span>
-              <input type="file" id="upImg" placeholder="">
-              <label for="upImg">上傳圖檔</label>
-            </div>
             <label for="">段落3
-              <textarea name="" id="" cols="70" rows="10"></textarea>
+              <textarea name="story_detail_third" cols="70" rows="10"></textarea>
             </label>
-            <div class="imgblock">
-              <span>圖檔3</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
-            </div>
-            <label for="">段落4
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔4</span>
-              <input type="file" id="upImg">
-            </div>
           </form>
         </v-card-text>
         <v-card-actions>

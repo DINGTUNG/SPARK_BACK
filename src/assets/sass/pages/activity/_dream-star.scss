@@ -1,0 +1,132 @@
+div.container {
+  height: 100vh;
+  @include flex_vm;
+
+  div.content_wrap {
+    width: 70vw;
+    position: relative;
+    right: -7vw;
+
+    h1 {
+      align-self: flex-start;
+      color: $primaryBrandBlue;
+    }
+
+    div.table_container {
+      padding-top: 4vh;
+      width: 100%;
+      height: 70vh;
+
+      .v-table {
+        max-width: 1000%;
+
+        margin-bottom: 5vh;
+      }
+
+      td {
+        height: 6vh;
+      }
+
+      tbody tr:nth-child(odd) {
+        background-color: $functionalLightGrey1;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: $primaryBrandWhite;
+      }
+
+      .no-border td {
+        border: none;
+      }
+
+      :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
+        border-bottom: 4px solid $primaryBrandBlue;
+      }
+
+      :deep(.v-switch--inset .v-switch__track) {
+        background-color: $primaryBrandBlue;
+        opacity: 1;
+      }
+
+      :deep(.v-pagination__item--is-active .v-btn__overlay) {
+        border: 1px solid $secondaryDarkBlue;
+        color: white;
+        opacity: 0.2;
+      }
+
+      :deep(.mdi:before) {
+        color: $primaryBrandBlue;
+      }
+    }
+  }
+}
+
+.no-border td {
+  border: none;
+}
+
+:deep(.v-card .v-card-title) {
+  line-height: 3em;
+}
+
+
+:deep(.text) {
+  span.v-btn__content {
+    color: white;
+  }
+}
+
+
+:deep(.add) {
+  margin-top: 2vh;
+  position: absolute;
+  right: 0;
+  width: 5.5vw;
+  height: 6vh;
+  border-radius: 50px;
+
+  span.v-btn__content {
+    font-size: 1.2vw;
+    color: white;
+  }
+}
+
+:deep(.v-switch .v-selection-control__input) {
+  @include custom-responsive("xl") {
+    left: 0.5vw
+  }
+
+  @include custom-responsive("xx-l") {
+    left: 0.5vw;
+  }
+}
+
+
+:deep(.v-switch .v-selection-control__input) {
+  @include custom-responsive("xl") {
+    transform: translateX(-0.8vw);
+  }
+
+  @include custom-responsive("xx-l") {
+    transform: translateX(-0.5vw);
+  }
+
+}
+
+:deep(.v-switch .v-selection-control--dirty .v-selection-control__input) {
+  @include custom-responsive("xl") {
+
+    transform: translateX(0.5vw);
+  }
+
+  @include custom-responsive("xx-l") {
+
+    transform: translateX(1vw);
+  }
+
+}
+
+:deep(.v-pagination__list) {
+  display: flex;
+  align-items: flex-end;
+}

@@ -22,7 +22,6 @@ onMounted(() => {
   testConnection()
 })
 
-
 const page = ref(1)
 
 // 換頁
@@ -33,11 +32,11 @@ const pageCount = () => {
 }
 
 
-// const displayDreamStarVoteList = computed(() => {
-//   const startIdx = (page.value - 1) * itemsPerPage;
-//   const endIdx = startIdx + itemsPerPage;
-//   return dreamStarVoteList.slice(startIdx, endIdx);
-// });
+const displayDreamStarVoteList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return dreamStarVoteList.slice(startIdx, endIdx);
+});
 
 
 </script>
@@ -63,8 +62,8 @@ const pageCount = () => {
           </thead>
 
           <tbody>
-            <tr v-for="(item, index) in dreamStarVoteList" :key="item.vote_ip" class="no-border">
-              <!-- <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td> -->
+            <tr v-for="(item, index) in displayDreamStarVoteList" :key="item.vote_ip" class="no-border">
+              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="ip">{{ item.vote_ip }}</td>
               <td class="ip">{{ item.dream_star_no }}</td>
 

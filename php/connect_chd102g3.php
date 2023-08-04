@@ -8,6 +8,13 @@
 
     $options = array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, PDO::ATTR_CASE=>PDO::CASE_NATURAL);
     
-    //建立pdo物件
-    $pdo = new PDO($dsn, $user, $password, $options);   
-?>
+    try {
+      //建立pdo物件
+      $pdo = new PDO($dsn, $user, $password, $options);
+    
+      echo "連接成功<br/>";
+      $dbh = null;
+    } catch (PDOException $e) {
+      die("Error!: " . $e->getMessage() . "<br/>");
+    }
+    ?> 

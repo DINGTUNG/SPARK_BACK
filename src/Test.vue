@@ -6,8 +6,9 @@ const message = ref("");
 
 async function sendMessage() {
   try {
-    const response = await axios.post('http://localhost:5173/php/api.php');
-    message.value = response.data.data;
+    const response = await axios.post('http://localhost/SPARK_BACK/php/api.php');
+    message.value = response.data;
+    console.log(message.value);
     console.log("成功");
   } catch (error) {
     console.error(error);

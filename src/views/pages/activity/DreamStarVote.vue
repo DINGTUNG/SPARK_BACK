@@ -1,6 +1,26 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
+import axios from 'axios';
 
+const dreamStarVoteList = reactive([])
+
+async function testConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/dream_star_vote.php')
+
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        dreamStarVoteList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(() => {
+  testConnection()
+})
 
 
 const page = ref(1)
@@ -8,115 +28,24 @@ const page = ref(1)
 // 換頁
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (dreamStarVoteList.length) / itemsPerPage + 1;
+  console.log("狸貓",Math.floor((dreamStarVoteList.length - 1) / itemsPerPage) + 1);
+  return Math.floor((dreamStarVoteList.length - 1) / itemsPerPage) + 1;
 }
-const displayDreamStarVoteList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return dreamStarVoteList.slice(startIdx, endIdx);
-});
 
 
-const dreamStarVoteList = reactive([
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
-  {
-    ip: '8.787.128.228',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    dreamStarNo: 'DS001',
-    dreamStarName: '美食大師-烹飪歷險記',
-  },
+// const displayDreamStarVoteList = computed(() => {
+//   const startIdx = (page.value - 1) * itemsPerPage;
+//   const endIdx = startIdx + itemsPerPage;
+//   return dreamStarVoteList.slice(startIdx, endIdx);
+// });
 
-])
 
 </script>
 
 
 <template>
   <div class="container">
+    <button @click="testConnection">testConnection</button>
     <div class="content_wrap">
       <h1>活動管理｜夢想之星投票</h1>
       <div class="table_container">
@@ -132,14 +61,17 @@ const dreamStarVoteList = reactive([
 
             </tr>
           </thead>
+
           <tbody>
-            <tr v-for="(item, index) in displayDreamStarVoteList" :key="item.id" class="no-border">
-              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="ip">{{ item.ip }}</td>
-              <td class="sparkActivityNo">{{ item.sparkActivityNo }}</td>
+            <tr v-for="(item, index) in dreamStarVoteList" :key="item.vote_ip" class="no-border">
+              <!-- <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td> -->
+              <td class="ip">{{ item.vote_ip }}</td>
+              <td class="ip">{{ item.dream_star_no }}</td>
+
+              <!-- <td class="sparkActivityNo">{{ item.sparkActivityNo }}</td>
               <td class="sparkActivityName">{{ item.sparkActivityName }}</td>
               <td class="dreamStarNo">{{ item.dreamStarNo }}</td>
-              <td class="dreamStarName">{{ item.dreamStarName }}</td>
+              <td class="dreamStarName">{{ item.dreamStarName }}</td> -->
 
             </tr>
           </tbody>

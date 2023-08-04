@@ -14,8 +14,6 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
     try {
       $pdo = new PDO($dsn, $user, $password, $options);
-  
-      echo "資料庫連接成功了阿!!<br/>";
       $dbh = null;
     } catch (PDOException $e) {
       die("Error!: " . $e->getMessage() . "<br/>");

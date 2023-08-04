@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 $link = new mysqli(
     'localhost',
     'root',
@@ -10,4 +10,4 @@ if( $link->connect_error ){
 
 $link->query('set names utf8');
 $link->query('set time_zone = "+8:00"');
-?>
+?> -->

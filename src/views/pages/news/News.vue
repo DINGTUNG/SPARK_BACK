@@ -98,7 +98,7 @@ const news = reactive([
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
           確定是否要刪除此消息？

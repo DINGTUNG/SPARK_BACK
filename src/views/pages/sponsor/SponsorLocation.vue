@@ -135,7 +135,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
           確定是否要刪除此據點？

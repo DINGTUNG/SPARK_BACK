@@ -21,6 +21,63 @@ onMounted(() => {
   getData()
 })
 
+
+
+
+async function deleteMessage() {
+  try {
+    if (messageNoWantToDelete.value == null) {
+      throw new Error("Message no. not found!")
+    }
+    const isDeleteSucceed = await deleteMessageHelper(messageNoWantToDelete.value)
+    if (isDeleteSucceed) {
+      for (let i = 0; i < messageList.length; i++) {
+        if (messageList[i].message_no == messageNoWantToDelete.value) {
+          messageList.splice(i, 1);
+          break
+        }
+      }
+      window.alert(`刪除成功!剩下 ${messageList.length} 筆資料`);
+    } else {
+      window.alert("刪除失敗!請聯絡管理員!");
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    closeDeleteDialog()
+  }
+}
+
+function deleteMessageHelper(messageNo) {
+  // prepare data 
+  const payLoad = new FormData();
+  payLoad.append("message_no", messageNo);
+
+  // make a request
+  const request = {
+    method: "POST",
+    url: `http://localhost/SPARK_BACK/php/activity/delete_message_board.php`,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: payLoad,
+  };
+
+  // send request to backend server
+  return new Promise((resolve, reject) => {
+    axios(request)
+      .then((response) => {
+        const deleteResult = response.data;
+        resolve(deleteResult);
+      })
+      .catch((error) => {
+        console.log("From deleteMessageHelper:", error);
+        reject(error);
+      });
+  });
+}
+
+
 // 換頁
 const page = ref(1)
 const itemsPerPage = 10;
@@ -33,28 +90,18 @@ const displayMessageList = computed(() => {
   return messageList.slice(startIdx, endIdx);
 });
 
-
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
+const dialogDisplay = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
+const messageNoWantToDelete = ref(null);
 
 function showDeleteDialog(item) {
   itemToDelete.value = item; // 存儲要刪除的項目
-  dialogDelete.value = true; // 顯示刪除對話框
+  dialogDisplay.value = true; // 顯示刪除對話框
+  messageNoWantToDelete.value = item.message_no
 }
 
-function deleteItemConfirm() {
-  if (itemToDelete.value) {
-    const index = messageList.indexOf(itemToDelete.value);
-    if (index !== -1) {
-      messageList.splice(index, 1); // 從列表中刪除項目沒效 
-    }
-    itemToDelete.value = null;
-    dialogDelete.value = false; // 隱藏刪除對話框
-  }
-}
-
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
+function closeDeleteDialog() {
+  dialogDisplay.value = false; // 隱藏刪除對話框
 }
 
 </script>
@@ -102,17 +149,17 @@ function closeDelete() {
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" persistent="true">
+    <v-dialog v-model="dialogDisplay" persistent>
       <v-card class="delete_dialog" style="border-radius: 50px;">
         <v-card-title class="text-center title">
           確定是否要刪除此捐款專案？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="cancel btn" variant="text" @click="closeDelete">
+          <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteItemConfirm">
+          <v-btn class="delete btn" variant="text" @click="deleteMessage">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

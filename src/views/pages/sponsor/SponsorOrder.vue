@@ -34,13 +34,6 @@ const displaySponsorOrderList = computed(() => {
   return sponsorOrderList.slice(startIdx, endIdx);
 });
 
-// const setBoolean = computed(() => {
-//   if (== 1) {
-//     return true
-//   } else if (== 0) {
-//     return false
-//   }
-// });
 </script>
 
 

@@ -34,7 +34,13 @@ const displaySponsorOrderList = computed(() => {
   return sponsorOrderList.slice(startIdx, endIdx);
 });
 
-const test = ref(true)
+// const setBoolean = computed(() => {
+//   if (== 1) {
+//     return true
+//   } else if (== 0) {
+//     return false
+//   }
+// });
 </script>
 
 
@@ -76,10 +82,10 @@ const test = ref(true)
               <td class="payment_method">{{ item.payment_method }}</td>
               <td class="children_no">{{ item.children_no }}</td>
               <td class="expiry_month">{{ item.expiry_month }}</td>
-              <td class="order_status">{{ item.order_status ? "繼續" : "終止" }}</td>
+              <td class="order_status">{{ item.order_status == 1 ? "繼續" : "終止" }}</td>
               <td>
                 <v-switch v-model="item.order_status" color="#EBC483" density="compact" hide-details="true" inline inset
-                  ></v-switch>
+                  true-value=1></v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>

@@ -12,15 +12,9 @@ try {
   //透過pdoStatement取回一筆一筆的資料
   $dream_star_voteRow = $dream_star_vote->fetchAll(PDO::FETCH_ASSOC);
   echo json_encode($dream_star_voteRow);
-  // while () {
 
-  //   // echo "{$dream_star_voteRow["vote_ip"]}";
-  //   // echo "<br>";
-  //   // echo "{$dream_star_voteRow["dream_star_no"]}";
-
-  // }
 } catch (Exception $e) {
   echo "錯誤行號 : ", $e->getLine(), "<br>";
   echo "錯誤原因 : ", $e->getMessage(), "<br>";
-  //echo "系統暫時不能正常運行，請稍後再試<br>";	
+  echo "系統暫時不能正常運行，請稍後再試<br>";	
 }

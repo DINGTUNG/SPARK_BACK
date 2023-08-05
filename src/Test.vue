@@ -5,9 +5,10 @@ import axios from 'axios';
 
 async function testConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/try.php');
-    document.write(response.data)
-    console.log(response.data);
+    const response = await axios.post('http://localhost:5173/php/api.php');
+    message.value = response.data;
+    console.log("成功");
+    console.log(response.data)
   } catch (error) {
     console.error(error);
   }

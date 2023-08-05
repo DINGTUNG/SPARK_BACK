@@ -4,7 +4,6 @@ import { ref, reactive,computed } from 'vue'
 const dialogDelete = ref(false);
 const page = ref(1)
 
-
 let storyList = reactive([])
 
   fetch('http://localhost/SPARK_BACK/php/results/story/read_story.php')

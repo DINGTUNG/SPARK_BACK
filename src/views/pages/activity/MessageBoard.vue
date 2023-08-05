@@ -1,5 +1,38 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
+import axios from 'axios';
+
+const messageList = reactive([])
+async function getData() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/get_message_board.php')
+
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        messageList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(() => {
+  getData()
+})
+
+// 換頁
+const page = ref(1)
+const itemsPerPage = 10;
+const pageCount = () => {
+  return Math.floor((messageList.length - 1) / itemsPerPage) + 1;
+}
+const displayMessageList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return messageList.slice(startIdx, endIdx);
+});
+
 
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
@@ -24,130 +57,6 @@ function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
 }
 
-
-
-const page = ref(1)
-
-// 換頁
-const itemsPerPage = 10;
-const pageCount = () => {
-  return (messageList.length) / itemsPerPage + 1;
-}
-const displayMessageListList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return messageList.slice(startIdx, endIdx);
-});
-
-
-const messageList = reactive([
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-
-])
-
 </script>
 
 
@@ -160,9 +69,9 @@ const messageList = reactive([
           <thead>
             <tr>
               <th>No.</th>
-              <th>留言id</th>
+              <th>留言編號</th>
+              <th>留言ID</th>
               <th>星火活動編號</th>
-              <th>星火活動名稱</th>
               <th>留言內容</th>
               <th>會員編號</th>
               <th>留言時間</th>
@@ -170,14 +79,15 @@ const messageList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayMessageListList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayMessageList" :key="item.message_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="sparkActivityNo">{{ item.sparkActivityNo }}</td>
-              <td class="sparkActivityName">{{ item.sparkActivityName }}</td>
-              <td class="messageContent">{{ item.messageContent }}</td>
-              <td class="memID">{{ item.memID }}</td>
-              <td class="messageDate">{{ item.messageDate }}</td>
+
+              <td class="message_no">{{ item.message_no }}</td>
+              <td class="message_id">{{ item.message_id }}</td>
+              <td class="spark_activity_no">{{ item.spark_activity_no }}</td>
+              <td class="message_content">{{ item.message_content }}</td>
+              <td class="member_no">{{ item.member_no }}</td>
+              <td class="message_date">{{ item.message_date }}</td>
               <td>
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>

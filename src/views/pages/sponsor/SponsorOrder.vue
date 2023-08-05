@@ -1,4 +1,5 @@
 <script setup>
+import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
@@ -41,6 +42,9 @@ const displaySponsorOrderList = computed(() => {
   <div class="container">
     <div class="content_wrap">
       <h1>認養管理｜認養訂單</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入認養訂單ID'"/>
+      </div>
       <div class="table_container">
         <v-table>
           <thead>

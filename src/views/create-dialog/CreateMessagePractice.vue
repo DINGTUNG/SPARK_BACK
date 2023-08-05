@@ -1,6 +1,21 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, computed,defineProps,defineEmits } from 'vue'
+
+const { dataItems } = defineProps(['locationList']);
+const { emit } = defineEmits();
+
+
 const dialog = ref(false);
+
+function onAddDataClick() {
+    const newLocation = {
+        id:location_no,
+        name: newLocationName,
+    }
+    dialog.value = false;
+
+    emit('localAdd', newLocation);
+}
 </script>
 
 <template>
@@ -16,9 +31,9 @@ const dialog = ref(false);
                     <span class="text-h5">新增認養據點</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="">
+                    <form action="" method="post">
                         <label for="">據點名稱
-                            <input type="text">
+                            <input type="text" v-model="newLocationName">
                         </label>
                     </form>
                 </v-card-text>
@@ -27,7 +42,7 @@ const dialog = ref(false);
                     <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
                         取消
                     </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                    <v-btn color="blue-darken-1" variant="text" @click=onAddDataClick()>
                         儲存
                     </v-btn>
                 </v-card-actions>
@@ -69,7 +84,6 @@ label {
     font-weight: 900;
 
 }
-
 .imgblock {
     display: flex;
 
@@ -116,14 +130,15 @@ label {
     }
 }
 :deep(.v-btn.v-btn--density-default) {
-        background-color: $primaryBrandBlue !important;
-        width: 137px;
-        height: 55px;
-        border-radius: 50px;
-        margin-bottom: 50px;
-        margin-right: 20px;
-    }
-:deep(.v-btn__content){
+    background-color: $primaryBrandBlue !important;
+    width: 137px;
+    height: 55px;
+    border-radius: 50px;
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+
+:deep(.v-btn__content) {
     font-size: 20px;
 }
 </style>

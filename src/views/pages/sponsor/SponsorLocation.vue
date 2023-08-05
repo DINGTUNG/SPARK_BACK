@@ -32,9 +32,9 @@ function closeDelete() {
 
 // 換頁
 const itemsPerPage = 10;
-const pageCount = () => {
-  return (location.length) / itemsPerPage + 1;
-}
+const pageCount = computed(() => {
+  return (displayLocationList.value.length) / itemsPerPage + 1;
+});
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
@@ -42,36 +42,12 @@ const displayLocationList = computed(() => {
 });
 
 
-
-// const location = reactive([
-//   {
-//     no: '1',
-//     id:'001',
-//     name: '台北星火',
-//   },
-//   {
-//     no: '2',
-//     id:'002',
-//     name: '台中星火',
-//   },
-//   {
-//     no: '3',
-//     id:'003',
-//     name: '台南星火',
-//   },
-//   {
-//     no: '4',
-//     id:'004',
-//     name: '台東星火',
-//   },
-// ])
-
-
 const locationList = reactive([])
 async function localConnection() {
   try {
-    const response = await axios.post('http://localhost/test/local.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php')
     console.log(response)
+
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -86,6 +62,13 @@ async function localConnection() {
 onMounted(() => {
   localConnection()
 })
+
+
+const newLocation = ref(null);
+function onLocalAdd(location) {
+  newLocation.value = location;
+  locationList.push(location)
+}
 </script>
 
 
@@ -130,7 +113,7 @@ onMounted(() => {
       <CreateLocation class="add" />
       <!-- 分頁 -->
       <div class="text-center">
-        <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
+        <v-pagination v-model="page" :length="pageCount" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>

@@ -7,6 +7,7 @@ const dreamStarVoteList = reactive([])
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/activity/get_dream_star_vote.php')
+    console.log(response)
 
     if (response.data.length > 0) {
       response.data.forEach(element => {

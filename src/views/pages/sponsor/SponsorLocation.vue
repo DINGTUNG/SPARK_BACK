@@ -1,5 +1,6 @@
 <script setup>
 import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
+import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
 import { ref, reactive, computed,onMounted} from 'vue'
 import axios from 'axios';
 const page = ref(1)
@@ -101,9 +102,10 @@ function onLocalAdd(location) {
                   inset></v-switch>
               </td>
               <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
-                  mdi-pencil
-                </v-icon>
+                <td class="update_and_delete">
+                <UpdateMessagePractice />
+                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+              </td>
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

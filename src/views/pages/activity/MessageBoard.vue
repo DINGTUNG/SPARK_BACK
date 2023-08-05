@@ -79,7 +79,7 @@ function closeDelete() {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayMessageList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayMessageList" :key="item.message_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
               <td class="message_no">{{ item.message_no }}</td>

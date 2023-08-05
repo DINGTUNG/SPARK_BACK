@@ -181,3 +181,9 @@ div.container {
 :deep(.v-btn__content) {
   font-size: 1vw;
 }
+
+td.update_and_delete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

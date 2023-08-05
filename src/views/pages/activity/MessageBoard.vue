@@ -113,7 +113,7 @@ function closeDeleteDialog() {
     <div class="content_wrap">
       <h1>活動管理｜星火活動留言</h1>
       <div class="search">
-        <Search />
+        <Search :placeholder="'請輸入留言ID'"/>
       </div>
       <div class="table_container">
         <v-table>

@@ -12,10 +12,11 @@ div.container {
       color: $primaryBrandBlue;
     }
 
-    div.search{
+    div.search {
+      height: 4vh;
       display: inline-block;
-
-
+      position: relative;
+      left: 25vw;
     }
 
     div.table_container {
@@ -27,7 +28,7 @@ div.container {
 
       .v-table {
         max-width: 1000%;
-        width: 100vw; 
+        width: 100vw;
         margin-bottom: 5vh;
       }
 
@@ -180,4 +181,3 @@ div.container {
 :deep(.v-btn__content) {
   font-size: 1vw;
 }
-

@@ -1,6 +1,7 @@
 <script setup>
 import Search from '@/components/Search.vue';
 import CreateMessagePractice from '@/views/create-dialog/CreateMessagePractice.vue';
+import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
 
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -113,7 +114,7 @@ function closeDeleteDialog() {
     <div class="content_wrap">
       <h1>活動管理｜星火活動留言</h1>
       <div class="search">
-        <Search :placeholder="'請輸入留言ID'"/>
+        <Search :placeholder="'請輸入留言ID'" />
       </div>
       <div class="table_container">
         <v-table>
@@ -139,8 +140,8 @@ function closeDeleteDialog() {
               <td class="message_content">{{ item.message_content }}</td>
               <td class="member_no">{{ item.member_no }}</td>
               <td class="message_date">{{ item.message_date }}</td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">mdi-pencil</v-icon>
+              <td class="update_and_delete">
+                <UpdateMessagePractice />
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

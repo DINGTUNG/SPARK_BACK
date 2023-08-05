@@ -15,8 +15,8 @@ div.container {
     div.search {
       height: 4vh;
       display: inline-block;
-      position: relative;
-      left: 25vw;
+      position: absolute;
+      right: 0;
     }
     div.table_container {
       padding-top: 4vh;

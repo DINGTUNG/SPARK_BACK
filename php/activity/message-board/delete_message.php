@@ -29,11 +29,7 @@ try {
     echo false; //message no not found
     // throw new Exception("Message no " . $messageNo . " not found!");
   }
-
-
-  // $affectedRow =  $message_board->execute();
-
-  // echo "成功的異動了{$affectedRow}筆資料<br>";
+  
 } catch (PDOException $e) {
   $msg = "錯誤行號 : " . $e->getLine() . ", 錯誤訊息 : " . $e->getMessage();
 }

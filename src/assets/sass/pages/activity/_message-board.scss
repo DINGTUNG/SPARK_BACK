@@ -8,8 +8,14 @@ div.container {
     right: -7vw;
 
     h1 {
-      align-self: flex-start;
+      display: inline-block;
       color: $primaryBrandBlue;
+    }
+
+    div.search{
+      display: inline-block;
+
+
     }
 
     div.table_container {
@@ -174,3 +180,4 @@ div.container {
 :deep(.v-btn__content) {
   font-size: 1vw;
 }
+

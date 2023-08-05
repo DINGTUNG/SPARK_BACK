@@ -1,5 +1,5 @@
 <script setup>
-import PopUpStory from '@/views/pop-ups/popUpStory.vue';
+import CreateStory from '@/views/create-dialog/CreateStory.vue';
 import { ref, reactive,computed } from 'vue'
 const dialogDelete = ref(false);
 const page = ref(1)
@@ -85,7 +85,7 @@ const deleteItemConfirm = () => {
 
       </v-table>
     </div>
-    <PopUpStory class="add" />
+    <CreateStory class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

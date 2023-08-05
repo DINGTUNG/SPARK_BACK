@@ -1,5 +1,5 @@
 <script setup>
-import PopUpNews from '@/views/pop-ups/PopUpNews.vue';
+import CreateNews from '@/views/create-dialog/CreateNews.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -91,7 +91,7 @@ const news = reactive([
           </tbody>
         </v-table>
       </div>
-      <PopUpNews class="add" />
+      <CreateNews class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"

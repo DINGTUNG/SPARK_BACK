@@ -1,5 +1,5 @@
 <script setup>
-import PopUpDreamStar from '@/views/pop-ups/PopUpDreamStar.vue';
+import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -124,7 +124,7 @@ const location = reactive([
           </tbody>
         </v-table>
       </div>
-      <PopUpDreamStar class="add" />
+      <CreateDreamStar class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

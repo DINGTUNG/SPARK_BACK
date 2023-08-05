@@ -3,17 +3,15 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-require_once("../connect_chd102g3.php");
+require_once("../../connect_chd102g3.php");
 
 try {
-  //執行sql指令並取得pdoStatement
   $sql = "
   select * from message_board 
   where del_flg = 0";
   $message_board = $pdo->query($sql);
 
   //----------------------------------------
-  //透過pdoStatement取回一筆一筆的資料
   $message_boardRow = $message_board->fetchAll(PDO::FETCH_ASSOC);
   echo json_encode($message_boardRow);
 } catch (Exception $e) {

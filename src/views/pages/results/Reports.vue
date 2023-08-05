@@ -1,5 +1,5 @@
 <script setup>
-import PopUpReports from '@/views/pop-ups/PopUpReports.vue';
+import CreateReports from '@/views/create-dialog/CreateReports.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -161,7 +161,7 @@ const reports = reactive([
           </tbody>
         </v-table>
       </div>
-      <PopUpReports class="add" />
+      <CreateReports class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

@@ -1,11 +1,14 @@
 <script setup>
+import Search from '@/components/Search.vue';
+import CreateMessagePractice from '@/views/create-dialog/CreateMessagePractice.vue';
+
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
 const messageList = reactive([])
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/get_message_board.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/message-board/get_message.php')
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -20,8 +23,6 @@ async function getData() {
 onMounted(() => {
   getData()
 })
-
-
 
 
 async function deleteMessage() {
@@ -56,7 +57,7 @@ function deleteMessageHelper(messageNo) {
   // make a request
   const request = {
     method: "POST",
-    url: `http://localhost/SPARK_BACK/php/activity/delete_message_board.php`,
+    url: `http://localhost/SPARK_BACK/php/activity/message-board/delete_message.php`,
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -111,6 +112,9 @@ function closeDeleteDialog() {
   <div class="container">
     <div class="content_wrap">
       <h1>活動管理｜星火活動留言</h1>
+      <div class="search">
+        <Search />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -136,13 +140,14 @@ function closeDeleteDialog() {
               <td class="member_no">{{ item.member_no }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td>
+                <v-icon size="small" class="me-2" @click="editItem(item.raw)">mdi-pencil</v-icon>
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-
+      <CreateMessagePractice class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

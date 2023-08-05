@@ -1,5 +1,5 @@
 <script setup>
-import PopUpLocation from '@/views/pop-ups/PopUpLocation.vue';
+import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
 import { ref, reactive, computed,onMounted} from 'vue'
 import axios from 'axios';
 const page = ref(1)
@@ -127,7 +127,7 @@ onMounted(() => {
           </tbody>
         </v-table>
       </div>
-      <PopUpLocation class="add" />
+      <CreateLocation class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

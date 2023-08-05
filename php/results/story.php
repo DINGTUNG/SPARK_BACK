@@ -1,7 +1,7 @@
 <?php
     require_once("../conn.php");
     $sql = "SELECT * FROM story ORDER BY story_no DESC";
-    $result = $link->query($sql);
+    $result = $conn->query($sql);
     $stories = array();
     header("Content-Type: application/json; charset=utf-8");
     while ($row = $result->fetch_assoc()) {

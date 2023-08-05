@@ -1,6 +1,5 @@
 <script setup>
 import popUpStory from '@/views/pop-ups/popUpStory.vue';
-import axios from 'axios';
 import { ref, reactive,computed  } from 'vue'
 const page = ref(1)
 const pageCount = () => {
@@ -8,22 +7,22 @@ const pageCount = () => {
 }
 const itemsPerPage = 10;
 
-axios.get('http://localhost/practice/test.php')
-  .then(function(res) {
-    if (res.status === 200) {
-      storyList = res.data.stories;
-    } else {
-      console.log('error');
-    }
-});
+fetch('http://localhost/SPARK_BACK/php/results/story.php')
+  .then(res => res.clone().json())
+  .then(data => showStory(data))
+  .catch(err => console.log(err));
 
 let storyList = reactive([])
+const showStory = (data) => {
+  storyList = data.stories  
+}
 
-const displayStoryList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return storyList.slice(startIdx, endIdx);
-});
+
+// const displayStoryList = computed(() => {
+//   const startIdx = (page.value - 1) * itemsPerPage;
+//   const endIdx = startIdx + itemsPerPage;
+//   return storyList.slice(startIdx, endIdx);
+// });
 
 
 
@@ -50,7 +49,7 @@ const displayStoryList = computed(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in displayStoryList" :key="item.story_no" class="no-border">
+          <tr v-for="(item, index) in storyList" :key="item.story_no" class="no-border">
             <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
             <td class="id">{{ item.story_no }}</td>
             <td class="name">{{ item.story_title }}</td>
@@ -73,10 +72,10 @@ const displayStoryList = computed(() => {
     <PopUpStory class="add" />
 
       <!-- 分頁 -->
-      <div class="text-center">
+      <!-- <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
-      </div>
+      </div> -->
     </div>
 
     <v-dialog v-model="dialogDelete" max-width="800px" persistent="true">
@@ -97,6 +96,7 @@ const displayStoryList = computed(() => {
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <popUpStory/>
 
 
 

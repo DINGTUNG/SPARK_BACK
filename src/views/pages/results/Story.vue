@@ -6,11 +6,47 @@ const pageCount = () => {
   return (storyList.length) / itemsPerPage + 1;
 }
 const itemsPerPage = 10;
+const displayStoryList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return storyList.slice(startIdx, endIdx);
+});
+const storyList = reactive([
+  {
+    id : "ST001",
+    title : "遊戲場上的友誼結盟",
+    date : '2023.04.12',
+    online : 0
+  },
+  {
+    id : "ST002",
+    title : "音樂天使的樂章演奏",
+    date : '2023.04.16',
+    online : 0
+  },
+  {
+    id : "ST003",
+    title : "探索奇妙的科學之旅",
+    date : '2023.04.20',
+    online : 0
+  },
+  {
+    no : 4,
+    id : "ST004",
+    title : "畫筆舞動的創意世界",
+    date : '2023.04.27',
+    online : 0
+  },
+])
 
-fetch('http://localhost/SPARK_BACK/php/results/story.php')
-  .then(res => res.clone().json())
-  .then(data => showStory(data))
-  .catch(err => console.log(err));
+axios.get('practice/test.php')
+  .then(function(res) {
+    if (res.status === 200) {
+      storyList = res.data.stories;
+    } else {
+      console.log('error');
+    }
+});
 
 let storyList = reactive([])
 const showStory = (data) => {

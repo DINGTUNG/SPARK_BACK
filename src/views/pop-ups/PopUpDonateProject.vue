@@ -98,8 +98,6 @@ const dialog = ref(false);
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
-  
-
 }
 
 :deep(.v-btn__content) {

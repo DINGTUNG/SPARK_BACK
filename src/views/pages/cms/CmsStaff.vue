@@ -109,10 +109,10 @@ const donateList = reactive([
                   inset></v-switch>
               </td> -->
               <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+                <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil
                 </v-icon>
-                <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
+                <v-icon size="small" @click="showDeleteDialog(item.raw)" v-show="index !== 0">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>

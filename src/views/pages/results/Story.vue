@@ -7,48 +7,24 @@ const pageCount = () => {
   return (storyList.length) / itemsPerPage + 1;
 }
 const itemsPerPage = 10;
+
+axios.get('http://localhost/practice/test.php')
+  .then(function(res) {
+    if (res.status === 200) {
+      storyList = res.data.stories;
+    } else {
+      console.log('error');
+    }
+});
+
+let storyList = reactive([])
+
 const displayStoryList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return storyList.slice(startIdx, endIdx);
 });
-const storyList = reactive([
-  {
-    id : "ST001",
-    title : "遊戲場上的友誼結盟",
-    date : '2023.04.12',
-    online : 0
-  },
-  {
-    id : "ST002",
-    title : "音樂天使的樂章演奏",
-    date : '2023.04.16',
-    online : 0
-  },
-  {
-    id : "ST003",
-    title : "探索奇妙的科學之旅",
-    date : '2023.04.20',
-    online : 0
-  },
-  {
-    no : 4,
-    id : "ST004",
-    title : "畫筆舞動的創意世界",
-    date : '2023.04.27',
-    online : 0
-  },
-])
 
-axios.get('localhost/practice/test.php')
-  .then(function(res) {
-    if (res.status === 200) {
-      console.log(res);
-      // console.log(res.data); // 這裡將包含後端傳回的實際資料
-    } else {
-      console.log('error');
-    }
-});
 
 
 
@@ -56,6 +32,7 @@ axios.get('localhost/practice/test.php')
 
 
 <template>
+  <a href=""></a>
   <div class="container">
     <div class="content_wrap">
       <h1>成果管理｜溫馨事紀</h1>
@@ -73,14 +50,14 @@ axios.get('localhost/practice/test.php')
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in displayStoryList" :key="item.id" class="no-border">
+          <tr v-for="(item, index) in displayStoryList" :key="item.story_no" class="no-border">
             <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-            <td class="id">{{ item.id }}</td>
-            <td class="name">{{ item.title }}</td>
-            <td class="start_date">{{ item.date }}</td>
-            <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
+            <td class="id">{{ item.story_no }}</td>
+            <td class="name">{{ item.story_title }}</td>
+            <td class="start_date">{{ item.story_date }}</td>
+            <td class="online">{{ item.is_story_online ? '已上架' : '未上架' }}</td>
             <td>
-              <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
+              <v-switch v-model="item.is_story_online" color="#EBC483" density="compact" hide-details="true" inline
                 inset></v-switch>
             </td>
             <td>

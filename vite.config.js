@@ -21,5 +21,17 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  devServer: {
+		proxy: {
+			'/api_server': {
+				target: 'http://localhost/practice',//本地
+				// target: 'https://tibamef2e.com/cgd103/g2/back/phpfile',//上線
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api_server': ''
+				}
+			}
+		}
+	},
 })

@@ -8,8 +8,15 @@ div.container {
     right: -7vw;
 
     h1 {
-      align-self: flex-start;
+      display: inline-block;
       color: $primaryBrandBlue;
+    }
+
+    div.search {
+      height: 4vh;
+      display: inline-block;
+      position: absolute;
+      right: 0;
     }
 
     div.table_container {
@@ -21,7 +28,7 @@ div.container {
 
       .v-table {
         max-width: 1000%;
-        width: 100vw;
+        width: 110vw;
         margin-bottom: 5vh;
       }
 

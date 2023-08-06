@@ -1,168 +1,62 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import Search from '@/components/Search.vue';
+import CreateMessagePractice from '@/views/create-dialog/CreateMessagePractice.vue';
+import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
+import DeleteMessageActivator from '@/views/delete-dialog/DeleteMessageActivator.vue';
 
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
-const itemToDelete = ref(null); // 存儲要刪除的項目
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios';
 
-function showDeleteDialog(item) {
-  itemToDelete.value = item; // 存儲要刪除的項目
-  dialogDelete.value = true; // 顯示刪除對話框
-}
+import { useMessageBoardStore } from '@/stores/message-board.js';
+const messageBoardStore = useMessageBoardStore();
 
-function deleteItemConfirm() {
-  if (itemToDelete.value) {
-    const index = messageList.indexOf(itemToDelete.value);
-    if (index !== -1) {
-      messageList.splice(index, 1); // 從列表中刪除項目沒效 
+async function getData() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/message-board/get_message.php')
+
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        messageBoardStore.messagePool.push(element)
+      });
     }
-    itemToDelete.value = null;
-    dialogDelete.value = false; // 隱藏刪除對話框
+  } catch (error) {
+    console.error(error);
   }
 }
 
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
-}
-
-
-
-const page = ref(1)
+onMounted(() => {
+  getData()
+})
 
 // 換頁
+const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (messageList.length) / itemsPerPage + 1;
+  return Math.floor((messageBoardStore.messagePool.length - 1) / itemsPerPage) + 1;
 }
-const displayMessageListList = computed(() => {
+const displayMessageList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return messageList.slice(startIdx, endIdx);
+  return messageBoardStore.messagePool.slice(startIdx, endIdx);
 });
 
-
-const messageList = reactive([
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-  {
-    id: 'M001',
-    sparkActivityNo: 'SA001',
-    sparkActivityName: '第一屆圓夢之旅',
-    messageContent: '狸貓啾啾叫!',
-    memID: 'A228',
-    messageDate: '2002-02-02 02:02:02',
-  },
-
-])
-
 </script>
-
 
 <template>
   <div class="container">
     <div class="content_wrap">
       <h1>活動管理｜星火活動留言</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入留言ID'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
             <tr>
               <th>No.</th>
-              <th>留言id</th>
+              <th>留言編號</th>
+              <th>留言ID</th>
               <th>星火活動編號</th>
-              <th>星火活動名稱</th>
               <th>留言內容</th>
               <th>會員編號</th>
               <th>留言時間</th>
@@ -170,45 +64,30 @@ const messageList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayMessageListList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayMessageList" :key="item.message_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="sparkActivityNo">{{ item.sparkActivityNo }}</td>
-              <td class="sparkActivityName">{{ item.sparkActivityName }}</td>
-              <td class="messageContent">{{ item.messageContent }}</td>
-              <td class="memID">{{ item.memID }}</td>
-              <td class="messageDate">{{ item.messageDate }}</td>
-              <td>
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+
+              <td class="message_no">{{ item.message_no }}</td>
+              <td class="message_id">{{ item.message_id }}</td>
+              <td class="spark_activity_no">{{ item.spark_activity_no }}</td>
+              <td class="message_content">{{ item.message_content }}</td>
+              <td class="member_no">{{ item.member_no }}</td>
+              <td class="message_date">{{ item.message_date }}</td>
+              <td class="update_and_delete">
+                <UpdateMessagePractice />
+                <DeleteMessageActivator :messageNoForDelete="parseInt(item.message_no)"/>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-
+      <CreateMessagePractice class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" persistent="true">
-      <v-card class="delete_dialog" style="border-radius: 50px;">
-        <v-card-title class="text-center title">
-          確定是否要刪除此捐款專案？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="cancel btn" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteItemConfirm">
-            刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 

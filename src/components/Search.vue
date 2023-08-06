@@ -57,7 +57,7 @@ div.search_container {
       color: $primaryBrandBlue;
       cursor: pointer;
       position: absolute;
-      top: 0.8vh;
+      top: 1vh;
       right: 1.5vw;
 
       @include btnEffect;

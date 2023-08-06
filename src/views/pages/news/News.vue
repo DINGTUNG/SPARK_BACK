@@ -1,5 +1,5 @@
 <script setup>
-import PopUpNews from '@/views/pop-ups/PopUpNews.vue';
+import CreateNews from '@/views/create-dialog/CreateNews.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -91,14 +91,14 @@ const news = reactive([
           </tbody>
         </v-table>
       </div>
-      <PopUpNews class="add" />
+      <CreateNews class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
           確定是否要刪除此消息？

@@ -1,6 +1,8 @@
 <script setup>
-import PopUpLocation from '@/views/pop-ups/PopUpLocation.vue';
-import { ref, reactive, computed } from 'vue'
+import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
+import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
+import { ref, reactive, computed,onMounted} from 'vue'
+import axios from 'axios';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -31,46 +33,51 @@ function closeDelete() {
 
 // 換頁
 const itemsPerPage = 10;
-const pageCount = () => {
-  return (location.length) / itemsPerPage + 1;
-}
+const pageCount = computed(() => {
+  return (displayLocationList.value.length) / itemsPerPage + 1;
+});
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return location.slice(startIdx, endIdx);
+  return locationList.slice(startIdx, endIdx);
 });
 
 
+const locationList = reactive([])
+async function localConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php')
+    console.log(response)
 
-const location = reactive([
-  {
-    no: '1',
-    id:'001',
-    name: '台北星火',
-  },
-  {
-    no: '2',
-    id:'002',
-    name: '台中星火',
-  },
-  {
-    no: '3',
-    id:'003',
-    name: '台南星火',
-  },
-  {
-    no: '4',
-    id:'004',
-    name: '台東星火',
-  },
-])
+
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        locationList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(() => {
+  localConnection()
+})
+
+
+const newLocation = ref(null);
+function onLocalAdd(location) {
+  newLocation.value = location;
+  locationList.push(location)
+}
 </script>
 
 
 <template>
- <div class="container">
+  <div class="container">
     <div class="content_wrap">
-      <h1>認養管理｜認養據點</h1>
+      <h1>認養管理｜認養據點
+      </h1>
       <div class="table_container">
         <v-table>
           <thead>
@@ -85,52 +92,52 @@ const location = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayLocationList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayLocationList" :key="item.location_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="name">{{ item.name }}</td>
-              <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
+              <td class="id">{{ item.location_no }}</td>
+              <td class="name">{{ item.location_name }}</td>
+              <td class="online">{{ item.is_sponsor_location_online ? '已上架' : '未上架' }}</td>
               <td>
-              <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
+                <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
               <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
-                  mdi-pencil
-                </v-icon>
+                <td class="update_and_delete">
+                <UpdateMessagePractice />
+                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+              </td>
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-        <PopUpLocation class="add"/> 
-        <!-- 分頁 -->
-        <div class="text-center">
-          <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
-            next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
-        </div>
+      <CreateLocation class="add" />
+      <!-- 分頁 -->
+      <div class="text-center">
+        <v-pagination v-model="page" :length="pageCount" rounded="circle" prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
-
-      <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
-        <v-card class="delete_dialog">
-          <v-card-title class="text-center">
-            確定是否要刪除此據點？
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-              取消
-            </v-btn>
-            <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-              刪除
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </div>
 
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
+      <v-card class="delete_dialog">
+        <v-card-title class="text-center">
+          確定是否要刪除此據點？
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
+            取消
+          </v-btn>
+          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
+            刪除
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <style scoped lang="scss">

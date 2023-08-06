@@ -1,14 +1,6 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref } from 'vue'
 const dialog = ref(false);
-
-
-// const fileName = ref("");
-
-// function onFileChange(event) {
-//   // 更新檔案名稱
-//   fileName.value = event.target.files[0]?.name || "";
-// }
 </script>
 
 <template>
@@ -21,32 +13,12 @@ const dialog = ref(false);
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">新增消息</span>
+          <span class="text-h5">新增認養據點</span>
         </v-card-title>
         <v-card-text>
-          <form action="../../../public/php/results/story.php">
-            <label for="">標題
-              <input type="text" name="story_title">
-            </label>
-            <label for="">日期
-              <input name="story_date" type="date">
-            </label>
-            <div class="imgblock">
-              <span>圖檔</span>
-              <input type="file" name="story_image" id="upImg">
-              <label for="upImg">上傳圖檔</label>
-            </div>
-            <label for="">
-              <textarea name="story_brief" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落1
-              <textarea name="story_detail" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落2
-              <textarea name="story_detail_second" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落3
-              <textarea name="story_detail_third" cols="70" rows="10"></textarea>
+          <form action="">
+            <label for="">據點名稱
+              <input type="text">
             </label>
           </form>
         </v-card-text>
@@ -64,6 +36,11 @@ const dialog = ref(false);
   </v-row>
 </template>
 <style scoped lang="scss">
+:deep(.v-btn.v-btn--density-default) {
+  background-color: $primaryBrandBlue !important;
+
+}
+
 :deep(.v-dialog > .v-overlay__content) {
   width: 50%;
 }
@@ -82,8 +59,8 @@ const dialog = ref(false);
   text-align: center;
 }
 
-:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
-  padding: 500px;
+label {
+  @include flex_hm();
 }
 
 .text-h5 {
@@ -141,18 +118,14 @@ label {
 
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
-  width: 5.5vw;
-  height: 6vh;
+  width: 137px;
+  height: 55px;
   border-radius: 50px;
   margin-bottom: 50px;
   margin-right: 20px;
-
 }
 
-
-// #upImg {
-//     opacity: 0;
-//     position: absolute;
-//     z-index: -1;
-//   }
+:deep(.v-btn__content) {
+  font-size: 20px;
+}
 </style>

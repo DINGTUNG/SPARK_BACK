@@ -1,7 +1,8 @@
 <script setup>
 import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
-import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
-import { ref, reactive, computed,onMounted} from 'vue'
+import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
+import Search from '@/components/Search.vue';
+import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 const page = ref(1)
 const dialog = ref(false)
@@ -76,8 +77,10 @@ function onLocalAdd(location) {
 <template>
   <div class="container">
     <div class="content_wrap">
-      <h1>認養管理｜認養據點
-      </h1>
+      <h1>認養管理｜認養據點</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入據點資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -101,11 +104,8 @@ function onLocalAdd(location) {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <td class="update_and_delete">
-                <UpdateMessagePractice />
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
-              </td>
+              <td class="update_and_delete">
+                <UpdateLocation />
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

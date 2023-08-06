@@ -1,37 +1,20 @@
 <script setup>
-import { ref, reactive, computed,defineProps,defineEmits } from 'vue'
-const { dataItems } = defineProps(['locationList']);
-const { emit } = defineEmits();
-
-
+import { ref } from 'vue'
 const dialog = ref(false);
-
-function onAddDataClick() {
-    const newLocation = {
-        id:location_no,
-        name: newLocationName,
-    }
-    dialog.value = false;
-
-    emit('localAdd', newLocation);
-}
 </script>
-
 <template>
-  <v-row justify="end">
+  <v-row class="row" style="flex: 0;">
     <v-dialog v-model="dialog" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props">
-          新增
-        </v-btn>
+        <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">新增留言資料</span>
+          <span class="text-h5">編輯地區資料</span>
         </v-card-title>
         <v-card-text>
           <form action="">
-            <label for="">留言內容
+            <label for="">編輯地區內容
               <input type="text">
             </label>
           </form>
@@ -52,7 +35,6 @@ function onAddDataClick() {
 <style scoped lang="scss">
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
-
 }
 
 :deep(.v-dialog > .v-overlay__content) {
@@ -66,6 +48,7 @@ function onAddDataClick() {
 
 :deep(.v-btn__content) {
   color: #ffff !important;
+  font-size: 20px;
 }
 
 :deep(.v-card .v-card-title) {
@@ -81,27 +64,6 @@ label {
   color: $primaryBrandBlue;
   @include h5_PC;
   font-weight: 900;
-
-}
-.imgblock {
-  display: flex;
-
-  input[type="file"] {
-    border: 1px transparent;
-  }
-
-
-  input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-  }
-
 }
 
 input {
@@ -118,15 +80,6 @@ input {
 label {
   margin-bottom: 20px;
   display: flex;
-
-  textarea {
-    margin-left: 1vw;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-top: 10px;
-    border-radius: $br_MB;
-
-  }
 }
 
 :deep(.v-btn.v-btn--density-default) {
@@ -138,7 +91,4 @@ label {
   margin-right: 20px;
 }
 
-:deep(.v-btn__content) {
-  font-size: 20px;
-}
 </style>

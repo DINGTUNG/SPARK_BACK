@@ -6,9 +6,7 @@ const dialog = ref(false);
     <v-row justify="end">
         <v-dialog v-model="dialog" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
-                    新增
-                </v-btn>
+                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>

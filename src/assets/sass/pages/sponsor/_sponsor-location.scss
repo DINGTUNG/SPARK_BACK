@@ -58,12 +58,16 @@ div.container {
         color: $primaryBrandBlue;
       }
     }
+
+    td.update_and_delete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 }
 
-.no-border td {
-  border: none;
-}
 
 :deep(.v-card .v-card-title) {
   line-height: 3em;

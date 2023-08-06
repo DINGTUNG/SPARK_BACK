@@ -1,6 +1,7 @@
 <script setup>
 import CreateReports from '@/views/create-dialog/CreateReports.vue';
-
+import UpdateReports from '@/views/update-dialog/UpdateReports.vue';
+import Search from '@/components/Search.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -25,7 +26,6 @@ function deleteItemConfirm() {
 }
 function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
-
 }
 
 
@@ -124,6 +124,9 @@ const reports = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>成果管理｜歷年報告</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入報告資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -136,7 +139,6 @@ const reports = reactive([
               <th>狀態</th>
               <th>功能</th>
               <th>刪改</th>
-
             </tr>
           </thead>
           <tbody>
@@ -151,10 +153,8 @@ const reports = reactive([
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
-                  mdi-pencil
-                </v-icon>
+              <td class="update_and_delete">
+                <UpdateReports />
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

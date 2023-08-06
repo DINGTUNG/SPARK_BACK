@@ -10,6 +10,14 @@ div.container {
     h1 {
       align-self: flex-start;
       color: $primaryBrandBlue;
+      display: inline-block;
+    }
+
+    div.search {
+      height: 4vh;
+      display: inline-block;
+      position: absolute;
+      right: 0;
     }
 
     div.table_container {

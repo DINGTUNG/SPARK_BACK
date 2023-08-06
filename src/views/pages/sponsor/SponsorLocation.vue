@@ -35,7 +35,7 @@ function closeDelete() {
 // 換頁
 const itemsPerPage = 10;
 const pageCount = computed(() => {
-  return (displayLocationList.value.length) / itemsPerPage + 1;
+  return (displayLocationList.length) / itemsPerPage + 1;
 });
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
@@ -97,7 +97,7 @@ function onLocalAdd(location) {
           <tbody>
             <tr v-for="(item, index) in displayLocationList" :key="item.location_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.location_no }}</td>
+              <td class="id">{{ item.location_id }}</td>
               <td class="name">{{ item.location_name }}</td>
               <td class="online">{{ item.is_sponsor_location_online ? '已上架' : '未上架' }}</td>
               <td>

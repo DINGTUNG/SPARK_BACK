@@ -86,12 +86,10 @@ const displaySponsorOrderList = computed(() => {
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
-
             </tr>
           </tbody>
         </v-table>
       </div>
-
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

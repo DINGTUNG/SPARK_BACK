@@ -86,7 +86,6 @@ const deleteItemConfirm = () => {
       </v-table>
     </div>
     <CreateStory class="add" />
-
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"

@@ -8,9 +8,18 @@ div.container {
     right: -7vw;
 
     h1 {
+      display: inline-block;
       align-self: flex-start;
       color: $primaryBrandBlue;
     }
+
+    div.search {
+      height: 4vh;
+      display: inline-block;
+      position: absolute;
+      right: 0;
+    }
+
 
     div.table_container {
       padding-top: 4vh;

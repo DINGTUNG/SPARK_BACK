@@ -1,6 +1,7 @@
 <?php
     require_once('../../conn.php');
 
+    $story_id = $_POST['story_id'];
     $story_title = $_POST['story_title'];
     $story_date = $_POST['story_date'];
     $story_image = $_POST['story_image'];
@@ -18,7 +19,7 @@
     //     die();
     // }
 
-    $sql = "INSERT INTO `story`(`story_title`, `story_brief`, `story_detail_second`, `story_detail_third`, `story_date`) VALUES ('$story_title','$story_brief','$story_detail_second','$story_detail_third','$story_date')";
+    $sql = "INSERT INTO story(`story_id`,`story_title`, `story_brief`, `story_detail_second`, `story_detail_third`, `story_date`) VALUES ($story_id,'$story_title','$story_brief','$story_detail_second','$story_detail_third','$story_date')";
 
     $result = $conn->query($sql);
     if ($result) {

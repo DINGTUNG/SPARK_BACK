@@ -63,6 +63,9 @@ if (storyForm) {
             <label for="">日期
               <input name="story_date" type="date">
             </label>
+            <label for="">編號ST
+              <input type="text" name="story_id">
+            </label>
             <div class="imgblock">
               <span>圖檔</span>
               <input type="file" name="story_image" id="upImg">

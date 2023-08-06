@@ -28,6 +28,11 @@ let storyList = reactive([])
       return (displayStoryList.length) / itemsPerPage + 1;
     };
 
+const switchOnline = (no, online) => {
+  console.log(no, online);
+  window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
+}
+
 let deleteId = ref(null)
 const showDeleteDialog = (no) => {
   dialogDelete.value = true
@@ -71,8 +76,8 @@ const deleteItemConfirm = () => {
             <td class="start_date">{{ item.story_date }}</td>
             <td class="online">{{ item.is_story_online==1 ? '已上架' : '未上架' }}</td>
             <td>
-              <v-switch v-model="item.is_story_online" color="#EBC483" density="compact" hide-details="true" inline
-                inset></v-switch>
+              <v-switch @click="switchOnline(item.story_no, item.is_story_online)" v-model="item.is_story_online" color="#EBC483" density="compact" hide-details="true" inline inset
+                  true-value=1></v-switch>
             </td>
             <td>
               <v-icon size="small" class="me-2" @click="editItem(item.raw)">

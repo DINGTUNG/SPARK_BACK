@@ -9,23 +9,6 @@ const handleSubmit = async (event) => {
       method: 'POST',
       body: formData.value,
     })
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log(responseData);
-          // 使用 defineEmits 定義 emits 函數
-      const emits = defineEmits();
-
-      // 觸發自訂事件 'addresult' 並傳遞資料 response.message 給父層元件
-      emits('addresult', response);
-      // 在表單提交成功後，使用 nextTick 方法顯示 console.log
-      nextTick(() => {
-        console.log('表單提交成功');
-      });
-    } else {
-      throw new Error('網路回應出現問題');
-    }
-
-
     const storyForm = document.getElementById('storyForm')
     const formData = new FormData(storyForm);
   } catch (error) {

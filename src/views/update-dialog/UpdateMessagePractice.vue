@@ -4,7 +4,7 @@ const dialog = ref(false);
 </script>
 
 <template>
-  <v-row class="row" style="flex: 0;">
+  <v-row class="row" style="flex: 0 0 0;">
     <v-dialog v-model="dialog" persistent width="50%">
       <template v-slot:activator="{ props }">
         <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
@@ -36,6 +36,7 @@ const dialog = ref(false);
 <style scoped lang="scss">
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
+ 
 }
 
 :deep(.v-dialog > .v-overlay__content) {
@@ -90,6 +91,10 @@ label {
   border-radius: 50px;
   margin-bottom: 50px;
   margin-right: 20px;
+}
+
+:deep(.icon){
+  @include btnEffect;
 }
 
 </style>

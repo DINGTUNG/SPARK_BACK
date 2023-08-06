@@ -1,5 +1,6 @@
 <script setup>
 import CreateStory from '@/views/create-dialog/CreateStory.vue';
+import UpdateStory from '@/views/update-dialog/UpdateStory.vue';
 import { ref, reactive,computed } from 'vue'
 const dialogDelete = ref(false);
 const page = ref(1)
@@ -28,6 +29,13 @@ let storyList = reactive([])
       return (displayStoryList.length) / itemsPerPage + 1;
     };
 
+//切換上下架狀態
+const switchOnline = (no, online) => {
+  console.log(no, online);
+  window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
+}
+
+// 刪除
 let deleteId = ref(null)
 const showDeleteDialog = (no) => {
   dialogDelete.value = true
@@ -39,8 +47,6 @@ const closeDelete = () => {
 const deleteItemConfirm = () => {
   window.location.assign(`http://localhost/SPARK_BACK/php/results/story/delete_story.php?story_no=${deleteId}`)
 }
-    
-
 
 </script>
 
@@ -71,13 +77,11 @@ const deleteItemConfirm = () => {
             <td class="start_date">{{ item.story_date }}</td>
             <td class="online">{{ item.is_story_online==1 ? '已上架' : '未上架' }}</td>
             <td>
-              <v-switch v-model="item.is_story_online" color="#EBC483" density="compact" hide-details="true" inline
-                inset></v-switch>
+              <v-switch @click="switchOnline(item.story_no, item.is_story_online)" v-model="item.is_story_online" color="#EBC483" density="compact" hide-details="true" inline inset
+                  true-value=1></v-switch>
             </td>
             <td>
-              <v-icon size="small" class="me-2" @click="editItem(item.raw)">
-                mdi-pencil
-              </v-icon>
+              <UpdateStory :storyNo="item.story_no" style="display: inline-block;" />
               <v-icon size="small" @click="showDeleteDialog(item.story_no)">mdi-delete</v-icon>
             </td>
           </tr>
@@ -86,7 +90,6 @@ const deleteItemConfirm = () => {
       </v-table>
     </div>
     <CreateStory class="add" />
-
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"

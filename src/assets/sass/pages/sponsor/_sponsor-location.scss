@@ -8,9 +8,18 @@ div.container {
     right: -7vw;
 
     h1 {
+      display: inline-block;
       align-self: flex-start;
       color: $primaryBrandBlue;
     }
+
+    div.search {
+      height: 4vh;
+      display: inline-block;
+      position: absolute;
+      right: 0;
+    }
+
 
     div.table_container {
       padding-top: 4vh;
@@ -58,12 +67,16 @@ div.container {
         color: $primaryBrandBlue;
       }
     }
+
+    td.update_and_delete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 }
 
-.no-border td {
-  border: none;
-}
 
 :deep(.v-card .v-card-title) {
   line-height: 3em;

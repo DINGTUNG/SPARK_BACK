@@ -1,7 +1,9 @@
 <script setup>
 import CreateReports from '@/views/create-dialog/CreateReports.vue';
-
-import { ref, reactive, computed } from 'vue'
+import UpdateReports from '@/views/update-dialog/UpdateReports.vue';
+import Search from '@/components/Search.vue';
+import { ref, reactive, computed,onMounted } from 'vue';
+import axios from 'axios';
 const page = ref(1)
 const dialog = ref(false)
 
@@ -25,98 +27,121 @@ function deleteItemConfirm() {
 }
 function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
-
 }
 
 
 const pageCount = () => {
-  return (reports.length) / itemsPerPage + 1;
+  return (reportsList.length) / itemsPerPage + 1;
 }
 // 換頁
 const itemsPerPage = 10;
 const displayReportsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return reports.slice(startIdx, endIdx);
+  return reportsList.slice(startIdx, endIdx);
 });
 
 
 
-const reports = reactive([
-  {
+// const reports = reactive([
+//   {
 
-    id: '001',
-    class: '年度',
-    year: '2018',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '002',
-    class: '年度',
-    year: '2019',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '003',
-    class: '年度',
-    year: '2020',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '004',
-    class: '年度',
-    year: '2021',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '005',
-    class: '年度',
-    year: '2022',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '006',
-    class: '年度',
-    year: '2023',
-    name: "星火執行年度報告"
-  },
-  {
-    id: '007',
-    class: '財務',
-    year: '2018',
-    name: "星火執行業務報告"
-  },
-  {
-    id: '008',
-    class: '財務',
-    year: '2019',
-    name: "星火執行業務報告",
-  },
-  {
-    id: '009',
-    class: '財務',
-    year: '2020',
-    name: "星火執行業務報告"
-  },
-  {
-    id: '010',
-    class: '財務',
-    year: '2021',
-    name: "星火執行業務報告"
-  },
-  {
-    id: '011',
-    class: '財務',
-    year: '2022',
-    name: "星火執行業務報告"
-  },
-  {
-    id: '012',
-    class: '財務',
-    year: '2023',
-    name: "星火執行業務報告"
-  },
-])
+//     id: '001',
+//     class: '年度',
+//     year: '2018',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '002',
+//     class: '年度',
+//     year: '2019',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '003',
+//     class: '年度',
+//     year: '2020',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '004',
+//     class: '年度',
+//     year: '2021',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '005',
+//     class: '年度',
+//     year: '2022',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '006',
+//     class: '年度',
+//     year: '2023',
+//     name: "星火執行年度報告"
+//   },
+//   {
+//     id: '007',
+//     class: '財務',
+//     year: '2018',
+//     name: "星火執行業務報告"
+//   },
+//   {
+//     id: '008',
+//     class: '財務',
+//     year: '2019',
+//     name: "星火執行業務報告",
+//   },
+//   {
+//     id: '009',
+//     class: '財務',
+//     year: '2020',
+//     name: "星火執行業務報告"
+//   },
+//   {
+//     id: '010',
+//     class: '財務',
+//     year: '2021',
+//     name: "星火執行業務報告"
+//   },
+//   {
+//     id: '011',
+//     class: '財務',
+//     year: '2022',
+//     name: "星火執行業務報告"
+//   },
+//   {
+//     id: '012',
+//     class: '財務',
+//     year: '2023',
+//     name: "星火執行業務報告"
+//   },
+// ])
+
+
+const reportsList = reactive([])
+async function reportConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports.php')
+    console.log(response)
+
+
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        reportsList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(() => {
+  reportConnection()
+})
+
+
 </script>
 
 
@@ -124,6 +149,9 @@ const reports = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>成果管理｜歷年報告</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入報告資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -136,25 +164,22 @@ const reports = reactive([
               <th>狀態</th>
               <th>功能</th>
               <th>刪改</th>
-
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
               <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="class">{{ item.class }}</td>
-              <td class="year">{{ item.year }}</td>
-              <td class="name">{{ item.name }}</td>
-              <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
+              <td class="id">{{ item.report_id }}</td>
+              <td class="class">{{ item.report_class }}</td>
+              <td class="year">{{ item.report_year }}</td>
+              <td class="name">{{ item.report_title }}</td>
+              <td class="online">{{ item.is_report_online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
-                  mdi-pencil
-                </v-icon>
+              <td class="update_and_delete">
+                <UpdateReports />
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

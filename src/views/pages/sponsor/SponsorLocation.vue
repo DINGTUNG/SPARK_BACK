@@ -16,7 +16,7 @@ function deleteItemConfirm() {
   if (itemToDelete.value) {
     const index = location.indexOf(itemToDelete.value);
     if (index !== -1) {
-      location.splice(index, 1); // 從列表中刪除項目沒效 
+      location.splice(index, 1); // 從列表中刪除項目
     }
     itemToDelete.value = null;
     dialogDelete.value = false; // 隱藏刪除對話框

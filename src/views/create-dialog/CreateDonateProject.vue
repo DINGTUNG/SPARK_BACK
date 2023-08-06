@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref } from 'vue'
 const dialog = ref(false);
 
 
@@ -19,62 +19,40 @@ const dialog = ref(false);
           新增
         </v-btn>
       </template>
+
       <v-card>
         <v-card-title>
-          <span class="text-h5">新增消息</span>
+          <span class="main_title">新增消息</span>
         </v-card-title>
         <v-card-text>
           <form action="">
-            <label for="">標題
+            <label for="">
+              <div class="input_title">標題</div>
               <input type="text">
             </label>
-            <label for="">日期
+            <label for="">
+              <div class="input_title">開始日期</div>
               <input type="date">
             </label>
-            <label for="">段落1
+            <label for="">
+              <div class="input_title">結束日期</div>
+              <input type="date">
+            </label>
+            <label for="">
+              <div class="input_title">內文</div>
               <textarea name="" id="" cols="70" rows="10"></textarea>
             </label>
+
             <div class="imgblock">
-              <span>圖檔1</span>
+              <span>封面照片</span>
               <v-file-input variant="outlined" id="book" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="book">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
-            <label for="">段落2
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔2</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
-                <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
-                </template>
-              </v-file-input>
-            </div>
-            <label for="">段落3
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔3</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
-                <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
-                </template>
-              </v-file-input>
-            </div>
-            <label for="">段落4
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔4</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
-                <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
-                </template>
-              </v-file-input>
-            </div>
+
+
           </form>
         </v-card-text>
         <v-card-actions>
@@ -98,8 +76,6 @@ const dialog = ref(false);
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
-  
-
 }
 
 :deep(.v-btn__content) {
@@ -113,28 +89,30 @@ const dialog = ref(false);
 
 :deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
   padding: 500px;
-  
+
 }
 
-
-:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended) {
   position: relative;
   right: 20px;
 }
 
-.text-h5 {
+.main_title {
+  display: block;
   color: $primaryBrandBlue;
-  @include h5_PC;
-  font-weight: 900;
-
+  @include h1_PC;
+  margin: 24px 0;
 }
 
 .imgblock {
   display: flex;
 
   span {
-    @include flex_vm();
-    justify-content: start;
+    // @include flex_vm();
+    // justify-content: start;
+    width: 10vw;
+    text-align: right;
+    @include h4_PC;
   }
 
   input {
@@ -155,18 +133,20 @@ const dialog = ref(false);
   :deep(.v-input__control) {
     width: 50%;
     height: 5vh;
+    margin-left: -21px;
   }
 
-  label{
+  label {
     @include flex_vm();
     margin-bottom: 0;
     position: relative;
-    left: 22vw;
+    left: 19vw;
     padding: 10px;
     background-color: $primaryBrandBlue;
     border-radius: 50px;
     width: 6vw;
     color: #ffff;
+    @include h5_PC;
   }
 
 }
@@ -186,6 +166,13 @@ label {
   margin-bottom: 20px;
   display: flex;
 
+  //用來固定欄位名的寬度，方便對齊
+  .input_title {
+    width: 10vw;
+    text-align: right;
+    @include h4_PC;
+  }
+
   textarea {
     margin-left: 1vw;
     border: 1px solid;
@@ -195,8 +182,6 @@ label {
 
   }
 }
-
-
 
 :deep(.v-field__outline) {
   border: 1px solid;
@@ -208,8 +193,9 @@ label {
   width: 5.5vw;
   height: 6vh;
   border-radius: 50px;
-  margin-bottom: 50px;
-  margin-right: 20px;
-
+  margin: 30px 20px 60px 0;
+  // margin-bottom: 50px;
+  // margin-right: 20px;
+  @include h5_PC;
 }
 </style>

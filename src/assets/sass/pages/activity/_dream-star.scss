@@ -10,14 +10,6 @@ div.container {
     h1 {
       align-self: flex-start;
       color: $primaryBrandBlue;
-      display: inline-block;
-    }
-    
-    div.search {
-      height: 4vh;
-      display: inline-block;
-      position: absolute;
-      right: 0;
     }
 
     div.table_container {
@@ -64,14 +56,6 @@ div.container {
 
       :deep(.mdi:before) {
         color: $primaryBrandBlue;
-      }
-    }
-
-    td.update_and_delete {
-      display: flex;
-      align-items: center;
-      .v-row{
-        flex: 0;
       }
     }
   }

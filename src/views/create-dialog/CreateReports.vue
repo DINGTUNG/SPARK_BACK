@@ -1,9 +1,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-
 const dialog = ref(false);
 </script>
-
 <template>
     <v-row justify="end">
         <v-dialog v-model="dialog" persistent width="50%">

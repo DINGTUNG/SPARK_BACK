@@ -1,14 +1,20 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed,defineProps,defineEmits } from 'vue'
+const { dataItems } = defineProps(['locationList']);
+const { emit } = defineEmits();
+
+
 const dialog = ref(false);
 
+function onAddDataClick() {
+    const newLocation = {
+        id:location_no,
+        name: newLocationName,
+    }
+    dialog.value = false;
 
-// const fileName = ref("");
-
-// function onFileChange(event) {
-//   // 更新檔案名稱
-//   fileName.value = event.target.files[0]?.name || "";
-// }
+    emit('localAdd', newLocation);
+}
 </script>
 
 <template>
@@ -21,47 +27,13 @@ const dialog = ref(false);
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">新增消息</span>
+          <span class="text-h5">新增留言資料</span>
         </v-card-title>
         <v-card-text>
           <form action="">
-            <label for="">標題
+            <label for="">留言內容
               <input type="text">
             </label>
-            <label for="">日期
-              <input type="date">
-            </label>
-            <label for="">段落1
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔1</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
-            </div>
-            <label for="">段落2
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔2</span>
-              <input type="file" id="upImg" placeholder="">
-              <label for="upImg">上傳圖檔</label>
-            </div>
-            <label for="">段落3
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔3</span>
-              <input type="file" id="upImg">
-              <label for="upImg">上傳圖檔</label>
-            </div>
-            <label for="">段落4
-              <textarea name="" id="" cols="70" rows="10"></textarea>
-            </label>
-            <div class="imgblock">
-              <span>圖檔4</span>
-              <input type="file" id="upImg">
-            </div>
           </form>
         </v-card-text>
         <v-card-actions>
@@ -78,6 +50,11 @@ const dialog = ref(false);
   </v-row>
 </template>
 <style scoped lang="scss">
+:deep(.v-btn.v-btn--density-default) {
+  background-color: $primaryBrandBlue !important;
+
+}
+
 :deep(.v-dialog > .v-overlay__content) {
   width: 50%;
 }
@@ -96,8 +73,8 @@ const dialog = ref(false);
   text-align: center;
 }
 
-:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
-  padding: 500px;
+label {
+  @include flex_hm();
 }
 
 .text-h5 {
@@ -106,7 +83,6 @@ const dialog = ref(false);
   font-weight: 900;
 
 }
-
 .imgblock {
   display: flex;
 
@@ -155,18 +131,14 @@ label {
 
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
-  width: 5.5vw;
-  height: 6vh;
+  width: 137px;
+  height: 55px;
   border-radius: 50px;
   margin-bottom: 50px;
   margin-right: 20px;
-
 }
 
-
-// #upImg {
-//     opacity: 0;
-//     position: absolute;
-//     z-index: -1;
-//   }
+:deep(.v-btn__content) {
+  font-size: 20px;
+}
 </style>

@@ -71,9 +71,9 @@ const dialog = ref(false);
     text-align: center;
 }
 
-:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
-  position: relative;
-  right: 20px;
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended) {
+    position: relative;
+    right: 20px;
 }
 
 .text-h5 {
@@ -84,44 +84,44 @@ const dialog = ref(false);
 }
 
 .imgblock {
-  display: flex;
-
-  span {
-    @include flex_vm();
-    justify-content: start;
-  }
-
-  input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-  }
-
-  :deep(.v-field.v-field--appended) {
     display: flex;
-  }
 
-  :deep(.v-input__control) {
-    width: 50%;
-    height: 5vh;
-  }
+    span {
+        @include flex_vm();
+        justify-content: start;
+    }
 
-  label{
-    @include flex_vm();
-    margin-bottom: 0;
-    position: relative;
-    left: 22vw;
-    padding: 10px;
-    background-color: $primaryBrandBlue;
-    border-radius: 50px;
-    width: 6vw;
-    color: #ffff;
-  }
+    input {
+        height: 5vh;
+        padding-left: 10px;
+        padding-top: 5px;
+        margin-left: 1vw;
+        width: 2vw;
+        width: 50%;
+        border: 1px solid;
+        border-radius: $br_MB;
+    }
+
+    :deep(.v-field.v-field--appended) {
+        display: flex;
+    }
+
+    :deep(.v-input__control) {
+        width: 50%;
+        height: 5vh;
+    }
+
+    label {
+        @include flex_vm();
+        margin-bottom: 0;
+        position: relative;
+        left: 22vw;
+        padding: 10px;
+        background-color: $primaryBrandBlue;
+        border-radius: 50px;
+        width: 6vw;
+        color: #ffff;
+    }
 
 }
 

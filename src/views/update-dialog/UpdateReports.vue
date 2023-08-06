@@ -2,24 +2,32 @@
 import { ref, reactive, computed } from 'vue'
 const dialog = ref(false);
 </script>
-
 <template>
     <v-row justify="end">
         <v-dialog v-model="dialog" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
-                    新增
-                </v-btn>
+                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">新增認養據點</span>
+                    <span class="text-h5">新增報告</span>
                 </v-card-title>
                 <v-card-text>
                     <form action="">
-                        <label for="">據點名稱
+                        <label for="">報告分類
                             <input type="text">
                         </label>
+                        <label for="" class="report_title">標題
+                            <input type="text">
+                        </label>
+                        <div class="imgblock">
+                            <span>封面照片</span>
+                            <v-file-input variant="outlined" id="book" prepend-icon="none">
+                                <template v-slot:prepend-inner>
+                                    <label for="book">上傳圖檔</label>
+                                </template>
+                            </v-file-input>
+                        </div>
                     </form>
                 </v-card-text>
                 <v-card-actions>
@@ -59,8 +67,9 @@ const dialog = ref(false);
     text-align: center;
 }
 
-label {
-    @include flex_hm();
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
+  position: relative;
+  right: 20px;
 }
 
 .text-h5 {
@@ -71,27 +80,14 @@ label {
 }
 
 .imgblock {
-    display: flex;
+  display: flex;
 
-    input[type="file"] {
-        border: 1px transparent;
-    }
+  span {
+    @include flex_vm();
+    justify-content: start;
+  }
 
-
-    input {
-        height: 5vh;
-        padding-left: 10px;
-        padding-top: 5px;
-        margin-left: 1vw;
-        width: 2vw;
-        width: 50%;
-        border: 1px solid;
-        border-radius: $br_MB;
-    }
-
-}
-
-input {
+  input {
     height: 5vh;
     padding-left: 10px;
     padding-top: 5px;
@@ -100,30 +96,65 @@ input {
     width: 50%;
     border: 1px solid;
     border-radius: $br_MB;
+  }
+
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+
+  :deep(.v-input__control) {
+    width: 50%;
+    height: 5vh;
+  }
+
+  label{
+    @include flex_vm();
+    margin-bottom: 0;
+    position: relative;
+    left: 22vw;
+    padding: 10px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    width: 6vw;
+    color: #ffff;
+  }
+
 }
+
 
 label {
     margin-bottom: 20px;
     display: flex;
+    @include flex_hm();
 
-    textarea {
-        margin-left: 1vw;
-        border: 1px solid;
+    input {
+        height: 5vh;
         padding-left: 10px;
-        padding-top: 10px;
+        padding-top: 5px;
+        margin-left: 1vw;
+        width: 25vw;
+        border: 1px solid;
         border-radius: $br_MB;
-
     }
 }
+
+
+
+label.report_title {
+    margin-right: -30px;
+
+}
+
 :deep(.v-btn.v-btn--density-default) {
-        background-color: $primaryBrandBlue !important;
-        width: 137px;
-        height: 55px;
-        border-radius: 50px;
-        margin-bottom: 50px;
-        margin-right: 20px;
-    }
-:deep(.v-btn__content){
+    background-color: $primaryBrandBlue !important;
+    width: 137px;
+    height: 55px;
+    border-radius: 50px;
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+
+:deep(.v-btn__content) {
     font-size: 20px;
 }
 </style>

@@ -1,4 +1,5 @@
 <script setup>
+import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
@@ -34,13 +35,6 @@ const displaySponsorOrderList = computed(() => {
   return sponsorOrderList.slice(startIdx, endIdx);
 });
 
-// const setBoolean = computed(() => {
-//   if (== 1) {
-//     return true
-//   } else if (== 0) {
-//     return false
-//   }
-// });
 </script>
 
 
@@ -48,6 +42,9 @@ const displaySponsorOrderList = computed(() => {
   <div class="container">
     <div class="content_wrap">
       <h1>認養管理｜認養訂單</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入認養訂單ID'"/>
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -89,12 +86,10 @@ const displaySponsorOrderList = computed(() => {
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
-
             </tr>
           </tbody>
         </v-table>
       </div>
-
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

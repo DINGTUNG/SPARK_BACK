@@ -8,8 +8,15 @@ div.container {
     right: -7vw;
 
     h1 {
-      align-self: flex-start;
+      display: inline-block;
       color: $primaryBrandBlue;
+    }
+
+    div.search {
+      height: 4vh;
+      display: inline-block;
+      position: absolute;
+      right: 0;
     }
 
     div.table_container {
@@ -21,7 +28,7 @@ div.container {
 
       .v-table {
         max-width: 1000%;
-        width: 100vw; 
+        width: 100vw;
         margin-bottom: 5vh;
       }
 
@@ -134,43 +141,8 @@ div.container {
 }
 
 
-:deep(.delete_dialog) {
-  margin: auto;
-  width: 50vw;
-  height: 30vh;
-  border-radius: 50px;
-}
-
-:deep(.btn) {
-  width: 8vw;
-  height: 6vh;
-  border-radius: 50px;
-  margin: 0 1vw;
-}
-
-:deep(.cancel) {
-  background-color: white;
-  border: 2px solid $primaryBrandBlue;
-
-  .v-btn__content {
-    color: $primaryBrandBlue;
-  }
-}
-
-:deep(.delete) {
-  background-color: $primaryBrandBlue;
-
-  .v-btn__content {
-    color: white;
-  }
-}
-
-
-:deep(.title) {
-  font-size: 1.5vw;
-  margin: 2vw;
-}
-
-:deep(.v-btn__content) {
-  font-size: 1vw;
+td.update_and_delete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }

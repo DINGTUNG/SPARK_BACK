@@ -1,16 +1,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 const dialog = ref(false);
-
-
-// const fileName = ref("");
-
-// function onFileChange(event) {
-//   // 更新檔案名稱
-//   fileName.value = event.target.files[0]?.name || "";
-// }
 </script>
-
 <template>
     <v-row justify="end">
         <v-dialog v-model="dialog" persistent width="50%">
@@ -31,9 +22,6 @@ const dialog = ref(false);
                                 <div class="input_title">計畫名稱</div>
                                 <input type="text">
                             </label>
-                            <!-- <label for="">日期
-                            <input type="date">
-                        </label> -->
                             <label for="">
                                 <div class="input_title">夢想內容</div>
                                 <textarea name="" id="" cols="70" rows="10"></textarea>
@@ -123,9 +111,7 @@ const dialog = ref(false);
 
 :deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
     padding: 500px;
-
 }
-
 
 :deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended) {
     position: relative;
@@ -141,8 +127,6 @@ const dialog = ref(false);
 
 .imgblock {
     display: flex;
-    // align-items: center;
-
 
     span {
         // @include flex_vm();
@@ -199,6 +183,7 @@ input {
     border-radius: $br_MB;
 }
 
+
 label {
     margin-bottom: 20px;
     display: flex;
@@ -218,8 +203,6 @@ label {
         border-radius: $br_MB;
     }
 }
-
-
 
 :deep(.v-field__outline) {
     border: 1px solid;

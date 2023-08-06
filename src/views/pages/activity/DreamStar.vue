@@ -1,5 +1,5 @@
 <script setup>
-import PopUpDreamStar from '@/views/pop-ups/PopUpDreamStar.vue';
+import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -124,7 +124,7 @@ const location = reactive([
           </tbody>
         </v-table>
       </div>
-      <PopUpDreamStar class="add" />
+      <CreateDreamStar class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
@@ -132,7 +132,7 @@ const location = reactive([
       </div>
     </div>
 
-    <v-dialog v-model="dialogDelete" max-width="800px" :persistent="true">
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
           是否確定要刪除此計畫？

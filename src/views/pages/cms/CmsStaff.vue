@@ -1,5 +1,5 @@
 <script setup>
-import PopUpCmsStaff from '@/views/pop-ups/PopUpCmsStaff.vue';
+import CreateCmsStaff from '@/views/create-dialog/CreateCmsStaff.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -109,16 +109,16 @@ const donateList = reactive([
                   inset></v-switch>
               </td> -->
               <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+                <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil
                 </v-icon>
-                <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
+                <v-icon size="small" @click="showDeleteDialog(item.raw)" v-show="index !== 0">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-      <PopUpCmsStaff class="add" />
+      <CreateCmsStaff class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">
@@ -127,7 +127,7 @@ const donateList = reactive([
       </div>
     </div>
 
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent="true">
+    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
 
       <v-card class="delete_dialog">
         <v-card-title class="text-center">

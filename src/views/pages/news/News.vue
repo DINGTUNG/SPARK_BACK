@@ -1,6 +1,7 @@
 <script setup>
 import CreateNews from '@/views/create-dialog/CreateNews.vue';
-
+import UpdateNews from '@/views/update-dialog/UpdateNews.vue';
+import Search from '@/components/Search.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -57,6 +58,9 @@ const news = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>最新消息</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入消息資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -81,10 +85,8 @@ const news = reactive([
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
-                  mdi-pencil
-                </v-icon>
+              <td class="update_and_delete">
+                <UpdateNews/>
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

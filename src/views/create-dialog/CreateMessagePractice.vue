@@ -17,7 +17,6 @@ function closeDialog() {
   dialogDisplay.value = false;
 }
 
-
 async function createMessage() {
   try {
     if (messageNoForUpdate == null) {

@@ -75,10 +75,10 @@ const displayMessageList = computed(() => {
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
                 <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)"
-                :messageContentForUpdate="item.message_content"
-                :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)"
-                :memberNoForUpdate="parseInt(item.member_no)"/>
-                
+                  :messageContentForUpdate="item.message_content"
+                  :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)"
+                  :memberNoForUpdate="parseInt(item.member_no)" />
+
                 <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>
             </tr>

@@ -7,13 +7,19 @@ require_once("../../connect_chd102g3.php");
 
 try {
   $messageNo = $_POST["message_no"] ?? null;
+  $messageContent = $_POST["message_content"] ?? null;
+  $sparkActivityNo = $_POST["spark_activity_no"] ?? null;
+  $memberNo = $_POST["member_no"] ?? null;
 
   // parameters validation
   if ($messageNo == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供message no)");
   }
+  if ($messageContent == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供message content)");
+  }
 
-  // check delete record existed
+  // check update record existed
   $checkRecordAliveSql = "select count(*) as count from message_board where message_no = :message_no and del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
   $checkRecordAliveStmt->bindValue(":message_no", $messageNo);
@@ -25,22 +31,22 @@ try {
     throw new UnexpectedValueException($message = "找不到刪除資料或資料已被刪除");
   }
 
-  // delete record
-  $updateDeleteSql = "update message_board set del_flg = 1,updater='許咪咪', update_time=Now() where message_no = :message_no ";
-  $updateDeleteStmt = $pdo->prepare($updateDeleteSql);
-  $updateDeleteStmt->bindValue(":message_no", $messageNo);
-  $updateDeleteResult = $updateDeleteStmt->execute();
+  // update record
+  $updateSql = "update message_board set message_content = :message_content,spark_activity_no = :spark_activity_no,member_no = :member_no,updater='許咪咪', update_time=Now() where message_no = :message_no ";
+  $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":message_content", $messageContent);
+  $updateStmt->bindValue(":spark_activity_no", $sparkActivityNo);
+  $updateStmt->bindValue(":member_no", $memberNo);
+  $updateStmt->bindValue(":message_no", $messageNo);
+  $updateResult = $updateStmt->execute();
   http_response_code(200);
-  echo json_encode($updateDeleteResult);
-
-  echo "參數不足(請提供message no)"; 
+  echo json_encode($updateResult);
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
   echo $e->getMessage();
 } catch (UnexpectedValueException $e) {
   http_response_code(412);
   echo $e->getMessage();
-  
 } catch (Exception $e) {
   http_response_code(500);
   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";

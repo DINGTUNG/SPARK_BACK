@@ -1,8 +1,9 @@
 <script setup>
 import CreateCmsStaff from '@/views/create-dialog/CreateCmsStaff.vue';
 import Search from '@/components/Search.vue';
+import { ref, reactive, computed, onMounted } from 'vue'
+import axios from 'axios';
 
-import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
@@ -23,9 +24,9 @@ function closeDelete() {
   if (itemToDelete.value) {
     const confirmDelete = confirm("是否確定要刪除？");
     if (confirmDelete) {
-      const index = donateList.indexOf(itemToDelete.value);
+      const index = staffList.indexOf(itemToDelete.value);
       if (index !== -1) {
-        donateList.splice(index, 1); // 從列表中刪除項目沒效 
+        staffList.splice(index, 1); // 從列表中刪除項目沒效 
       }
     }
     itemToDelete.value = null; // 清空要刪除的項目
@@ -35,44 +36,62 @@ function closeDelete() {
 // 換頁
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (donateList.length) / itemsPerPage + 1;
+  return (staffList.length) / itemsPerPage + 1;
 }
-const displayedDonateList = computed(() => {
+const displayedStaffList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return donateList.slice(startIdx, endIdx);
+  return staffList.slice(startIdx, endIdx);
 });
 
 
-const donateList = reactive([
-  {
-    no: '1',
-    id: 'CMS001',
-    name: '星太郎',
-    permission: '超級管理員',
-    email: 'test@gmail.com',
-    account: 'test',
-    password: 'test',
-  },
-  {
-    no: '2',
-    id: 'CMS002',
-    name: '星八克',
-    permission: '一般管理員',
-    email: 'spark@gmail.com',
-    account: 'spark',
-    password: 'spark',
-  },
-  {
-    no: '3',
-    id: 'CMS003',
-    name: '星琪六',
-    permission: '協作人員',
-    email: '666@gmail.com',
-    account: '666',
-    password: '666',
-  },
-])
+// const donateList = reactive([
+//   {
+//     no: '1',
+//     id: 'CMS001',
+//     name: '星太郎',
+//     permission: '超級管理員',
+//     email: 'test@gmail.com',
+//     account: 'test',
+//     password: 'test',
+//   },
+//   {
+//     no: '2',
+//     id: 'CMS002',
+//     name: '星八克',
+//     permission: '一般管理員',
+//     email: 'spark@gmail.com',
+//     account: 'spark',
+//     password: 'spark',
+//   },
+//   {
+//     no: '3',
+//     id: 'CMS003',
+//     name: '星琪六',
+//     permission: '協作人員',
+//     email: '666@gmail.com',
+//     account: '666',
+//     password: '666',
+//   },
+// ])
+
+const staffList = reactive([])
+async function donateConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
+    console.log(response)
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        staffList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+onMounted(() => {
+  donateConnection()
+})
 
 </script>
 
@@ -99,19 +118,14 @@ const donateList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedDonateList" :key="index" class="no-border">
+            <tr v-for="(item, index) in displayedStaffList" :key="index" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="name">{{ item.name }}</td>
-              <td class="permission">{{ item.permission }}</td>
-              <td class="email">{{ item.email }}</td>
-              <td class="account">{{ item.account }}</td>
-              <td class="password">{{ item.password }}</td>
-              <!-- <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
-              <td>
-                <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
-                  inset></v-switch>
-              </td> -->
+              <td class="id">{{ item.staff_id }}</td>
+              <td class="name">{{ item.staff_name }}</td>
+              <td class="permission">{{ item.staff_permission }}</td>
+              <td class="email">{{ item.staff_email }}</td>
+              <td class="account">{{ item.staff_account }}</td>
+              <td class="password">{{ item.staff_password }}</td>
               <td>
                 <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil

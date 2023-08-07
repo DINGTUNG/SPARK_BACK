@@ -5,8 +5,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
     $dbname = "tibamefe_chd102g3";
     $user = "root";
-    $password = "";
-    $port = 3306;
+    $password = "root";
+    $port = 8889;
 
     //詢問資料庫建置位置
     $dsn = "mysql:host=localhost;port=$port;dbname=$dbname;charset=utf8";

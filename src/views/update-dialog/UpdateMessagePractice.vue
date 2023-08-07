@@ -1,34 +1,66 @@
 <script setup>
 import { ref } from 'vue'
-const dialog = ref(false);
+import { useMessageBoardStore } from '@/stores/message-board.js';
+const messageBoardStore = useMessageBoardStore();
+
+const vueProps = defineProps({
+  messageNoForUpdate: Number
+})
+
+const dialogDisplay = ref(false);
+
+function showUpdateDialog() {
+  dialogDisplay.value = true;
+}
+
+function closeUpdateDialog() {
+  dialogDisplay.value = false;
+}
+
+
+async function updateMessage(messageNoForUpdate,messageContent) {
+  try {
+    if (messageNoForUpdate == null) {
+      throw new Error("Message no. not found!")
+    }
+    await messageBoardStore.updateMessageBackend(messageNoForUpdate,messageContent)
+    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate)
+    window.alert(`編輯成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+  } finally {
+    closeUpdateDialog()
+  }
+}
+
 </script>
 
 <template>
   <v-row class="row" style="flex: 0 0 0;">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+        <v-icon size="small" class="me-2 icon" v-bind="props" @click="showUpdateDialog">mdi-pencil</v-icon>
       </template>
       <v-card>
         <v-card-title>
           <span class="text-h5">編輯留言資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
-            <label for="">編輯留言內容
-              <input type="text">
-            </label>
+          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
+            @submit.prevent="updateMessage(vueProps.messageNoForUpdate,messageBoardStore.messageContent)">
+            <label for="message_content">編輯留言內容</label>  <input type="text" name="message_content" v-model="messageBoardStore.messageContent">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn class="cancel btn" variant="text" @click="closeUpdateDialog">
+                取消
+              </v-btn>
+              <v-btn class="delete btn" variant="text" type="submit">
+                確定
+              </v-btn>
+            </v-card-actions>
           </form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            儲存
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
@@ -36,7 +68,7 @@ const dialog = ref(false);
 <style scoped lang="scss">
 :deep(.v-btn.v-btn--density-default) {
   background-color: $primaryBrandBlue !important;
- 
+
 }
 
 :deep(.v-dialog > .v-overlay__content) {
@@ -93,8 +125,7 @@ label {
   margin-right: 20px;
 }
 
-:deep(.icon){
+:deep(.icon) {
   @include btnEffect;
 }
-
 </style>

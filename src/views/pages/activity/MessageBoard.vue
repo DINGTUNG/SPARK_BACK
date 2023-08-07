@@ -2,7 +2,7 @@
 import Search from '@/components/Search.vue';
 import CreateMessagePractice from '@/views/create-dialog/CreateMessagePractice.vue';
 import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
-import DeleteMessageActivator from '@/views/delete-dialog/DeleteMessageActivator.vue';
+import DeleteMessage from '@/views/delete-dialog/DeleteMessage.vue';
 
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -74,8 +74,8 @@ const displayMessageList = computed(() => {
               <td class="member_no">{{ item.member_no }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
-                <UpdateMessagePractice />
-                <DeleteMessageActivator :messageNoForDelete="parseInt(item.message_no)"/>
+                <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)" />
+                <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>
             </tr>
           </tbody>

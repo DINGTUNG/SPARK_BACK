@@ -1,8 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin: *");//標頭修改
- require_once("../connect_chd102g3.php");
+ require_once("../../connect_chd102g3.php");
 try{
-  $sql = "select * from reports";
+  $sql = "select * from reports where report_class ='年度'";
   $location=$pdo->prepare($sql);
   $location->execute();
   

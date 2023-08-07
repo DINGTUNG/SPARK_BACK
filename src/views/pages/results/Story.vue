@@ -1,18 +1,20 @@
 <script setup>
 import CreateStory from '@/views/create-dialog/CreateStory.vue';
+import UpdateStory from '@/views/update-dialog/UpdateStory.vue';
 import { ref, reactive,computed } from 'vue'
 const dialogDelete = ref(false);
 const page = ref(1)
 
 let storyList = reactive([])
-
+  //讀取資料
   fetch('http://localhost/SPARK_BACK/php/results/story/read_story.php')
     .then(res => res.json())
     .then(data => {
       storyList.value = data.stories
     })
     .catch(err => console.log(err))
-  
+    
+  //分頁
     const itemsPerPage = 10;
     const displayStoryList = computed(() => {
       if (storyList.value) {
@@ -28,12 +30,13 @@ let storyList = reactive([])
       return (displayStoryList.length) / itemsPerPage + 1;
     };
 
+//切換上下架狀態
 const switchOnline = (no, online) => {
-  console.log(no, online);
   window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
 }
 
-let deleteId = ref(null)
+// 刪除
+let deleteId = ref(null)//要刪除的id
 const showDeleteDialog = (no) => {
   dialogDelete.value = true
   deleteId = no
@@ -41,11 +44,9 @@ const showDeleteDialog = (no) => {
 const closeDelete = () => {
   dialogDelete.value = false
 }
-const deleteItemConfirm = () => {
+const deleteItemConfirm = () => {//把要刪除的id傳到php
   window.location.assign(`http://localhost/SPARK_BACK/php/results/story/delete_story.php?story_no=${deleteId}`)
 }
-    
-
 
 </script>
 
@@ -80,9 +81,7 @@ const deleteItemConfirm = () => {
                   true-value=1></v-switch>
             </td>
             <td>
-              <v-icon size="small" class="me-2" @click="editItem(item.raw)">
-                mdi-pencil
-              </v-icon>
+              <UpdateStory :storyNo="item.story_no" style="display: inline-block;" />
               <v-icon size="small" @click="showDeleteDialog(item.story_no)">mdi-delete</v-icon>
             </td>
           </tr>

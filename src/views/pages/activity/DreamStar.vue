@@ -1,5 +1,6 @@
 <script setup>
 import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
+import Search from '@/components/Search.vue';
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 const dialog = ref(false)
@@ -91,6 +92,9 @@ const location = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>夢想之星</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入消息資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>

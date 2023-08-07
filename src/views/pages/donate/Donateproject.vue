@@ -1,5 +1,6 @@
 <script setup>
 import CreateDonateProject from '@/views/create-dialog/CreateDonateProject.vue';
+import Search from '@/components/Search.vue';
 
 import { ref, reactive, computed } from 'vue'
 const page = ref(1)
@@ -221,6 +222,9 @@ const donateList = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>捐款管理｜捐款專案</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入消息資訊'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -257,7 +261,7 @@ const donateList = reactive([
           </tbody>
         </v-table>
       </div>
-      <CreateDonateProject  class="add" />
+      <CreateDonateProject class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

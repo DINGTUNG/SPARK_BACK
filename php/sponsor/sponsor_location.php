@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");//標頭修改
- require_once("../connect_chd102g3-yiiijie.php");
+ require_once("../connect_chd102g3.php");
 try{
   $sql = "select * from sponsor_location";
   $location=$pdo->prepare($sql);

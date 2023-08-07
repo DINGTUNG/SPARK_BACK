@@ -4,8 +4,8 @@ header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
     $dbname = "tibamefe_chd102g3";
-    $user = "root";
-    $password = "root";
+    $user = "spark";
+    $password = "666";
     $port = 3306;
 
     //詢問資料庫建置位置

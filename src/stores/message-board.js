@@ -51,11 +51,13 @@ export const useMessageBoardStore = defineStore('template', () => {
   }
 
   // update
-  function updateMessageBackend(messageNo,messageContent) {
+  function updateMessageBackend(messageNo,messageContent,sparkActivityNo,memberNo) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("message_no", messageNo);
     payLoad.append("message_content", messageContent);
+    payLoad.append("spark_activity_no", sparkActivityNo);
+    payLoad.append("member_no", memberNo);
 
     // make a request
     const request = {
@@ -81,15 +83,20 @@ export const useMessageBoardStore = defineStore('template', () => {
     });
   }
 
-  const messageContent = ref('')
-  const updateMessageFromMessagePool = (messageNo) => {
+
+  
+  const updateMessageFromMessagePool = (messageNo,messageContent,sparkActivityNo,memberNo) => {
     for (let i = 0; i < messagePool.length; i++) {
       if (messagePool[i].message_no == messageNo) {
-      messagePool[i].message_content = messageContent.value
-      //  console.log(messageContent.value);
+      messagePool[i].message_content = messageContent
+      messagePool[i].spark_activity_no = sparkActivityNo
+      messagePool[i].member_no = memberNo
+       console.log( messagePool[i]);
       }
     }
   }
+
+
 
   return {
     messagePool,
@@ -97,7 +104,6 @@ export const useMessageBoardStore = defineStore('template', () => {
     deleteMessageFromMessagePool,
     updateMessageBackend,
     updateMessageFromMessagePool,
-    messageContent,
   }
 
 })

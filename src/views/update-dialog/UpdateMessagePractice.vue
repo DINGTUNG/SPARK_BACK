@@ -4,33 +4,44 @@ import { useMessageBoardStore } from '@/stores/message-board.js';
 const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
-  messageNoForUpdate: Number
+  messageNoForUpdate: Number,
+  messageContentForUpdate: String,
+  sparkActivityNoForUpdate: Number,
+  memberNoForUpdate: Number,
 })
+
+const messageContent = ref('')
+const sparkActivityNo = ref()
+const memberNo = ref()
 
 const dialogDisplay = ref(false);
 
-function showUpdateDialog() {
+function showDialog() {
   dialogDisplay.value = true;
+  messageContent.value = vueProps.messageContentForUpdate
+  sparkActivityNo.value = vueProps.sparkActivityNoForUpdate
+  memberNo.value = vueProps.memberNoForUpdate
+
 }
 
-function closeUpdateDialog() {
+function closeDialog() {
   dialogDisplay.value = false;
 }
 
 
-async function updateMessage(messageNoForUpdate,messageContent) {
+async function updateMessage(messageNoForUpdate, messageContent, sparkActivityNo, memberNo) {
   try {
     if (messageNoForUpdate == null) {
       throw new Error("Message no. not found!")
     }
-    await messageBoardStore.updateMessageBackend(messageNoForUpdate,messageContent)
-    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate)
+    await messageBoardStore.updateMessageBackend(messageNoForUpdate, messageContent, sparkActivityNo, memberNo)
+    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate, messageContent, sparkActivityNo, memberNo)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
     window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
   } finally {
-    closeUpdateDialog()
+    closeDialog()
   }
 }
 
@@ -40,7 +51,7 @@ async function updateMessage(messageNoForUpdate,messageContent) {
   <v-row class="row" style="flex: 0 0 0;">
     <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-icon size="small" class="me-2 icon" v-bind="props" @click="showUpdateDialog">mdi-pencil</v-icon>
+        <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
       </template>
       <v-card>
         <v-card-title>
@@ -48,11 +59,16 @@ async function updateMessage(messageNoForUpdate,messageContent) {
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateMessage(vueProps.messageNoForUpdate,messageBoardStore.messageContent)">
-            <label for="message_content">編輯留言內容</label>  <input type="text" name="message_content" v-model="messageBoardStore.messageContent">
+            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, messageContent, sparkActivityNo, memberNo)">
+            <label for="message_content">編輯留言內容</label> <input type="text" name="message_content"
+              v-model="messageContent">
+            <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
+              v-model="sparkActivityNo">
+            <label for="member_no">會員編號</label> <input type="number" name="member_no"
+              v-model="memberNo">
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn class="cancel btn" variant="text" @click="closeUpdateDialog">
+              <v-btn class="cancel btn" variant="text" @click="closeDialog">
                 取消
               </v-btn>
               <v-btn class="delete btn" variant="text" type="submit">

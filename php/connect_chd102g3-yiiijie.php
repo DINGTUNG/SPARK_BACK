@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
     $dbname = "tibamefe_chd102g3";
     $user = "root";
     $password = "root";
-    $port = 3306;
+    $port = 8889;
 
     //詢問資料庫建置位置
     $dsn = "mysql:host=localhost;port=$port;dbname=$dbname;charset=utf8";
@@ -19,3 +19,5 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
     } catch (PDOException $e) {
       die("Error!: " . $e->getMessage() . "<br/>");
     }
+    
+?>

@@ -47,7 +47,7 @@ const displayLocationList = computed(() => {
 const locationList = reactive([])
 async function localConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php')
+    const response = await axios.post('http://localhost:8888/sponsor/sponsor_location.php')
     console.log(response)
 
 

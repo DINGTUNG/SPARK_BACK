@@ -22,7 +22,7 @@ const dialog = ref(false);
 
       <v-card>
         <v-card-title>
-          <span class="main_title">新增消息</span>
+          <span class="main_title">新增捐款專案</span>
         </v-card-title>
         <v-card-text>
           <form action="">

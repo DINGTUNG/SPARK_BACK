@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
     $dbname = "tibamefe_chd102g3";
     $user = "root";
-    $password = "";
+    $password = "root";
     $port = 3306;
 
     //詢問資料庫建置位置

@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");//標頭修改
- require_once("../../connect_chd102g3.php");
+ require_once("../../connect_chd102g3-yiiijie.php");
 try{
   $sql = "select * from member_info";
   $location=$pdo->prepare($sql);

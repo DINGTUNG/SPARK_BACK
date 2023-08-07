@@ -27,4 +27,4 @@ coverage
 *.sln
 *.sw?
 php/conn.php
-php/connect_chd102g3.php
+php/connect_chd102g3-yiiijie.php

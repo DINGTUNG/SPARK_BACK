@@ -4,7 +4,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
 const page = ref(1)
-
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
 
@@ -32,17 +31,38 @@ function closeDelete() {
   }
 }
 
-// 換頁
+// 【換頁功能】
 const itemsPerPage = 10;
 const pageCount = () => {
   return (milestoneList.length) / itemsPerPage + 1;
 }
-const displayedMilestoneList = computed(() => {
+const displayMilestoneList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return milestoneList.slice(startIdx, endIdx);
 });
 
+//【查詢功能】
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(searchValue.value);
+}
+
+const filteredMilestoneList = computed(() => {
+  const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+
+  return displayMilestoneList.value.filter(item => {
+    const idMatch = item.milestone_id.toString().includes(searchText);
+    const titleMatch = item.milestone_title.toLowerCase().includes(searchText);
+    const dateMatch = item.milestone_date.toString().includes(searchText);
+    const onlineStatusMatch = item.is_milestone_online.toString().includes(searchText);
+    const indexMatch = ((page.value - 1) * itemsPerPage) + displayMilestoneList.value.indexOf(item) + 1 === parseInt(searchText);
+    return idMatch || titleMatch || dateMatch || onlineStatusMatch || indexMatch;
+  });
+});
+
+//【資料庫連動】
 const milestoneList = reactive([])
 async function milestoneConnection() {
   try {
@@ -64,28 +84,6 @@ onMounted(() => {
   milestoneConnection()
 })
 
-
-const donateList = reactive([
-  // {
-  //   no: '1',
-  //   id: 'M001',
-  //   title: '暖心聖誕',
-  //   date: '202212',
-  // },
-  // {
-  //   no: '2',
-  //   id: 'M002',
-  //   title: '環境小尖兵',
-  //   date: '202302',
-  // },
-  // {
-  //   no: '3',
-  //   id: 'M003',
-  //   title: '愛心稻田',
-  //   date: '202306',
-  // },
-])
-
 </script>
 
 
@@ -94,7 +92,7 @@ const donateList = reactive([
     <div class="content_wrap">
       <h1>成果管理｜服務里程碑</h1>
       <div class="search">
-        <Search :placeholder="'請輸入里程碑ID'" />
+        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -110,7 +108,7 @@ const donateList = reactive([
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedMilestoneList" :key="index" class="no-border">
+            <tr v-for="(item, index) in filteredMilestoneList" :key="item.milestone_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.milestone_id }}</td>
               <td class="title">{{ item.milestone_title }}</td>  

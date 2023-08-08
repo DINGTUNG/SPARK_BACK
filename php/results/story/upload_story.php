@@ -11,7 +11,7 @@
     $online_count = "SELECT COUNT(is_story_online) FROM story WHERE is_story_online = 1";
     $online_count_result = $conn->query($online_count);
     $online_count_row = $online_count_result->fetch_assoc();
-    if ($online_count_row['COUNT(is_story_online)'] >= 6) {
+    if ($online_count_row['COUNT(is_story_online)'] >= 18) {
         header('Location: http://localhost:5173/story');
         exit();
     }

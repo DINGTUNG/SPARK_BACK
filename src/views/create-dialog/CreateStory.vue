@@ -1,14 +1,12 @@
 <script setup>
 import { ref, defineEmits} from 'vue'
+import axios from 'axios';
 const dialog = ref(false);
 
 const handleSubmit = async (event) => {
   event.preventDefault();
   try {
-    const response = await fetch('http://localhost/SPARK_BACK/php/results/story/add_story.php', {
-      method: 'POST',
-      body: formData.value,
-    })
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/add_story.php', formData)
     const storyForm = document.getElementById('storyForm')
     const formData = new FormData(storyForm);
   } catch (error) {
@@ -40,29 +38,38 @@ if (storyForm) {
         </v-card-title>
         <v-card-text>
           <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php" enctype="multipart/form-data">
-            <label for="">標題
+            <div class="form_item">
+              <label for=""><span>標題</span></label>
               <input type="text" name="story_title" required>
-            </label>
-            <label for="">日期
-              <input name="story_date" type="date" required>
-            </label>
-            <div class="imgblock">
-              <span>圖檔</span>
-              <input type="file" name="story_image" id="upImg">
-              <label for="upImg">上傳圖檔</label>
             </div>
-            <label for="">簡述
+            <div class="form_item">
+              <label for=""><span>日期</span></label>
+              <input type="date" name="story_date" required>
+            </div>
+            <div class="imgblock form_item">
+              <div class="name"><span>圖檔1</span></div>
+              <v-file-input  id="photo1" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="photo1" id="photo">上傳圖檔</label>
+                </template>
+              </v-file-input>
+            </div>
+            <div class="form_item">
+              <label for="">簡述</label>
               <textarea name="story_brief" cols="30" rows="10" required></textarea>
-            </label>
-            <label for="">段落1
+            </div>
+            <div class="form_item">
+              <label for="">段落1</label>
               <textarea name="story_detail" cols="70" rows="10" required></textarea>
-            </label>
-            <label for="">段落2
-              <textarea name="story_detail_second" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落3
-              <textarea name="story_detail_third" cols="70" rows="10"></textarea>
-            </label>
+            </div>
+            <div class="form_item">
+              <label for="">段落2</label>
+              <textarea name="story_detail_second" cols="70" rows="10" required></textarea>
+            </div>
+            <div class="form_item">
+              <label for="">段落3</label>
+              <textarea name="story_detail_third" cols="70" rows="10" required></textarea>
+            </div>
             <v-card-actions>
           <v-spacer></v-spacer>
             <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
@@ -188,9 +195,10 @@ input {
   margin-left: 1vw;
 }
 
-label {
-  margin-bottom: 20px;
-  display: flex;
+label:not(#photo) {
+  width: 20%;
+  display:inline-block;
+  text-align: right;
 }
 textarea {
     margin-left: 1vw;

@@ -1,6 +1,6 @@
 <?php
     require_once("../../conn.php");
-    $sql = "SELECT * FROM story WHERE is_story_online=1 ORDER BY story_no DESC";
+    $sql = "SELECT * FROM story WHERE is_story_online=1 AND del_flg=0 ORDER BY story_no DESC";
     $result = $conn->query($sql);
     $stories = array();
     header("Content-Type: application/json; charset=utf-8");

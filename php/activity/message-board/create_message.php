@@ -6,44 +6,57 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-  $messageNo = $_POST["message_no"] ?? null;
+  // $messageNo = $_POST["message_no"] ?? null;
   $messageContent = $_POST["message_content"] ?? null;
+  $sparkActivityNo = $_POST["spark_activity_no"] ?? null;
+  $memberNo = $_POST["member_no"] ?? null;
+
   // parameters validation
-  if ($messageNo == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供message no)");
-  }
   if ($messageContent == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供message content)");
   }
-
-  // check update record existed
-  $checkRecordAliveSql = "select count(*) as count from message_board where message_no = :message_no and del_flg = 0";
-  $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
-  $checkRecordAliveStmt->bindValue(":message_no", $messageNo);
-  $checkRecordAliveStmt->execute();
-  $checkResult = $checkRecordAliveStmt->fetchAll(PDO::FETCH_ASSOC);
-  $isNotExisted = $checkResult[0]['count'] == 0;
-
-  if ($isNotExisted) {
-    throw new UnexpectedValueException($message = "找不到刪除資料或資料已被刪除");
+  if ($sparkActivityNo == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供spark activity no)");
+  }
+  if ($memberNo == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供member no)");
   }
 
-  // update record
-  $updateSql = "update message_board set message_content = :message_content,updater='許咪咪', update_time=Now() where message_no = :message_no ";
+  // create record
+  $pdo->beginTransaction();
+
+
+  $createSql = "insert into message_board(spark_activity_no, message_content, member_no,updater) values(:message_content, :spark_activity_no, :member_no,'許咪咪')";
+  $createStmt = $pdo->prepare($createSql);
+  $createStmt->bindValue(":spark_activity_no", $sparkActivityNo);
+  $createStmt->bindValue(":message_content", $messageContent);
+
+  $createStmt->bindValue(":member_no", $memberNo);
+  $createResult = $createStmt->execute();
+
+  if (!$createResult) {
+    throw new Exception();
+  }
+  $updateSql = "update message_board set message_id = concat('SM',LPAD(LAST_INSERT_ID(), 3, 0)) where message_no = LAST_INSERT_ID()";
   $updateStmt = $pdo->prepare($updateSql);
-  $updateStmt->bindValue(":message_content", $messageContent);
-  $updateStmt->bindValue(":message_no", $messageNo);
   $updateResult = $updateStmt->execute();
+  $pdo->commit();
+
+  $selectSql = "select * from message_board where message_no = (select LAST_INSERT_ID())";
+  $selectStmt = $pdo->query($selectSql);
+  $newMessage = $selectStmt->fetch(PDO::FETCH_ASSOC);
   http_response_code(200);
-  echo json_encode($updateResult);
+  echo json_encode($newMessage);
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
   echo $e->getMessage();
+  $pdo->rollBack();
 } catch (UnexpectedValueException $e) {
   http_response_code(412);
   echo $e->getMessage();
-  
+  $pdo->rollBack();
 } catch (Exception $e) {
   http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e;
+  $pdo->rollBack();
 }

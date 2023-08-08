@@ -34,10 +34,10 @@ try {
   // update record
   $updateSql = "update message_board set message_content = :message_content,spark_activity_no = :spark_activity_no,member_no = :member_no,updater='許咪咪', update_time=Now() where message_no = :message_no ";
   $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":message_no", $messageNo);
   $updateStmt->bindValue(":message_content", $messageContent);
   $updateStmt->bindValue(":spark_activity_no", $sparkActivityNo);
   $updateStmt->bindValue(":member_no", $memberNo);
-  $updateStmt->bindValue(":message_no", $messageNo);
   $updateResult = $updateStmt->execute();
   http_response_code(200);
   echo json_encode($updateResult);

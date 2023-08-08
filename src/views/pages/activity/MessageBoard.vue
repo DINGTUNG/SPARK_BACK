@@ -77,10 +77,11 @@ const displayMessageList = computed(() => {
               <td class="member_no">{{ item.member_no }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
-                <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)"
-                  :messageContentForUpdate="item.message_content"
-                  :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)"
-                  :memberNoForUpdate="parseInt(item.member_no)" />
+                <UpdateMessagePractice 
+                :messageNoForUpdate="parseInt(item.message_no)"
+                :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)" 
+                :messageContentForUpdate="item.message_content"
+                :memberNoForUpdate="parseInt(item.member_no)" />
 
                 <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>
@@ -89,9 +90,6 @@ const displayMessageList = computed(() => {
         </v-table>
       </div>
       <CreateMessagePractice class="add" />
-      <!-- <CreateMessagePractice class="add"  :messageContentForCreate="item.message_content"
-                  :sparkActivityNoForCreate="parseInt(item.spark_activity_no)"
-                  :memberNoForCreate="parseInt(item.member_no)"  /> -->
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

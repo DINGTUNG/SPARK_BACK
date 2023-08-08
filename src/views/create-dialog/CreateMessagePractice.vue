@@ -1,13 +1,7 @@
 <script setup>
-import { ref, reactive, defineProps } from 'vue'
+import { ref} from 'vue'
 import { useMessageBoardStore } from '@/stores/message-board.js';
 const messageBoardStore = useMessageBoardStore();
-
-// const vueProps = defineProps({
-//   messageContentForCreate: String,
-//   sparkActivityNoForCreate: Number,
-//   memberNoForCreate: Number,
-// })
 
 const dialogDisplay = ref(false);
 
@@ -23,9 +17,9 @@ const sparkActivityNo = ref()
 const messageContent = ref('')
 const memberNo = ref()
 
-async function createMessage(sparkActivityNo,messageContent, memberNo) {
+async function createMessage(sparkActivityNo, messageContent, memberNo) {
   try {
-    const newMessage = await messageBoardStore.createMessageBackend(sparkActivityNo,messageContent, memberNo)
+    const newMessage = await messageBoardStore.createMessageBackend(sparkActivityNo, messageContent, memberNo)
     addContentToNewMessage(newMessage)
     console.log(messageBoardStore.messagePool);
     window.alert(`新增成功!`);
@@ -57,10 +51,10 @@ const addContentToNewMessage = (newMessage) => {
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
-            @submit.prevent="createMessage(messageContent, sparkActivityNo, memberNo)">
-            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
+            @submit.prevent="createMessage(sparkActivityNo, messageContent, memberNo)">
             <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
               v-model="sparkActivityNo">
+            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
             <label for="member_no">會員編號</label> <input type="number" name="member_no" v-model="memberNo">
             <v-card-actions>
               <v-spacer></v-spacer>

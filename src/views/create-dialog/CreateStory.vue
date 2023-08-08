@@ -48,7 +48,7 @@ if (storyForm) {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
-              <v-file-input  id="photo1" prepend-icon="none">
+              <v-file-input name="story_image" id="photo1" prepend-icon="none">
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
@@ -56,19 +56,19 @@ if (storyForm) {
             </div>
             <div class="form_item">
               <label for="">簡述</label>
-              <textarea name="story_brief" cols="30" rows="10" required></textarea>
+              <textarea name="story_brief" placeholder="50字左右可以獲得最佳顯示效果喔~" cols="30" rows="10" required></textarea>
             </div>
             <div class="form_item">
               <label for="">段落1</label>
-              <textarea name="story_detail" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
             </div>
             <div class="form_item">
               <label for="">段落2</label>
-              <textarea name="story_detail_second" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail_second" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
             </div>
             <div class="form_item">
               <label for="">段落3</label>
-              <textarea name="story_detail_third" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail_third" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
             </div>
             <v-card-actions>
           <v-spacer></v-spacer>

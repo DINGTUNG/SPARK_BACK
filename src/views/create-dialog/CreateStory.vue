@@ -1,14 +1,12 @@
 <script setup>
 import { ref, defineEmits} from 'vue'
+import axios from 'axios';
 const dialog = ref(false);
 
 const handleSubmit = async (event) => {
   event.preventDefault();
   try {
-    const response = await fetch('http://localhost/SPARK_BACK/php/results/story/add_story.php', {
-      method: 'POST',
-      body: formData.value,
-    })
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/add_story.php', formData)
     const storyForm = document.getElementById('storyForm')
     const formData = new FormData(storyForm);
   } catch (error) {
@@ -39,33 +37,39 @@ if (storyForm) {
           <span class="text-h5">新增消息</span>
         </v-card-title>
         <v-card-text>
-          <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php">
-            <label for="">標題
-              <input type="text" name="story_title">
-            </label>
-            <label for="">日期
-              <input name="story_date" type="date">
-            </label>
-            <label for="">編號ST
-              <input type="text" name="story_id">
-            </label>
-            <div class="imgblock">
-              <span>圖檔</span>
-              <input type="file" name="story_image" id="upImg">
-              <label for="upImg">上傳圖檔</label>
+          <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php" enctype="multipart/form-data">
+            <div class="form_item">
+              <label for=""><span>標題</span></label>
+              <input type="text" name="story_title" required>
             </div>
-            <label for="">簡述
-              <textarea name="story_brief" cols="30" rows="10"></textarea>
-            </label>
-            <label for="">段落1
-              <textarea name="story_detail" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落2
-              <textarea name="story_detail_second" cols="70" rows="10"></textarea>
-            </label>
-            <label for="">段落3
-              <textarea name="story_detail_third" cols="70" rows="10"></textarea>
-            </label>
+            <div class="form_item">
+              <label for=""><span>日期</span></label>
+              <input type="date" name="story_date" required>
+            </div>
+            <div class="imgblock form_item">
+              <div class="name"><span>圖檔1</span></div>
+              <v-file-input  id="photo1" prepend-icon="none">
+                <template v-slot:prepend-inner>
+                  <label for="photo1" id="photo">上傳圖檔</label>
+                </template>
+              </v-file-input>
+            </div>
+            <div class="form_item">
+              <label for="">簡述</label>
+              <textarea name="story_brief" cols="30" rows="10" required></textarea>
+            </div>
+            <div class="form_item">
+              <label for="">段落1</label>
+              <textarea name="story_detail" cols="70" rows="10" required></textarea>
+            </div>
+            <div class="form_item">
+              <label for="">段落2</label>
+              <textarea name="story_detail_second" cols="70" rows="10" required></textarea>
+            </div>
+            <div class="form_item">
+              <label for="">段落3</label>
+              <textarea name="story_detail_third" cols="70" rows="10" required></textarea>
+            </div>
             <v-card-actions>
           <v-spacer></v-spacer>
             <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
@@ -87,9 +91,17 @@ if (storyForm) {
   width: 50%;
 }
 
+:deep(.v-field__overlay) {
+  background-color: #fff;
+}
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
+  
+
+}
+:deep(.v-input--center-affix .v-input__prepend){
+  display: none;
 }
 
 :deep(.v-btn__content) {
@@ -103,8 +115,18 @@ if (storyForm) {
 
 :deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
   padding: 500px;
+  
 }
 
+
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended){
+  position: relative;
+  right: 20px;
+}
+
+#data{
+  padding: 0;
+}
 .text-h5 {
   color: $primaryBrandBlue;
   @include h5_PC;
@@ -112,50 +134,85 @@ if (storyForm) {
 
 }
 
-.imgblock {
+.form_item{
   display: flex;
-
-  input[type="file"] {
-    border: 1px transparent;
+  width: 80%;
+  margin: 0 auto 2%;
+  gap: 6%;
+  div.name{
+    width: 20%;
+    display: flex;
+    span{
+      margin-left:auto;
+    }
+  }
+ 
+}
+.imgblock {
+  margin: 5% auto 2%;
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+  :deep(.v-field__input){
+    font-size:12px ;
+    line-height: 5vh;
+    padding: 0;
+  }
+  :deep(.v-input__control) {
+    width: 70%;
+    height: 5vh;
   }
 
-
-  input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
+  label#photo{
+      margin-bottom: 0;
+      position: absolute;
+      padding: 10px;
+      width: fit-content;
+      top: -5px;
+      right: -100px;
+      background-color: $primaryBrandBlue;
+      border-radius: 50px;
+      color: #ffff;
+      cursor: pointer;
+      font-size:14px;
   }
 
 }
 
 input {
   height: 5vh;
-  padding-left: 10px;
-  padding-top: 5px;
   margin-left: 1vw;
-  width: 2vw;
+  padding-left:1vw ;
   width: 50%;
-  border: 1px solid;
+  border: 1px solid $primaryBrandBlue;
   border-radius: $br_MB;
+  &:focus{
+    border:2px solid $primaryBrandBlue ;
+  }
 }
 
-label {
-  margin-bottom: 20px;
-  display: flex;
+:deep(.imgblock[data-v-52299880] .v-field.v-field--appended) {
+  margin-left: 1vw;
+}
 
-  textarea {
+label:not(#photo) {
+  width: 20%;
+  display:inline-block;
+  text-align: right;
+}
+textarea {
     margin-left: 1vw;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-top: 10px;
+    border: 1px solid $primaryBrandBlue;
     border-radius: $br_MB;
-
+    width: 70%;
+    box-sizing: border-box;
+    padding: 1vw;
   }
+
+
+:deep(.v-field__outline) {
+  border: 1px solid $primaryBrandBlue;
+  border-radius: $br_MB;
 }
 
 :deep(.v-btn.v-btn--density-default) {
@@ -167,11 +224,4 @@ label {
   margin-right: 20px;
 
 }
-
-
-// #upImg {
-//     opacity: 0;
-//     position: absolute;
-//     z-index: -1;
-//   }
 </style>

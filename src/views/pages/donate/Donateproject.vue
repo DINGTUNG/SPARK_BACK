@@ -1,7 +1,10 @@
 <script setup>
 import CreateDonateProject from '@/views/create-dialog/CreateDonateProject.vue';
+import UpdateDonateProject from '@/views/update-dialog/UpdateDonateProject.vue';
+import Search from '@/components/Search.vue';
+import { ref, reactive, computed, onMounted } from 'vue'
+import axios from 'axios';
 
-import { ref, reactive, computed } from 'vue'
 const page = ref(1)
 
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
@@ -43,176 +46,195 @@ const displayedDonateList = computed(() => {
 });
 
 
-const donateList = reactive([
-  {
-    no: '1',
-    id: '001',
-    name: '扶幼捐款',
-    start_date: '2023.01.17',
-    end_date: '2028.01.17',
-  },
-  {
-    no: '2',
-    id: '002',
-    name: '兒童保護',
-    start_date: '2023.03.08',
-    end_date: '2028.03.08',
-  },
-  {
-    no: '3',
-    id: '003',
-    name: '助養召集令',
-    start_date: '2023.05.22',
-    end_date: '2028.05.22',
-  },
-  {
-    no: '4',
-    id: '004',
-    name: '獎助學金',
-    start_date: '2023.06.27',
-    end_date: '2028.06.27',
-  },
-  {
-    no: '5',
-    id: '005',
-    name: '急難救助金',
-    start_date: '2023.08.05',
-    end_date: '2028.08.05',
-  },
-  {
-    no: '6',
-    id: '006',
-    name: '營養補助',
-    start_date: '2023.11.13',
-    end_date: '2028.11.13',
-  },
-  {
-    no: '7',
-    id: '007',
-    name: '特殊醫療照顧',
-    start_date: '2023.12.26',
-    end_date: '2028.12.26',
-  },
-  {
-    no: '8',
-    id: '008',
-    name: '特殊節日送暖金',
-    start_date: '2024.01.10',
-    end_date: '2028.01.10',
-  },
-  {
-    no: '9',
-    id: '009',
-    name: '扶幼捐款',
-    start_date: '2023.01.17',
-    end_date: '2028.01.17',
-  },
-  {
-    no: '10',
-    id: '010',
-    name: '助養召集令',
-    start_date: '2023.03.08',
-    end_date: '2028.03.08',
-  },
-  {
-    no: '11',
-    id: '011',
-    name: '獎助學金',
-    start_date: '2023.05.22',
-    end_date: '2028.05.22',
-  },
-  {
-    no: '12',
-    id: '012',
-    name: '急難救助金',
-    start_date: '2023.06.27',
-    end_date: '2028.06.27',
-  },
-  {
-    no: '13',
-    id: '013',
-    name: '獎助學金',
-    start_date: '2023.08.05',
-    end_date: '2028.08.05',
-  },
-  {
-    no: '14',
-    id: '014',
-    name: '營養補助',
-    start_date: '2023.11.13',
-    end_date: '2028.11.13',
-  },
-  {
-    no: '15',
-    id: '015',
-    name: '特殊醫療照顧',
-    start_date: '2023.12.26',
-    end_date: '2028.12.26',
-  },
-  {
-    no: '16',
-    id: '016',
-    name: '營養補助',
-    start_date: '2024.01.10',
-    end_date: '2028.01.10',
-  },
-  {
-    no: '17',
-    id: '017',
-    name: '助養召集令',
-    start_date: '2023.08.05',
-    end_date: '2028.08.05',
-  },
-  {
-    no: '18',
-    id: '018',
-    name: '特殊醫療照顧',
-    start_date: '2023.11.13',
-    end_date: '2028.11.13',
-  },
-  {
-    no: '19',
-    id: '019',
-    name: '扶幼捐款',
-    start_date: '2023.12.26',
-    end_date: '2028.12.26',
-  },
-  {
-    no: '20',
-    id: '020',
-    name: '兒童保護',
-    start_date: '2024.01.10',
-    end_date: '2028.01.10',
-  },
-  {
-    no: '21',
-    id: '021',
-    name: '助養召集令',
-    start_date: '2023.08.05',
-    end_date: '2028.08.05',
-  },
-  {
-    no: '22',
-    id: '022',
-    name: '兒童保護',
-    start_date: '2023.11.13',
-    end_date: '2028.11.13',
-  },
-  {
-    no: '23',
-    id: '023',
-    name: '營養補助',
-    start_date: '2023.12.26',
-    end_date: '2028.12.26',
-  },
-  {
-    no: '24',
-    id: '024',
-    name: '特殊節日送暖金',
-    start_date: '2024.01.10',
-    end_date: '2028.01.10',
-  },
-])
+// const donateList = reactive([
+//   {
+//     no: '1',
+//     id: '001',
+//     name: '扶幼捐款',
+//     start_date: '2023.01.17',
+//     end_date: '2028.01.17',
+//   },
+//   {
+//     no: '2',
+//     id: '002',
+//     name: '兒童保護',
+//     start_date: '2023.03.08',
+//     end_date: '2028.03.08',
+//   },
+//   {
+//     no: '3',
+//     id: '003',
+//     name: '助養召集令',
+//     start_date: '2023.05.22',
+//     end_date: '2028.05.22',
+//   },
+//   {
+//     no: '4',
+//     id: '004',
+//     name: '獎助學金',
+//     start_date: '2023.06.27',
+//     end_date: '2028.06.27',
+//   },
+//   {
+//     no: '5',
+//     id: '005',
+//     name: '急難救助金',
+//     start_date: '2023.08.05',
+//     end_date: '2028.08.05',
+//   },
+//   {
+//     no: '6',
+//     id: '006',
+//     name: '營養補助',
+//     start_date: '2023.11.13',
+//     end_date: '2028.11.13',
+//   },
+//   {
+//     no: '7',
+//     id: '007',
+//     name: '特殊醫療照顧',
+//     start_date: '2023.12.26',
+//     end_date: '2028.12.26',
+//   },
+//   {
+//     no: '8',
+//     id: '008',
+//     name: '特殊節日送暖金',
+//     start_date: '2024.01.10',
+//     end_date: '2028.01.10',
+//   },
+//   {
+//     no: '9',
+//     id: '009',
+//     name: '扶幼捐款',
+//     start_date: '2023.01.17',
+//     end_date: '2028.01.17',
+//   },
+//   {
+//     no: '10',
+//     id: '010',
+//     name: '助養召集令',
+//     start_date: '2023.03.08',
+//     end_date: '2028.03.08',
+//   },
+//   {
+//     no: '11',
+//     id: '011',
+//     name: '獎助學金',
+//     start_date: '2023.05.22',
+//     end_date: '2028.05.22',
+//   },
+//   {
+//     no: '12',
+//     id: '012',
+//     name: '急難救助金',
+//     start_date: '2023.06.27',
+//     end_date: '2028.06.27',
+//   },
+//   {
+//     no: '13',
+//     id: '013',
+//     name: '獎助學金',
+//     start_date: '2023.08.05',
+//     end_date: '2028.08.05',
+//   },
+//   {
+//     no: '14',
+//     id: '014',
+//     name: '營養補助',
+//     start_date: '2023.11.13',
+//     end_date: '2028.11.13',
+//   },
+//   {
+//     no: '15',
+//     id: '015',
+//     name: '特殊醫療照顧',
+//     start_date: '2023.12.26',
+//     end_date: '2028.12.26',
+//   },
+//   {
+//     no: '16',
+//     id: '016',
+//     name: '營養補助',
+//     start_date: '2024.01.10',
+//     end_date: '2028.01.10',
+//   },
+//   {
+//     no: '17',
+//     id: '017',
+//     name: '助養召集令',
+//     start_date: '2023.08.05',
+//     end_date: '2028.08.05',
+//   },
+//   {
+//     no: '18',
+//     id: '018',
+//     name: '特殊醫療照顧',
+//     start_date: '2023.11.13',
+//     end_date: '2028.11.13',
+//   },
+//   {
+//     no: '19',
+//     id: '019',
+//     name: '扶幼捐款',
+//     start_date: '2023.12.26',
+//     end_date: '2028.12.26',
+//   },
+//   {
+//     no: '20',
+//     id: '020',
+//     name: '兒童保護',
+//     start_date: '2024.01.10',
+//     end_date: '2028.01.10',
+//   },
+//   {
+//     no: '21',
+//     id: '021',
+//     name: '助養召集令',
+//     start_date: '2023.08.05',
+//     end_date: '2028.08.05',
+//   },
+//   {
+//     no: '22',
+//     id: '022',
+//     name: '兒童保護',
+//     start_date: '2023.11.13',
+//     end_date: '2028.11.13',
+//   },
+//   {
+//     no: '23',
+//     id: '023',
+//     name: '營養補助',
+//     start_date: '2023.12.26',
+//     end_date: '2028.12.26',
+//   },
+//   {
+//     no: '24',
+//     id: '024',
+//     name: '特殊節日送暖金',
+//     start_date: '2024.01.10',
+//     end_date: '2028.01.10',
+//   },
+// ])
+
+const donateList = reactive([])
+async function donateConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-project/donate_project.php')
+    console.log(response)
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        donateList.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+onMounted(() => {
+  donateConnection()
+})
+
 
 </script>
 
@@ -221,6 +243,9 @@ const donateList = reactive([
   <div class="container">
     <div class="content_wrap">
       <h1>捐款管理｜捐款專案</h1>
+      <div class="search">
+        <Search :placeholder="'請輸入專案編號'" />
+      </div>
       <div class="table_container">
         <v-table>
           <thead>
@@ -238,26 +263,27 @@ const donateList = reactive([
           <tbody>
             <tr v-for="(item, index) in displayedDonateList" :key="index" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.id }}</td>
-              <td class="name">{{ item.name }}</td>
-              <td class="start_date">{{ item.start_date }}</td>
-              <td class="end_date">{{ item.end_date }}</td>
+              <td class="id">{{ item.donate_project_id }}</td>
+              <td class="name">{{ item.donate_project_name }}</td>
+              <td class="start_date">{{ item.donate_project_start_date }}</td>
+              <td class="end_date">{{ item.donate_project_end_date }}</td>
               <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+              <td class="update_and_delete">
+                <UpdateDonateProject />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-      <CreateDonateProject  class="add" />
+      <CreateDonateProject class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

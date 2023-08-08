@@ -1,20 +1,18 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref } from 'vue'
 const dialog = ref(false);
 </script>
+
 <template>
-    <v-row justify="end">
+    <v-row class="row" style="flex: 0;">
         <v-dialog v-model="dialog" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
-                    新增
-                </v-btn>
+                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
             </template>
-
             <v-card>
                 <div class="scrollbar_wrap">
                     <v-card-title>
-                        <span class="main_title">新增夢想之星</span>
+                        <span class="main_title">編輯夢想之星</span>
                     </v-card-title>
                     <v-card-text>
                         <form action="">
@@ -78,7 +76,6 @@ const dialog = ref(false);
                     </v-card-actions>
                 </div>
             </v-card>
-
         </v-dialog>
     </v-row>
 </template>

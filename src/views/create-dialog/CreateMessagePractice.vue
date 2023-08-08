@@ -1,27 +1,45 @@
 <script setup>
-import { ref, reactive, computed,defineProps,defineEmits } from 'vue'
-const { dataItems } = defineProps(['locationList']);
-const { emit } = defineEmits();
+import { ref } from 'vue'
+import { useMessageBoardStore } from '@/stores/message-board.js';
+const messageBoardStore = useMessageBoardStore();
 
+const vueProps = defineProps({
+  messageNoForUpdate: Number
+})
 
-const dialog = ref(false);
+const dialogDisplay = ref(false);
 
-function onAddDataClick() {
-    const newLocation = {
-        id:location_no,
-        name: newLocationName,
-    }
-    dialog.value = false;
-
-    emit('localAdd', newLocation);
+function showDialog() {
+  dialogDisplay.value = true;
 }
+
+function closeDialog() {
+  dialogDisplay.value = false;
+}
+
+async function createMessage() {
+  try {
+    if (messageNoForUpdate == null) {
+      throw new Error("Message no. not found!")
+    }
+    await messageBoardStore.updateMessageBackend(messageNoForUpdate, messageContent)
+    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate)
+    window.alert(`編輯成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+  } finally {
+    closeDialog()
+  }
+}
+
 </script>
 
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props">
+        <v-btn color="primary" v-bind="props" @click="showDialog">
           新增
         </v-btn>
       </template>
@@ -30,21 +48,25 @@ function onAddDataClick() {
           <span class="text-h5">新增留言資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
-            <label for="">留言內容
-              <input type="text">
-            </label>
+          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
+            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, messageBoardStore.messageContent)">
+            <label for="message_content">留言內容</label> <input type="text" name="message_content"
+              v-model="messageBoardStore.sparkActivityNo">
+            <label for="spark_activity_no">星火活動編號</label> <input type="text" name="spark_activity_no"
+              v-model="messageBoardStore.messageContent">
+            <label for="member_no">會員編號</label> <input type="text" name="member_no"
+              v-model="messageBoardStore.memberNo">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                取消
+              </v-btn>
+              <v-btn class="delete btn" variant="text" type="submit">
+                確定
+              </v-btn>
+            </v-card-actions>
           </form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            儲存
-          </v-btn>
-        </v-card-actions>
+        </v-card-text>2
       </v-card>
     </v-dialog>
   </v-row>
@@ -83,6 +105,7 @@ label {
   font-weight: 900;
 
 }
+
 .imgblock {
   display: flex;
 
@@ -140,5 +163,4 @@ label {
 
 :deep(.v-btn__content) {
   font-size: 20px;
-}
-</style>
+}</style>

@@ -7,12 +7,27 @@
     } else {
         $status_code = 1;
     }
-    echo $story_no ." ". $is_story_online. "<br>";
-    echo $status_code. "<br>";
+
+    $online_count = "SELECT COUNT(is_story_online) FROM story WHERE is_story_online = 1";
+    $online_count_result = $conn->query($online_count);
+    $online_count_row = $online_count_result->fetch_assoc();
+    if ($online_count_row['COUNT(is_story_online)'] >= 18) {
+        header('Location: http://localhost:5173/story');
+        exit();
+    }
+
     $sql = "UPDATE story SET is_story_online = $status_code  WHERE story_no = $story_no";
+
+
     if ($conn->query($sql)) {
         header('Location: http://localhost:5173/story');
     } else {
-        echo('刪除失敗'.$conn->error);
+        $json = array(
+            "ok" => false,
+            "massage" => "上線失敗"
+        );
+        $response = json_encode($json);
+        echo $response;
+        header('Location: http://localhost:5173/story');
     }
 ?>

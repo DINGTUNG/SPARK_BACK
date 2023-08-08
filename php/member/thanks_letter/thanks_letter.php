@@ -1,8 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin: *");//標頭修改
- require_once("../connect_chd102g3.php");
+ require_once("../../connect_chd102g3.php");
 try{
-  $sql = "select * from cms_staff";
+  $sql = "select * from thanks_letter";
   $location=$pdo->prepare($sql);
   $location->execute();
   

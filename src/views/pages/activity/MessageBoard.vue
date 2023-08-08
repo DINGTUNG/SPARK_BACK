@@ -40,6 +40,9 @@ const displayMessageList = computed(() => {
   return messageBoardStore.messagePool.slice(startIdx, endIdx);
 });
 
+// const message = 
+
+
 </script>
 
 <template>
@@ -86,6 +89,9 @@ const displayMessageList = computed(() => {
         </v-table>
       </div>
       <CreateMessagePractice class="add" />
+      <!-- <CreateMessagePractice class="add"  :messageContentForCreate="item.message_content"
+                  :sparkActivityNoForCreate="parseInt(item.spark_activity_no)"
+                  :memberNoForCreate="parseInt(item.member_no)"  /> -->
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useMessageBoardStore } from '@/stores/message-board.js';
 const messageBoardStore = useMessageBoardStore();
 
@@ -64,8 +64,7 @@ async function updateMessage(messageNoForUpdate, messageContent, sparkActivityNo
               v-model="messageContent">
             <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
               v-model="sparkActivityNo">
-            <label for="member_no">會員編號</label> <input type="number" name="member_no"
-              v-model="memberNo">
+            <label for="member_no">會員編號</label> <input type="number" name="member_no" v-model="memberNo">
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">

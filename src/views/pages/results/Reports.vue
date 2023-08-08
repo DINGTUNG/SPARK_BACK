@@ -140,9 +140,7 @@ onMounted(() => {
   reportConnection()
 })
 
-
 </script>
-
 
 <template>
   <div class="container">

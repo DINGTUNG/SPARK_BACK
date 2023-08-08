@@ -59,7 +59,7 @@ div.search_container {
       position: absolute;
       top: 1vh;
       right: 1.5vw;
-
+      
       @include btnEffect;
     }
   }

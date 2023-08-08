@@ -1,5 +1,6 @@
 <script setup>
 import CreateCmsStaff from '@/views/create-dialog/CreateCmsStaff.vue';
+import UpdateCmsStaff from '@/views/update-dialog/UpdateCmsStaff.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -101,7 +102,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>後台管理｜後台人員</h1>
       <div class="search">
-        <Search :placeholder="'請輸入消息資訊'" />
+        <Search :placeholder="'請輸入人員編號'" />
       </div>
       <div class="table_container">
         <v-table>
@@ -126,10 +127,11 @@ onMounted(() => {
               <td class="email">{{ item.staff_email }}</td>
               <td class="account">{{ item.staff_account }}</td>
               <td class="password">{{ item.staff_password }}</td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
+              <td class="update_and_delete">
+                <UpdateCmsStaff />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item.raw)" v-show="index !== 0">mdi-delete</v-icon>
               </td>
             </tr>

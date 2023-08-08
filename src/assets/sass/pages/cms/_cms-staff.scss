@@ -67,6 +67,16 @@ div.container {
       }
 
     }
+
+    td.update_and_delete {
+      display: flex;
+      align-items: center;
+
+      .v-row {
+        flex: 0;
+      }
+    }
+
   }
 }
 

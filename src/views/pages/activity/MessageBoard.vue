@@ -40,6 +40,9 @@ const displayMessageList = computed(() => {
   return messageBoardStore.messagePool.slice(startIdx, endIdx);
 });
 
+// const message = 
+
+
 </script>
 
 <template>
@@ -74,10 +77,11 @@ const displayMessageList = computed(() => {
               <td class="member_no">{{ item.member_no }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
-                <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)"
-                  :messageContentForUpdate="item.message_content"
-                  :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)"
-                  :memberNoForUpdate="parseInt(item.member_no)" />
+                <UpdateMessagePractice 
+                :messageNoForUpdate="parseInt(item.message_no)"
+                :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)" 
+                :messageContentForUpdate="item.message_content"
+                :memberNoForUpdate="parseInt(item.member_no)" />
 
                 <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>

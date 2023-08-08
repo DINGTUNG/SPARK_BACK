@@ -1,5 +1,5 @@
 <script setup>
-import Search from '@/components/Search.vue'; //查詢功能
+import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
@@ -45,7 +45,7 @@ const displayMilestoneList = computed(() => {
 //【查詢功能】
 const searchValue = ref('');
 function handleSearchChange(newValue) {
-  searchValue.value = newValue;
+  searchValue.value = event.target.value;
   console.log(searchValue.value);
 }
 
@@ -56,7 +56,7 @@ const filteredMilestoneList = computed(() => {
     const idMatch = item.milestone_id.toString().includes(searchText);
     const titleMatch = item.milestone_title.toLowerCase().includes(searchText);
     const dateMatch = item.milestone_date.toString().includes(searchText);
-    const onlineStatusMatch = item.is_milestone_online.toString().includes(searchText);
+    const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
     const indexMatch = ((page.value - 1) * itemsPerPage) + displayMilestoneList.value.indexOf(item) + 1 === parseInt(searchText);
     return idMatch || titleMatch || dateMatch || onlineStatusMatch || indexMatch;
   });
@@ -92,7 +92,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>成果管理｜服務里程碑</h1>
       <div class="search">
-        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue" @search="handleSearchChange" />
+        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue"  @input="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>

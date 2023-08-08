@@ -64,16 +64,20 @@ function handleSearchChange(newValue) {
 }
 
 const filteredLocationList = computed(() => {
-  const searchText = searchValue.value.toString().toLowerCase(); // 确保将 searchValue 转换为字符串并进行小写转换
-
+  const searchText = searchValue.value ? searchValue.value.trim().toLowerCase() : '';
   return displayLocationList.value.filter(item => {
     const idMatch = item.location_id.toString().includes(searchText);
-    const nameMatch = item.location_name.toLowerCase().includes(searchText);
-    const onlineStatusMatch = item.is_sponsor_location_online.toString().includes(searchText);
-    const indexMatch = ((page.value - 1) * itemsPerPage) + displayLocationList.value.indexOf(item) + 1 === parseInt(searchText);
-    return idMatch || nameMatch || onlineStatusMatch || indexMatch;
+    if (isNaN(parseInt(searchText))) {
+      const nameMatch = item.location_name.toLowerCase().includes(searchText);
+      const onlineStatusMatch = item.is_sponsor_location_online.toString().includes(searchText);
+      const indexMatch = ((page.value - 1) * itemsPerPage) + displayLocationList.value.indexOf(item) + 1 === parseInt(searchText);
+      return idMatch || nameMatch || onlineStatusMatch || indexMatch;
+    } else {
+      return idMatch;
+    }
   });
 });
+
 </script>
 
 <template>
@@ -139,7 +143,6 @@ const filteredLocationList = computed(() => {
     </v-dialog>
   </div>
 </template>
-
 <style scoped lang="scss">
 @import "@/assets/sass/pages/sponsor/sponsor-location";
 </style>

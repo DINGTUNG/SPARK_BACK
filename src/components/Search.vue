@@ -15,6 +15,10 @@ function handleSearch(e) {
   const newValue = e.target.value;
   emit('search', newValue);
 }
+
+function performSearch() {
+  emit('search', props.searchValue);
+}
 </script>
 
 
@@ -23,7 +27,7 @@ function handleSearch(e) {
     <div class="search_inner">
       <label for="">查詢</label>
       <input class="search" type="text" :placeholder="props.placeholder" @change="handleSearch">
-      <v-icon class="icon" size="large" @click="handleSearch">mdi-magnify</v-icon>
+      <v-icon class="icon" size="large" @click="performSearch">mdi-magnify</v-icon>
     </div>
   </div>
 </template>
@@ -67,7 +71,6 @@ div.search_container {
       position: absolute;
       top: 1vh;
       right: 1.5vw;
-
       @include btnEffect;
     }
   }

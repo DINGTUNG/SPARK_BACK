@@ -1,18 +1,27 @@
 <script setup>
 import CreateStory from '@/views/create-dialog/CreateStory.vue';
 import UpdateStory from '@/views/update-dialog/UpdateStory.vue';
-import { ref, reactive,computed } from 'vue'
+import axios from 'axios';
+import { ref, reactive,computed, onMounted } from 'vue'
 const dialogDelete = ref(false);
 const page = ref(1)
 
-let storyList = reactive([])
-  //讀取資料
-  fetch('http://localhost/SPARK_BACK/php/results/story/read_story.php')
-    .then(res => res.json())
-    .then(data => {
-      storyList.value = data.stories
-    })
-    .catch(err => console.log(err))
+
+const storyList = reactive([])
+async function getData() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/read_story.php')
+    if(response.data.stories.length > 0) {
+      storyList.value = response.data.stories
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+onMounted(() => {
+  getData()
+})
+
     
   //分頁
     const itemsPerPage = 10;
@@ -38,9 +47,9 @@ const sumOnlineCount = () => {
 
 const switchOnline =  ( no, online ) => {
     sumOnlineCount()
-    if (onlineCount.value >= 6 && online == 0) {  
+    if (onlineCount.value >= 18 && online == 0) {  
       storyList.value.filter(item => item.story_no == no).is_story_online = false
-      alert('上架數量已達上限(6篇)')
+      alert('上架數量已達上限(18篇)')
     } 
       window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
 }
@@ -58,6 +67,7 @@ const closeDelete = () => {
 const deleteItemConfirm = () => {//把要刪除的id傳到php
   window.location.assign(`http://localhost/SPARK_BACK/php/results/story/delete_story.php?story_no=${deleteId}`)
 }
+
 
 </script>
 

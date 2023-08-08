@@ -1,5 +1,6 @@
 <script setup>
 import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
+import UpdateDreamStar from '@/views/update-dialog/UpdateDreamStar.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -115,7 +116,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>夢想之星</h1>
       <div class="search">
-        <Search :placeholder="'請輸入消息資訊'" />
+        <Search :placeholder="'請輸入計畫編號'" />
       </div>
       <div class="table_container">
         <v-table>
@@ -140,10 +141,11 @@ onMounted(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
+              <td class="update_and_delete">
+                <UpdateDreamStar />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item)">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

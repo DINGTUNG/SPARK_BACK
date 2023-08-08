@@ -1,5 +1,6 @@
 <script setup>
 import CreateDonateProject from '@/views/create-dialog/CreateDonateProject.vue';
+import UpdateDonateProject from '@/views/update-dialog/UpdateDonateProject.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -243,7 +244,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>捐款管理｜捐款專案</h1>
       <div class="search">
-        <Search :placeholder="'請輸入消息資訊'" />
+        <Search :placeholder="'請輸入專案編號'" />
       </div>
       <div class="table_container">
         <v-table>
@@ -271,10 +272,11 @@ onMounted(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+              <td class="update_and_delete">
+                <UpdateDonateProject />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
               </td>
             </tr>

@@ -1,14 +1,10 @@
 <script setup>
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed, onMounted, defineProps } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
 import { useSponsorOrderStore } from '@/stores/sponsor-order.js';
 
 const sponsorOrderStore = useSponsorOrderStore();
-
-const vueProps = defineProps({
-  sponsorOrderNoForUpdate: Number,
-})
 
 
 

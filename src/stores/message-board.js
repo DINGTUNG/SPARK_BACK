@@ -7,7 +7,7 @@ import {
 } from 'vue'
 import axios from 'axios';
 
-export const useMessageBoardStore = defineStore('template', () => {
+export const useMessageBoardStore = defineStore('message-board', () => {
 
   const messagePool = reactive([])
 

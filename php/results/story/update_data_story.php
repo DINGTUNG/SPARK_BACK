@@ -1,18 +1,13 @@
 <?php
-    require_once('../../conn.php');
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: PUT, GET, POST");
-    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-    header("Content-Type: application/json; charset=utf-8");
-    
+    require_once("../../connect_chd102g3.php");
 
     $story_no = $_GET['story_no'];
 
     $sql = "SELECT * FROM story WHERE story_no=". $story_no;
-    $result = $conn->query($sql);
+    $result = $pdo->query($sql);
     $storyInfo = array();
     
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         array_push($storyInfo, array(
             "story_no"=> $row['story_no'],
             "story_title"=> $row['story_title'],

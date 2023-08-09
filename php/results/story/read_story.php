@@ -1,10 +1,11 @@
 <?php
-    require_once("../../conn.php");
-    $sql = "SELECT * FROM story WHERE del_flg=0 ORDER BY story_no DESC";
-    $result = $conn->query($sql);
+    require_once("../../connect_chd102g3.php");
+
+    $sql = "SELECT * FROM story WHERE del_flg=0 ORDER BY story_no DESC";    
+    $result = $pdo->query($sql);
     $stories = array();
     header("Content-Type: application/json; charset=utf-8");
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         array_push($stories, array(
             "story_no"=> $row['story_no'],
             "story_id"=> $row['story_id'],

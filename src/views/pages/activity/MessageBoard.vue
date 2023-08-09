@@ -56,9 +56,9 @@ const displayMessageList = computed(() => {
               <th>No.</th>
               <th>留言編號</th>
               <th>留言ID</th>
-              <th>星火活動編號</th>
+              <th>星火活動ID</th>
               <th>留言內容</th>
-              <th>會員編號</th>
+              <th>會員ID</th>
               <th>留言時間</th>
               <th>刪除</th>
             </tr>
@@ -69,16 +69,16 @@ const displayMessageList = computed(() => {
 
               <td class="message_no">{{ item.message_no }}</td>
               <td class="message_id">{{ item.message_id }}</td>
-              <td class="spark_activity_no">{{ item.spark_activity_no }}</td>
+              <td class="spark_activity_id">{{ item.spark_activity_id }}</td>
               <td class="message_content">{{ item.message_content }}</td>
-              <td class="member_no">{{ item.member_no }}</td>
+              <td class="member_id">{{ item.member_id }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
                 <UpdateMessagePractice 
                 :messageNoForUpdate="parseInt(item.message_no)"
-                :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)" 
+                :sparkActivityIdForUpdate="item.spark_activity_id" 
                 :messageContentForUpdate="item.message_content"
-                :memberNoForUpdate="parseInt(item.member_no)" />
+                :memberIdForUpdate="item.member_id" />
 
                 <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>

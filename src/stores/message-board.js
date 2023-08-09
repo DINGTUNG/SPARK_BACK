@@ -51,13 +51,13 @@ export const useMessageBoardStore = defineStore('message-board', () => {
   }
 
   // update
-  function updateMessageBackend(messageNo,sparkActivityNo,messageContent,memberNo) {
+  function updateMessageBackend(messageNo,sparkActivityId,messageContent,memberId) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("message_no", messageNo);
-    payLoad.append("spark_activity_no", sparkActivityNo);
+    payLoad.append("spark_activity_no", sparkActivityId);
     payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
+    payLoad.append("member_id", memberId);
 
     // make a request
     const request = {
@@ -83,12 +83,12 @@ export const useMessageBoardStore = defineStore('message-board', () => {
     });
   }
 
-  const updateMessageFromMessagePool = (messageNo,sparkActivityNo,messageContent,memberNo) => {
+  const updateMessageFromMessagePool = (messageNo,sparkActivityId,messageContent,memberId) => {
     for (let i = 0; i < messagePool.length; i++) {
       if (messagePool[i].message_no == messageNo) {
-      messagePool[i].spark_activity_no = sparkActivityNo
+      messagePool[i].spark_activity_id = sparkActivityId
       messagePool[i].message_content = messageContent
-      messagePool[i].member_no = memberNo
+      messagePool[i].member_id = memberId
       }
     }
   }
@@ -97,9 +97,7 @@ export const useMessageBoardStore = defineStore('message-board', () => {
   function createMessageBackend(messageContent) {
     // prepare data 
     const payLoad = new FormData();
-    // payLoad.append("spark_activity_no", sparkActivityNo);
     payLoad.append("message_content", messageContent);
-    // payLoad.append("member_no", memberNo);
 
     // make a request
     const request = {

@@ -22,7 +22,7 @@
     if($_FILES['story_image']['error']>0){
         die("檔案上傳失敗");
         }
-        $targetDir = 'C:/Users/T14 Gen 3/Desktop/SPARK/public/pictures/images/results/story-gallery/story/';
+        $targetDir = '../../../images/story/';
         $storyNo = $story_id_assignment;
     
         // 得到原始檔案名稱

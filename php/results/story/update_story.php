@@ -26,7 +26,7 @@
    
     //上傳圖片
     if ($_FILES['story_image']['name']) {
-        $targetDir = 'C:/Users/T14 Gen 3/Desktop/SPARK/public/pictures/images/results/story-gallery/story/';
+        $targetDir = '../../../images/story/';
         $storyNo = $story_id;
     
         // 得到上傳檔案的副檔名。
@@ -46,9 +46,6 @@
         $newFileName = $story_image;
     }
     
-
-
-
 
 
     $sql = "UPDATE story SET story_title = '$story_title', story_date = '$story_date', story_image = '$newFileName', story_brief = '$story_brief', story_detail = '$story_detail', story_detail_second = '$story_detail_second', story_detail_third = '$story_detail_third' WHERE story_no = $story_no";

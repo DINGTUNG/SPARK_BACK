@@ -6,31 +6,20 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-  // $sparkActivityNo = $_POST["spark_activity_no"] ?? null;
   $messageContent = $_POST["message_content"] ?? null;
-  // $memberNo = $_POST["member_no"] ?? null;
 
   // parameters validation
-
-  // if ($sparkActivityNo == null) {
-  //   throw new InvalidArgumentException($message = "參數不足(請提供spark activity no)");
-  // }
   if ($messageContent == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供message content)");
   }
-  // if ($memberNo == null) {
-  //   throw new InvalidArgumentException($message = "參數不足(請提供member no)");
-  // }
 
   // create record
   $pdo->beginTransaction();
 
 
-  $createSql = "insert into message_board(spark_activity_no, message_content, member_no,updater) values(1, :message_content,87,'許咪咪')";
+  $createSql = "insert into message_board(spark_activity_id, message_content, member_id,updater) values('SA001', :message_content,'A087','許咪咪')";
   $createStmt = $pdo->prepare($createSql);
-  // $createStmt->bindValue(":spark_activity_no", $sparkActivityNo);
   $createStmt->bindValue(":message_content", $messageContent);
-  // $createStmt->bindValue(":member_no", $memberNo);
   $createResult = $createStmt->execute();
 
   if (!$createResult) {

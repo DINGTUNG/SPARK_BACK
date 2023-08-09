@@ -1,6 +1,6 @@
 <?php
 
-require_once("../connect_chd102g3.php");
+require_once("../../connect_chd102g3.php");
 
 try {
 

@@ -50,9 +50,9 @@ const displayDonateOrderList = computed(() => {
             <tr>
               <th>No.</th>
               <th>捐款訂單編號</th>
-              <th>捐款訂單id</th>
-              <th>會員編號</th>
-              <th>捐款專案編號</th>
+              <th>捐款訂單ID</th>
+              <th>會員ID</th>
+              <th>捐款專案ID</th>
               <th>捐款金額</th>
               <th>捐款日期</th>
             </tr>
@@ -62,8 +62,8 @@ const displayDonateOrderList = computed(() => {
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="donate_order_no">{{ item.donate_order_no }}</td>
               <td class="donate_order_id">{{ item.donate_order_id }}</td>
-              <td class="member_no">{{ item.member_no}}</td>
-              <td class="donate_project_no">{{ item.donate_project_no }}</td>
+              <td class="member_id">{{ item.member_id}}</td>
+              <td class="donate_project_id">{{ item.donate_project_id }}</td>
               <td class="donate_price">{{ item.donate_price }}</td>
               <td class="donate_date">{{ item.donate_date }}</td>
             </tr>

@@ -1,17 +1,21 @@
 <script setup>
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
+import { useSponsorOrderStore } from '@/stores/sponsor-order.js';
 
-const sponsorOrderList = reactive([])
+const sponsorOrderStore = useSponsorOrderStore();
 
+
+
+// get data from sponsor_order
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/get_sponsor_order.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-order/get_sponsor_order.php')
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        sponsorOrderList.push(element)
+        sponsorOrderStore.sponsorOrderPool.push(element)
       });
     }
   } catch (error) {
@@ -23,16 +27,33 @@ onMounted(() => {
   getData()
 })
 
+// update order status
+async function updateOrderStatus(item) {
+  try {
+    if (item.sponsor_order_no == null) {
+      throw new Error("sponsor order no not found!")
+    }
+    await sponsorOrderStore.updateSponsorOrderBackend(item.sponsor_order_no,item.order_status)
+    sponsorOrderStore.updateOrderStatusFromSponsorOrderPool(item.sponsor_order_no,item.order_status)
+
+    console.log(item.order_status);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
 // 換頁
 const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = () => {
-  return Math.floor((sponsorOrderList.length - 1) / itemsPerPage) + 1;
+  return Math.floor((sponsorOrderStore.sponsorOrderPool.length - 1) / itemsPerPage) + 1;
 }
 const displaySponsorOrderList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return sponsorOrderList.slice(startIdx, endIdx);
+  return sponsorOrderStore.sponsorOrderPool.slice(startIdx, endIdx);
 });
 
 </script>
@@ -43,7 +64,7 @@ const displaySponsorOrderList = computed(() => {
     <div class="content_wrap">
       <h1>認養管理｜認養訂單</h1>
       <div class="search">
-        <Search :placeholder="'請輸入認養訂單ID'"/>
+        <Search :placeholder="'請輸入認養訂單ID'" />
       </div>
       <div class="table_container">
         <v-table>
@@ -82,7 +103,7 @@ const displaySponsorOrderList = computed(() => {
               <td class="order_status">{{ item.order_status == 1 ? "繼續" : "終止" }}</td>
               <td>
                 <v-switch v-model="item.order_status" color="#EBC483" density="compact" hide-details="true" inline inset
-                  true-value=1></v-switch>
+                  true-value=1 @change="updateOrderStatus(item)"></v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>

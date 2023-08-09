@@ -66,6 +66,15 @@ div.container {
           color: $primaryBrandBlue;
         }
       }
+
+      td.update_and_delete{
+        display: flex;
+        align-items: center;
+
+        // .v-row{   //不知道此用途，先註解
+        //   flex: 0;
+        // }
+      }
     }
   }
   

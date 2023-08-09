@@ -7,7 +7,7 @@ import {
 } from 'vue'
 import axios from 'axios';
 
-export const useMessageBoardStore = defineStore('template', () => {
+export const useMessageBoardStore = defineStore('message-board', () => {
 
   const messagePool = reactive([])
 
@@ -94,12 +94,12 @@ export const useMessageBoardStore = defineStore('template', () => {
   }
 
   // create
-  function createMessageBackend(sparkActivityNo,messageContent,memberNo) {
+  function createMessageBackend(messageContent) {
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("spark_activity_no", sparkActivityNo);
+    // payLoad.append("spark_activity_no", sparkActivityNo);
     payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
+    // payLoad.append("member_no", memberNo);
 
     // make a request
     const request = {

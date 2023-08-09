@@ -1,8 +1,12 @@
 <script setup>
+//【引入】
+import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
+import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
 import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
+//【刪除功能】
 const page = ref(1)
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
@@ -13,22 +17,18 @@ function showDeleteDialog(item) {
 }
 
 function deleteItemConfirm() {
-  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
-  closeDelete(); // 關閉刪除對話框
+  if (itemToDelete.value) {
+    const index = milestoneList.indexOf(itemToDelete.value);
+    if (index !== -1) {
+      milestoneList.splice(index, 1); // 從列表中刪除項目沒效 
+    }
+    itemToDelete.value = null;
+    dialogDelete.value = false; // 隱藏刪除對話框
+  }
 }
 
 function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
-  if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = milestoneList.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        milestoneList.splice(index, 1); // 從列表中刪除項目沒效 
-      }
-    }
-    itemToDelete.value = null; // 清空要刪除的項目
-  }
 }
 
 // 【換頁功能】
@@ -44,7 +44,7 @@ const displayMilestoneList = computed(() => {
 
 //【查詢功能】
 const searchValue = ref('');
-function handleSearchChange(newValue) {
+function handleSearchChange(event) {
   searchValue.value = event.target.value;
   console.log(searchValue.value);
 }
@@ -62,7 +62,7 @@ const filteredMilestoneList = computed(() => {
   });
 });
 
-//【資料庫連動】
+//【資料庫連接】
 const milestoneList = reactive([])
 async function milestoneConnection() {
   try {
@@ -118,17 +118,15 @@ onMounted(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
-                  mdi-pencil
-                </v-icon>
-                <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
+              <td class="update_and_delete">
+                <UpdateMilestone />
+                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-      <CreateDonateProject  class="add" />
+      <CreateMilestone  class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">
@@ -141,7 +139,7 @@ onMounted(() => {
 
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
-          確定是否要刪除此捐款專案？
+          確定是否要刪除此里程碑？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>

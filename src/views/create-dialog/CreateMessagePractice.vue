@@ -13,9 +13,7 @@ function closeDialog() {
   dialogDisplay.value = false;
 }
 
-// const sparkActivityNo = ref()
 const messageContent = ref('')
-// const memberNo = ref()
 
 async function createMessage(messageContent) {
   try {
@@ -52,10 +50,7 @@ const addContentToNewMessage = (newMessage) => {
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
             @submit.prevent="createMessage(messageContent)">
-            <!-- <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
-              v-model="sparkActivityNo"> -->
             <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
-            <!-- <label for="member_no">會員編號</label> <input type="number" name="member_no" v-model="memberNo"> -->
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">

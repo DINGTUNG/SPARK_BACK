@@ -6,7 +6,7 @@ const dreamStarVoteList = reactive([])
 
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/get_dream_star_vote.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/dream-star-vote/get_dream_star_vote.php')
     console.log(response)
 
     if (response.data.length > 0) {
@@ -46,7 +46,7 @@ const displayDreamStarVoteList = computed(() => {
             <tr>
               <th>No.</th>
               <th>IP</th>
-              <th>夢想之星編號</th>
+              <th>夢想之星ID</th>
             </tr>
           </thead>
 
@@ -54,7 +54,7 @@ const displayDreamStarVoteList = computed(() => {
             <tr v-for="(item, index) in displayDreamStarVoteList" :key="item.vote_ip" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="ip">{{ item.vote_ip }}</td>
-              <td class="dream_star_no">{{ item.dream_star_no }}</td>
+              <td class="dream_star_no">{{ item.dream_star_id }}</td>
             </tr>
           </tbody>
         </v-table>

@@ -103,6 +103,7 @@ const filteredDonateList = computed(() => {
             <tr>
               <th>No.</th>
               <th>專案編號</th>
+              <th>專案ID</th>
               <th>專案名稱</th>
               <th>開始日期</th>
               <th>結束日期</th>
@@ -114,11 +115,13 @@ const filteredDonateList = computed(() => {
           <tbody>
             <tr v-for="(item, index) in filteredDonateList" :key="item.donate_project_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.donate_project_id }}</td>
-              <td class="name">{{ item.donate_project_name }}</td>
-              <td class="start_date">{{ item.donate_project_start_date }}</td>
-              <td class="end_date">{{ item.donate_project_end_date }}</td>
-              <td class="online">{{ item.is_donate_project_online ? '已上架' : '未上架' }}</td>
+
+              <td class="donate_project_no">{{ item.donate_project_no }}</td>
+              <td class="donate_project_id">{{ item.donate_project_id }}</td>
+              <td class="donate_project_name">{{ item.donate_project_name }}</td>
+              <td class="donate_project_start_date">{{ item.donate_project_start_date }}</td>
+              <td class="donate_project_end_date">{{ item.donate_project_end_date }}</td>
+              <td class="is_donate_project_online">{{ item.is_donate_project_online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>

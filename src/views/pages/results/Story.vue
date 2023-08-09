@@ -1,9 +1,9 @@
 <script setup>
 import CreateStory from '@/views/create-dialog/CreateStory.vue';
 import UpdateStory from '@/views/update-dialog/UpdateStory.vue';
+import DeleteStory from '@/views/delete-dialog/DeleteStory.vue';
 import axios from 'axios';
 import { ref, reactive,computed, onMounted } from 'vue'
-const dialogDelete = ref(false);
 const page = ref(1)
 
 
@@ -54,19 +54,6 @@ const switchOnline =  ( no, online ) => {
 }
 
 
-// 刪除
-let deleteId = ref(null)//要刪除的id
-const showDeleteDialog = (no) => {
-  dialogDelete.value = true
-  deleteId = no
-}
-const closeDelete = () => {
-  dialogDelete.value = false
-}
-const deleteItemConfirm = () => {//把要刪除的id傳到php
-  window.location.assign(`http://localhost/SPARK_BACK/php/results/story/delete_story.php?story_no=${deleteId}`)
-}
-
 
 </script>
 
@@ -102,7 +89,7 @@ const deleteItemConfirm = () => {//把要刪除的id傳到php
             </td>
             <td>
               <UpdateStory :storyNo="item.story_no" style="display: inline-block;" />
-              <v-icon size="small" @click="showDeleteDialog(item.story_no)">mdi-delete</v-icon>
+              <DeleteStory :storyNo="item.story_no" style="display: inline-block;" />
             </td>
           </tr>
         </tbody>
@@ -116,29 +103,6 @@ const deleteItemConfirm = () => {//把要刪除的id傳到php
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-
-      <v-card class="delete_dialog">
-        <v-card-title class="text-center">
-          確定是否要刪除此捐款專案？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-             刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-
-
-
   </div>
 </template>
 

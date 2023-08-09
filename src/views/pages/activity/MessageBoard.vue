@@ -40,9 +40,6 @@ const displayMessageList = computed(() => {
   return messageBoardStore.messagePool.slice(startIdx, endIdx);
 });
 
-// const message = 
-
-
 </script>
 
 <template>

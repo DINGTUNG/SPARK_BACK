@@ -1,13 +1,54 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-const dialog = ref(false);
+// const dialog = ref(false);
+
+
+import { useCmsStaffStore } from '@/stores/cms-staff.js';
+const cmsStaffStore = useCmsStaffStore();
+
+const dialogDisplay = ref(false);
+
+function showDialog() {
+    dialogDisplay.value = true;
+}
+
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+
+const staffName = ref('')
+const staffPermission = ref('')
+const staffEmail = ref('')
+const staffAccount = ref('')
+const staffPassword = ref('')
+
+async function createStaff(staffName, staffPermission, staffEmail, staffAccount, staffPassword) {
+    try {
+        const newStaff = await cmsStaffStore.createStaffBackend(staffName, staffPermission, staffEmail, staffAccount, staffPassword)
+        addContentToNewStaff(newStaff)
+        console.log(cmsStaffStore.staffPool);
+        window.alert(`新增成功!`);
+    } catch (error) {
+        console.error(error);
+        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
+    }
+}
+
+const addContentToNewStaff = (newStaff) => {
+    cmsStaffStore.staffPool.push(newStaff)
+}
+
+
+
 </script>
 
 <template>
     <v-row justify="end">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
+                <v-btn color="primary" v-bind="props" @click="showDialog">
                     新增
                 </v-btn>
             </template>
@@ -16,26 +57,40 @@ const dialog = ref(false);
                     <span class="main_title">新增後台人員</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="">
+                    <form action="http://localhost/SPARK_BACK/php/cms/create_staff.php" method="post"
+                        @submit.prevent="createStaff(staffName, staffPermission, staffEmail, staffAccount, staffPassword)">
                         <label for="">
                             <div class="input_title">姓名</div>
-                            <input type="text">
+                            <input type="text" name="staff_name" v-model="staffName">
+                        </label>
+                        <label for="">
+                            <div class="input_title">權限</div>
+                            <input type="text" name="staff_permission" v-model="staffPermission">
                         </label>
                         <label for="">
                             <div class="input_title">Email</div>
-                            <input type="text">
+                            <input type="text" name="staff_email" v-model="staffEmail">
                         </label>
+                        <label for="">
+                            <div class="input_title">帳號</div>
+                            <input type="text" name="staff_account" v-model="staffAccount">
+                        </label>
+                        <label for="">
+                            <div class="input_title">密碼</div>
+                            <input type="text" name="staff_password" v-model="staffPassword">
+                        </label>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                                取消
+                            </v-btn>
+                            <v-btn color="blue-darken-1" variant="text" type="submit">
+                                確定
+                            </v-btn>
+                        </v-card-actions>
                     </form>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        取消
-                    </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        儲存
-                    </v-btn>
-                </v-card-actions>
+
             </v-card>
         </v-dialog>
     </v-row>

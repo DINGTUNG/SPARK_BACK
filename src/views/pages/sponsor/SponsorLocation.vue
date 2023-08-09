@@ -30,9 +30,9 @@ function closeDelete() {
 }
 
 const locationList = reactive([]);
-async function localConnection() {
+async function getSponsorLocation() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/sponsor_location.php');
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
     if (response.data.length > 0) {
       response.data.forEach(element => {
         locationList.push(element);
@@ -44,7 +44,7 @@ async function localConnection() {
 }
 
 onMounted(() => {
-  localConnection();
+  getSponsorLocation();
 });
 
 const itemsPerPage = 10;

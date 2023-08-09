@@ -1,5 +1,6 @@
 <script setup>
 import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
+import UpdateDreamStar from '@/views/update-dialog/UpdateDreamStar.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -32,7 +33,7 @@ function closeDelete() {
 
 
 
-// 換頁
+// 換頁功能
 const itemsPerPage = 10;
 const pageCount = () => {
   return (dreamStarList.length) / itemsPerPage + 1;
@@ -44,52 +45,9 @@ const displayedDreamStarList = computed(() => {
 });
 
 
-
-// const location = reactive([
-//   {
-//     no: '1',
-//     id: '001',
-//     name: '美食大師 烹飪歷險記',
-//   },
-//   {
-//     no: '2',
-//     id: '002',
-//     name: '繪畫奇想 彩筆揮灑繽紛世界',
-//   },
-//   {
-//     no: '3',
-//     id: '003',
-//     name: '音樂星光 樂韻奏鳴的天空旅程',
-//   },
-//   {
-//     no: '4',
-//     id: '004',
-//     name: '體育勇者 挑戰極限勇者之旅',
-//   },
-//   {
-//     no: '5',
-//     id: '005',
-//     name: '環保探險家 地球奇幻護衛隊',
-//   },
-//   {
-//     no: '6',
-//     id: '006',
-//     name: '小科學家 探索神秘世界',
-//   },
-//   {
-//     no: '7',
-//     id: '007',
-//     name: '動物園園長 照顧和保護動物',
-//   },
-//   {
-//     no: '8',
-//     id: '008',
-//     name: '創意手作 動手創造分享喜悅',
-//   },
-// ])
-
+// 串接資料庫
 const dreamStarList = reactive([])
-async function donateConnection() {
+async function dreamStarConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/activity/dream-star/dream_star.php')
     console.log(response)
@@ -103,9 +61,28 @@ async function donateConnection() {
   }
 }
 onMounted(() => {
-  donateConnection()
+  dreamStarConnection()
 })
 
+
+// 查詢功能
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(searchValue.value);
+}
+
+const filteredDreamStarList = computed(() => {
+  const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+
+  return displayedDreamStarList.value.filter(item => {
+    const idMatch = item.dream_star_id.toString().includes(searchText);
+    const nameMatch = item.dream_star_name.toLowerCase().includes(searchText);
+    const onlineStatusMatch = item.is_dream_star_online.toString().includes(searchText);
+    const indexMatch = ((page.value - 1) * itemsPerPage) + displayedDreamStarList.value.indexOf(item) + 1 === parseInt(searchText);
+    return idMatch || nameMatch || onlineStatusMatch || indexMatch;
+  });
+});
 
 </script>
 
@@ -115,7 +92,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>夢想之星</h1>
       <div class="search">
-        <Search :placeholder="'請輸入消息資訊'" />
+        <Search :placeholder="'請輸入計畫資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -131,19 +108,20 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedDreamStarList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in filteredDreamStarList" :key="item.dream_star_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.dream_star_id }}</td>
               <td class="name">{{ item.dream_star_name }}</td>
-              <td class="online">{{ item.online ? '已上架' : '未上架' }}</td>
+              <td class="online">{{ item.is_dream_star_online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item)">
+              <td class="update_and_delete">
+                <UpdateDreamStar />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item)">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
               </td>
             </tr>

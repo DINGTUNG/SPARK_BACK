@@ -3,11 +3,11 @@ import {
 } from 'pinia';
 
 import {
-  ref,reactive
+  reactive
 } from 'vue'
 import axios from 'axios';
 
-export const useMessageBoardStore = defineStore('template', () => {
+export const useMessageBoardStore = defineStore('message-board', () => {
 
   const messagePool = reactive([])
 
@@ -51,12 +51,12 @@ export const useMessageBoardStore = defineStore('template', () => {
   }
 
   // update
-  function updateMessageBackend(messageNo,messageContent,sparkActivityNo,memberNo) {
+  function updateMessageBackend(messageNo,sparkActivityNo,messageContent,memberNo) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("message_no", messageNo);
-    payLoad.append("message_content", messageContent);
     payLoad.append("spark_activity_no", sparkActivityNo);
+    payLoad.append("message_content", messageContent);
     payLoad.append("member_no", memberNo);
 
     // make a request
@@ -83,19 +83,47 @@ export const useMessageBoardStore = defineStore('template', () => {
     });
   }
 
-
-  
-  const updateMessageFromMessagePool = (messageNo,messageContent,sparkActivityNo,memberNo) => {
+  const updateMessageFromMessagePool = (messageNo,sparkActivityNo,messageContent,memberNo) => {
     for (let i = 0; i < messagePool.length; i++) {
       if (messagePool[i].message_no == messageNo) {
-      messagePool[i].message_content = messageContent
       messagePool[i].spark_activity_no = sparkActivityNo
+      messagePool[i].message_content = messageContent
       messagePool[i].member_no = memberNo
-       console.log( messagePool[i]);
       }
     }
   }
 
+  // create
+  function createMessageBackend(sparkActivityNo,messageContent,memberNo) {
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("spark_activity_no", sparkActivityNo);
+    payLoad.append("message_content", messageContent);
+    payLoad.append("member_no", memberNo);
+
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/activity/message-board/create_message.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const createResult = response.data;
+          resolve(createResult);
+        })
+        .catch((error) => {
+          console.log("From createMessageBackend:", error);
+          reject(error);
+        });
+    });
+  }
 
 
   return {
@@ -104,6 +132,7 @@ export const useMessageBoardStore = defineStore('template', () => {
     deleteMessageFromMessagePool,
     updateMessageBackend,
     updateMessageFromMessagePool,
+    createMessageBackend
   }
 
 })

@@ -7,7 +7,7 @@ const donateOrderList = reactive([])
 
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/get_donate_order.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-order/get_donate_order.php')
 
     if (response.data.length > 0) {
       response.data.forEach(element => {

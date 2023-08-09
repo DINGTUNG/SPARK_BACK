@@ -2,18 +2,17 @@
 import CreateReports from '@/views/create-dialog/CreateReports.vue';
 import UpdateReports from '@/views/update-dialog/UpdateReports.vue';
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed,onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-const page = ref(1)
-const dialog = ref(false)
-
 const dialogDelete = ref(false); // 控制刪除對話框的顯示
 const itemToDelete = ref(null); // 存儲要刪除的項目
 
+//彈窗
 function showDeleteDialog(item) {
   itemToDelete.value = item; // 存儲要刪除的項目
   dialogDelete.value = true; // 顯示刪除對話框
 }
+//彈窗
 
 function deleteItemConfirm() {
   if (itemToDelete.value) {
@@ -29,97 +28,20 @@ function closeDelete() {
   dialogDelete.value = false; // 隱藏刪除對話框
 }
 
-
+// 分頁
 const pageCount = () => {
-  return (reportsList.length) / itemsPerPage + 1;
+  return Math.ceil(reportsList.length / itemsPerPage);
 }
-// 換頁
+const page = ref(1)
 const itemsPerPage = 10;
 const displayReportsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return reportsList.slice(startIdx, endIdx);
 });
+// 分頁
 
-
-
-// const reports = reactive([
-//   {
-
-//     id: '001',
-//     class: '年度',
-//     year: '2018',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '002',
-//     class: '年度',
-//     year: '2019',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '003',
-//     class: '年度',
-//     year: '2020',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '004',
-//     class: '年度',
-//     year: '2021',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '005',
-//     class: '年度',
-//     year: '2022',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '006',
-//     class: '年度',
-//     year: '2023',
-//     name: "星火執行年度報告"
-//   },
-//   {
-//     id: '007',
-//     class: '財務',
-//     year: '2018',
-//     name: "星火執行業務報告"
-//   },
-//   {
-//     id: '008',
-//     class: '財務',
-//     year: '2019',
-//     name: "星火執行業務報告",
-//   },
-//   {
-//     id: '009',
-//     class: '財務',
-//     year: '2020',
-//     name: "星火執行業務報告"
-//   },
-//   {
-//     id: '010',
-//     class: '財務',
-//     year: '2021',
-//     name: "星火執行業務報告"
-//   },
-//   {
-//     id: '011',
-//     class: '財務',
-//     year: '2022',
-//     name: "星火執行業務報告"
-//   },
-//   {
-//     id: '012',
-//     class: '財務',
-//     year: '2023',
-//     name: "星火執行業務報告"
-//   },
-// ])
-
-
+//api
 const reportsList = reactive([])
 async function reportConnection() {
   try {
@@ -135,21 +57,40 @@ async function reportConnection() {
     console.error(error);
   }
 }
-
 onMounted(() => {
   reportConnection()
 })
 
+//api
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(newValue);
+};
+
+const filteredReportList = computed(() => {
+  const searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
+  return displayReportsList.value.filter(item => {
+    const idMatch = item.report_id.toString() === `R00${searchText}`;
+    if (isNaN(parseInt(searchText))) {
+      const nameMatch = item.report_title.toLowerCase().includes(searchText);
+      const onlineStatusMatch = item.is_report_online.toString().includes(searchText);
+      const indexMatch = displayReportsList.value.indexOf(item) === parseInt(searchText) - 1;
+      return idMatch || nameMatch || onlineStatusMatch || indexMatch;
+    } else {
+      return idMatch;
+    }
+  });
+});
+
 
 </script>
-
-
 <template>
   <div class="container">
     <div class="content_wrap">
       <h1>成果管理｜歷年報告</h1>
       <div class="search">
-        <Search :placeholder="'請輸入報告資訊'" />
+        <Search :placeholder="'請輸入報告資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -166,7 +107,7 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in filteredReportList" :key="item.id" class="no-border">
               <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.report_id }}</td>
               <td class="class">{{ item.report_class }}</td>
@@ -186,16 +127,12 @@ onMounted(() => {
         </v-table>
       </div>
       <CreateReports class="add" />
-
-      <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-
     <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
           確定是否要刪除此報告？
@@ -214,7 +151,6 @@ onMounted(() => {
     </v-dialog>
   </div>
 </template>
-
 <style scoped lang="scss">
 @import "@/assets/sass/pages/results/reports";
 </style>

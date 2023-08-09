@@ -2,58 +2,40 @@
 import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
 import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-const page = ref(1)
-const dialog = ref(false)
 
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
-const itemToDelete = ref(null); // 存儲要刪除的項目
+const page = ref(1);
+const dialogDelete = ref(false);
+const itemToDelete = ref(null);
 
 function showDeleteDialog(item) {
-  itemToDelete.value = item; // 存儲要刪除的項目
-  dialogDelete.value = true; // 顯示刪除對話框
+  itemToDelete.value = item;
+  dialogDelete.value = true;
 }
 
 function deleteItemConfirm() {
   if (itemToDelete.value) {
-    const index = location.indexOf(itemToDelete.value);
+    const index = locationList.indexOf(itemToDelete.value);
     if (index !== -1) {
-      location.splice(index, 1); // 從列表中刪除項目
+      locationList.splice(index, 1);
     }
     itemToDelete.value = null;
-    dialogDelete.value = false; // 隱藏刪除對話框
+    dialogDelete.value = false;
   }
 }
 
 function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
+  dialogDelete.value = false;
 }
 
-
-
-// 換頁
-const itemsPerPage = 10;
-const pageCount = computed(() => {
-  return (displayLocationList.length) / itemsPerPage + 1;
-});
-const displayLocationList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return locationList.slice(startIdx, endIdx);
-});
-
-
-const locationList = reactive([])
+const locationList = reactive([]);
 async function localConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php')
-    console.log(response)
-
-
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php');
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        locationList.push(element)
+        locationList.push(element);
       });
     }
   } catch (error) {
@@ -62,24 +44,48 @@ async function localConnection() {
 }
 
 onMounted(() => {
-  localConnection()
-})
+  localConnection();
+});
 
+const itemsPerPage = 10;
+const pageCount = computed(() => {
+  return Math.ceil(locationList.length / itemsPerPage);
+});
+const displayLocationList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return locationList.slice(startIdx, endIdx);
+});
 
-const newLocation = ref(null);
-function onLocalAdd(location) {
-  newLocation.value = location;
-  locationList.push(location)
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(searchValue.value);
 }
-</script>
 
+const filteredLocationList = computed(() => {
+  const searchText = searchValue.value ? searchValue.value.trim().toLowerCase() : '';
+  return displayLocationList.value.filter(item => {
+    const idMatch = item.location_id.toString().includes(searchText);
+    if (isNaN(parseInt(searchText))) {
+      const nameMatch = item.location_name.toLowerCase().includes(searchText);
+      const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
+      const indexMatch = ((page.value - 1) * itemsPerPage) + displayLocationList.value.indexOf(item) + 1 === parseInt(searchText);
+      return idMatch || nameMatch || onlineStatusMatch || indexMatch;
+    } else {
+      return idMatch;
+    }
+  });
+});
+
+</script>
 
 <template>
   <div class="container">
     <div class="content_wrap">
       <h1>認養管理｜認養據點</h1>
       <div class="search">
-        <Search :placeholder="'請輸入據點資訊'" />
+        <Search :placeholder="'請輸入據點資訊'" :search-value="searchValue" @search="handleSearchChange"/>
       </div>
       <div class="table_container">
         <v-table>
@@ -91,11 +97,10 @@ function onLocalAdd(location) {
               <th>狀態</th>
               <th>功能</th>
               <th>刪改</th>
-
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayLocationList" :key="item.location_id" class="no-border">
+            <tr v-for="(item, index) in filteredLocationList" :key="item.location_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.location_id }}</td>
               <td class="name">{{ item.location_name }}</td>
@@ -119,7 +124,6 @@ function onLocalAdd(location) {
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-
     <v-dialog v-model="dialogDelete" max-width="800px" persistent>
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
@@ -139,7 +143,6 @@ function onLocalAdd(location) {
     </v-dialog>
   </div>
 </template>
-
 <style scoped lang="scss">
 @import "@/assets/sass/pages/sponsor/sponsor-location";
 </style>

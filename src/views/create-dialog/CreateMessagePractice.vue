@@ -1,11 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref} from 'vue'
 import { useMessageBoardStore } from '@/stores/message-board.js';
 const messageBoardStore = useMessageBoardStore();
-
-const vueProps = defineProps({
-  messageNoForUpdate: Number
-})
 
 const dialogDisplay = ref(false);
 
@@ -17,20 +13,26 @@ function closeDialog() {
   dialogDisplay.value = false;
 }
 
-async function createMessage() {
+const sparkActivityNo = ref()
+const messageContent = ref('')
+const memberNo = ref()
+
+async function createMessage(sparkActivityNo, messageContent, memberNo) {
   try {
-    if (messageNoForUpdate == null) {
-      throw new Error("Message no. not found!")
-    }
-    await messageBoardStore.updateMessageBackend(messageNoForUpdate, messageContent)
-    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate)
-    window.alert(`編輯成功!`);
+    const newMessage = await messageBoardStore.createMessageBackend(sparkActivityNo, messageContent, memberNo)
+    addContentToNewMessage(newMessage)
+    console.log(messageBoardStore.messagePool);
+    window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
-    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+    window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
   } finally {
     closeDialog()
   }
+}
+
+const addContentToNewMessage = (newMessage) => {
+  messageBoardStore.messagePool.push(newMessage)
 }
 
 </script>
@@ -48,14 +50,12 @@ async function createMessage() {
           <span class="text-h5">新增留言資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, messageBoardStore.messageContent)">
-            <label for="message_content">留言內容</label> <input type="text" name="message_content"
-              v-model="messageBoardStore.sparkActivityNo">
-            <label for="spark_activity_no">星火活動編號</label> <input type="text" name="spark_activity_no"
-              v-model="messageBoardStore.messageContent">
-            <label for="member_no">會員編號</label> <input type="text" name="member_no"
-              v-model="messageBoardStore.memberNo">
+          <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
+            @submit.prevent="createMessage(sparkActivityNo, messageContent, memberNo)">
+            <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
+              v-model="sparkActivityNo">
+            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
+            <label for="member_no">會員編號</label> <input type="number" name="member_no" v-model="memberNo">
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">
@@ -66,7 +66,7 @@ async function createMessage() {
               </v-btn>
             </v-card-actions>
           </form>
-        </v-card-text>2
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>
@@ -163,4 +163,5 @@ label {
 
 :deep(.v-btn__content) {
   font-size: 20px;
-}</style>
+}
+</style>

@@ -1,21 +1,34 @@
 <script setup>
-import { defineProps } from 'vue'
-
+import { defineProps, defineEmits, ref } from 'vue'
 
 const props = defineProps({
   placeholder: String,
+  searchValue: {
+    type: String,
+    default: ''
+  }
 })
 
+const emit = defineEmits(['search']); // 定義 search 事件
+
+function handleSearch(e) {
+  const newValue = e.target.value;
+  emit('search', newValue);
+}
+
+function performSearch() {
+  emit('search', props.searchValue);
+}
 </script>
+
 
 <template>
   <div class="search_container">
-
-    <form action="">
+    <div class="search_inner">
       <label for="">查詢</label>
-      <input class="search" type="text" :placeholder="props.placeholder">
-      <v-icon class="icon" size="large">mdi-magnify</v-icon>
-    </form>
+      <input class="search" type="text" :placeholder="props.placeholder" @change="handleSearch">
+      <v-icon class="icon" size="large" @click="performSearch">mdi-magnify</v-icon>
+    </div>
   </div>
 </template>
 
@@ -23,8 +36,7 @@ const props = defineProps({
 div.search_container {
   width: 20vw;
 
-  form {
-
+  div.search_inner {
     label {
       margin: 0 1vw;
       font-size: 1.2vw;
@@ -59,12 +71,8 @@ div.search_container {
       position: absolute;
       top: 1vh;
       right: 1.5vw;
-
       @include btnEffect;
     }
   }
-
-
-
 }
 </style>

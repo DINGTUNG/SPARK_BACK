@@ -65,7 +65,7 @@ async function handleSubmit(e) {
           <span class="text-h5">編輯消息</span>
         </v-card-title>
         <v-card-text>
-          <form id="storyForm" method="POST" :action="url">
+          <form id="storyForm" method="POST" :action="url" enctype="multipart/form-data">
             <div class="form_item">
               <div class="name"><span @click="show">標題</span></div>
               <input type="text" :value="storyFormData.story_title" id="title" name="story_title">     

@@ -3,7 +3,6 @@
 
     $story_title = $_POST['story_title'];
     $story_date = $_POST['story_date'];
-    // $story_image = $_POST['story_image'];
     $story_brief = $_POST['story_brief'];
     $story_detail = $_POST['story_detail'];
     $story_detail_second = $_POST['story_detail_second'];
@@ -15,16 +14,34 @@
     // 將 $count_result 轉換為整數型別
     $row = $count->fetch_assoc();
     $count_result = $row['COUNT(story_id)'];
-    
     $story_id_assignment = "ST" . str_pad(($count_result + 1), 3, '0', STR_PAD_LEFT); 
-    echo $story_id_assignment;
+
+
+
+    //上傳圖片
+    if($_FILES['story_image']['error']>0){
+        die("檔案上傳失敗");
+        }
+        $targetDir = 'C:/Users/T14 Gen 3/Desktop/SPARK/public/pictures/images/results/story-gallery/story/';
+        $storyNo = $story_id_assignment;
+    
+        // 得到原始檔案名稱
+        $originalFileName = $_FILES['story_image']['name'];
+        $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+    
+        // 創建新檔案名稱
+        $newFileName = "story_" . $storyNo . "." . $fileExtension;
+        $targetPath = $targetDir . $newFileName;
+        move_uploaded_file($_FILES['story_image']['tmp_name'], $targetPath);
+
 
     //新增資料
-    $sql = "INSERT INTO story(`story_id`, `story_title`, `story_brief`, `story_detail`, `story_detail_second`, `story_detail_third`, `story_date`) 
-        VALUES ('$story_id_assignment', '$story_title', '$story_brief', '$story_detail', '$story_detail_second', '$story_detail_third', '$story_date')";
+    $sql = "INSERT INTO story(`story_id`, `story_title`, `story_image`, `story_brief`, `story_detail`, `story_detail_second`, `story_detail_third`, `story_date`) 
+        VALUES ('$story_id_assignment', '$story_title', '$newFileName', '$story_brief', '$story_detail', '$story_detail_second', '$story_detail_third', '$story_date')";
 
 
     $result = $conn->query($sql);
+
     if ($result) {
         $json = array(
             "ok" => true,

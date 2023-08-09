@@ -48,7 +48,6 @@ const sumOnlineCount = () => {
 const switchOnline =  ( no, online ) => {
     sumOnlineCount()
     if (onlineCount.value >= 18 && online == 0) {  
-      storyList.value.filter(item => item.story_no == no).is_story_online = false
       alert('上架數量已達上限(18篇)')
     } 
       window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)

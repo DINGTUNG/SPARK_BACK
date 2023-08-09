@@ -1,5 +1,5 @@
 <?php
-    require_once("../../conn.php");
+    require_once("../../connect_chd102g3.php");
     $story_no = $_GET['story_no'];
     $is_story_online = $_GET['is_story_online'];
     if ( $is_story_online == 1 ) {
@@ -9,9 +9,9 @@
     }
 
     $online_count = "SELECT COUNT(is_story_online) FROM story WHERE is_story_online = 1";
-    $online_count_result = $conn->query($online_count);
-    $online_count_row = $online_count_result->fetch_assoc();
-    if ($online_count_row['COUNT(is_story_online)'] >= 18) {
+    $online_count_result = $pdo->query($online_count);
+    $online_count_row = $online_count_result->fetch(PDO::FETCH_ASSOC);
+    if ($online_count_row['COUNT(is_story_online)'] >= 18 && $status_code == 1) {
         header('Location: http://localhost:5173/story');
         exit();
     }
@@ -19,7 +19,7 @@
     $sql = "UPDATE story SET is_story_online = $status_code  WHERE story_no = $story_no";
 
 
-    if ($conn->query($sql)) {
+    if ($pdo->query($sql)) {
         header('Location: http://localhost:5173/story');
     } else {
         $json = array(

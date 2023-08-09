@@ -100,7 +100,9 @@ const filteredDreamStarList = computed(() => {
             <tr>
               <th>No.</th>
               <th>計畫編號</th>
+              <th>計畫ID</th>
               <th>計畫名稱</th>
+              <th>計畫票數</th>
               <th>狀態</th>
               <th>功能</th>
               <th>刪改</th>
@@ -110,9 +112,12 @@ const filteredDreamStarList = computed(() => {
           <tbody>
             <tr v-for="(item, index) in filteredDreamStarList" :key="item.dream_star_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.dream_star_id }}</td>
-              <td class="name">{{ item.dream_star_name }}</td>
-              <td class="online">{{ item.is_dream_star_online ? '已上架' : '未上架' }}</td>
+
+              <td class="dream_star_no">{{ item.dream_star_no }}</td>
+              <td class="dream_star_id">{{ item.dream_star_id }}</td>
+              <td class="dream_star_name">{{ item.dream_star_name }}</td>
+              <td class="dream_star_votes">{{ item.dream_star_votes }}</td>
+              <td class="is_dream_star_online">{{ item.is_dream_star_online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>

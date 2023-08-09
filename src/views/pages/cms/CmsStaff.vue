@@ -102,6 +102,7 @@ const filteredStaffList = computed(() => {
             <tr>
               <th>No.</th>
               <th>人員編號</th>
+              <th>人員ID</th>
               <th>人員姓名</th>
               <th>權限名稱</th>
               <th>Email</th>
@@ -113,12 +114,14 @@ const filteredStaffList = computed(() => {
           <tbody>
             <tr v-for="(item, index) in filteredStaffList" :key="item.staff_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.staff_id }}</td>
-              <td class="name">{{ item.staff_name }}</td>
-              <td class="permission">{{ item.staff_permission }}</td>
-              <td class="email">{{ item.staff_email }}</td>
-              <td class="account">{{ item.staff_account }}</td>
-              <td class="password">{{ item.staff_password }}</td>
+
+              <td class="staff_no">{{ item.staff_no }}</td>
+              <td class="staff_id">{{ item.staff_id }}</td>
+              <td class="staff_name">{{ item.staff_name }}</td>
+              <td class="staff_permission">{{ item.staff_permission }}</td>
+              <td class="staff_email">{{ item.staff_email }}</td>
+              <td class="staff_account">{{ item.staff_account }}</td>
+              <td class="staff_password">{{ item.staff_password }}</td>
               <td class="update_and_delete">
                 <UpdateCmsStaff />
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">

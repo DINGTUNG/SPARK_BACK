@@ -16,8 +16,6 @@
     $count_result = $row['COUNT(story_id)'];
     $story_id_assignment = "ST" . str_pad(($count_result + 1), 3, '0', STR_PAD_LEFT); 
 
-
-
     //上傳圖片
     if($_FILES['story_image']['error']>0){
         die("檔案上傳失敗");

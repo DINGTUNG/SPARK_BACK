@@ -1,4 +1,6 @@
 <script setup>
+import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
+import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
 import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -118,17 +120,18 @@ onMounted(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
-              <td>
-                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+              <td class="update_and_delete">
+                <UpdateMilestone />
+                <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                   mdi-pencil
-                </v-icon>
+                </v-icon> -->
                 <v-icon size="small" @click="showDeleteDialog(item.raw)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-      <CreateDonateProject  class="add" />
+      <CreateMilestone  class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">
@@ -141,7 +144,7 @@ onMounted(() => {
 
       <v-card class="delete_dialog">
         <v-card-title class="text-center">
-          確定是否要刪除此捐款專案？
+          確定是否要刪除此里程碑？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>

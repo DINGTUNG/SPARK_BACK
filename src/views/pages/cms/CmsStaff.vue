@@ -34,7 +34,7 @@ function closeDelete() {
   }
 }
 
-// 換頁
+// 換頁功能
 const itemsPerPage = 10;
 const pageCount = () => {
   return (staffList.length) / itemsPerPage + 1;
@@ -45,39 +45,9 @@ const displayedStaffList = computed(() => {
   return staffList.slice(startIdx, endIdx);
 });
 
-
-// const donateList = reactive([
-//   {
-//     no: '1',
-//     id: 'CMS001',
-//     name: '星太郎',
-//     permission: '超級管理員',
-//     email: 'test@gmail.com',
-//     account: 'test',
-//     password: 'test',
-//   },
-//   {
-//     no: '2',
-//     id: 'CMS002',
-//     name: '星八克',
-//     permission: '一般管理員',
-//     email: 'spark@gmail.com',
-//     account: 'spark',
-//     password: 'spark',
-//   },
-//   {
-//     no: '3',
-//     id: 'CMS003',
-//     name: '星琪六',
-//     permission: '協作人員',
-//     email: '666@gmail.com',
-//     account: '666',
-//     password: '666',
-//   },
-// ])
-
+// 串接資料庫
 const staffList = reactive([])
-async function donateConnection() {
+async function staffConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
     console.log(response)
@@ -91,8 +61,30 @@ async function donateConnection() {
   }
 }
 onMounted(() => {
-  donateConnection()
+  staffConnection()
 })
+
+// 查詢功能
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(searchValue.value);
+}
+
+const filteredStaffList = computed(() => {
+  const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+
+  return displayedStaffList.value.filter(item => {
+    const idMatch = item.staff_id.toString().includes(searchText);
+    const nameMatch = item.staff_name.toLowerCase().includes(searchText);
+    const permissionMatch = item.staff_permission.toString().includes(searchText);
+    const emailMatch = item.staff_email.toString().includes(searchText);
+    const accountMatch = item.staff_account.toString().includes(searchText);
+    const passwordMatch = item.staff_password.toString().includes(searchText);
+    const indexMatch = ((page.value - 1) * itemsPerPage) + displayedStaffList.value.indexOf(item) + 1 === parseInt(searchText);
+    return idMatch || nameMatch || permissionMatch || emailMatch || accountMatch || passwordMatch || indexMatch;
+  });
+});
 
 </script>
 
@@ -102,7 +94,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>後台管理｜後台人員</h1>
       <div class="search">
-        <Search :placeholder="'請輸入人員編號'" />
+        <Search :placeholder="'請輸入人員資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -119,7 +111,7 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedStaffList" :key="index" class="no-border">
+            <tr v-for="(item, index) in filteredStaffList" :key="item.staff_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.staff_id }}</td>
               <td class="name">{{ item.staff_name }}</td>

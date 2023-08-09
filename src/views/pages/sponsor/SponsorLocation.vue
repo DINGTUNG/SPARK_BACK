@@ -69,7 +69,7 @@ const filteredLocationList = computed(() => {
     const idMatch = item.location_id.toString().includes(searchText);
     if (isNaN(parseInt(searchText))) {
       const nameMatch = item.location_name.toLowerCase().includes(searchText);
-      const onlineStatusMatch = item.is_sponsor_location_online.toString().includes(searchText);
+      const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
       const indexMatch = ((page.value - 1) * itemsPerPage) + displayLocationList.value.indexOf(item) + 1 === parseInt(searchText);
       return idMatch || nameMatch || onlineStatusMatch || indexMatch;
     } else {

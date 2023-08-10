@@ -1,10 +1,10 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
-const locationStore = useSponsorLocationStore();
+import { useMessageBoardStore } from '@/stores/message-board.js';
+const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
-  locationNoForDelete: Number
+  messageNoForDelete: Number
 })
 
 const dialogDisplay = ref(false);
@@ -17,22 +17,24 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteLocation(locationNoForDelete) {
+async function deleteMessage(messageNoForDelete) {
   try {
-    if (locationNoForDelete == null) {
-      throw new Error("location no. not found!")
+    if (messageNoForDelete == null) {
+      throw new Error("Message no. not found!")
     }
-    await locationStore.deleteLocationBackend(locationNoForDelete)
-    locationStore.deleteLocationFromLocationList(locationNoForDelete)
-    alert(`刪除成功!剩下 ${locationStore.locationList.length} 筆資料`);
+    await messageBoardStore.deleteMessageBackend(messageNoForDelete)
+    messageBoardStore.deleteMessageFromMessagePool(messageNoForDelete)
+    window.alert(`刪除成功!剩下 ${messageBoardStore.messagePool.length} 筆資料`);
   } catch (error) {
     console.error(error);
-    alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
+    window.alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
   } finally {
     closeDeleteDialog()
   }
 }
+
 </script>
+
 <template>
   <v-row class="row" style="flex: 0 0 0;">
     <v-dialog v-model="dialogDisplay" persistent>
@@ -48,7 +50,7 @@ async function deleteLocation(locationNoForDelete) {
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteLocation(locationNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.messageNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

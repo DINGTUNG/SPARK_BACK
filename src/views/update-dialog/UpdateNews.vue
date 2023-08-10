@@ -1,38 +1,79 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
+import { useNewsStore } from '@/stores/news.js';
+const newsStore = useNewsStore();
 
-const dialog = ref(false);
+const vueProps = defineProps({
+  newsNoForUpdate: Number,
+  newsDateForUpdate: String,
+  newsImageFirstForUpdate: String,
+})
+
+const newsDate = ref('')
+const newsImageFirst = ref('')
+
+const dialogDisplay = ref(false);
+
+function showDialog() {
+  dialogDisplay.value = true;
+  newsDate.value = vueProps.newsDateForUpdate
+  newsImageFirst.value = vueProps.newsImageFirst
+}
+
+function closeDialog() {
+  dialogDisplay.value = false;
+}
+
+
+async function updateNews(newsNoForUpdate, newsDate, newsImageFirst) {
+  try {
+    if (newsNoForUpdate == null) {
+      throw new Error("news no. not found!")
+    }
+    await newsStore.updateNewsBackend(newsNoForUpdate, newsDate, newsImageFirst)
+    newsStore.updateNewsFromNewsPool(newsNoForUpdate, newsDate, newsImageFirst)
+    window.alert(`編輯成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+  } finally {
+    closeDialog()
+  }
+}
 </script>
 
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+        <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
       </template>
       <v-card>
         <v-card-title>
           <span class="text-h5">編輯消息</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
+          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
+            @submit.prevent="updateNews(vueProps.newsNoForUpdate, newsDate, newsImageFirst)">
             <div class="form_item">
               <div class="name"><span>標題</span></div>
               <input type="text" id="title">
             </div>
             <div class="form_item">
               <div class="name"><span>日期</span></div>
-              <input type="date" id="date">
+              <input type="date" id="date" v-model="newsDate" name="news_date">
             </div>
             <div class="form_item">
               <div class="name"><span>段落1</span></div>
               <textarea id="paragraph1" cols="70" rows="10"></textarea>
             </div>
+
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
-              <v-file-input id="photo1" prepend-icon="none">
+              <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳圖檔" v-model="newsImageFirst"
+                name="news_image_first">
                 <template v-slot:prepend-inner>
-                  <label for="photo1" id="photo">修改圖檔</label>
+                  <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
@@ -42,9 +83,9 @@ const dialog = ref(false);
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔2</span></div>
-              <v-file-input id="photo2" prepend-icon="none">
+              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔">
                 <template v-slot:prepend-inner>
-                  <label for="photo2" id="photo">修改圖檔</label>
+                  <label for="photo2" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
@@ -54,9 +95,9 @@ const dialog = ref(false);
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔3</span></div>
-              <v-file-input id="photo3" prepend-icon="none">
+              <v-file-input id="photo3" prepend-icon="none" accept="image/*" label="請上傳圖檔">
                 <template v-slot:prepend-inner>
-                  <label for="photo3" id="photo">修改圖檔</label>
+                  <label for="photo3" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
@@ -66,23 +107,23 @@ const dialog = ref(false);
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔4</span></div>
-              <v-file-input id="photo4" prepend-icon="none">
+              <v-file-input id="photo4" prepend-icon="none" accept="image/*" label="請上傳圖檔">
                 <template v-slot:prepend-inner>
-                  <label for="photo4" id="photo">修改圖檔</label>
+                  <label for="photo4" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                取消
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" type="submit">
+                儲存
+              </v-btn>
+            </v-card-actions>
           </form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            儲存
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
@@ -99,8 +140,6 @@ const dialog = ref(false);
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
   height: 50%;
   top: 50%;
-
-
 }
 
 
@@ -124,7 +163,6 @@ const dialog = ref(false);
 :deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended) {
   position: relative;
   right: 20px;
-
 }
 
 #data {
@@ -135,7 +173,6 @@ const dialog = ref(false);
   color: $primaryBrandBlue;
   @include h5_PC;
   font-weight: 900;
-
 }
 
 .form_item {
@@ -152,7 +189,6 @@ const dialog = ref(false);
       margin-left: auto;
     }
   }
-
 }
 
 .imgblock {
@@ -233,6 +269,5 @@ textarea {
   border-radius: 50px;
   margin-bottom: 50px;
   margin-right: 20px;
-
 }
 </style>

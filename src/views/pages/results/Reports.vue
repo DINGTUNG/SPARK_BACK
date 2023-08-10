@@ -25,11 +25,10 @@ const displayReportsList = computed(() => {
 async function reportConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
-    console.log(response)
-    
+    reportStore.reportsList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        reportStore.reportsList = response.data;
+        reportStore.reportsList.push(element);
       });
     }
   } catch (error) {
@@ -74,8 +73,7 @@ const filteredReportList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>報告編號</th>
-              <th>報告訂單id</th>
+              <th>報告id</th>
               <th>類別</th>
               <th>年度</th>
               <th>名稱</th>
@@ -89,7 +87,6 @@ const filteredReportList = computed(() => {
           <tbody>
             <tr v-for="(item, index) in filteredReportList" :key="item.report_no" class="no-border">
               <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="r_no">{{ item.report_no }}</td>
               <td class="id">{{ item.report_id }}</td>
               <td class="class">{{ item.report_class }}</td>
               <td class="year">{{ item.report_year }}</td>

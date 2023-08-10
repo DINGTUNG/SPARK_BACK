@@ -2,7 +2,8 @@
 header("Access-Control-Allow-Origin: *");//標頭修改
  require_once("../connect_chd102g3.php");
 try{
-  $sql = "select * from cms_staff";
+  $sql = "select * from cms_staff
+  where del_flg = 0 order by staff_no";
   $location=$pdo->prepare($sql);
   $location->execute();
   

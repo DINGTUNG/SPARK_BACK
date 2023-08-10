@@ -68,8 +68,8 @@ async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent
               <v-btn class="cancel btn" variant="text" @click="closeDialog">
                 取消
               </v-btn>
-              <v-btn class="delete btn" variant="text" type="submit">
-                確定
+              <v-btn class="update btn" variant="text" type="submit">
+                儲存
               </v-btn>
             </v-card-actions>
           </form>

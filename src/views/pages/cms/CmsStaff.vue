@@ -1,59 +1,39 @@
 <script setup>
+import Search from '@/components/Search.vue';
 import CreateCmsStaff from '@/views/create-dialog/CreateCmsStaff.vue';
 import UpdateCmsStaff from '@/views/update-dialog/UpdateCmsStaff.vue';
-import Search from '@/components/Search.vue';
+import DeleteCmsStaff from '@/views/delete-dialog/DeleteCmsStaff.vue';
+
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
+import { useCmsStaffStore } from '@/stores/cms-staff.js';
+const cmsStaffStore = useCmsStaffStore();
 
-const page = ref(1)
 
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
-const itemToDelete = ref(null); // 存儲要刪除的項目
 
-function showDeleteDialog(item) {
-  itemToDelete.value = item; // 存儲要刪除的項目
-  dialogDelete.value = true; // 顯示刪除對話框
-}
-
-function deleteItemConfirm() {
-  // 不直接執行刪除操作，僅關閉刪除對話框，讓使用者確認是否刪除
-  closeDelete(); // 關閉刪除對話框
-}
-
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
-  if (itemToDelete.value) {
-    const confirmDelete = confirm("是否確定要刪除？");
-    if (confirmDelete) {
-      const index = staffList.indexOf(itemToDelete.value);
-      if (index !== -1) {
-        staffList.splice(index, 1); // 從列表中刪除項目沒效 
-      }
-    }
-    itemToDelete.value = null; // 清空要刪除的項目
-  }
-}
 
 // 換頁功能
+const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (staffList.length) / itemsPerPage + 1;
+  return Math.floor((cmsStaffStore.staffPool.length - 1) / itemsPerPage) + 1;
 }
 const displayedStaffList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return staffList.slice(startIdx, endIdx);
+  return cmsStaffStore.staffPool.slice(startIdx, endIdx);
 });
 
 // 串接資料庫
-const staffList = reactive([])
+// const staffList = reactive([])
 async function staffConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
     console.log(response)
+    cmsStaffStore.staffPool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        staffList.push(element)
+        cmsStaffStore.staffPool.push(element)
       });
     }
   } catch (error) {
@@ -127,7 +107,7 @@ const filteredStaffList = computed(() => {
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil
                 </v-icon> -->
-                <v-icon size="small" @click="showDeleteDialog(item.raw)" v-show="index !== 0">mdi-delete</v-icon>
+                <DeleteCmsStaff :staffNoForDelete="parseInt(item.staff_no)" />
               </td>
             </tr>
           </tbody>
@@ -142,24 +122,6 @@ const filteredStaffList = computed(() => {
       </div>
     </div>
 
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-
-      <v-card class="delete_dialog">
-        <v-card-title class="text-center">
-          是否確定要刪除此人員資料？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-            刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 

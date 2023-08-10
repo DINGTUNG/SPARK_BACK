@@ -26,10 +26,9 @@ async function reportConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
     console.log(response)
-    
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        reportStore.reportsList = response.data;
+        reportStore.reportsList.push(element);
       });
     }
   } catch (error) {

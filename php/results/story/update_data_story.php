@@ -3,27 +3,14 @@
 
     $story_no = $_GET['story_no'];
 
-    $sql = "SELECT * FROM story WHERE story_no=". $story_no;
-    $result = $pdo->query($sql);
-    $storyInfo = array();
-    
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        array_push($storyInfo, array(
-            "story_no"=> $row['story_no'],
-            "story_title"=> $row['story_title'],
-            "story_date"=> $row['story_date'],
-            "story_image"=> $row['story_image'],
-            "story_brief"=> $row['story_brief'],
-            "story_detail"=> $row['story_detail'],
-            "story_detail_second"=> $row['story_detail_second'],
-            "story_detail_third"=> $row['story_detail_third'],
-          ));
-    }
-    // print_r($storyInfo);
-    
-    $json = array(
-        "storyInfo" => $storyInfo
-    );
-        $res = json_encode($json);
+    try {
+        $sql = "SELECT * FROM story WHERE story_no=". $story_no;
+        $result = $pdo->query($sql);
+        $res = json_encode($result->fetchAll(PDO::FETCH_ASSOC));
         echo $res;
+    } catch (\Throwable $th) {
+        echo "錯誤行號 : ", $e->getLine(), "<br>";
+        echo "錯誤原因 : ", $e->getMessage(), "<br>";
+        echo "系統暫時不能正常運行，請稍後再試<br>";
+    }
 ?>

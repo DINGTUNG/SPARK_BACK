@@ -12,7 +12,9 @@ async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/read_story.php')
     if(response.data.stories.length > 0) {
-      storyList.value = response.data.stories
+      response.data.stories.forEach(element => {
+        storyList.push(element)
+      });
     }
   } catch (error) {
     console.error(error);
@@ -22,27 +24,27 @@ onMounted(() => {
   getData()
 })
 
-    
-  //分頁
-    const itemsPerPage = 10;
-    const displayStoryList = computed(() => {
-      if (storyList.value) {
-        const startIdx = (page.value - 1) * itemsPerPage;
-        const endIdx = startIdx + itemsPerPage;
-        return reactive(storyList.value.slice(startIdx, endIdx));
-      } else {
-        return reactive([]);
-      }
-    });
+  
+//分頁
+  const itemsPerPage = 10;
+  const displayStoryList = computed(() => {
+    if (storyList) {
+      const startIdx = (page.value - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      return reactive(storyList.slice(startIdx, endIdx));
+    } else {
+      return reactive([]);
+    }
+  });
 
-    const pageCount = () => {
-      return (displayStoryList.length) / itemsPerPage + 1;
-    };
+  const pageCount = () => {
+    return (displayStoryList.length) / itemsPerPage + 1;
+  };
 
 //切換上下架狀態
 const onlineCount = ref(0) 
 const sumOnlineCount = () => {
-   onlineCount.value = storyList.value.filter(item => item.is_story_online == 1).length
+   onlineCount.value = storyList.filter(item => item.is_story_online == 1).length
   }
 
 const switchOnline =  ( no, online ) => {
@@ -52,9 +54,6 @@ const switchOnline =  ( no, online ) => {
     } 
       window.location.assign(`http://localhost/SPARK_BACK/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
 }
-
-
-
 </script>
 
 
@@ -62,13 +61,15 @@ const switchOnline =  ( no, online ) => {
   <a href=""></a>
   <div class="container">
     <div class="content_wrap">
-      <h1 @click="show()">成果管理｜溫馨事紀</h1>
+      <h1>成果管理｜溫馨事紀</h1>
+      <div class="search">
+      </div>
       <div class="table_container">
         <v-table>
         <thead>
           <tr>
             <th>No.</th>
-            <th>事紀編號</th>
+            <th>事紀ID</th>
             <th>事紀標題</th>
             <th>事紀日期</th>
             <th>狀態</th>

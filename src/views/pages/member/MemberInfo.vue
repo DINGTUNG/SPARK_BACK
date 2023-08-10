@@ -20,7 +20,7 @@ const displayedMemberInfo = computed(() => {
 
 
 const MemberInfo = reactive([])
-async function newsConnection() {
+async function memberConnection() {
   try {
     const response = await axios.post('http://localhost:8888/member/member_info/member_info.php')
     console.log(response)
@@ -34,8 +34,40 @@ async function newsConnection() {
   }
 }
 onMounted(() => {
-  newsConnection()
+  memberConnection()
 })
+
+// 查詢功能
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(searchValue.value);
+}
+
+const filteredMemberInfo = computed(() => {
+  const searchText = searchValue.value ? searchValue.value.trim().toLowerCase() : '';
+  return displayedMemberInfo.value.filter(item => {
+    const idMatch = item.member_id.toString().includes(searchText);
+
+    if (isNaN(parseInt(searchText))) {
+    const nameMatch = item.member_name.toLowerCase().includes(searchText);
+    const salutationMatch = item.member_salutation.toString().includes(searchText);
+    const accountMatch = item.member_account.toString().includes(searchText);
+    const mobileMatch = item.member_mobile.toString().includes(searchText);
+    //確保member_home_phone是空值時，不會觸發錯誤
+    const homePhoneMatch = item.member_home_phone?.toString().includes(searchText);
+    //確保member_business_phone是空值時，不會觸發錯誤
+    const businessPhoneMatch = item.member_business_phone?.toString().includes(searchText);
+    const addressMatch = item.member_address.toString().includes(searchText);
+    const receiptClassMatch = item.receipt_class.toString().includes(searchText);
+    const indexMatch = ((page.value - 1) * itemsPerPage) + displayedMemberInfo.value.indexOf(item) + 1 === parseInt(searchText);
+    return idMatch || nameMatch || salutationMatch || accountMatch || mobileMatch || homePhoneMatch || businessPhoneMatch || addressMatch || receiptClassMatch || indexMatch;
+    }else {
+      return idMatch;
+    }
+  });
+});
+
 </script>
 
 
@@ -44,7 +76,8 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>會員管理｜會員資料</h1>
       <div class="search">
-        <Search :placeholder="'請輸入會員資訊'" />
+        <Search :placeholder="'請輸入會員資訊'"
+        :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -52,6 +85,7 @@ onMounted(() => {
             <tr>
               <th>No.</th>
               <th>會員編號</th>
+              <th>會員ID</th>
               <th>姓名</th>
               <th>稱謂</th>
               <th>帳號</th>
@@ -63,9 +97,10 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedMemberInfo" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in filteredMemberInfo" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="td_id">{{ item.member_id }}</td>
+              <td class="no">{{ item.member_no }}</td>
+              <td class="id">{{ item.member_id }}</td>
               <td class="name">{{ item.member_name }}</td>
               <td class="salutation">{{ item.member_salutation }}</td>
               <td class="account">{{ item.member_account }}</td>

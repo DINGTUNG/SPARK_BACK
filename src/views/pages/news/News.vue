@@ -12,7 +12,6 @@ const newsStore = useNewsStore();
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/news/get_news.php')
-
     if (response.data.length > 0) {
       response.data.forEach(element => {
         newsStore.newsPool.push(element)

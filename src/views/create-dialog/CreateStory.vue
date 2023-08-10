@@ -7,7 +7,7 @@ const story_brief = ref('');
 const story_detail = ref('');
 const story_detail_second = ref('');
 const story_detail_third = ref('');
-const getStyle = (count, maxCount) => { //傳入欲判斷的路由
+const getStyle = (count, maxCount) => {
       return {
         color: count >= maxCount ? 'red' : 'black',
       };

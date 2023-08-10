@@ -1,30 +1,24 @@
 <script setup>
 import { ref, defineProps, reactive, onMounted } from 'vue';
-
+import axios from 'axios';
 const dialog = ref(false);
 
 //獲取外層傳進的 story_no
 const props = defineProps(['storyNo']);
 
 // 獲取該 story_no 的資料
-const storyFormData = reactive({
-  story_title: '',
-  story_date: '',
-  story_brief: '',
-  story_detail: '',
-  story_detail_second: '',
-  story_detail_third: '',
-});
+const storyFormData = reactive([]);
 const url = `http://localhost/SPARK_BACK/php/results/story/update_story.php?story_no=${props.storyNo}`;
 async function getUpdateNo() {
-  const res = await fetch(`http://localhost/SPARK_BACK/php/results/story/update_data_story.php?story_no=${props.storyNo}`);
-  const data = await res.json();
-  storyFormData.story_title = data.storyInfo[0].story_title; // 更新響應式對象的值
-  storyFormData.story_date = data.storyInfo[0].story_date;
-  storyFormData.story_brief = data.storyInfo[0].story_brief;
-  storyFormData.story_detail = data.storyInfo[0].story_detail;
-  storyFormData.story_detail_second = data.storyInfo[0].story_detail_second;
-  storyFormData.story_detail_third = data.storyInfo[0].story_detail_third;
+  try {
+    const response = await axios.post(`http://localhost/SPARK_BACK/php/results/story/update_data_story.php?story_no=${props.storyNo}`)
+    const data = response.data.storyInfo[0];
+    if( data )  {
+      storyFormData.value = data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 onMounted(async () => {
@@ -68,11 +62,11 @@ async function handleSubmit(e) {
           <form id="storyForm" method="POST" :action="url" enctype="multipart/form-data">
             <div class="form_item">
               <div class="name"><span @click="show">標題</span></div>
-              <input type="text" :value="storyFormData.story_title" id="title" name="story_title">     
+              <input type="text" :value="storyFormData.value.story_title" id="title" name="story_title">     
             </div>
             <div class="form_item">
               <div class="name"><span>日期</span></div>
-              <input type="date" :value="storyFormData.story_date" id="date" name="story_date">
+              <input type="date" :value="storyFormData.value.story_date" id="date" name="story_date">
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔</span></div>
@@ -84,19 +78,19 @@ async function handleSubmit(e) {
             </div>
             <div class="form_item">
               <div class="name"><span>簡述</span></div>
-              <textarea id="brief" v-model="storyFormData.story_brief" cols="70" rows="10" name="story_brief"></textarea>
+              <textarea id="brief" v-model="storyFormData.value.story_brief" cols="70" rows="10" name="story_brief"></textarea>
             </div>
             <div class="form_item">
               <div class="name"><span>段落1</span></div>
-              <textarea id="paragraph" v-model="storyFormData.story_detail" name="story_detail" cols="70" rows="10"></textarea>
+              <textarea id="paragraph" v-model="storyFormData.value.story_detail" name="story_detail" cols="70" rows="10"></textarea>
             </div>
             <div class="form_item">
               <div class="name"><span>段落2</span></div>
-              <textarea id="paragraph" v-model="storyFormData.story_detail_second" name="story_detail_second" cols="70" rows="10"></textarea>
+              <textarea id="paragraph" v-model="storyFormData.value.story_detail_second" name="story_detail_second" cols="70" rows="10"></textarea>
             </div>
             <div class="form_item">
               <div class="name"><span>段落3</span></div>
-              <textarea id="paragraph"  v-model="storyFormData.story_detail_third" name="story_detail_third" cols="70" rows="10"></textarea>
+              <textarea id="paragraph"  v-model="storyFormData.value.story_detail_third" name="story_detail_third" cols="70" rows="10"></textarea>
             </div>
             <v-card-actions>
             <v-spacer></v-spacer>

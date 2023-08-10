@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *"); //標頭修改
 require_once("../../connect_chd102g3.php");
 try {
-  $sql = "select * from sponsor_location where del_flg = 0 and is_sponsor_location_online = 1";
+  $sql = "select * from sponsor_location where del_flg = 0";
   $location = $pdo->prepare($sql);
   $location->execute();
 

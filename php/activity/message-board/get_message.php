@@ -8,7 +8,7 @@ require_once("../../connect_chd102g3.php");
 try {
   $sql = "
   select * from message_board 
-  where del_flg = 0";
+  where del_flg = 0 order by message_no";
   $message_board = $pdo->query($sql);
 
   //----------------------------------------

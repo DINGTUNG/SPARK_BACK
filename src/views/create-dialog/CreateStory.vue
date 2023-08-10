@@ -1,7 +1,17 @@
 <script setup>
-import { ref, defineEmits} from 'vue'
+import { ref, watch} from 'vue'
 import axios from 'axios';
 const dialog = ref(false);
+
+const story_brief = ref('');
+const story_detail = ref('');
+const story_detail_second = ref('');
+const story_detail_third = ref('');
+const getStyle = (count, maxCount) => { //傳入欲判斷的路由
+      return {
+        color: count >= maxCount ? 'red' : 'black',
+      };
+};
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -34,7 +44,7 @@ if (storyForm) {
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">新增消息</span>
+          <span class="text-h5">新增故事</span>
         </v-card-title>
         <v-card-text>
           <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php" enctype="multipart/form-data">
@@ -56,19 +66,23 @@ if (storyForm) {
             </div>
             <div class="form_item">
               <label for="">簡述</label>
-              <textarea name="story_brief" placeholder="50字左右可以獲得最佳顯示效果喔~" cols="30" rows="10" required></textarea>
+              <textarea name="story_brief" v-model="story_brief" placeholder="50字左右可以獲得最佳顯示效果喔~" cols="30" rows="10" required></textarea>
+              <span class="count" :style="getStyle(story_brief.length, 50)">{{ story_brief.length }}<span> / 50</span></span>
             </div>
             <div class="form_item">
               <label for="">段落1</label>
-              <textarea name="story_detail" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail" v-model="story_detail"  placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <span class="count" :style="getStyle(story_detail.length, 90)">{{ story_detail.length }}<span> / 90</span></span>
             </div>
             <div class="form_item">
               <label for="">段落2</label>
-              <textarea name="story_detail_second" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail_second" v-model="story_detail_second" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <span class="count" :style="getStyle(story_detail_second.length, 90)">{{ story_detail_second.length }}<span> / 90</span></span>
             </div>
             <div class="form_item">
               <label for="">段落3</label>
-              <textarea name="story_detail_third" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <textarea name="story_detail_third" v-model="story_detail_third" placeholder="每段不要超過90字，網頁上看才不會太擠喔~" cols="70" rows="10" required></textarea>
+              <span class="count" :style="getStyle(story_detail_third.length, 90)" >{{ story_detail_third.length }} / 90</span>
             </div>
             <v-card-actions>
           <v-spacer></v-spacer>
@@ -87,6 +101,14 @@ if (storyForm) {
   </v-row>
 </template>
 <style scoped lang="scss">
+.count {
+  position: absolute;
+  bottom: 0;
+  right: -60px;
+  span{
+    color: black;
+  }
+}
 :deep(.v-dialog > .v-overlay__content) {
   width: 50%;
 }
@@ -135,6 +157,7 @@ if (storyForm) {
 }
 
 .form_item{
+  position: relative;
   display: flex;
   width: 80%;
   margin: 0 auto 2%;

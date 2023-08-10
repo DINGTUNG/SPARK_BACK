@@ -1,11 +1,11 @@
 <?php
-    require_once("../../conn.php");
+    require_once("../../connect_chd102g3.php");
     $story_no = $_GET['story_no'];
     $sql = "SELECT * FROM story WHERE is_story_online=1 AND story_no=$story_no ORDER BY story_no DESC";
-    $result = $conn->query($sql);
+    $result = $pdo->query($sql);
     $stories = array();
     header("Content-Type: application/json; charset=utf-8");
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         array_push($stories, array(
             "story_no"=> $row['story_no'],
             "story_id"=> $row['story_id'],

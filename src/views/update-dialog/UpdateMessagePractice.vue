@@ -5,22 +5,22 @@ const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
   messageNoForUpdate: Number,
-  sparkActivityNoForUpdate: Number,
+  sparkActivityIdForUpdate: String,
   messageContentForUpdate: String,
-  memberNoForUpdate: Number,
+  memberIdForUpdate: String,
 })
 
-const sparkActivityNo = ref()
+const sparkActivityId = ref('')
 const messageContent = ref('')
-const memberNo = ref()
+const memberId = ref('')
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
   dialogDisplay.value = true;
-  sparkActivityNo.value = vueProps.sparkActivityNoForUpdate
+  sparkActivityId.value = vueProps.sparkActivityIdForUpdate
   messageContent.value = vueProps.messageContentForUpdate
-  memberNo.value = vueProps.memberNoForUpdate
+  memberId.value = vueProps.memberIdForUpdate
 }
 
 function closeDialog() {
@@ -28,13 +28,13 @@ function closeDialog() {
 }
 
 
-async function updateMessage(messageNoForUpdate, sparkActivityNo, messageContent, memberNo) {
+async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent, memberId) {
   try {
     if (messageNoForUpdate == null) {
       throw new Error("Message no. not found!")
     }
-    await messageBoardStore.updateMessageBackend(messageNoForUpdate, sparkActivityNo, messageContent, memberNo)
-    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate, sparkActivityNo, messageContent, memberNo)
+    await messageBoardStore.updateMessageBackend(messageNoForUpdate, sparkActivityId, messageContent, memberId)
+    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate, sparkActivityId, messageContent, memberId)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -58,11 +58,11 @@ async function updateMessage(messageNoForUpdate, sparkActivityNo, messageContent
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, sparkActivityNo, messageContent, memberNo)">
-            <label for="spark_activity_no">星火活動編號</label> <input type="number" name="spark_activity_no"
-              v-model="sparkActivityNo">
+            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, sparkActivityId, messageContent, memberId)">
+            <label for="spark_activity_id">星火活動ID</label> <input type="number" name="spark_activity_id"
+              v-model="sparkActivityId">
             <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
-            <label for="member_no">會員編號</label> <input type="number" name="member_no" v-model="memberNo">
+            <label for="member_id">會員編號</label> <input type="number" name="member_id" v-model="memberId">
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">

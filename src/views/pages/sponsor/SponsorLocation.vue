@@ -1,10 +1,10 @@
 <script setup>
 import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
 import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
+import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-
 const page = ref(1);
 const dialogDelete = ref(false);
 const itemToDelete = ref(null);
@@ -30,9 +30,9 @@ function closeDelete() {
 }
 
 const locationList = reactive([]);
-async function localConnection() {
+async function getSponsorLocation() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor_location.php');
+    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
     if (response.data.length > 0) {
       response.data.forEach(element => {
         locationList.push(element);
@@ -44,7 +44,7 @@ async function localConnection() {
 }
 
 onMounted(() => {
-  localConnection();
+  getSponsorLocation();
 });
 
 const itemsPerPage = 10;
@@ -85,7 +85,7 @@ const filteredLocationList = computed(() => {
     <div class="content_wrap">
       <h1>認養管理｜認養據點</h1>
       <div class="search">
-        <Search :placeholder="'請輸入據點資訊'" :search-value="searchValue" @search="handleSearchChange"/>
+        <Search :placeholder="'請輸入據點資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -104,14 +104,14 @@ const filteredLocationList = computed(() => {
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.location_id }}</td>
               <td class="name">{{ item.location_name }}</td>
-              <td class="online">{{ item.is_sponsor_location_online ? '已上架' : '未上架' }}</td>
+              <td class="online">{{ item.is_sponsor_location_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
-                <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
-                  inset></v-switch>
+                <v-switch v-model="item.is_sponsor_location_online" color="#EBC483" density="compact" hide-details="true"
+                  inline inset true-value=1></v-switch>
               </td>
               <td class="update_and_delete">
                 <UpdateLocation />
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+                <DeleteLocation :locationNoForDelete="parseInt(item.location_no)"/>
               </td>
             </tr>
           </tbody>

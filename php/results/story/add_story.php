@@ -1,5 +1,5 @@
 <?php
-    require_once('../../conn.php');
+    require_once("../../connect_chd102g3.php");
 
     $story_title = $_POST['story_title'];
     $story_date = $_POST['story_date'];
@@ -10,19 +10,17 @@
 
     //自動產生 story_id
     $sql_id = "SELECT COUNT(story_id) FROM story";
-    $count= $conn->query($sql_id);
+    $count= $pdo->query($sql_id);
     // 將 $count_result 轉換為整數型別
-    $row = $count->fetch_assoc();
+    $row = $count->fetch(PDO::FETCH_ASSOC);
     $count_result = $row['COUNT(story_id)'];
     $story_id_assignment = "ST" . str_pad(($count_result + 1), 3, '0', STR_PAD_LEFT); 
-
-
 
     //上傳圖片
     if($_FILES['story_image']['error']>0){
         die("檔案上傳失敗");
         }
-        $targetDir = 'C:/Users/T14 Gen 3/Desktop/SPARK/public/pictures/images/results/story-gallery/story/';
+        $targetDir = '../../../images/story/';
         $storyNo = $story_id_assignment;
     
         // 得到原始檔案名稱
@@ -40,7 +38,7 @@
         VALUES ('$story_id_assignment', '$story_title', '$newFileName', '$story_brief', '$story_detail', '$story_detail_second', '$story_detail_third', '$story_date')";
 
 
-    $result = $conn->query($sql);
+    $result = $pdo->query($sql);
 
     if ($result) {
         $json = array(

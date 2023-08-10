@@ -1,16 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 const dialog = ref(false);
-
-
-// const fileName = ref("");
-
-// function onFileChange(event) {
-//   // 更新檔案名稱
-//   fileName.value = event.target.files[0]?.name || "";
-// }
 </script>
-
 <template>
   <v-row justify="end">
     <v-dialog v-model="dialog" persistent width="50%">

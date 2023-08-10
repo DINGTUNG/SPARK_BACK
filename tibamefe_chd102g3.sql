@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1:3306
--- 產生時間： 2023-08-04 18:26:14
+-- 產生時間： 2023-08-09 10:57:29
 -- 伺服器版本： 8.0.31
 -- PHP 版本： 8.0.26
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `cms_staff`;
 CREATE TABLE IF NOT EXISTS `cms_staff` (
   `staff_no` int NOT NULL AUTO_INCREMENT,
-  `staff_id` varchar(10) NOT NULL,
+  `staff_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:CMS',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `staff_name` varchar(100) NOT NULL,
   `staff_permission` varchar(100) NOT NULL COMMENT '超級管理員\r\n一般管理員\r\n協作人員',
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `cms_staff` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`staff_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `cms_staff` (
 -- 傾印資料表的資料 `cms_staff`
 --
 
-INSERT INTO `cms_staff` (`staff_no`, `staff_id`, `del_flg`, `staff_name`, `staff_permission`, `staff_email`, `staff_account`, `staff_password`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `cms_staff` (`staff_no`, `staff_id`, `del_flg`, `staff_name`, `staff_permission`, `staff_email`, `staff_account`, `staff_password`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'CMS001', 0, '星太郎', '超級管理員', 'test@gmail.com', 'test', 'test', '星火大老闆', '2023-08-01 19:18:25', '星火大老闆', '2023-08-02 03:18:25'),
 (2, 'CMS002', 0, '星八克', '一般管理員', 'spark@gmail.com', 'spark', 'spark', '星火大老闆', '2023-08-01 19:18:25', '星火大老闆', '2023-08-02 03:18:25'),
 (3, 'CMS003', 0, '星期六', '協作人員', '666@gmail.com', '666', '666', '星火大老闆', '2023-08-01 19:18:25', '星火大老闆', '2023-08-02 03:18:25');
@@ -56,46 +56,46 @@ INSERT INTO `cms_staff` (`staff_no`, `staff_id`, `del_flg`, `staff_name`, `staff
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `donation_order`
+-- 資料表結構 `donate_order`
 --
 
-DROP TABLE IF EXISTS `donation_order`;
-CREATE TABLE IF NOT EXISTS `donation_order` (
+DROP TABLE IF EXISTS `donate_order`;
+CREATE TABLE IF NOT EXISTS `donate_order` (
   `donate_order_no` int NOT NULL AUTO_INCREMENT,
-  `donation_order_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `member_no` int NOT NULL,
-  `donate_project_no` int NOT NULL,
+  `donate_order_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:DO',
+  `member_id` varchar(10) NOT NULL COMMENT '識別碼:A',
+  `donate_project_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:DP',
   `donate_price` int NOT NULL,
   `donate_date` date NOT NULL,
   PRIMARY KEY (`donate_order_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- 傾印資料表的資料 `donation_order`
+-- 傾印資料表的資料 `donate_order`
 --
 
-INSERT INTO `donation_order` (`donate_order_no`, `donation_order_id`, `member_no`, `donate_project_no`, `donate_price`, `donate_date`) VALUES
-(1, 'DO001', 1, 2, 666, '2023-07-30'),
-(2, 'DO002', 4, 5, 500, '2023-07-31'),
-(3, 'DO003', 3, 3, 8787, '2023-08-01'),
-(4, 'DO004', 4, 1, 2000, '2023-08-01'),
-(5, 'DO005', 9, 6, 520, '2023-08-01'),
-(6, 'DO006', 6, 7, 3000, '2023-08-01'),
-(7, 'DO007', 5, 2, 1500, '2023-08-02'),
-(8, 'DO008', 4, 1, 5555, '2023-08-03'),
-(9, 'DO009', 3, 3, 100, '2023-08-03'),
-(10, 'DO010', 6, 4, 99999, '2023-08-03');
+INSERT INTO `donate_order` (`donate_order_no`, `donate_order_id`, `member_id`, `donate_project_id`, `donate_price`, `donate_date`) VALUES
+(1, 'DO001', 'A001', 'DP001', 666, '2023-07-30'),
+(2, 'DO002', 'A004', 'DP005', 500, '2023-07-31'),
+(3, 'DO003', 'A003', 'DP003', 8787, '2023-08-01'),
+(4, 'DO004', 'A004', 'DP001', 2000, '2023-08-01'),
+(5, 'DO005', 'A009', 'DP006', 520, '2023-08-01'),
+(6, 'DO006', 'A006', 'DP007', 3000, '2023-08-01'),
+(7, 'DO007', 'A005', 'DP002', 1500, '2023-08-02'),
+(8, 'DO008', 'A004', 'DP001', 5555, '2023-08-03'),
+(9, 'DO009', 'A003', 'DP003', 100, '2023-08-03'),
+(10, 'DO010', 'A006', 'DP004', 99999, '2023-08-03');
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `donation_project`
+-- 資料表結構 `donate_project`
 --
 
-DROP TABLE IF EXISTS `donation_project`;
-CREATE TABLE IF NOT EXISTS `donation_project` (
+DROP TABLE IF EXISTS `donate_project`;
+CREATE TABLE IF NOT EXISTS `donate_project` (
   `donate_project_no` int NOT NULL AUTO_INCREMENT,
-  `donate_project_id` varchar(10) NOT NULL,
+  `donate_project_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:DP',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `donate_project_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `donate_project_summarize` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -107,22 +107,22 @@ CREATE TABLE IF NOT EXISTS `donation_project` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`donate_project_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- 傾印資料表的資料 `donation_project`
+-- 傾印資料表的資料 `donate_project`
 --
 
-INSERT INTO `donation_project` (`donate_project_no`, `donate_project_id`, `del_flg`, `donate_project_name`, `donate_project_summarize`, `donate_project_start_date`, `donate_project_end_date`, `donate_project_amount`, `donate_project_image`, `is_donate_project_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
-(1, 'SO001', 0, '扶幼捐款', '支持需要幫助的幼兒。通過捐贈金錢，我們能夠提供營養、醫療、教育和其他基本需求，讓這些幼兒擁有更好的生活和未來。', '2023-01-08', '2028-01-08', 114900, 'D001_kids_support.jp', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(2, 'SO002', 0, '兒童保護', '支持兒童保護組織和計劃，確保兒童的安全、健康和福祉。透過捐贈金錢，您可以幫助提供緊急援助、醫療保健、教育、心理支持和法律援助。', '2023-01-08', '2028-01-08', 18800, 'D002_kids_protection.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(3, 'SO003', 0, '助養召集令', '提供受助者孩童所需的經濟援助，為受助者提供穩定的支持，幫助他們改善生活狀況，獲得更好的教育和醫療資源，並提供更積極的未來展望。', '2023-04-22', '2028-04-22', 21500, 'D003_kids_sponsor.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(4, 'SO004', 0, '獎助學金', '支持有潛力但經濟困難的學生，幫助他們實現教育目標並追求更好的未來。您可以資助學生的學費、教材、住宿費用或其他與教育相關的費用。', '2023-05-14', '2028-05-14', 247380, 'D004_scholarship.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(5, 'SO005', 0, '急難救助金', '支援在緊急情況下遭遇困境的孩童，提供迅速而有效的援助。這些情況可能包括自然災害、人道危機、健康危機、家庭悲劇或其他緊急狀況。', '2023-06-25', '2028-06-25', 107660, 'D005_emergency_ relief_fund.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(6, 'SO006', 0, '營養補助', '支持有營養需求但無法獲得足夠營養的人們，提供營養補助食品、營養品、營養教育和餐飲計畫等。有助於改善孩童的營養狀況，促進身體發育和健康。', '2023-07-04', '2028-07-04', 115300, 'D006_nutritional_supplements.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
-(7, 'SO007', 0, '夢想之星', '讓孩子們探索自我，提出他們的夢想計畫，並邀請您投給您最愛的組別，為該組爭取「夢想成真」獎金！讓我們一同以熱情激勵，為孩子們的夢想點燃璀璨星火。', '2023-08-17', '2028-07-17', 87900, 'D007_spark_project.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55');
+INSERT INTO `donate_project` (`donate_project_no`, `donate_project_id`, `del_flg`, `donate_project_name`, `donate_project_summarize`, `donate_project_start_date`, `donate_project_end_date`, `donate_project_amount`, `donate_project_image`, `is_donate_project_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
+(1, 'DP001', 0, '扶幼捐款', '支持需要幫助的幼兒。通過捐贈金錢，我們能夠提供營養、醫療、教育和其他基本需求，讓這些幼兒擁有更好的生活和未來。', '2023-01-08', '2028-01-08', 114900, 'D001_kids_support.jp', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(2, 'DP002', 0, '兒童保護', '支持兒童保護組織和計劃，確保兒童的安全、健康和福祉。透過捐贈金錢，您可以幫助提供緊急援助、醫療保健、教育、心理支持和法律援助。', '2023-01-08', '2028-01-08', 18800, 'D002_kids_protection.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(3, 'DP003', 0, '助養召集令', '提供受助者孩童所需的經濟援助，為受助者提供穩定的支持，幫助他們改善生活狀況，獲得更好的教育和醫療資源，並提供更積極的未來展望。', '2023-04-22', '2028-04-22', 21500, 'D003_kids_sponsor.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(4, 'DP004', 0, '獎助學金', '支持有潛力但經濟困難的學生，幫助他們實現教育目標並追求更好的未來。您可以資助學生的學費、教材、住宿費用或其他與教育相關的費用。', '2023-05-14', '2028-05-14', 247380, 'D004_scholarship.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(5, 'DP005', 0, '急難救助金', '支援在緊急情況下遭遇困境的孩童，提供迅速而有效的援助。這些情況可能包括自然災害、人道危機、健康危機、家庭悲劇或其他緊急狀況。', '2023-06-25', '2028-06-25', 107660, 'D005_emergency_ relief_fund.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(6, 'DP006', 0, '營養補助', '支持有營養需求但無法獲得足夠營養的人們，提供營養補助食品、營養品、營養教育和餐飲計畫等。有助於改善孩童的營養狀況，促進身體發育和健康。', '2023-07-04', '2028-07-04', 115300, 'D006_nutritional_supplements.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55'),
+(7, 'DP007', 0, '夢想之星', '讓孩子們探索自我，提出他們的夢想計畫，並邀請您投給您最愛的組別，為該組爭取「夢想成真」獎金！讓我們一同以熱情激勵，為孩子們的夢想點燃璀璨星火。', '2023-08-17', '2028-07-17', 87900, 'D007_spark_project.jpg', 1, '星火大老闆', '2023-08-01 19:19:55', '星火大老闆', '2023-08-01 19:19:55');
 
 -- --------------------------------------------------------
 
@@ -133,9 +133,9 @@ INSERT INTO `donation_project` (`donate_project_no`, `donate_project_id`, `del_f
 DROP TABLE IF EXISTS `dream_star`;
 CREATE TABLE IF NOT EXISTS `dream_star` (
   `dream_star_no` int NOT NULL AUTO_INCREMENT,
-  `dream_star_id` varchar(10) NOT NULL,
+  `dream_star_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:DS',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
-  `spark_activity_no` int DEFAULT NULL,
+  `spark_activity_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '識別碼:SA',
   `dream_star_name` varchar(100) NOT NULL,
   `dream_star_content` varchar(1000) NOT NULL,
   `short_term_goals` varchar(30) NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `dream_star` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`dream_star_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -155,15 +155,15 @@ CREATE TABLE IF NOT EXISTS `dream_star` (
 -- 傾印資料表的資料 `dream_star`
 --
 
-INSERT INTO `dream_star` (`dream_star_no`, `dream_star_id`, `del_flg`, `spark_activity_no`, `dream_star_name`, `dream_star_content`, `short_term_goals`, `medium_term_goals`, `late_term_goals`, `dream_star_votes`, `dream_star_image`, `is_dream_star_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
-(1, 'DS001', 0, 1, '美食大師 烹飪歷險記', '\"本計畫是由一群充滿熱情的兒童所發起的創意計畫。這個計畫旨在引領孩子們進入美食的奇妙世界，激發他們對烹飪的興趣，並培養出色的烹飪技能。透過這趟烹飪歷險，孩子們將探索各國美食文化、品嘗不同風味，並發揮創意創作屬於自己的美食傑作。\r\n除了希望過程是一段愉快的學習體驗，更透過烹飪的過程，啟發他們的創意思維與合作精神。相信這群孩子將成為未來的美食傳承者，將他們的熱愛與創意融入美食的世界，創造出更多美味與驚喜。\"', '\"學習基本烹飪技巧與食材認識， 親身體驗當小廚師的樂趣，透過', '學習融合異國元素、創作獨特風味的美食，並舉辦小型烹飪展示，分', '\"舉辦大型美食活動，與更多人分享美食文化， 並考取專業執照。', 91, 'dream_star_plan_1.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(2, 'DS002', 0, 1, '繪畫奇想 彩筆揮灑繽紛世界', '\"一群對藝術抱有熱情的小朋友們，期待進入色彩斑斕的藝術領域，將他們的創意和想像力透過彩筆在畫布上展現，打造出繽紛多彩的藝術世界。盡情揮灑創意之餘，同時學習專業的繪畫技巧，啟發他們藝術的潛能。我們預計邀請資深藝術家和專業繪畫老師擔任指導，教授兒童基本的繪畫技法和藝術知識。\r\n透過有趣的創意工作坊，孩子們將在輕鬆歡樂的氛圍中，學習用不同材料和媒介創作，例如水彩、蠟筆、油畫等，體驗藝術的多元表現形式，激發無限奇想。也會請藝術家創作心得和經驗，讓孩子們從藝術家身上汲取靈感，激勵他們持續進步。\"', '\"掌握基本繪畫技巧，如線條、形狀和色彩運用， 並培養創意思維', '學習不同繪畫媒材的運用和混合，並和藝術家分享交流創作理念和心', '成員們分別完成2~3項作品，並舉辦小型展覽分享自己的創作成果', 234, 'dream_star_plan_2.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(3, 'DS003', 0, 1, '音樂星光 樂韻奏鳴的天空旅程', '\"我們將帶領育小朋友們展開一場奇幻而美妙的音樂之旅。在那裡，每個孩子都擁有一把屬於自己的音樂魔杖。\r\n這場旅程將引導他們探索不同的樂器，從小提琴到鋼琴，從吉他到鼓，讓他們發現自己的音樂天賦和獨特的音樂風格，他們將參與音樂工作坊和課程，與專業音樂家互動學習，掌握各種技巧和表演技巧。\r\n這段音樂夢想旅程將成為孩子們未來人生的寶貴資產，為他們建立堅實的基礎。透過音樂，他們將發現自己的潛力和價值，並培養堅持不懈、努力奮鬥的精神，這些寶貴的品質將伴隨他們走向未來的道路，助他們克服挑戰，實現更大的夢想。\r\n讓我們一起支持這個夢想計畫，為星火協會的小朋友們打開通往音樂世界的大門，讓他們的夢想在音符的旋律中綻放，成為獨一無二的音樂之星！\"', '培養對音樂的興趣和熱愛，享受音樂的樂趣並表達自己', '提供專業音樂指導和訓練，培養團隊合作的意識', '讓孩子們參與音樂比賽和演出，舉辦音樂演奏會和公益音樂活動', 255, 'dream_star_plan_3.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(4, 'DS004', 0, 1, '體育勇者 挑戰極限勇者之旅', '\"8位來自屏東的少年想要挑戰自我極限，透過運動探索未知領域。我們希望這趟勇者之旅能讓他們展現潛在的運動天賦，培養團隊合作精神，並在挑戰與努力中茁壯成長。\r\n他們將挑戰挑戰攀登玉山前峰和衝浪課程體驗，在過程中嘗試突破自我極限，超越過去的表現。也期待透過團隊合作訓練，我們希望參與者能學會互相扶持、共同克服困難，培養團隊精神和領導能力，並體驗團結的力量。\r\n希望透過專業教練的指導，讓少年們發現自己的潛能、進一步深耕專長，甚至成為未來職業的方向。\"', '\"提升身體素質、增強體能和耐力， 學會合作與溝通。\"', '每周固定時間共同鍛鍊體能，培養默契並建立團隊凝聚力。', '自主規畫登山行程和尋找衝浪課程，聯絡教練並採買相關配備', 240, 'dream_star_plan_4.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(5, 'DS005', 0, 1, '環保探險家 地球奇幻護衛隊', '\"我們的使命是成為地球的小小護衛隊，守護這片美麗的藍色星球，讓我們的未來更璀璨耀眼。我們將一訪原始叢林和潮間帶生態圈，深入探索自然的奧秘。透過親身體驗，學習尊重生態平衡，珍視每一片綠葉與生命脈動。\r\n我們也預計將與當地社區攜手合作，投入環保行動，清理垃圾、種植樹木、推廣再生能源等。用我們的小手牽起更多的小手，一起共護家園，為地球播下永續的種子\"', '\"培養孩子們的自然關懷，了解地球生態多樣性。 學習台灣叢林和', '自主規劃冒險行程，同時進行淨灘活動', '與當地社區合作推行環保行動，並透過社群發起活動號召大眾參與。', 122, 'dream_star_plan_5.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(6, 'DS006', 0, 1, '小科學家 探索神秘世界', '\"不只是從書籍吸收知識，而是透過實際實驗和活動進入神秘的科學世界，啟發他們對科學的熱情，培養探索精神，親身體驗科學的樂趣和驚奇。\r\n我們將走訪自然科學博物館，讓小科學家們親自動手進行實驗，如化學反應、物理現象、天文觀察等，從實踐中學習科學原理，培養他們的觀察力和邏輯思維；讓孩子們親身感受科學在現實生活中的應用和奧秘，拓展他們的視野和知識面。\r\n我們相信每個兒童都擁有無限的創造力和探索欲望。透過這個計畫，希望能夠激發孩子們對科學的熱愛，讓他們在探索神秘世界的過程中，發現無盡的可能性。\"', '\"培養孩子們的科學好奇心和實驗技巧。 學習基本科學知識，體驗', '提案想進行的實驗和想去的科學博物館', '自主規劃行程和進行實驗、並將過程拍攝並輔以文字記錄', 191, 'dream_star_plan_6.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(7, 'DS007', 0, 1, '動物園園長 照顧和保護動物', '\"這是一個由一群熱愛動物的兒童發起的夢想計畫。我們的目標是成為動物園的小小園長，學習如何照顧動物、保護野生生物，並透過教育和行動，喚起大眾對動物保育的關注和重視。我們將邀請專業動物園照顧人員來指導我們，學習如何照顧不同種類動物的日常需求，包括飲食、運動和環境維護，了解動物的生活習性和特點，並培養愛護動物的意識。\r\n我們將組織專題講座和展覽，向大眾宣傳保護動物的重要性，分享野生動物的生態知識，呼籲大家關心瀕危動物的處境，齊心保護生態平衡。\"', '\"瞭解動物的需求和行為，學習基本照顧技能， 透過實習體會動物', '\"與專業照顧人員合作，參與動物照顧的實際工作。 \"', '舉辦保育教育活動，宣揚保護動物的訊息，喚起社會關注。', 186, 'dream_star_plan_7.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
-(8, 'DS008', 0, 1, '創意手作 動手創造分享喜悅', '\"發揮創意，動手製作各種手工藝品和藝術品，並透過分享自己的創作，帶來快樂和喜悅給他人。我們將走訪文創基地和手作工作室，學習市場需求和商品化要注意的知識，並學習創造商品如手繪明信片、手工裝飾、DIY小物等，在自由自在的氛圍中發揮創意，學習不同的手工技巧，創造出屬於自己的獨特作品。\r\n我們將舉辦成果分享和義賣活動，讓孩子們把自己的手作成果販售給身邊的朋友、家人或陌生人，透過義賣，將所得提供給慈善機構，讓更多人感受到溫暖和喜悅。\"', '\"學習不同手工技巧，創造出獨特的手作品， 培養孩子們分享喜悅', '自主規劃行程，走訪文創基地和手作工作室', '舉辦成果分享和義賣活動，將所得捐助慈善機構', 88, 'dream_star_plan_8.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39');
+INSERT INTO `dream_star` (`dream_star_no`, `dream_star_id`, `del_flg`, `spark_activity_id`, `dream_star_name`, `dream_star_content`, `short_term_goals`, `medium_term_goals`, `late_term_goals`, `dream_star_votes`, `dream_star_image`, `is_dream_star_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
+(1, 'DS001', 0, 'SA001', '美食大師 烹飪歷險記', '\"本計畫是由一群充滿熱情的兒童所發起的創意計畫。這個計畫旨在引領孩子們進入美食的奇妙世界，激發他們對烹飪的興趣，並培養出色的烹飪技能。透過這趟烹飪歷險，孩子們將探索各國美食文化、品嘗不同風味，並發揮創意創作屬於自己的美食傑作。\r\n除了希望過程是一段愉快的學習體驗，更透過烹飪的過程，啟發他們的創意思維與合作精神。相信這群孩子將成為未來的美食傳承者，將他們的熱愛與創意融入美食的世界，創造出更多美味與驚喜。\"', '\"學習基本烹飪技巧與食材認識， 親身體驗當小廚師的樂趣，透過', '學習融合異國元素、創作獨特風味的美食，並舉辦小型烹飪展示，分', '\"舉辦大型美食活動，與更多人分享美食文化， 並考取專業執照。', 91, 'dream_star_plan_1.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(2, 'DS002', 0, 'SA001', '繪畫奇想 彩筆揮灑繽紛世界', '\"一群對藝術抱有熱情的小朋友們，期待進入色彩斑斕的藝術領域，將他們的創意和想像力透過彩筆在畫布上展現，打造出繽紛多彩的藝術世界。盡情揮灑創意之餘，同時學習專業的繪畫技巧，啟發他們藝術的潛能。我們預計邀請資深藝術家和專業繪畫老師擔任指導，教授兒童基本的繪畫技法和藝術知識。\r\n透過有趣的創意工作坊，孩子們將在輕鬆歡樂的氛圍中，學習用不同材料和媒介創作，例如水彩、蠟筆、油畫等，體驗藝術的多元表現形式，激發無限奇想。也會請藝術家創作心得和經驗，讓孩子們從藝術家身上汲取靈感，激勵他們持續進步。\"', '\"掌握基本繪畫技巧，如線條、形狀和色彩運用， 並培養創意思維', '學習不同繪畫媒材的運用和混合，並和藝術家分享交流創作理念和心', '成員們分別完成2~3項作品，並舉辦小型展覽分享自己的創作成果', 234, 'dream_star_plan_2.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(3, 'DS003', 0, 'SA001', '音樂星光 樂韻奏鳴的天空旅程', '\"我們將帶領育小朋友們展開一場奇幻而美妙的音樂之旅。在那裡，每個孩子都擁有一把屬於自己的音樂魔杖。\r\n這場旅程將引導他們探索不同的樂器，從小提琴到鋼琴，從吉他到鼓，讓他們發現自己的音樂天賦和獨特的音樂風格，他們將參與音樂工作坊和課程，與專業音樂家互動學習，掌握各種技巧和表演技巧。\r\n這段音樂夢想旅程將成為孩子們未來人生的寶貴資產，為他們建立堅實的基礎。透過音樂，他們將發現自己的潛力和價值，並培養堅持不懈、努力奮鬥的精神，這些寶貴的品質將伴隨他們走向未來的道路，助他們克服挑戰，實現更大的夢想。\r\n讓我們一起支持這個夢想計畫，為星火協會的小朋友們打開通往音樂世界的大門，讓他們的夢想在音符的旋律中綻放，成為獨一無二的音樂之星！\"', '培養對音樂的興趣和熱愛，享受音樂的樂趣並表達自己', '提供專業音樂指導和訓練，培養團隊合作的意識', '讓孩子們參與音樂比賽和演出，舉辦音樂演奏會和公益音樂活動', 255, 'dream_star_plan_3.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(4, 'DS004', 0, 'SA001', '體育勇者 挑戰極限勇者之旅', '\"8位來自屏東的少年想要挑戰自我極限，透過運動探索未知領域。我們希望這趟勇者之旅能讓他們展現潛在的運動天賦，培養團隊合作精神，並在挑戰與努力中茁壯成長。\r\n他們將挑戰挑戰攀登玉山前峰和衝浪課程體驗，在過程中嘗試突破自我極限，超越過去的表現。也期待透過團隊合作訓練，我們希望參與者能學會互相扶持、共同克服困難，培養團隊精神和領導能力，並體驗團結的力量。\r\n希望透過專業教練的指導，讓少年們發現自己的潛能、進一步深耕專長，甚至成為未來職業的方向。\"', '\"提升身體素質、增強體能和耐力， 學會合作與溝通。\"', '每周固定時間共同鍛鍊體能，培養默契並建立團隊凝聚力。', '自主規畫登山行程和尋找衝浪課程，聯絡教練並採買相關配備', 240, 'dream_star_plan_4.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(5, 'DS005', 0, 'SA001', '環保探險家 地球奇幻護衛隊', '\"我們的使命是成為地球的小小護衛隊，守護這片美麗的藍色星球，讓我們的未來更璀璨耀眼。我們將一訪原始叢林和潮間帶生態圈，深入探索自然的奧秘。透過親身體驗，學習尊重生態平衡，珍視每一片綠葉與生命脈動。\r\n我們也預計將與當地社區攜手合作，投入環保行動，清理垃圾、種植樹木、推廣再生能源等。用我們的小手牽起更多的小手，一起共護家園，為地球播下永續的種子\"', '\"培養孩子們的自然關懷，了解地球生態多樣性。 學習台灣叢林和', '自主規劃冒險行程，同時進行淨灘活動', '與當地社區合作推行環保行動，並透過社群發起活動號召大眾參與。', 122, 'dream_star_plan_5.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(6, 'DS006', 0, 'SA001', '小科學家 探索神秘世界', '\"不只是從書籍吸收知識，而是透過實際實驗和活動進入神秘的科學世界，啟發他們對科學的熱情，培養探索精神，親身體驗科學的樂趣和驚奇。\r\n我們將走訪自然科學博物館，讓小科學家們親自動手進行實驗，如化學反應、物理現象、天文觀察等，從實踐中學習科學原理，培養他們的觀察力和邏輯思維；讓孩子們親身感受科學在現實生活中的應用和奧秘，拓展他們的視野和知識面。\r\n我們相信每個兒童都擁有無限的創造力和探索欲望。透過這個計畫，希望能夠激發孩子們對科學的熱愛，讓他們在探索神秘世界的過程中，發現無盡的可能性。\"', '\"培養孩子們的科學好奇心和實驗技巧。 學習基本科學知識，體驗', '提案想進行的實驗和想去的科學博物館', '自主規劃行程和進行實驗、並將過程拍攝並輔以文字記錄', 191, 'dream_star_plan_6.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(7, 'DS007', 0, 'SA001', '動物園園長 照顧和保護動物', '\"這是一個由一群熱愛動物的兒童發起的夢想計畫。我們的目標是成為動物園的小小園長，學習如何照顧動物、保護野生生物，並透過教育和行動，喚起大眾對動物保育的關注和重視。我們將邀請專業動物園照顧人員來指導我們，學習如何照顧不同種類動物的日常需求，包括飲食、運動和環境維護，了解動物的生活習性和特點，並培養愛護動物的意識。\r\n我們將組織專題講座和展覽，向大眾宣傳保護動物的重要性，分享野生動物的生態知識，呼籲大家關心瀕危動物的處境，齊心保護生態平衡。\"', '\"瞭解動物的需求和行為，學習基本照顧技能， 透過實習體會動物', '\"與專業照顧人員合作，參與動物照顧的實際工作。 \"', '舉辦保育教育活動，宣揚保護動物的訊息，喚起社會關注。', 186, 'dream_star_plan_7.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39'),
+(8, 'DS008', 0, 'SA001', '創意手作 動手創造分享喜悅', '\"發揮創意，動手製作各種手工藝品和藝術品，並透過分享自己的創作，帶來快樂和喜悅給他人。我們將走訪文創基地和手作工作室，學習市場需求和商品化要注意的知識，並學習創造商品如手繪明信片、手工裝飾、DIY小物等，在自由自在的氛圍中發揮創意，學習不同的手工技巧，創造出屬於自己的獨特作品。\r\n我們將舉辦成果分享和義賣活動，讓孩子們把自己的手作成果販售給身邊的朋友、家人或陌生人，透過義賣，將所得提供給慈善機構，讓更多人感受到溫暖和喜悅。\"', '\"學習不同手工技巧，創造出獨特的手作品， 培養孩子們分享喜悅', '自主規劃行程，走訪文創基地和手作工作室', '舉辦成果分享和義賣活動，將所得捐助慈善機構', 88, 'dream_star_plan_8.pn', 1, '星火大老闆', '2023-08-01 19:20:39', '星火大老闆', '2023-08-01 19:20:39');
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,7 @@ INSERT INTO `dream_star` (`dream_star_no`, `dream_star_id`, `del_flg`, `spark_ac
 DROP TABLE IF EXISTS `dream_star_vote`;
 CREATE TABLE IF NOT EXISTS `dream_star_vote` (
   `vote_ip` varchar(15) NOT NULL,
-  `dream_star_no` int DEFAULT NULL,
+  `dream_star_id` varchar(10) DEFAULT NULL COMMENT '識別碼:DS',
   PRIMARY KEY (`vote_ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -182,17 +182,17 @@ CREATE TABLE IF NOT EXISTS `dream_star_vote` (
 -- 傾印資料表的資料 `dream_star_vote`
 --
 
-INSERT INTO `dream_star_vote` (`vote_ip`, `dream_star_no`) VALUES
-('3.153.134.158', 1),
-('228.28.109.118', 3),
-('151.180.199.241', 8),
-('110.101.206.202', 1),
-('204.208.87.111', 7),
-('220.55.109.238', 4),
-('217.9.157.45', 6),
-('185.112.249.222', 1),
-('76.128.56.74', 2),
-('224.136.134.178', 5);
+INSERT INTO `dream_star_vote` (`vote_ip`, `dream_star_id`) VALUES
+('3.153.134.158', 'DS001'),
+('228.28.109.118', 'DS003'),
+('151.180.199.241', 'DS008'),
+('110.101.206.202', 'DS001'),
+('204.208.87.111', 'DS007'),
+('220.55.109.238', 'DS004'),
+('217.9.157.45', 'DS006'),
+('185.112.249.222', 'DS001'),
+('76.128.56.74', 'DS002'),
+('224.136.134.178', 'DS005');
 
 -- --------------------------------------------------------
 
@@ -203,7 +203,7 @@ INSERT INTO `dream_star_vote` (`vote_ip`, `dream_star_no`) VALUES
 DROP TABLE IF EXISTS `member_info`;
 CREATE TABLE IF NOT EXISTS `member_info` (
   `member_no` int NOT NULL AUTO_INCREMENT,
-  `member_id` varchar(10) NOT NULL,
+  `member_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:A',
   `member_name` varchar(100) NOT NULL,
   `member_img` varchar(50) NOT NULL,
   `member_salutation` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '先生 小姐 公司',
@@ -247,32 +247,29 @@ CREATE TABLE IF NOT EXISTS `message_board` (
   `message_no` int NOT NULL AUTO_INCREMENT,
   `message_id` varchar(10) NOT NULL,
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
-  `spark_activity_no` int DEFAULT NULL,
+  `spark_activity_id` varchar(10) DEFAULT NULL COMMENT '識別碼:SA',
   `message_content` varchar(50) NOT NULL,
-  `member_no` int DEFAULT NULL,
-  `message_date` datetime NOT NULL,
-  `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `member_id` varchar(10) DEFAULT NULL COMMENT '識別碼:A',
+  `message_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`message_no`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- 傾印資料表的資料 `message_board`
 --
 
-INSERT INTO `message_board` (`message_no`, `message_id`, `del_flg`, `spark_activity_no`, `message_content`, `member_no`, `message_date`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
-(1, 'SM001', 0, 1, '真感人!你們的小小夢想讓叔叔我來贊助一下!孩子們加油!', 1, '2023-07-29 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(2, 'SM002', 0, 1, '加油!大力支持!', 5, '2023-07-29 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(3, 'SM003', 0, 1, 'GOGOGO!', 6, '2023-07-30 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(4, 'SM004', 0, 1, '有夢最美!', 9, '2023-07-30 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(5, 'SM005', 0, 1, '歐拉歐拉歐拉歐拉歐拉歐拉歐拉歐拉', 3, '2023-07-30 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(6, 'SM006', 0, 1, '我要成為神奇寶貝大師!', 6, '2023-07-30 17:41:36', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(7, 'SM007', 0, 1, '星星之火可以燎原，很有意義!加油!', 4, '2023-08-01 17:45:26', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(8, 'SM008', 0, 1, '我昨天看到一隻狸貓在飛', 2, '2023-08-02 17:45:26', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(9, 'SM009', 0, 1, '狸貓仔!!!', 7, '2023-08-02 17:45:26', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08'),
-(10, 'SM010', 0, 1, '星火很棒~孩子們更棒!祝你們順利長大!', 6, '2023-08-03 17:45:26', '星火大老闆', '2023-08-01 19:23:08', '星火大老闆', '2023-08-01 19:23:08');
+INSERT INTO `message_board` (`message_no`, `message_id`, `del_flg`, `spark_activity_id`, `message_content`, `member_id`, `message_date`, `updater`, `update_time`) VALUES
+(1, 'SM001', 0, 'SA001', '狸貓啾啾叫', 'A001', '2023-07-29 17:41:36', '許咪咪', '2023-08-07 14:48:53'),
+(2, 'SM002', 0, 'SA001', '狸猫喵喵喵', 'A005', '2023-07-29 17:41:36', '許咪咪', '2023-08-09 07:03:15'),
+(3, 'SM003', 0, 'SA001', '狸貓貓貓嘴', 'A006', '2023-07-30 17:41:36', '許咪咪', '2023-08-09 07:03:24'),
+(4, 'SM004', 0, 'SA001', '狸貓肥嘟嘟', 'A009', '2023-07-30 17:41:36', '許咪咪', '2023-08-07 14:07:44'),
+(5, 'SM005', 0, 'SA878', '二狸貓豬頭', 'A878', '2023-07-30 17:41:36', '許咪咪', '2023-08-07 15:51:21'),
+(6, 'SM006', 0, 'SA001', '狸貓嘟嘟肥', 'A006', '2023-07-30 17:41:36', '許咪咪', '2023-08-09 07:03:31'),
+(7, 'SM007', 0, 'SA001', '狸貓呆呆嘟', 'A004', '2023-08-01 17:45:26', '許咪咪', '2023-08-09 07:03:53'),
+(79, 'SM079', 0, 'SA001', '狸貓大師!!', 'A087', '2023-08-09 16:17:16', '許咪咪', '2023-08-09 08:17:16'),
+(77, 'SM077', 0, 'SA001', '狸貓大成功!!', 'A087', '2023-08-09 15:54:25', '許咪咪', '2023-08-09 07:54:25');
 
 -- --------------------------------------------------------
 
@@ -283,7 +280,7 @@ INSERT INTO `message_board` (`message_no`, `message_id`, `del_flg`, `spark_activ
 DROP TABLE IF EXISTS `milestone`;
 CREATE TABLE IF NOT EXISTS `milestone` (
   `milestone_no` int NOT NULL AUTO_INCREMENT,
-  `milestone_id` varchar(10) NOT NULL,
+  `milestone_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:M',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `milestone_title` varchar(100) NOT NULL,
   `milestone_content` varchar(500) NOT NULL,
@@ -293,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`milestone_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -301,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `milestone` (
 -- 傾印資料表的資料 `milestone`
 --
 
-INSERT INTO `milestone` (`milestone_no`, `milestone_id`, `del_flg`, `milestone_title`, `milestone_content`, `milestone_date`, `milestone_image`, `is_milestone_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `milestone` (`milestone_no`, `milestone_id`, `del_flg`, `milestone_title`, `milestone_content`, `milestone_date`, `milestone_image`, `is_milestone_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'M001', 0, '暖心聖誕', '邀請士元火鍋店為孩子們準備豐富的火鍋大餐', '202212', 'M001_warm_christmas.', 1, '星火大老闆', '2023-08-01 19:24:16', '星火大老闆', '2023-08-01 19:24:16'),
 (2, 'M002', 0, '環境小尖兵', '帶領孩子們前往海邊淨灘，為環保盡一份心力', '202302', 'M002_environment_sol', 1, '星火大老闆', '2023-08-01 19:24:16', '星火大老闆', '2023-08-01 19:24:16'),
 (3, 'M003', 0, '愛心稻田', '疫情解封後，首次到田裡體驗務農的辛勞，學習感恩', '202306', 'M003_love_paddy_fiel', 1, '星火大老闆', '2023-08-01 19:24:16', '星火大老闆', '2023-08-01 19:24:16');
@@ -315,7 +312,7 @@ INSERT INTO `milestone` (`milestone_no`, `milestone_id`, `del_flg`, `milestone_t
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
   `news_no` int NOT NULL AUTO_INCREMENT,
-  `news_id` varchar(10) NOT NULL,
+  `news_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:N',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `news_title` varchar(100) NOT NULL,
   `news_date` datetime NOT NULL,
@@ -331,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`news_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -339,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- 傾印資料表的資料 `news`
 --
 
-INSERT INTO `news` (`news_no`, `news_id`, `del_flg`, `news_title`, `news_date`, `news_image_first`, `news_image_second`, `news_image_third`, `news_image_fourth`, `news_content_first`, `news_content_second`, `news_content_third`, `news_content_fourth`, `is_news_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `news` (`news_no`, `news_id`, `del_flg`, `news_title`, `news_date`, `news_image_first`, `news_image_second`, `news_image_third`, `news_image_fourth`, `news_content_first`, `news_content_second`, `news_content_third`, `news_content_fourth`, `is_news_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'N001', 0, '星火30，感謝有您', '2023-06-30 14:47:59', 'Spark30_1.png', 'Spark30_2.png', 'Spark30_3.png', 'Spark30_4.png', '親愛的星火兒童認養協會的家人們：我們非常興奮地宣布，星火兒童認養協會迎來了30週年的重要里程碑！在這個特殊的時刻，我們想要向所有支持者、志願者、捐助者和合作夥伴表達最深深的感謝之情。自1985年成立以來，星火一直致力於關愛孤兒和弱勢兒童，為他們提供溫暖、關懷和希望。這30年來，我們見證了無數個家庭的連結、孩子的笑容和夢想的實現。', '在這個特殊的周年慶祝活動中，我們將舉辦一系列精彩的活動，包括兒童藝術展、親子遊樂日和慈善晚宴等，希望為孩子們帶來歡樂和關懷。我們將舉辦一場慈善晚宴，以回饋社會對我們的支持。星火邀請各界人士參與晚宴，不僅是一個節日的慶典，更是一個機會，讓我們團結起來，為孩子們的未來籌集資源和支持。', '在星火的30年歷程中，我們努力實現著「每個孩子都應該有一個家」的願景。我們努力著，為孤兒和弱勢兒童找到合適的家庭，給予他們溫暖和關愛。這一路上，我們見證了無數個家庭的連結，看到了孩子們的微笑，並見證了他們的成長和成就。我們與認養家庭和孩子們建立起了深厚的情感聯繫，共同走過了許多困難和挑戰，但正是這些努力和奉獻，讓孩子們能夠擁有更美好的未來。', '在這個值得慶祝的時刻，我們要感謝每一位為星火付出的人，無論是認養家庭、捐助者、合作夥伴還是社區成員，都是我們成功的關鍵，謝謝你們的慷慨、無私和信任。最後，我們要向所有參與和支持星火的孩子們致以最深的祝福，讓我們共同慶祝星火兒童認養協會30周年的成就，感謝每一位為我們付出的人，並展望更美好的未來！', 1, '星火大老闆', '2023-08-01 19:25:22', '星火大老闆', '2023-08-01 19:25:22');
 
 -- --------------------------------------------------------
@@ -351,7 +348,7 @@ INSERT INTO `news` (`news_no`, `news_id`, `del_flg`, `news_title`, `news_date`, 
 DROP TABLE IF EXISTS `reports`;
 CREATE TABLE IF NOT EXISTS `reports` (
   `report_no` int NOT NULL AUTO_INCREMENT,
-  `report_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `report_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:R',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `report_class` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `report_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -362,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`report_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -370,7 +367,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
 -- 傾印資料表的資料 `reports`
 --
 
-INSERT INTO `reports` (`report_no`, `report_id`, `del_flg`, `report_class`, `report_title`, `report_year`, `reports_file_path`, `reports_image`, `is_report_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `reports` (`report_no`, `report_id`, `del_flg`, `report_class`, `report_title`, `report_year`, `reports_file_path`, `reports_image`, `is_report_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'R001', 0, '年度', '星火執行業務報告', '2018', '\"R2018_ business_rep', '\"R2018_ business_rep', 1, '星火大老闆', '2023-08-01 19:26:00', '星火大老闆', '2023-08-01 19:26:00'),
 (2, 'R002', 0, '年度', '星火執行業務報告', '2019', '\"R2019_ business_rep', '\"R2019_ business_rep', 1, '星火大老闆', '2023-08-01 19:26:00', '星火大老闆', '2023-08-01 19:26:00'),
 (3, 'R003', 0, '年度', '星火執行業務報告', '2020', '\"R2020_ business_rep', '\"R2020_ business_rep', 1, '星火大老闆', '2023-08-01 19:26:00', '星火大老闆', '2023-08-01 19:26:00'),
@@ -393,7 +390,7 @@ INSERT INTO `reports` (`report_no`, `report_id`, `del_flg`, `report_class`, `rep
 DROP TABLE IF EXISTS `spark_activity`;
 CREATE TABLE IF NOT EXISTS `spark_activity` (
   `spark_activity_no` int NOT NULL AUTO_INCREMENT,
-  `spark_activity_id` varchar(10) NOT NULL,
+  `spark_activity_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:SA',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `spark_activity_name` varchar(20) NOT NULL,
   `spark_activity_description` varchar(500) NOT NULL,
@@ -403,7 +400,7 @@ CREATE TABLE IF NOT EXISTS `spark_activity` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`spark_activity_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -411,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `spark_activity` (
 -- 傾印資料表的資料 `spark_activity`
 --
 
-INSERT INTO `spark_activity` (`spark_activity_no`, `spark_activity_id`, `del_flg`, `spark_activity_name`, `spark_activity_description`, `spark_activity_start_date`, `spark_activity_end_date`, `is_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `spark_activity` (`spark_activity_no`, `spark_activity_id`, `del_flg`, `spark_activity_name`, `spark_activity_description`, `spark_activity_start_date`, `spark_activity_end_date`, `is_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'SA001', 0, '夢想之星', '舉辦投票活動，實現兒童的夢想計畫', '2023080', '2023082', 1, '星火大老闆', '2023-08-01 19:27:08', '星火大老闆', '2023-08-01 19:27:08'),
 (2, 'SA002', 0, '夢想路跑', '路跑募款活動', '2023090', '2023092', 0, '星火大老闆', '2023-08-01 19:27:08', '星火大老闆', '2023-08-01 19:27:08');
 
@@ -424,14 +421,14 @@ INSERT INTO `spark_activity` (`spark_activity_no`, `spark_activity_id`, `del_flg
 DROP TABLE IF EXISTS `sponsor_location`;
 CREATE TABLE IF NOT EXISTS `sponsor_location` (
   `location_no` int NOT NULL AUTO_INCREMENT,
-  `location_id` varchar(10) NOT NULL,
+  `location_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:SL',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `location_name` varchar(15) NOT NULL,
   `is_sponsor_location_online` tinyint DEFAULT NULL COMMENT '0:下線 1:上線',
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`location_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -439,8 +436,8 @@ CREATE TABLE IF NOT EXISTS `sponsor_location` (
 -- 傾印資料表的資料 `sponsor_location`
 --
 
-INSERT INTO `sponsor_location` (`location_no`, `location_id`, `del_flg`, `location_name`, `is_sponsor_location_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
-(1, 'SL001', 0, '台北星火', 1, '星火大老闆', '2023-08-01 19:28:19', '星火大老闆', '2023-08-01 19:28:19'),
+INSERT INTO `sponsor_location` (`location_no`, `location_id`, `del_flg`, `location_name`, `is_sponsor_location_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
+(1, 'SL001', 0, '台北星火', 0, '星火大老闆', '2023-08-01 19:28:19', '星火大老闆', '2023-08-01 19:28:19'),
 (2, 'SL002', 0, '台中星火', 1, '星火大老闆', '2023-08-01 19:28:19', '星火大老闆', '2023-08-01 19:28:19'),
 (3, 'SL003', 0, '台南星火', 1, '星火大老闆', '2023-08-01 19:28:19', '星火大老闆', '2023-08-01 19:28:19'),
 (4, 'SL004', 0, '台東星火', 1, '星火大老闆', '2023-08-01 19:28:19', '星火大老闆', '2023-08-01 19:28:19');
@@ -454,16 +451,18 @@ INSERT INTO `sponsor_location` (`location_no`, `location_id`, `del_flg`, `locati
 DROP TABLE IF EXISTS `sponsor_order`;
 CREATE TABLE IF NOT EXISTS `sponsor_order` (
   `sponsor_order_no` int NOT NULL AUTO_INCREMENT,
-  `sponsor_order_id` varchar(10) NOT NULL,
-  `member_no` int NOT NULL,
-  `location_no` int NOT NULL,
+  `sponsor_order_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:SO',
+  `member_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:A',
+  `location_id` varchar(10) NOT NULL COMMENT '識別碼:SL',
   `sponsor_date` datetime NOT NULL,
   `price` int NOT NULL,
   `payment_plan` varchar(10) NOT NULL,
   `payment_method` varchar(5) NOT NULL,
-  `children_no` varchar(10) DEFAULT NULL,
+  `children_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '識別碼:C',
   `expiry_month` char(6) NOT NULL,
-  `order_status` tinyint DEFAULT NULL COMMENT '0:終止 1:繼續',
+  `order_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0:終止 1:繼續',
+  `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sponsor_order_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -471,17 +470,17 @@ CREATE TABLE IF NOT EXISTS `sponsor_order` (
 -- 傾印資料表的資料 `sponsor_order`
 --
 
-INSERT INTO `sponsor_order` (`sponsor_order_no`, `sponsor_order_id`, `member_no`, `location_no`, `sponsor_date`, `price`, `payment_plan`, `payment_method`, `children_no`, `expiry_month`, `order_status`) VALUES
-(1, 'SO001', 3, 1, '2023-07-28 14:00:27', 2000, '月繳', '信用卡', '567', '202408', 1),
-(2, 'SO002', 4, 1, '2023-07-28 14:00:27', 2000, '月繳', '信用卡', '056', '202408', 1),
-(3, 'SO003', 5, 2, '2023-07-28 14:03:31', 6000, '季繳', '超商繳費', '326', '202408', 1),
-(4, 'SO004', 1, 3, '2023-07-29 14:03:31', 24000, '年繳', '信用卡', '727', '202408', 1),
-(5, 'SO005', 4, 4, '2023-07-30 14:00:26', 12000, '半年繳', '超商繳費', '111', '202408', 1),
-(6, 'SO006', 4, 2, '2023-07-31 14:03:31', 2000, '月繳', '信用卡', '555', '202408', 1),
-(7, 'SO007', 6, 4, '2023-08-01 14:09:08', 24000, '年繳', '信用卡', '395', '202409', 1),
-(8, 'SO008', 7, 3, '2023-08-01 14:09:08', 24000, '年繳', '信用卡', '797', '202409', 1),
-(9, 'SO009', 2, 3, '2023-08-02 14:09:08', 12000, '半年繳', '超商繳費', '246', '202409', 1),
-(10, 'SO010', 9, 1, '2023-08-03 14:12:22', 2000, '月繳', '信用卡', '614', '202409', 1);
+INSERT INTO `sponsor_order` (`sponsor_order_no`, `sponsor_order_id`, `member_id`, `location_id`, `sponsor_date`, `price`, `payment_plan`, `payment_method`, `children_id`, `expiry_month`, `order_status`, `updater`, `update_time`) VALUES
+(1, 'SO001', 'A003', 'SL001', '2023-07-28 14:00:27', 2000, '月繳', '信用卡', 'C567', '202408', 1, '許咪咪', '2023-08-09 08:50:46'),
+(2, 'SO002', 'A004', 'SL001', '2023-07-28 14:00:27', 2000, '月繳', '信用卡', 'C056', '202408', 1, '許咪咪', '2023-08-09 03:44:23'),
+(3, 'SO003', 'A005', 'SL002', '2023-07-28 14:03:31', 6000, '季繳', '超商繳費', 'C326', '202408', 1, '許咪咪', '2023-08-09 03:44:24'),
+(4, 'SO004', 'A001', 'SL003', '2023-07-29 14:03:31', 24000, '年繳', '信用卡', 'C727', '202408', 1, '許咪咪', '2023-08-09 03:44:24'),
+(5, 'SO005', 'A004', 'SL004', '2023-07-30 14:00:26', 12000, '半年繳', '超商繳費', 'C111', '202408', 1, '許咪咪', '2023-08-09 03:44:25'),
+(6, 'SO006', 'A004', 'SL002', '2023-07-31 14:03:31', 2000, '月繳', '信用卡', 'C555', '202408', 1, '許咪咪', '2023-08-09 03:44:25'),
+(7, 'SO007', 'A006', 'SL004', '2023-08-01 14:09:08', 24000, '年繳', '信用卡', 'C395', '202409', 1, '許咪咪', '2023-08-09 03:44:25'),
+(8, 'SO008', 'A007', 'SL003', '2023-08-01 14:09:08', 24000, '年繳', '信用卡', 'C797', '202409', 1, '許咪咪', '2023-08-09 03:44:26'),
+(9, 'SO009', 'A002', 'SL003', '2023-08-02 14:09:08', 12000, '半年繳', '超商繳費', 'C246', '202409', 1, '許咪咪', '2023-08-09 03:44:30'),
+(10, 'SO010', 'A009', 'SL001', '2023-08-03 14:12:22', 2000, '月繳', '信用卡', 'C614', '202409', 1, '許咪咪', '2023-08-09 03:44:27');
 
 -- --------------------------------------------------------
 
@@ -492,7 +491,7 @@ INSERT INTO `sponsor_order` (`sponsor_order_no`, `sponsor_order_id`, `member_no`
 DROP TABLE IF EXISTS `story`;
 CREATE TABLE IF NOT EXISTS `story` (
   `story_no` int NOT NULL AUTO_INCREMENT,
-  `story_id` varchar(10) NOT NULL,
+  `story_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:ST',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
   `story_title` varchar(100) NOT NULL,
   `story_date` date NOT NULL,
@@ -505,7 +504,7 @@ CREATE TABLE IF NOT EXISTS `story` (
   `register` varchar(20) NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`story_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -513,7 +512,7 @@ CREATE TABLE IF NOT EXISTS `story` (
 -- 傾印資料表的資料 `story`
 --
 
-INSERT INTO `story` (`story_no`, `story_id`, `del_flg`, `story_title`, `story_date`, `story_image`, `story_brief`, `story_detail`, `story_detail_second`, `story_detail_third`, `is_story_online`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
+INSERT INTO `story` (`story_no`, `story_id`, `del_flg`, `story_title`, `story_date`, `story_image`, `story_brief`, `story_detail`, `story_detail_second`, `story_detail_third`, `is_story_online`, `register`, `regist_time`, `updater`, `update_time`) VALUES
 (1, 'ST001', 0, '遊戲場上的友誼結盟', '2023-04-12', 'story_1.png', '小傑和他的朋友們在遊戲場上歡聲笑語。他們一同踢足球、打籃球，緊張又充滿熱情。', '小傑和他的朋友們在遊戲場上歡聲笑語。他們一同踢足球、打籃球，緊張又充滿熱情。不論勝敗，他們彼此尊重，一同享受比賽的樂趣。遊戲場上的友誼結盟讓他們更加團結，相互支持，這份友誼將伴隨他們走向更廣闊的未來。', '在遊戲場上，小傑和朋友們共同合作，制定策略，互相幫助。他們一同努力，逐漸提升球技，更加默契。這些團隊遊戲讓他們學會了團結合作、分工協作，培養了領導能力和團隊精神。', '除了遊戲場上，小傑和朋友們也一同舉辦聚會、遠足，共同度過快樂時光。他們一同經歷了許多歡樂和挑戰，並共同成長。這段友誼結盟不僅帶給他們快樂，更教會他們相互尊重、關懷和理解，這份友誼將伴隨著他們走向更美好的未來。', 0, '星火大老闆', '2023-08-01 19:29:08', '星火大老闆', '2023-08-01 19:29:08'),
 (2, 'ST002', 0, '音樂天使的樂章演奏', '2023-07-16', 'story_2.png', '小菲拿著小提琴，她的心隨著音樂起舞。在舞台上，她將她的感情融入每一個音符。觀眾們被她的表演感動，熱烈的掌聲響起。', '小菲拿著小提琴，她的心隨著音樂起舞。在舞台上，她將她的感情融入每一個音符。觀眾們被她的表演感動，熱烈的掌聲響起。她和朋友們合奏美妙的樂章，彼此互相鼓勵，締造了一場音樂的盛宴。這些樂曲讓她們的友誼更加緊密，成就了音樂天使的夢想。', '在音樂課堂中，小菲和朋友們共同練習琴技，一同演奏樂曲。她們彼此磨合，合奏出優美動人的音樂。除了音樂課上，她們也組成樂團參加校內演出，讓更多人感受到音樂的美好。這些共同演奏的時光讓她們的友誼更加深厚，相互間的默契和信任更加堅定。', '在音樂比賽中，小菲和朋友們精心演繹，獲得了優異的成績。他們一同分享著勝利的喜悅，也一起品嘗著挑戰的甜蜜。這些共同的努力和成就讓他們的友誼更加持久，成就了音樂天使的美麗人生。', 0, '星火大老闆', '2023-08-01 19:29:08', '星火大老闆', '2023-08-01 19:29:08'),
 (3, 'ST003', 0, '探索奇妙的科學之旅', '2023-04-20', 'story_3.png', '小明和朋友們興致勃勃地走進實驗室。在老師的指導下，他們探索著科學的奧秘。他們合作實驗，發現新的現象，驚嘆於科學的魅力。', '小明和朋友們興致勃勃地走進實驗室。在老師的指導下，他們探索著科學的奧秘。他們合作實驗，發現新的現象，驚嘆於科學的魅力。這個科學之旅不僅豐富了他們的知識，更激發了他們對科學的熱愛，讓他們期待著更多的探索與發現。', '在實驗室裡，小明和朋友們動手操作，對於每一個實驗都充滿好奇。他們發現水的奇特性質、物體的浮沉規律，更了解到自然界的秘密。這些有趣的實驗讓他們學到了許多知識，並培養了觀察、思考和解決問題的能力。', '小明和朋友們組成了一個科學小組，定期進行科學實驗和探索。他們舉辦了科學展示，與其他同學分享自己的發現。這份友誼和共同的興趣讓他們更加團結，共同成長。這段奇妙的科學之旅不僅激發了他們對知識的渴望，更讓他們明白到科學是改變世界的力量。', 0, '星火大老闆', '2023-08-01 19:29:08', '星火大老闆', '2023-08-01 19:29:08'),
@@ -534,17 +533,17 @@ INSERT INTO `story` (`story_no`, `story_id`, `del_flg`, `story_title`, `story_da
 DROP TABLE IF EXISTS `thanks_letter`;
 CREATE TABLE IF NOT EXISTS `thanks_letter` (
   `thanks_letter_no` int NOT NULL AUTO_INCREMENT,
-  `thanks_letter_id` varchar(10) NOT NULL,
+  `thanks_letter_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:TL',
   `del_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:未刪除\r\n1:已刪除',
-  `member_no` int NOT NULL,
-  `sponsor_order_no` int NOT NULL,
+  `member_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '識別碼:A',
+  `sponsor_order_id` varchar(10) NOT NULL COMMENT '識別碼:SO',
   `receive_date` date NOT NULL,
   `file_name` varchar(20) NOT NULL,
   `is_read` tinyint DEFAULT NULL COMMENT '0:未讀 1:已讀',
   `register` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '星火大老闆',
   `regist_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updater` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '星火大老闆',
-  `updater_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`thanks_letter_no`)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -552,14 +551,14 @@ CREATE TABLE IF NOT EXISTS `thanks_letter` (
 -- 傾印資料表的資料 `thanks_letter`
 --
 
-INSERT INTO `thanks_letter` (`thanks_letter_no`, `thanks_letter_id`, `del_flg`, `member_no`, `sponsor_order_no`, `receive_date`, `file_name`, `is_read`, `register`, `regist_time`, `updater`, `updater_time`) VALUES
-(1, 'TL001', 0, 3, 23, '2023-07-01', '【019】謝謝您的愛心', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(2, 'TL002', 0, 3, 24, '2023-07-01', '【167】今年有新衣服穿了', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(3, 'TL003', 0, 1, 138, '2023-08-05', '【124】我會健康地長大哦', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(4, 'TL004', 0, 4, 5, '2023-08-09', '【368】我想對您說，謝謝您~', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(5, 'TL005', 0, 7, 67, '2023-09-16', '【183】雖然我不認識您 但是謝謝您~', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(6, 'TL006', 0, 6, 15, '2023-09-21', '【246】我收到了超棒的禮物', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
-(7, 'TL007', 0, 7, 132, '2023-09-08', '【503】謝謝您我的超人', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11');
+INSERT INTO `thanks_letter` (`thanks_letter_no`, `thanks_letter_id`, `del_flg`, `member_id`, `sponsor_order_id`, `receive_date`, `file_name`, `is_read`, `register`, `regist_time`, `updater`, `update_time`) VALUES
+(1, 'TL001', 0, 'A003', 'SO023', '2023-07-01', '【019】謝謝您的愛心', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(2, 'TL002', 0, 'A003', 'SO024', '2023-07-01', '【167】今年有新衣服穿了', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(3, 'TL003', 0, 'A001', 'SO138', '2023-08-05', '【124】我會健康地長大哦', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(4, 'TL004', 0, 'A004', 'SO005', '2023-08-09', '【368】我想對您說，謝謝您~', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(5, 'TL005', 0, 'A007', 'SO067', '2023-09-16', '【183】雖然我不認識您 但是謝謝您~', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(6, 'TL006', 0, 'A006', 'SO015', '2023-09-21', '【246】我收到了超棒的禮物', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11'),
+(7, 'TL007', 0, 'A007', 'SO132', '2023-09-08', '【503】謝謝您我的超人', 1, '星火仔', '2023-08-01 19:14:11', '星火仔', '2023-08-01 19:14:11');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

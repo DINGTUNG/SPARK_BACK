@@ -11,8 +11,9 @@ const storyList = reactive([])
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/read_story.php')
-    if(response.data.stories.length > 0) {
-      storyList.value = response.data.stories
+    console.log(response.data.stories);
+    if(response.data.length > 0) {
+      storyList.value = response.data
     }
   } catch (error) {
     console.error(error);

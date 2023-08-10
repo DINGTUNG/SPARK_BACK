@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, reactive, defineProps } from 'vue'
 import { useNewsStore } from '@/stores/news.js';
 const newsStore = useNewsStore();
 
@@ -7,31 +7,38 @@ const vueProps = defineProps({
   newsNoForUpdate: Number,
   newsDateForUpdate: String,
   newsImageFirstForUpdate: String,
+  newsImageSecondForUpdate: String
 })
 
-const newsDate = ref('')
-const newsImageFirst = ref('')
+const newsForUpdate = reactive({
+  newsNo: null,
+  newsDate: null,
+  newsImageFirst: null,
+  newsImageSecond: null
+})
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
   dialogDisplay.value = true;
-  newsDate.value = vueProps.newsDateForUpdate
-  newsImageFirst.value = vueProps.newsImageFirst
+  newsForUpdate.newsNo = vueProps.newsNoForUpdate
+  newsForUpdate.newsDate = vueProps.newsDateForUpdate
+  newsForUpdate.newsImageFirst = vueProps.newsImageFirstForUpdate
+  newsForUpdate.newsImageSecond = vueProps.newsImageSecondForUpdate
 }
 
 function closeDialog() {
   dialogDisplay.value = false;
 }
 
-
-async function updateNews(newsNoForUpdate, newsDate, newsImageFirst) {
+async function updateNews(newsNoForUpdate) {
   try {
     if (newsNoForUpdate == null) {
       throw new Error("news no. not found!")
     }
-    await newsStore.updateNewsBackend(newsNoForUpdate, newsDate, newsImageFirst)
-    newsStore.updateNewsFromNewsPool(newsNoForUpdate, newsDate, newsImageFirst)
+    const response = await newsStore.updateNewsBackend(newsForUpdate)
+    window.alert(response)
+    newsStore.updateNewsFromNewsPool(newsForUpdate)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -54,14 +61,14 @@ async function updateNews(newsNoForUpdate, newsDate, newsImageFirst) {
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateNews(vueProps.newsNoForUpdate, newsDate, newsImageFirst)">
+            @submit.prevent="updateNews(vueProps.newsNoForUpdate)">
             <div class="form_item">
               <div class="name"><span>標題</span></div>
               <input type="text" id="title">
             </div>
             <div class="form_item">
               <div class="name"><span>日期</span></div>
-              <input type="date" id="date" v-model="newsDate" name="news_date">
+              <input type="date" id="date" v-model="newsForUpdate.newsDate" name="news_date">
             </div>
             <div class="form_item">
               <div class="name"><span>段落1</span></div>
@@ -70,8 +77,8 @@ async function updateNews(newsNoForUpdate, newsDate, newsImageFirst) {
 
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
-              <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳圖檔" v-model="newsImageFirst"
-                name="news_image_first">
+              <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳圖檔"
+                v-model="newsForUpdate.newsImageFirst" name="news_image_first">
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
@@ -83,7 +90,7 @@ async function updateNews(newsNoForUpdate, newsDate, newsImageFirst) {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔2</span></div>
-              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔">
+              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"  v-model="newsForUpdate.newsImageSecond">
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>

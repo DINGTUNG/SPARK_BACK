@@ -3,10 +3,8 @@ import Search from '@/components/Search.vue';
 import CreateMessagePractice from '@/views/create-dialog/CreateMessagePractice.vue';
 import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
 import DeleteMessage from '@/views/delete-dialog/DeleteMessage.vue';
-
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
-
 import { useMessageBoardStore } from '@/stores/message-board.js';
 const messageBoardStore = useMessageBoardStore();
 
@@ -39,7 +37,6 @@ const displayMessageList = computed(() => {
   const endIdx = startIdx + itemsPerPage;
   return messageBoardStore.messagePool.slice(startIdx, endIdx);
 });
-
 </script>
 
 <template>

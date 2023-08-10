@@ -1,10 +1,10 @@
 <script setup>
 import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
 import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
+import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-
 const page = ref(1);
 const dialogDelete = ref(false);
 const itemToDelete = ref(null);
@@ -111,7 +111,7 @@ const filteredLocationList = computed(() => {
               </td>
               <td class="update_and_delete">
                 <UpdateLocation />
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+                <DeleteLocation :locationNoForDelete="parseInt(item.location_no)"/>
               </td>
             </tr>
           </tbody>

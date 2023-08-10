@@ -3,7 +3,9 @@ import { ref } from 'vue'
 import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
 const dialog = ref(false);
+
 const locationContent = ref('')
+
 async function createLocation(locationContent) {
   try {
     const newLocation = await locationStore.createLocationBackend(locationContent)
@@ -39,7 +41,7 @@ const addContentToNewLocation = (newLocation) => {
           </v-card-title>
           <v-card-text>
             <label for="">據點名稱
-              <input type="text">
+              <input type="text" name="locationContent" v-model="locationContent">
             </label>
           </v-card-text>
           <v-card-actions>

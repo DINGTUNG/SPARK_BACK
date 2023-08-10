@@ -32,9 +32,7 @@ async function deleteLocation(locationNoForDelete) {
     closeDeleteDialog()
   }
 }
-
 </script>
-
 <template>
   <v-row class="row" style="flex: 0 0 0;">
     <v-dialog v-model="dialogDisplay" persistent>

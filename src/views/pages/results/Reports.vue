@@ -25,7 +25,7 @@ const displayReportsList = computed(() => {
 async function reportConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
-    console.log(response)
+    reportStore.reportsList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
         reportStore.reportsList.push(element);

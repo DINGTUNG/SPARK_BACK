@@ -17,7 +17,7 @@ try {
   $pdo->beginTransaction();
 
 
-  $createSql = "insert into sponsor_location( location_name,updater) values(:location_name,'許咪咪')";
+  $createSql = "insert into sponsor_location( location_name,updater) values(:location_name,'sir')";
   $createStmt = $pdo->prepare($createSql);
   $createStmt->bindValue("location_name", $locationContent);
   $createResult = $createStmt->execute();

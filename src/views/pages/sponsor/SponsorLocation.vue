@@ -11,29 +11,11 @@ const page = ref(1);
 const dialogDelete = ref(false);
 const itemToDelete = ref(null);
 
-function showDeleteDialog(item) {
-  itemToDelete.value = item;
-  dialogDelete.value = true;
-}
-
-function deleteItemConfirm() {
-  if (itemToDelete.value) {
-    const index = locationList.indexOf(itemToDelete.value);
-    if (index !== -1) {
-      locationList.splice(index, 1);
-    }
-    itemToDelete.value = null;
-    dialogDelete.value = false;
-  }
-}
-
-function closeDelete() {
-  dialogDelete.value = false;
-}
-
 async function getSponsorLocation() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
+
+    locationStore.locationList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
         locationStore.locationList.push(element);

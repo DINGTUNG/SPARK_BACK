@@ -26,11 +26,10 @@ async function reportConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
     console.log(response)
-    reportStore.reportsList.splice(0);
-
+    
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        reportStore.reportsList.push(element)
+        reportStore.reportsList = response.data;
       });
     }
   } catch (error) {
@@ -50,19 +49,18 @@ function handleSearchChange(newValue) {
 
 const filteredReportList = computed(() => {
   const searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
-  return displayReportsList.value.filter(item => {
+  return displayReportsList.value.filter((item, index) => { // 修改这里
     const idMatch = item.report_id.toString() === searchText;
     if (isNaN(parseInt(searchText))) {
       const nameMatch = item.report_title.toLowerCase().includes(searchText);
       const onlineStatusMatch = item.is_report_online.toString().includes(searchText);
-      const indexMatch = displayReportsList.value.indexOf(item) === parseInt(searchText) - 1;
+      const indexMatch = index === parseInt(searchText) - 1; // 修改这里
       return idMatch || nameMatch || onlineStatusMatch || indexMatch;
     } else {
       return idMatch;
     }
   });
 });
-
 </script>
 <template>
   <div class="container">

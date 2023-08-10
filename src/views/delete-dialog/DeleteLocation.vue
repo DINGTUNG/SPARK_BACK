@@ -1,10 +1,10 @@
 <script setup>
-import { ref, defineProps } from 'vue';
-import { useReportStore } from '@/stores/reports.js';
-const reportStore = useReportStore();
+import { ref, defineProps } from 'vue'
+import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+const locationStore = useSponsorLocationStore();
 
 const vueProps = defineProps({
-  reportNoForDelete: Number,
+  locationNoForDelete: Number
 })
 
 const dialogDisplay = ref(false);
@@ -17,14 +17,14 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteReport(reportNoForDelete) {
+async function deleteLocation(locationNoForDelete) {
   try {
-    if (reportNoForDelete == null) {
-      throw new Error("report no. not found!")
+    if (locationNoForDelete == null) {
+      throw new Error("location no. not found!")
     }
-    await reportStore.deleteReportBackend(reportNoForDelete)
-    reportStore.deleteReportFromMessagePool(reportNoForDelete)
-    alert(`刪除成功!剩下 ${reportStore.reportsList.length} 筆資料`);
+    await locationStore.deleteLocationBackend(locationNoForDelete)
+    locationStore.deleteLocationFromLocationList(locationNoForDelete)
+    alert(`刪除成功!剩下 ${locationStore.locationList.length} 筆資料`);
   } catch (error) {
     console.error(error);
     alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
@@ -32,6 +32,7 @@ async function deleteReport(reportNoForDelete) {
     closeDeleteDialog()
   }
 }
+
 </script>
 
 <template>
@@ -42,14 +43,14 @@ async function deleteReport(reportNoForDelete) {
       </template>
       <v-card class="delete_dialog" style="border-radius: 50px;">
         <v-card-title class="text-center title">
-          確定是否要刪除此報告？
+          確定是否要刪除此捐款專案？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text"  @click="deleteReport(reportNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteLocation(locationNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

@@ -9,18 +9,18 @@ import axios from 'axios';
 
 export const useSponsorLocationStore = defineStore('sponsor-location', () => {
 
-  const reportsList = reactive([])
+  const locationList = reactive([]);
 
   // delete
-  function deleteMessageBackend(messageNo) {
+  function deleteLocationBackend(locationNo) {
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("message_no", messageNo);
+    payLoad.append("location_no", locationNo);
 
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/delete_message.php`,
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/delete_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -41,98 +41,22 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     });
   }
 
-  const deleteMessageFromMessagePool = (messageNo) => {
-    for (let i = 0; i < messagePool.length; i++) {
-      if (messagePool[i].message_no == messageNo) {
-        messagePool.splice(i, 1);
+  const deleteLocationFromLocationList = (messageNo) => {
+    for (let i = 0; i < locationList.length; i++) {
+      if (locationList[i].location_no == locationList) {
+        locationList.splice(i, 1);
         break
       }
     }
   }
 
-  // update
-  function updateMessageBackend(messageNo,sparkActivityNo,messageContent,memberNo) {
-    // prepare data 
-    const payLoad = new FormData();
-    payLoad.append("message_no", messageNo);
-    payLoad.append("spark_activity_no", sparkActivityNo);
-    payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
-
-    // make a request
-    const request = {
-      method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/update_message.php`,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: payLoad,
-    };
-
-    // send request to backend server
-    return new Promise((resolve, reject) => {
-      axios(request)
-        .then((response) => {
-          const updateResult = response.data;
-          resolve(updateResult);
-        })
-        .catch((error) => {
-          console.log("From updateMessageBackend:", error);
-          reject(error);
-        });
-    });
-  }
-
-  const updateMessageFromMessagePool = (messageNo,sparkActivityNo,messageContent,memberNo) => {
-    for (let i = 0; i < messagePool.length; i++) {
-      if (messagePool[i].message_no == messageNo) {
-      messagePool[i].spark_activity_no = sparkActivityNo
-      messagePool[i].message_content = messageContent
-      messagePool[i].member_no = memberNo
-      }
-    }
-  }
-
-  // create
-  function createMessageBackend(sparkActivityNo,messageContent,memberNo) {
-    // prepare data 
-    const payLoad = new FormData();
-    payLoad.append("spark_activity_no", sparkActivityNo);
-    payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
-
-    // make a request
-    const request = {
-      method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/create_message.php`,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: payLoad,
-    };
-
-    // send request to backend server
-    return new Promise((resolve, reject) => {
-      axios(request)
-        .then((response) => {
-          const createResult = response.data;
-          resolve(createResult);
-        })
-        .catch((error) => {
-          console.log("From createMessageBackend:", error);
-          reject(error);
-        });
-    });
-  }
 
 
   return {
-    messagePool,
-    deleteMessageBackend,// 發出請求去後端抓取資料的過程
-    deleteMessageFromMessagePool,//
-    updateMessageBackend,//
-    updateMessageFromMessagePool,//
-    createMessageBackend//
+    locationList,
+    deleteLocationBackend,// 發出請求去後端抓取資料的過程
+    deleteLocationFromLocationList,//
+    
   }
 
 })

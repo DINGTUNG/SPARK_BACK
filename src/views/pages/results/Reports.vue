@@ -8,19 +8,6 @@ import axios from 'axios';
 import { useReportStore } from '@/stores/reports.js';
 const reportStore = useReportStore();
 
-// 分頁
-const pageCount = () => {
-  return Math.ceil(reportStore.reportsList.length / itemsPerPage);
-}
-const page = ref(1)
-const itemsPerPage = 10;
-const displayReportsList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return reportStore.reportsList.slice(startIdx, endIdx);
-});
-// 分頁
-
 //api
 async function reportConnection() {
   try {
@@ -46,20 +33,36 @@ function handleSearchChange(newValue) {
   console.log(newValue);
 };
 
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+  }
+  return searchText;
+})
+
 const filteredReportList = computed(() => {
-  const searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
-  return displayReportsList.value.filter((item, index) => { // 修改这里
-    const idMatch = item.report_id.toString() === searchText;
-    if (isNaN(parseInt(searchText))) {
-      const nameMatch = item.report_title.toLowerCase().includes(searchText);
-      const onlineStatusMatch = item.is_report_online.toString().includes(searchText);
-      const indexMatch = index === parseInt(searchText) - 1; // 修改这里
-      return idMatch || nameMatch || onlineStatusMatch || indexMatch;
-    } else {
-      return idMatch;
-    }
+  return reportStore.reportsList.filter((item) => { // 修改这里
+    const obj = [item.report_id, item.report_title,item.report_class]
+    const str = JSON.stringify(obj).toLowerCase();
+    return str.includes(searchText.value)
   });
 });
+
+// 分頁
+const pageCount = () => {
+  return Math.ceil(filteredReportList.value.length / itemsPerPage);
+}
+const page = ref(1)
+const itemsPerPage = 10;
+const displayReportsList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return filteredReportList.value.slice(startIdx, endIdx);
+});
+
+
+// 分頁
 </script>
 <template>
   <div class="container">
@@ -85,7 +88,7 @@ const filteredReportList = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in filteredReportList" :key="item.report_no" class="no-border">
+            <tr v-for="(item, index) in displayReportsList" :key="item.report_no" class="no-border">
               <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.report_id }}</td>
               <td class="class">{{ item.report_class }}</td>

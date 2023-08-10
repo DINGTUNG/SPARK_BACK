@@ -5,6 +5,8 @@ import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
+import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+const locationStore = useSponsorLocationStore();
 const page = ref(1);
 const dialogDelete = ref(false);
 const itemToDelete = ref(null);
@@ -29,13 +31,12 @@ function closeDelete() {
   dialogDelete.value = false;
 }
 
-const locationList = reactive([]);
 async function getSponsorLocation() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        locationList.push(element);
+        locationStore.locationList.push(element);
       });
     }
   } catch (error) {
@@ -49,12 +50,12 @@ onMounted(() => {
 
 const itemsPerPage = 10;
 const pageCount = computed(() => {
-  return Math.ceil(locationList.length / itemsPerPage);
+  return Math.ceil(locationStore.locationList.length / itemsPerPage);
 });
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return locationList.slice(startIdx, endIdx);
+  return locationStore.locationList.slice(startIdx, endIdx);
 });
 
 const searchValue = ref('');
@@ -92,10 +93,12 @@ const filteredLocationList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>據點編號</th>
+              <th>據點ID</th>
               <th>據點名稱</th>
               <th>狀態</th>
               <th>功能</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
             </tr>
           </thead>
@@ -109,6 +112,8 @@ const filteredLocationList = computed(() => {
                 <v-switch v-model="item.is_sponsor_location_online" color="#EBC483" density="compact" hide-details="true"
                   inline inset true-value=1></v-switch>
               </td>
+              <td class="year">{{ item.updater }}</td>
+              <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateLocation />
                 <DeleteLocation :locationNoForDelete="parseInt(item.location_no)"/>
@@ -118,29 +123,11 @@ const filteredLocationList = computed(() => {
         </v-table>
       </div>
       <CreateLocation class="add" />
-      <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-      <v-card class="delete_dialog">
-        <v-card-title class="text-center">
-          確定是否要刪除此據點？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-            刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 <style scoped lang="scss">

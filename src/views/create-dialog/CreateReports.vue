@@ -13,9 +13,6 @@ const handleSubmit = async (event) => {
                 "Content-Type":'multipart/form-data'
             }
         })
-        console.log("===========",response)
-
-
     } catch (error) {
         console.error(error);
         alert('新增失敗');
@@ -148,8 +145,9 @@ const handleSubmit = async (event) => {
 
 }
 
+
 .imgblock {
-    margin-right: 79px;
+    margin-right: 50px;
 
     :deep(.v-field.v-field--appended) {
         display: flex;

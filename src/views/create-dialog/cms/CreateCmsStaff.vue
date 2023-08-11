@@ -1,10 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-// const dialog = ref(false);
+import { ref, reactive, computed } from 'vue'
 
-
-import { useThanksLetterStore } from '@/stores/thanks-letter.js';
-const thanksLetterStore = useThanksLetterStore();
+import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
+const cmsStaffStore = useCmsStaffStore();
 
 const dialogDisplay = ref(false);
 
@@ -16,17 +14,17 @@ function closeDialog() {
     dialogDisplay.value = false;
 }
 
-const childrenId = ref('')
-const memberId = ref('')
-const sponsorOrderId = ref('')
-const receiveDate = ref('')
-const fileName = ref('')
+const staffName = ref('')
+const staffPermission = ref('')
+const staffEmail = ref('')
+const staffAccount = ref('')
+const staffPassword = ref('')
 
-async function createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+async function createStaff(staffName, staffPermission, staffEmail, staffAccount, staffPassword) {
     try {
-        const newThanksLetter = await thanksLetterStore.createThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
-        addContentTonewThanksLetter(newThanksLetter)
-        console.log(thanksLetterStore.thanksLetterPool);
+        const newStaff = await cmsStaffStore.createStaffBackend(staffName, staffPermission, staffEmail, staffAccount, staffPassword)
+        addContentToNewStaff(newStaff)
+        console.log(cmsStaffStore.staffPool);
         window.alert(`新增成功!`);
     } catch (error) {
         console.error(error);
@@ -36,9 +34,12 @@ async function createThanksLetter(childrenId, memberId, sponsorOrderId, receiveD
     }
 }
 
-const addContentTonewThanksLetter = (newThanksLetter) => {
-    thanksLetterStore.thanksLetterPool.push(newThanksLetter)
+const addContentToNewStaff = (newStaff) => {
+    cmsStaffStore.staffPool.push(newStaff)
 }
+
+
+
 </script>
 
 <template>
@@ -54,35 +55,34 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                     <span class="main_title">新增後台人員</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost:8888/member/thanks_letter/thanks_letter.php" method="post"
-                        @submit.prevent="createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
+                    <form action="http://localhost/SPARK_BACK/php/cms/create_staff.php" method="post"
+                        @submit.prevent="createStaff(staffName, staffPermission, staffEmail, staffAccount, staffPassword)">
                         <label for="">
-                            <div class="input_title">兒童編號</div>
-                            <input type="text" name="children_id" v-model="childrenId">
+                            <div class="input_title">姓名</div>
+                            <input type="text" name="staff_name" v-model="staffName">
                         </label>
                         <label for="">
-                            <div class="input_title">會員編號</div>
-                            <input type="text" name="member_id" v-model="memberId">
+                            <div class="input_title">權限</div>
+                            <input type="text" name="staff_permission" v-model="staffPermission">
                         </label>
                         <label for="">
-                            <div class="input_title">認養訂單ID</div>
-                            <input type="text" name="sponsor_order_id" v-model="sponsorOrderId">
+                            <div class="input_title">Email</div>
+                            <input type="text" name="staff_email" v-model="staffEmail">
                         </label>
                         <label for="">
-                            <div class="input_title">收件日期</div>
-                            <input type="text" name="receive_date" v-model="receiveDate">
+                            <div class="input_title">帳號</div>
+                            <input type="text" name="staff_account" v-model="staffAccount">
                         </label>
                         <label for="">
-                            <div class="input_title">檔名</div>
-                            <input type="text" name="file_name" v-model="fileName">
+                            <div class="input_title">密碼</div>
+                            <input type="text" name="staff_password" v-model="staffPassword">
                         </label>
-
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit">
+                            <v-btn class="update btn" variant="text" type="submit">
                                 確定
                             </v-btn>
                         </v-card-actions>

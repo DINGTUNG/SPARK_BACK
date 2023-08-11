@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useMessageBoardStore } from '@/stores/message-board.js';
-const messageBoardStore = useMessageBoardStore();
+import { useNewsStore } from '@/stores/news/news.js';
+const newsStore = useNewsStore();
 
 const vueProps = defineProps({
   messageNoForDelete: Number
@@ -22,9 +22,9 @@ async function deleteMessage(messageNoForDelete) {
     if (messageNoForDelete == null) {
       throw new Error("Message no. not found!")
     }
-    await messageBoardStore.deleteMessageBackend(messageNoForDelete)
-    messageBoardStore.deleteMessageFromMessagePool(messageNoForDelete)
-    window.alert(`刪除成功!剩下 ${messageBoardStore.messagePool.length} 筆資料`);
+    await newsStore.deleteMessageBackend(messageNoForDelete)
+    newsStore.deleteMessageFromMessagePool(messageNoForDelete)
+    window.alert(`刪除成功!剩下 ${newsStore.messagePool.length} 筆資料`);
   } catch (error) {
     console.error(error);
     window.alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);

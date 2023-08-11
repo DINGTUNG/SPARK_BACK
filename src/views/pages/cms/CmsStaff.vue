@@ -1,12 +1,12 @@
 <script setup>
 import Search from '@/components/Search.vue';
-import CreateCmsStaff from '@/views/create-dialog/CreateCmsStaff.vue';
-import UpdateCmsStaff from '@/views/update-dialog/UpdateCmsStaff.vue';
-import DeleteCmsStaff from '@/views/delete-dialog/DeleteCmsStaff.vue';
+import CreateCmsStaff from '@/views/create-dialog/cms/CreateCmsStaff.vue';
+import UpdateCmsStaff from '@/views/update-dialog/cms/UpdateCmsStaff.vue';
+import DeleteCmsStaff from '@/views/delete-dialog/cms/DeleteCmsStaff.vue';
 
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
-import { useCmsStaffStore } from '@/stores/cms-staff.js';
+import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
 const cmsStaffStore = useCmsStaffStore();
 
 

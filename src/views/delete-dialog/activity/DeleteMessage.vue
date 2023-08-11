@@ -1,10 +1,10 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useNewsStore } from '@/stores/news.js';
-const newsStore = useNewsStore();
+import { useMessageBoardStore } from '@/stores/activity/message-board.js';
+const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
-  newsNoForDelete: Number
+  messageNoForDelete: Number
 })
 
 const dialogDisplay = ref(false);
@@ -17,14 +17,14 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteMessage(newsNoForDelete) {
+async function deleteMessage(messageNoForDelete) {
   try {
-    if (newsNoForDelete == null) {
-      throw new Error("News no. not found!")
+    if (messageNoForDelete == null) {
+      throw new Error("Message no. not found!")
     }
-    await newsStore.deleteNewsBackend(newsNoForDelete)
-    newsStore.deleteNewsFromMessagePool(newsNoForDelete)
-    window.alert(`刪除成功!剩下 ${newsStore.newsPool.length} 筆資料`);
+    await messageBoardStore.deleteMessageBackend(messageNoForDelete)
+    messageBoardStore.deleteMessageFromMessagePool(messageNoForDelete)
+    window.alert(`刪除成功!剩下 ${messageBoardStore.messagePool.length} 筆資料`);
   } catch (error) {
     console.error(error);
     window.alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
@@ -50,7 +50,7 @@ async function deleteMessage(newsNoForDelete) {
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.newsNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.messageNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

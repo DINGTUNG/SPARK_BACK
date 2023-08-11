@@ -1,25 +1,16 @@
 <script setup>
-import { ref} from 'vue'
-import { useMessageBoardStore } from '@/stores/message-board.js';
-const messageBoardStore = useMessageBoardStore();
+import { ref } from 'vue'
+import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
+const locationStore = useSponsorLocationStore();
+const dialog = ref(false);
 
-const dialogDisplay = ref(false);
+const locationContent = ref('')
 
-function showDialog() {
-  dialogDisplay.value = true;
-}
-
-function closeDialog() {
-  dialogDisplay.value = false;
-}
-
-const messageContent = ref('')
-
-async function createMessage(messageContent) {
+async function createLocation(locationContent) {
   try {
-    const newMessage = await messageBoardStore.createMessageBackend(messageContent)
-    addContentToNewMessage(newMessage)
-    console.log(messageBoardStore.messagePool);
+    const newLocation = await locationStore.createLocationBackend(locationContent)
+    addContentToNewLocation(newLocation)
+    console.log(locationStore.locationList);
     window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
@@ -29,39 +20,40 @@ async function createMessage(messageContent) {
   }
 }
 
-const addContentToNewMessage = (newMessage) => {
-  messageBoardStore.messagePool.push(newMessage)
+const addContentToNewLocation = (newLocation) => {
+  locationStore.locationList.push(newLocation)
 }
 
 </script>
 
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialogDisplay" persistent width="50%">
+    <v-dialog v-model="dialog" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props" @click="showDialog">
+        <v-btn color="primary" v-bind="props">
           新增
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="text-h5">新增留言資料</span>
-        </v-card-title>
-        <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
-            @submit.prevent="createMessage(messageContent)">
-            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn class="cancel btn" variant="text" @click="closeDialog">
-                取消
-              </v-btn>
-              <v-btn class="delete btn" variant="text" type="submit">
-                確定
-              </v-btn>
-            </v-card-actions>
-          </form>
-        </v-card-text>
+        <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-location/create_sponsor_location.php" method="post" @submit.prevent="createLocation(locationContent)">
+          <v-card-title>
+            <span class="text-h5">新增認養據點</span>
+          </v-card-title>
+          <v-card-text>
+            <label for="">據點名稱
+              <input type="text" name="locationContent" v-model="locationContent">
+            </label>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+              取消
+            </v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="dialog = false" type="submit">
+              確定
+            </v-btn>
+          </v-card-actions>
+        </form>
       </v-card>
     </v-dialog>
   </v-row>

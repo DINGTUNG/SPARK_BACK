@@ -50,12 +50,17 @@ export const useNewsStore = defineStore('news', () => {
   }
 
   // update
-  function updateNewsBackend(newsNo,newsDate,newsImageFirst) {
+  function updateNewsBackend(newsForUpdate) {
+
+    validateNewsForUpdate(newsForUpdate); //not finished
+
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("news_no", newsNo);
-    payLoad.append("news_date", newsDate);
-    payLoad.append("news_image_first", newsImageFirst.files[0]);
+    payLoad.append("news_no", newsForUpdate.newsNo);
+    payLoad.append("news_date", newsForUpdate.newsDate);
+
+    payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
+    payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
 
 
     // make a request
@@ -82,11 +87,15 @@ export const useNewsStore = defineStore('news', () => {
     });
   }
 
-  const updateNewsFromNewsPool = (newsNo,newsDate,newsImageFirst) => {
+  const validateNewsForUpdate = (newsNoForUpdate) => {
+    return newsNoForUpdate
+  }
+
+  const updateNewsFromNewsPool = (newsNoForUpdate) => {
     for (let i = 0; i < newsPool.length; i++) {
-      if (newsPool[i].news_no == newsNo) {
-        newsPool[i].news_date = newsDate
-        newsPool[i].news_image_first = newsImageFirst.files[0]
+      if (newsPool[i].news_no == newsNoForUpdate.newsNo) {
+        newsPool[i].news_date = newsNoForUpdate.newsDate
+        newsPool[i].news_image_first = newsNoForUpdate.newsImageFirst
       }
     }
   }

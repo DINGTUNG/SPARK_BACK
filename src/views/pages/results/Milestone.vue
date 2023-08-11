@@ -1,13 +1,7 @@
 <script setup>
 //【引入】
-<<<<<<< HEAD
-import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
-import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
-import DeleteMilestone from '@/views/delete-dialog/DeleteMilestone.vue'; //刪除里程碑
-=======
 import CreateMilestone from '@/views/create-dialog/results/CreateMilestone.vue'; //新增里程碑
 import UpdateMilestone from '@/views/update-dialog/results/UpdateMilestone.vue'; //編輯里程碑
->>>>>>> 08c100a728f17a8a8566ee3c3b7acb1a555df29f
 import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -99,7 +93,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>成果管理｜服務里程碑</h1>
       <div class="search">
-        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue"  @input="handleSearchChange" />
+        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue" @input="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -121,7 +115,7 @@ onMounted(() => {
 
               <td class="milestone_no">{{ item.milestone_no }}</td>
               <td class="milestone_id">{{ item.milestone_id }}</td>
-              <td class="milestone_title">{{ item.milestone_title }}</td>  
+              <td class="milestone_title">{{ item.milestone_title }}</td>
               <td class="milestone_date">{{ item.milestone_date }}</td>
               <td class="is_milestone_online">{{ item.is_milestone_online ? '已上架' : '未上架' }}</td>
               <td>
@@ -137,7 +131,7 @@ onMounted(() => {
           </tbody>
         </v-table>
       </div>
-      <CreateMilestone  class="add" />
+      <CreateMilestone class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

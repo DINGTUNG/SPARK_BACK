@@ -26,26 +26,50 @@ onMounted(() => {
   getData()
 })
 
-// 換頁
+
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+  console.log(newValue);
+};
+
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+  }
+  return searchText;
+})
+
+const filteredNewsList = computed(() => {
+  return newsStore.newsPool.filter((item) => { 
+    const obj = [item.news_id, item.news_title]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
+  });
+});
+
+const pageCount = () => {
+  return Math.ceil(filteredNewsList.value.length / itemsPerPage);
+}
+
 const page = ref(1)
 const itemsPerPage = 10;
-const pageCount = () => {
-  return Math.floor((newsStore.newsPool.length - 1) / itemsPerPage) + 1;
-}
+
 const displayNewsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return newsStore.newsPool.slice(startIdx, endIdx);
+  return filteredNewsList.value.slice(startIdx, endIdx);
 });
+
+
 </script>
-
-
 <template>
   <div class="container">
     <div class="content_wrap">
       <h1>最新消息</h1>
       <div class="search">
-        <Search :placeholder="'請輸入消息資訊'" />
+        <Search :placeholder="'請輸入消息資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>

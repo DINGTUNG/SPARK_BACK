@@ -4,23 +4,26 @@ import { useMessageBoardStore } from '@/stores/activity/message-board.js';
 const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
-  messageNoForUpdate: Number,
-  sparkActivityIdForUpdate: String,
-  messageContentForUpdate: String,
-  memberIdForUpdate: String,
+  sparkActivityNoForUpdate: Number,
+  sparkActivityNameForUpdate: String,
+  sparkActivityDescriptionForUpdate: String,
+  sparkActivityStartDateForUpdate: String,
+  sparkActivityEndDateForUpdate: String
 })
 
-const sparkActivityId = ref('')
-const messageContent = ref('')
-const memberId = ref('')
+const sparkActivityName = ref('')
+const sparkActivityDescription = ref('')
+const sparkActivityStartDate = ref('')
+const sparkActivityEndDate = ref('')
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
   dialogDisplay.value = true;
-  sparkActivityId.value = vueProps.sparkActivityIdForUpdate
-  messageContent.value = vueProps.messageContentForUpdate
-  memberId.value = vueProps.memberIdForUpdate
+  sparkActivityName.value = vueProps.sparkActivityNameForUpdate
+  sparkActivityDescription.value = vueProps.sparkActivityDescriptionForUpdate
+  sparkActivityStartDate.value = vueProps.sparkActivityStartDateForUpdate
+  sparkActivityEndDate.value = vueProps.sparkActivityEndDateForUpdate
 }
 
 function closeDialog() {
@@ -28,13 +31,13 @@ function closeDialog() {
 }
 
 
-async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent, memberId) {
+async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate) {
   try {
-    if (messageNoForUpdate == null) {
+    if (sparkActivityNoForUpdate == null) {
       throw new Error("Message no. not found!")
     }
-    await messageBoardStore.updateMessageBackend(messageNoForUpdate, sparkActivityId, messageContent, memberId)
-    messageBoardStore.updateMessageFromMessagePool(messageNoForUpdate, sparkActivityId, messageContent, memberId)
+    await messageBoardStore.updateSparkActivityBackend(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    messageBoardStore.updateSparkActivityFromSparkActivityPool(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -52,17 +55,36 @@ async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent
       <template v-slot:activator="{ props }">
         <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
       </template>
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">編輯留言資料</span>
+      <v-card style="border-radius: 50px;">
+        <v-card-title class="text-center title">
+          編輯星火活動
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateMessage(vueProps.messageNoForUpdate, sparkActivityId, messageContent, memberId)">
-            <label for="spark_activity_id">星火活動ID</label> <input type="number" name="spark_activity_id"
-              v-model="sparkActivityId">
-            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
-            <label for="member_id">會員編號</label> <input type="number" name="member_id" v-model="memberId">
+            @submit.prevent="updateSparkActivity(vueProps.sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)">
+
+            <div class="input_container">
+              <div class="input_wrap">
+                <label for="spark_activity_name">星火活動名稱</label> <input type="text" name="spark_activity_name"
+                  v-model="sparkActivityName">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_description">星火活動描述</label> <input type="text"
+                  name="spark_activity_description" v-model="sparkActivityDescription">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_start_date">開始日期</label>
+                <input type="date" name="spark_activity_start_date" v-model="sparkActivityStartDate" class="date">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_end_date">結束日期</label> <input type="date" name="spark_activity_end_date"
+                  v-model="sparkActivityEndDate" class="date">
+              </div>
+            </div>
+
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">
@@ -79,66 +101,80 @@ async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent
   </v-row>
 </template>
 <style scoped lang="scss">
-:deep(.v-btn.v-btn--density-default) {
-  background-color: $primaryBrandBlue !important;
-
-}
-
-:deep(.v-dialog > .v-overlay__content) {
-  width: 50%;
-}
-
-:deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
-  height: 50%;
-  top: 50%;
-}
-
-:deep(.v-btn__content) {
-  color: #ffff !important;
-  font-size: 20px;
-}
-
 :deep(.v-card .v-card-title) {
-  padding: 20px;
-  text-align: center;
-}
-
-label {
-  @include flex_hm();
-}
-
-.text-h5 {
   color: $primaryBrandBlue;
-  @include h5_PC;
-  font-weight: 900;
+  font-size: 2vw;
+  font-weight: bold;
+  text-align: center;
+  margin: 8vh 0 0;
 }
 
-input {
-  height: 5vh;
-  padding-left: 10px;
-  padding-top: 5px;
-  margin-left: 1vw;
-  width: 2vw;
-  width: 50%;
-  border: 1px solid;
-  border-radius: $br_MB;
+form {
+  margin: auto;
+
+  div.input_container {
+    margin: 5vh 0;
+    @include flex_vm;
+    gap: 3vh;
+
+    div.input_wrap {
+      @include flex_hm;
+
+      label {
+        width: 10vw;
+        font-size: 1.2vw;
+        font-weight: bold;
+      }
+
+      input {
+        padding: 0 1vw;
+        width: 25vw;
+        height: 6vh;
+        border: 2px solid $primaryBrandBlue;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 
-label {
-  margin-bottom: 20px;
-  display: flex;
+input.date{
+  cursor: pointer;
+  
 }
 
-:deep(.v-btn.v-btn--density-default) {
-  background-color: $primaryBrandBlue !important;
-  width: 137px;
-  height: 55px;
-  border-radius: 50px;
-  margin-bottom: 50px;
-  margin-right: 20px;
+::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 :deep(.icon) {
   @include btnEffect;
+}
+
+:deep(.btn) {
+  width: 8vw;
+  height: 6vh;
+  border-radius: 50px;
+  margin: 3vh 1vw;
+}
+
+:deep(.cancel) {
+  background-color: white;
+  border: 2px solid $primaryBrandBlue;
+
+  .v-btn__content {
+    color: $primaryBrandBlue;
+  }
+}
+
+:deep(.update) {
+  background-color: $primaryBrandBlue;
+
+  .v-btn__content {
+    color: white;
+  }
+}
+
+:deep(.v-btn__content) {
+  font-size: 1vw;
 }
 </style>

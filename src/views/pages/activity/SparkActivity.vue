@@ -110,7 +110,7 @@ const filteredSparkActivityPool = computed(() => {
                   :sparkActivityIdForUpdate="item.spark_activity_id" :messageContentForUpdate="item.message_content"
                   :memberIdForUpdate="item.member_id" />
 
-                <DeleteSparkActivity :messageNoForDelete="parseInt(item.message_no)" />
+                <DeleteSparkActivity :sparkActivityNoForDelete="parseInt(item.spark_activity_no)" />
               </td>
             </tr>
           </tbody>

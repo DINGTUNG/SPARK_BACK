@@ -1,63 +1,99 @@
 <script setup>
-import { ref} from 'vue'
+import { ref, defineProps } from 'vue'
 import { useMessageBoardStore } from '@/stores/activity/message-board.js';
 const messageBoardStore = useMessageBoardStore();
+
+const vueProps = defineProps({
+  sparkActivityNoForUpdate: Number,
+  sparkActivityNameForUpdate: String,
+  sparkActivityDescriptionForUpdate: String,
+  sparkActivityStartDateForUpdate: String,
+  sparkActivityEndDateForUpdate: String
+})
+
+const sparkActivityName = ref('')
+const sparkActivityDescription = ref('')
+const sparkActivityStartDate = ref('')
+const sparkActivityEndDate = ref('')
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
   dialogDisplay.value = true;
+  sparkActivityName.value = vueProps.sparkActivityNameForUpdate
+  sparkActivityDescription.value = vueProps.sparkActivityDescriptionForUpdate
+  sparkActivityStartDate.value = vueProps.sparkActivityStartDateForUpdate
+  sparkActivityEndDate.value = vueProps.sparkActivityEndDateForUpdate
 }
 
 function closeDialog() {
   dialogDisplay.value = false;
 }
 
-const messageContent = ref('')
 
-async function createMessage(messageContent) {
+async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate) {
   try {
-    const newMessage = await messageBoardStore.createMessageBackend(messageContent)
-    addContentToNewMessage(newMessage)
-    console.log(messageBoardStore.messagePool);
-    window.alert(`新增成功!`);
+    if (sparkActivityNoForUpdate == null) {
+      throw new Error("Message no. not found!")
+    }
+    await messageBoardStore.updateSparkActivityBackend(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    messageBoardStore.updateSparkActivityFromSparkActivityPool(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
-    window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
   } finally {
     closeDialog()
   }
 }
 
-const addContentToNewMessage = (newMessage) => {
-  messageBoardStore.messagePool.push(newMessage)
-}
-
 </script>
 
 <template>
-  <v-row justify="end">
+  <v-row class="row" style="flex: 0 0 0;">
     <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props" @click="showDialog">
+        <v-btn class="btn" v-bind="props" @click="showDialog">
           新增
         </v-btn>
       </template>
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">新增留言資料</span>
+      <v-card style="border-radius: 50px;">
+        <v-card-title class="text-center title">
+          新增星火活動
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
-            @submit.prevent="createMessage(messageContent)">
-            <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
+          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
+            @submit.prevent="updateSparkActivity(vueProps.sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)">
+
+            <div class="input_container">
+              <div class="input_wrap">
+                <label for="spark_activity_name">星火活動名稱</label> <input type="text" name="spark_activity_name"
+                  v-model="sparkActivityName">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_description">星火活動描述</label> <input type="text"
+                  name="spark_activity_description" v-model="sparkActivityDescription">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_start_date">開始日期</label>
+                <input type="date" name="spark_activity_start_date" v-model="sparkActivityStartDate" class="date">
+              </div>
+
+              <div class="input_wrap">
+                <label for="spark_activity_end_date">結束日期</label> <input type="date" name="spark_activity_end_date"
+                  v-model="sparkActivityEndDate" class="date">
+              </div>
+            </div>
+
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="cancel btn" variant="text" @click="closeDialog">
                 取消
               </v-btn>
-              <v-btn class="delete btn" variant="text" type="submit">
-                確定
+              <v-btn class="update btn" variant="text" type="submit">
+                儲存
               </v-btn>
             </v-card-actions>
           </form>
@@ -67,96 +103,84 @@ const addContentToNewMessage = (newMessage) => {
   </v-row>
 </template>
 <style scoped lang="scss">
-:deep(.v-btn.v-btn--density-default) {
-  background-color: $primaryBrandBlue !important;
 
-}
-
-:deep(.v-dialog > .v-overlay__content) {
-  width: 50%;
-}
-
-:deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
-  height: 50%;
-  top: 50%;
-}
-
-:deep(.v-btn__content) {
-  color: #ffff !important;
+:deep(.v-btn){
+background-color: $primaryBrandBlue;
 }
 
 :deep(.v-card .v-card-title) {
-  padding: 20px;
-  text-align: center;
-}
-
-label {
-  @include flex_hm();
-}
-
-.text-h5 {
   color: $primaryBrandBlue;
-  @include h5_PC;
-  font-weight: 900;
-
+  font-size: 2vw;
+  font-weight: bold;
+  text-align: center;
+  margin: 8vh 0 0;
 }
 
-.imgblock {
-  display: flex;
+form {
+  margin: auto;
 
-  input[type="file"] {
-    border: 1px transparent;
-  }
+  div.input_container {
+    margin: 5vh 0;
+    @include flex_vm;
+    gap: 3vh;
 
+    div.input_wrap {
+      @include flex_hm;
 
-  input {
-    height: 5vh;
-    padding-left: 10px;
-    padding-top: 5px;
-    margin-left: 1vw;
-    width: 2vw;
-    width: 50%;
-    border: 1px solid;
-    border-radius: $br_MB;
-  }
+      label {
+        width: 10vw;
+        font-size: 1.2vw;
+        font-weight: bold;
+      }
 
-}
-
-input {
-  height: 5vh;
-  padding-left: 10px;
-  padding-top: 5px;
-  margin-left: 1vw;
-  width: 2vw;
-  width: 50%;
-  border: 1px solid;
-  border-radius: $br_MB;
-}
-
-label {
-  margin-bottom: 20px;
-  display: flex;
-
-  textarea {
-    margin-left: 1vw;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-top: 10px;
-    border-radius: $br_MB;
-
+      input {
+        padding: 0 1vw;
+        width: 25vw;
+        height: 6vh;
+        border: 2px solid $primaryBrandBlue;
+        border-radius: 10px;
+      }
+    }
   }
 }
 
-:deep(.v-btn.v-btn--density-default) {
-  background-color: $primaryBrandBlue !important;
-  width: 137px;
-  height: 55px;
+input.date {
+  cursor: pointer;
+}
+
+::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+:deep(.icon) {
+  @include btnEffect;
+}
+
+:deep(.btn) {
+  width: 8vw;
+  height: 6vh;
   border-radius: 50px;
-  margin-bottom: 50px;
-  margin-right: 20px;
+  margin: 3vh 1vw;
+}
+
+:deep(.cancel) {
+  background-color: white;
+  border: 2px solid $primaryBrandBlue;
+
+  .v-btn__content {
+    color: $primaryBrandBlue;
+  }
+}
+
+:deep(.update) {
+  background-color: $primaryBrandBlue;
+
+  .v-btn__content {
+    color: white;
+  }
 }
 
 :deep(.v-btn__content) {
-  font-size: 20px;
+  font-size: 1vw;
 }
 </style>

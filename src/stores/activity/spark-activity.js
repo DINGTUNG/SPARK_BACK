@@ -11,45 +11,45 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
 
   const sparkActivityPool = reactive([])
 
-  // // delete
-  // function deleteMessageBackend(messageNo) {
-  //   // prepare data 
-  //   const payLoad = new FormData();
-  //   payLoad.append("message_no", messageNo);
+  // delete
+  function deleteSparkActivityBackend(sparkActivityNo) {
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("spark_activity_no", sparkActivityNo);
 
-  //   // make a request
-  //   const request = {
-  //     method: "POST",
-  //     url: `http://localhost/SPARK_BACK/php/activity/message-board/delete_message.php`,
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //     data: payLoad,
-  //   };
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/activity/spark-activity/delete_spark_activity.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
 
-  //   // send request to backend server
-  //   return new Promise((resolve, reject) => {
-  //     axios(request)
-  //       .then((response) => {
-  //         const deleteResult = response.data;
-  //         resolve(deleteResult);
-  //       })
-  //       .catch((error) => {
-  //         console.log("From deleteMessageBackend:", error);
-  //         reject(error);
-  //       });
-  //   });
-  // }
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const deleteResult = response.data;
+          resolve(deleteResult);
+        })
+        .catch((error) => {
+          console.log("From deleteMessageBackend:", error);
+          reject(error);
+        });
+    });
+  }
 
-  // const deleteMessageFromsparkActivityPool = (messageNo) => {
-  //   for (let i = 0; i < sparkActivityPool.length; i++) {
-  //     if (sparkActivityPool[i].message_no == messageNo) {
-  //       sparkActivityPool.splice(i, 1);
+  const deleteSparkActivityFromSparkActivityPool = (sparkActivityNo) => {
+    for (let i = 0; i < sparkActivityPool.length; i++) {
+      if (sparkActivityPool[i].spark_activity_no == sparkActivityNo) {
+        sparkActivityPool.splice(i, 1);
         
-  //       break
-  //     }
-  //   }
-  // }
+        break
+      }
+    }
+  }
 
   // // update
   // function updateMessageBackend(messageNo,sparkActivityId,messageContent,memberId) {
@@ -127,8 +127,8 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
 
   return {
     sparkActivityPool,
-    // deleteSparkActivityBackend,
-    // deleteSparkActivityFromSparkActivityPool,
+    deleteSparkActivityBackend,
+    deleteSparkActivityFromSparkActivityPool,
     // updateSparkActivityBackend,
     // updateSparkActivityFromSparkActivityPool,
     // createSparkActivityBackend

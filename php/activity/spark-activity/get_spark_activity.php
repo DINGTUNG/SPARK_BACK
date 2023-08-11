@@ -7,13 +7,13 @@ require_once("../../connect_chd102g3.php");
 
 try {
   $sql = "
-  select * from message_board 
-  where del_flg = 0 order by message_no";
-  $message_board = $pdo->query($sql);
+  select * from spark_activity 
+  where del_flg = 0 order by spark_activity_no";
+  $spark_activity = $pdo->query($sql);
 
   //----------------------------------------
-  $message_boardRow = $message_board->fetchAll(PDO::FETCH_ASSOC);
-  echo json_encode($message_boardRow);
+  $spark_activityRow = $spark_activity->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($spark_activityRow);
 } catch (Exception $e) {
   echo "錯誤行號 : ", $e->getLine(), "<br>";
   echo "錯誤原因 : ", $e->getMessage(), "<br>";

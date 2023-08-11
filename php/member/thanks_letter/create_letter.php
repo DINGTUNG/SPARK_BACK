@@ -6,31 +6,57 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3-yiiijie.php");
 
 try {
-  $letterContent = $_POST["letter_content"] ?? null;
+  $childrenId = $_POST["children_id"] ?? null;
+  $memberId = $_POST["member_id"] ?? null;
+  $sponsorOrderId = $_POST["sponsor_order_id"] ?? null;
+  $receiveDate = $_POST["receive_date"] ?? null;
+  $fileName = $_POST["file_name"] ?? null;
+  
+
+
+
+
 
   // parameters validation
-  if ($messageContent == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供message content)");
+  if ($childrenId == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供childrenId)");
   }
+  if ($memberId == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供memberId)");
+  }
+  if ($sponsorOrderId == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供sponsorOrderId)");
+  }
+  if ($receiveDate == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供receiveDate)");
+  }
+  if ($fileName == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供fileName)");
+  }
+
 
   // create record
   $pdo->beginTransaction();
 
 
-  $createSql = "insert into message_board(spark_activity_id, message_content, member_id,updater) values('SA001', :message_content,'A087','許咪咪')";
+  $createSql = "insert into thanks_letter(children_id, member_id, sponsor_order_id, receive_date, file_name) values(:children_id, :member_id, :sponsor_order_id, :receive_date, :file_name,'阿菜')";
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":message_content", $messageContent);
+  $createStmt->bindValue(":children_id", $childrenId);
+  $createStmt->bindValue(":member_id", $memberId);
+  $createStmt->bindValue(":sponsor_order_id", $sponsorOrderId);
+  $createStmt->bindValue(":receive_date", $receiveDate);
+  $createStmt->bindValue(":file_name", $fileName);
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  $updateSql = "update message_board set message_id = concat('SM',LPAD(LAST_INSERT_ID(), 3, 0)) where message_no = LAST_INSERT_ID()";
+  $updateSql = "update thanks_letter set thanks_letter_id = concat('TL',LPAD(LAST_INSERT_ID(), 3, 0)) where thanks_letter_no = LAST_INSERT_ID()";
   $updateStmt = $pdo->prepare($updateSql);
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
-  $selectSql = "select * from message_board where message_no = (select LAST_INSERT_ID())";
+  $selectSql = "select * from thanks_letter where thanks_letter_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
   $newMessage = $selectStmt->fetch(PDO::FETCH_ASSOC);
   http_response_code(200);

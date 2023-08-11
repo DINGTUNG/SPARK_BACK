@@ -42,9 +42,9 @@ const searchText = computed(() => {
 })
 
 const filteredReportList = computed(() => {
-  return reportStore.reportsList.filter((item) => { // 修改这里
+  return reportStore.reportsList.filter((item) => { 
     const obj = [item.report_id, item.report_title,item.report_class]
-    const str = JSON.stringify(obj).toLowerCase();
+    const str = JSON.stringify(obj);
     return str.includes(searchText.value)
   });
 });

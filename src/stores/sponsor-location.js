@@ -87,7 +87,6 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     }
   }
 
-
   //create
   function createLocationBackend(locationName) {
     // prepare data 
@@ -125,9 +124,9 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     locationList,
     deleteLocationBackend,
     deleteLocationFromLocationList,
-    createLocationBackend,
     updateLocationBackend,
-    updateLocationFromLocationList
+    updateLocationFromLocationList,
+    createLocationBackend
 
 
   }

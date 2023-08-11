@@ -1,13 +1,7 @@
 <script setup>
 //【引入】
-<<<<<<< HEAD
-import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
-import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
-import DeleteMilestone from '@/views/delete-dialog/DeleteMilestone.vue'; //刪除里程碑
-=======
 import CreateMilestone from '@/views/create-dialog/results/CreateMilestone.vue'; //新增里程碑
 import UpdateMilestone from '@/views/update-dialog/results/UpdateMilestone.vue'; //編輯里程碑
->>>>>>> 08c100a728f17a8a8566ee3c3b7acb1a555df29f
 import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';

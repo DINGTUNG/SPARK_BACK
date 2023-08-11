@@ -1,14 +1,54 @@
 <script setup>
+//【引入】
 import { ref } from 'vue'
-const dialog = ref(false);
+import { useMilestoneStore } from '@/stores/milestone.js'
+
+//
+const milestoneStore = useMilestoneStore();
+const dialogDisplay = ref(false);
+
+function showDialog() {
+    dialogDisplay.value = true;
+}
+
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+
+const milestoneTitle = ref('')
+const milestoneDate = ref('')
+const milestoneContent = ref('')
+const milestoneImage = ref('')
+
+async function createMilestone(milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
+    try {
+        const newMilestone = await milestoneStore.createMilestoneBackend(milestoneTitle, milestoneDate, milestoneContent, milestoneImage)
+        addContentToNewMilestone(newMilestone)
+        console.log(milestoneStore.milestonePool);
+        window.alert(`新增成功!`);
+    } catch (error) {
+        console.error(error);
+        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
+    }
+}
+
+const addContentToNewMilestone = (newMilestone) => {
+  milestoneStore.milestonePool.push(newMilestone)
+}
 
 </script>
 
+
+
+
+
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props">
+        <v-btn color="primary" v-bind="props" @click="showDialog">
           新增
         </v-btn>
       </template>
@@ -18,23 +58,23 @@ const dialog = ref(false);
           <span class="main_title">新增里程碑</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
+          <form action="http://localhost/SPARK_BACK/php/results/milestone/create_milestone.php" method="post" @submit.prevent="createMilestone(milestoneTitle, milestoneDate, milestoneContent, milestoneImage)">
             <label for="">
               <div class="input_title">標題</div>
-              <input type="text">
+              <input type="text" name="milestone_title" v-model="milestoneTitle">
             </label>
             <label for="">
               <div class="input_title">年度/月份</div>
-              <input type="month">
+              <input type="month" name="milestone_date" v-model="milestoneDate">
             </label>
             <label for="">
               <div class="input_title">內文</div>
-              <textarea name="" id="" cols="70" rows="10"></textarea>
+              <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneContent"></textarea>
             </label>
 
             <div class="imgblock">
               <span>圖片</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+              <v-file-input variant="outlined" id="book" prepend-icon="none" name="milestone_image" v-model="milestoneImage">
                 <template v-slot:prepend-inner>
                   <label for="book">上傳圖檔</label>
                 </template>
@@ -42,17 +82,17 @@ const dialog = ref(false);
             </div>
 
 
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                  取消
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" type="submit">
+                  儲存
+              </v-btn>
+            </v-card-actions>
           </form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            儲存
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>

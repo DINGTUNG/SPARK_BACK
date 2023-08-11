@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useMilestoneStore } from '@/stores/milestone.js';
+import { useMilestoneStore } from '@/stores/results/milestone.js';
 const milestoneStore = useMilestoneStore();
 
 const vueProps = defineProps({

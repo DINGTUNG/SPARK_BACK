@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
 
+//api
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/news/get_news.php')
@@ -20,13 +21,14 @@ async function getData() {
   } catch (error) {
     console.error(error);
   }
-}
-
+};
 onMounted(() => {
   getData()
-})
+});
 
 
+
+//搜索
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
@@ -49,18 +51,35 @@ const filteredNewsList = computed(() => {
   });
 });
 
+
+//分頁
 const pageCount = () => {
   return Math.ceil(filteredNewsList.value.length / itemsPerPage);
 }
-
 const page = ref(1)
 const itemsPerPage = 10;
-
 const displayNewsList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return filteredNewsList.value.slice(startIdx, endIdx);
 });
+
+//上下架
+async function updateNewsOnline(item) {
+  try {
+    if (item.news_no == null) {
+      throw new Error("news no not found!")
+    }
+    await newsStore.updateNewsStatusBackend(item.news_no,item.is_news_online)
+    newsStore.updateNewsStatusFromNewsPool(item.news_no,item.is_news_online)
+
+    console.log(item.is_news_online);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 
 </script>
@@ -99,7 +118,7 @@ const displayNewsList = computed(() => {
               <td class="is_news_online">{{ item.is_news_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.is_news_online" color="#EBC483" density="compact" hide-details="true" inline inset
-                  true-value=1></v-switch>
+                  true-value=1 @change="updateNewsOnline(item)"></v-switch>
               </td>
               <td class="">{{ item.register }}</td>
               <td class="">{{ item.regist_time }}</td>

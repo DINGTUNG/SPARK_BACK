@@ -26,7 +26,7 @@ try {
   }
 
   // update record
-  $updateSql = "update sponsor_location set location_name = :location_name, updater='許咪咪', update_time = Now() where location_no = :location_no ";
+  $updateSql = "update sponsor_location set location_name = :location_name, updater='sir', update_time = Now() where location_no = :location_no ";
   $updateStmt = $pdo->prepare($updateSql);
   $updateStmt->bindValue(":location_no", $locationNo);
   $updateResult = $updateStmt->execute();

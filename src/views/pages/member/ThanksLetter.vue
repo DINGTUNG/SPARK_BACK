@@ -1,13 +1,13 @@
 <script setup>
 import Search from '@/components/Search.vue';
-import CreateThanksLetter from '@/views/create-dialog/CreateThanksLetter.vue';
-import UpdateMessagePractice from '@/views/update-dialog/UpdateMessagePractice.vue';
-import DeleteMessage from '@/views/delete-dialog/DeleteMessage.vue';
+import CreateThanksLetter from '@/views/create-dialog/member/CreateThanksLetter.vue';
+// import UpdateMessagePractice from '@/views/update-dialog/member/UpdateMessagePractice.vue';
+// import DeleteMessage from '@/views/delete-dialog/member/DeleteMessage.vue';
 
 import { ref, reactive, computed, onMounted }  from 'vue'
 import axios from 'axios';
 
-import { useThanksLetterStore } from '@/stores/thanks-letter.js';
+import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 
@@ -113,19 +113,19 @@ const filteredLetterList = computed(() => {
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateMessagePractice 
+                <!-- <UpdateMessagePractice 
                 :messageNoForUpdate="parseInt(item.message_no)"
                 :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)" 
                 :messageContentForUpdate="item.message_content"
-                :memberNoForUpdate="parseInt(item.member_no)" />
+                :memberNoForUpdate="parseInt(item.member_no)" /> -->
 
-                <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
+                <!-- <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" /> -->
               </td>
             </tr>
           </tbody>
         </v-table>
       </div>
-      <CreateMessagePractice class="add" />
+      <CreateThanksLetter class="add" />
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

@@ -1,7 +1,7 @@
 <script setup>
-import CreateStory from '@/views/create-dialog/CreateStory.vue';
-import UpdateStory from '@/views/update-dialog/UpdateStory.vue';
-import DeleteStory from '@/views/delete-dialog/DeleteStory.vue';
+import CreateStory from '@/views/create-dialog/results/CreateStory.vue';
+import UpdateStory from '@/views/update-dialog/results/UpdateStory.vue';
+import DeleteStory from '@/views/delete-dialog/results/DeleteStory.vue';
 import axios from 'axios';
 import { ref, reactive,computed, onMounted } from 'vue'
 const page = ref(1)
@@ -11,8 +11,8 @@ const storyList = reactive([])
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/story/read_story.php')
-    if(response.data.stories.length > 0) {
-      response.data.stories.forEach(element => {
+    if(response.data.length > 0) {
+      response.data.forEach(element => {
         storyList.push(element)
       });
     }
@@ -58,7 +58,6 @@ const switchOnline =  ( no, online ) => {
 
 
 <template>
-  <a href=""></a>
   <div class="container">
     <div class="content_wrap">
       <h1>成果管理｜溫馨事紀</h1>

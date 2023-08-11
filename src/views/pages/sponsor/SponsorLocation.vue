@@ -1,20 +1,16 @@
 <script setup>
-import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
-import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
-import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
+import CreateLocation from '@/views/create-dialog/sponsor/CreateLocation.vue';
+import UpdateLocation from '@/views/update-dialog/sponsor/UpdateLocation.vue';
+import DeleteLocation from '@/views/delete-dialog/sponsor/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
-const page = ref(1);
-const dialogDelete = ref(false);
-const itemToDelete = ref(null);
 
 async function getSponsorLocation() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
-
     locationStore.locationList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -30,6 +26,7 @@ onMounted(() => {
   getSponsorLocation();
 });
 
+const page = ref(1);
 const itemsPerPage = 10;
 const pageCount = computed(() => {
   return Math.ceil(locationStore.locationList.length / itemsPerPage);
@@ -37,7 +34,7 @@ const pageCount = computed(() => {
 const displayLocationList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return locationStore.locationList.slice(startIdx, endIdx);
+  return filteredLocationList.value.slice(startIdx, endIdx);
 });
 
 const searchValue = ref('');
@@ -46,18 +43,19 @@ function handleSearchChange(newValue) {
   console.log(searchValue.value);
 }
 
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+  }
+  return searchText;
+})
+
 const filteredLocationList = computed(() => {
-  const searchText = searchValue.value ? searchValue.value.trim().toLowerCase() : '';
-  return displayLocationList.value.filter(item => {
-    const idMatch = item.location_id.toString().includes(searchText);
-    if (isNaN(parseInt(searchText))) {
-      const nameMatch = item.location_name.toLowerCase().includes(searchText);
-      const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
-      const indexMatch = ((page.value - 1) * itemsPerPage) + displayLocationList.value.indexOf(item) + 1 === parseInt(searchText);
-      return idMatch || nameMatch || onlineStatusMatch || indexMatch;
-    } else {
-      return idMatch;
-    }
+  return locationStore.locationList.filter((item) => { 
+    const obj = [item.location_id, item.location_name]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
   });
 });
 
@@ -85,7 +83,7 @@ const filteredLocationList = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in filteredLocationList" :key="item.location_id" class="no-border">
+            <tr v-for="(item, index) in displayLocationList" :key="item.location_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="id">{{ item.location_id }}</td>
               <td class="name">{{ item.location_name }}</td>
@@ -97,8 +95,8 @@ const filteredLocationList = computed(() => {
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateLocation />
-                <DeleteLocation :locationNoForDelete="parseInt(item.location_no)"/>
+                <UpdateLocation :locationNameForUpdate="item.location_name" />                
+                <DeleteLocation :locationNoForDelete="parseInt(item.location_no)" />
               </td>
             </tr>
           </tbody>

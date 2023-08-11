@@ -17,7 +17,7 @@ try {
   $pdo->beginTransaction();
 
 
-  $createSql = "insert into sponsor_location( location_name,updater) values(:location_name,'sir')";
+  $createSql = "insert into sponsor_location( location_name,is_sponsor_location_online,updater) values(:location_name,1,'sir')";
   $createStmt = $pdo->prepare($createSql);
   $createStmt->bindValue("location_name", $locationContent);
   $createResult = $createStmt->execute();

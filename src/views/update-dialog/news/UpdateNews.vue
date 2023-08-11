@@ -13,18 +13,21 @@ const vueProps = defineProps({
 const newsForUpdate = reactive({
   newsNo: null,
   newsDate: null,
-  newsImageFirst: null,
-  newsImageSecond: null
+  newsImageFirst: [],
+  newsImageSecond: []
 })
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
+
   dialogDisplay.value = true;
   newsForUpdate.newsNo = vueProps.newsNoForUpdate
   newsForUpdate.newsDate = vueProps.newsDateForUpdate
-  newsForUpdate.newsImageFirst = vueProps.newsImageFirstForUpdate
-  newsForUpdate.newsImageSecond = vueProps.newsImageSecondForUpdate
+  newsForUpdate.newsImageFirst['name'] = vueProps.newsImageFirstForUpdate
+  console.log("狸貓", newsForUpdate.newsImageFirst['name']);
+
+  newsForUpdate.newsImageSecond['name']  = vueProps.newsImageSecondForUpdate
 }
 
 function closeDialog() {
@@ -36,8 +39,7 @@ async function updateNews(newsNoForUpdate) {
     if (newsNoForUpdate == null) {
       throw new Error("news no. not found!")
     }
-    const response = await newsStore.updateNewsBackend(newsForUpdate)
-    window.alert(response)
+    await newsStore.updateNewsBackend(newsForUpdate)
     newsStore.updateNewsFromNewsPool(newsForUpdate)
     window.alert(`編輯成功!`);
   } catch (error) {
@@ -78,7 +80,7 @@ async function updateNews(newsNoForUpdate) {
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
               <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳圖檔"
-                v-model="newsForUpdate.newsImageFirst" name="news_image_first">
+                v-model="newsForUpdate.newsImageFirst" name="news_image_first" >
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
@@ -90,7 +92,9 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔2</span></div>
-              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"  v-model="newsForUpdate.newsImageSecond">
+              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"
+                v-model="newsForUpdate.newsImageSecond">
+              
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>

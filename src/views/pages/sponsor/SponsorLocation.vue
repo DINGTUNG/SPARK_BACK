@@ -76,10 +76,7 @@ async function UpdateLocationOnline(item) {
     console.error(error);
   }
 }
-
-
 </script>
-
 <template>
   <div class="container">
     <div class="content_wrap">

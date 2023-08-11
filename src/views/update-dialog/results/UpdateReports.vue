@@ -1,12 +1,41 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
-const dialog = ref(false);
+import { ref, defineProps, reactive } from 'vue'
+const vueProps = defineProps({
+    reportsNoForUpdate: Number,
+    reportsClassForUpdate: String,
+    reportsYearForUpdate: Number,
+    reportsTitleForUpdate: String,
+    reportsFileThirdForUpdate: String,
+});
+const reportsForUpdate = reactive({
+    reportsNo: null,
+    reportsClass: '',
+    reportsYear: '',
+    reportsTitle: '',
+    reportsFile: []
+})
+
+const dialogDisplay = ref(false);
+
+function closeDialog() {
+    dialogDisplay.value = false;
+
+}
+function showDialog() {
+    dialogDisplay.value = true;
+    reportsForUpdate.reportsNo = vueProps.reportsNoForUpdate
+    reportsForUpdate.reportsClass = vueProps.reportsClassForUpdate
+    reportsForUpdate.reportsYear = vueProps.reportsYearForUpdate
+    reportsForUpdate.reportsTitle = vueProps.reportsTitleForUpdate
+    reportsForUpdate.reportsFile['name'] = vueProps.reportsFileThirdForUpdate
+}
+
 </script>
 <template>
     <v-row justify="end">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+                <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
@@ -18,19 +47,20 @@ const dialog = ref(false);
                         enctype="multipart/form-data">
                         <div class="form_item">
                             <div class="name"><span>報告分類</span></div>
-                            <input type="text" id="title" name="report_class">
+                            <input type="text" id="title" name="report_class" v-model="reportsForUpdate.reportsClass">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>年度</span></div>
-                            <input type="text" id="date" name="report_year">
+                            <input type="text" id="date" name="report_year" v-model="reportsForUpdate.reportsYear">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>標題</span></div>
-                            <input type="text" id="date" name="report_title">
+                            <input type="text" id="date" name="report_title" v-model="reportsForUpdate.reportsTitle">
                         </div>
                         <div class="imgblock form_item">
                             <div class="name"><span>報告</span></div>
-                            <v-file-input id="photo1" prepend-icon="none" name="report_file" >
+                            <v-file-input id="photo1" prepend-icon="none" name="report_file"
+                                v-model="reportsForUpdate.reportsFile">
                                 <template v-slot:prepend-inner>
                                     <label for="photo1" id="photo">修改報告</label>
                                 </template>
@@ -38,10 +68,10 @@ const dialog = ref(false);
                         </div>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" @click="handleSubmit" type="button">
+                            <v-btn color="blue-darken-1" variant="text" type="submit" @click="closeDialog">
                                 儲存
                             </v-btn>
                         </v-card-actions>

@@ -13,9 +13,11 @@ const newsStore = useNewsStore();
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/news/get_news.php')
+    newsStore.newsPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
         newsStore.newsPool.push(element)
+        console.log(response)
       });
     }
   } catch (error) {
@@ -70,8 +72,8 @@ async function updateNewsOnline(item) {
     if (item.news_no == null) {
       throw new Error("news no not found!")
     }
-    await newsStore.updateNewsStatusBackend(item.news_no,item.is_news_online)
-    newsStore.updateNewsStatusFromNewsPool(item.news_no,item.is_news_online)
+    await newsStore.updateNewsStatusBackend(item.news_no, item.is_news_online)
+    newsStore.updateNewsStatusFromNewsPool(item.news_no, item.is_news_online)
 
     console.log(item.is_news_online);
 
@@ -79,9 +81,6 @@ async function updateNewsOnline(item) {
     console.error(error);
   }
 }
-
-
-
 </script>
 <template>
   <div class="container">
@@ -109,6 +108,7 @@ async function updateNewsOnline(item) {
             </tr>
           </thead>
           <tbody>
+            
             <tr v-for="(item, index) in displayNewsList" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="news_no">{{ item.news_no }}</td>
@@ -125,8 +125,18 @@ async function updateNewsOnline(item) {
               <td class="">{{ item.updater }}</td>
               <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" :newsDateForUpdate="item.news_date"
-                  :newsImageFirstForUpdate="item.news_image_first" :newsImageSecondForUpdate="item.news_image_second" />
+                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" :newsTitleForUpdate="item.news_title"
+                  :newsDateForUpdate="item.news_date" 
+                  :newsContentFirstUpdate="item.news_content_first"
+                  :newsImageFirstForUpdate="item.news_image_first" 
+                  :newsContentSecondUpdate="item.news_content_second"
+                  :newsImageSecondForUpdate="item.news_image_second" 
+                  :newsContentThirdUpdate="item.news_content_third"
+                  :newsImageThirdForUpdate="item.news_image_third" 
+                  :newsContentFourthUpdate="item.news_content_fourth"
+                  :newsImageFourthForUpdate="item.news_image_fourth" 
+                  />
+                
                 <DeleteNews :newsNoForDelete="parseInt(item.news_no)" />
               </td>
             </tr>

@@ -54,7 +54,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("location_no", locationNo);
-    payLoad.append("spark_location_name", locationName);
+    payLoad.append("location_name", locationName);
 
     // make a request
     const request = {
@@ -82,7 +82,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
   const updateLocationFromLocationList = (locationNo, locationName) => {
     for (let i = 0; i < locationList.length; i++) {
       if (locationList[i].location_no == locationNo) {
-        locationList[i].location_Name = locationName
+        locationList[i].location_name = locationName
       }
     }
   }
@@ -127,8 +127,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     updateLocationBackend,
     updateLocationFromLocationList,
     createLocationBackend
-
-
+    
   }
 
 })

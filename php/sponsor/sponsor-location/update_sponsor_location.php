@@ -17,6 +17,10 @@ try {
     throw new InvalidArgumentException($message = "參數不足(請提供location name)");
   }
 
+  if ($locationName == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供location name)");
+  }
+
   // check update record existed
   $checkRecordAliveSql = "select count(*) as count from sponsor_location where location_no = :location_no and del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);

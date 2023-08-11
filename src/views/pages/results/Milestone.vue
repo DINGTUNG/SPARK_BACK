@@ -1,57 +1,55 @@
 <script setup>
 //【引入】
-<<<<<<< HEAD
-import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
-import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
-import DeleteMilestone from '@/views/delete-dialog/DeleteMilestone.vue'; //刪除里程碑
-=======
+import Search from '@/components/Search.vue'; //查詢
 import CreateMilestone from '@/views/create-dialog/results/CreateMilestone.vue'; //新增里程碑
 import UpdateMilestone from '@/views/update-dialog/results/UpdateMilestone.vue'; //編輯里程碑
->>>>>>> 08c100a728f17a8a8566ee3c3b7acb1a555df29f
-import Search from '@/components/Search.vue'; //查詢
+import DeleteMilestone from '@/views/delete-dialog/results/DeleteMilestone.vue'; //刪除里程碑
+
+
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
+import { useMilestoneStore } from '@/stores/results/milestone.js';
+const milestoneStore = useMilestoneStore();
 
-//【刪除功能】
-// const page = ref(1)
-// const dialogDelete = ref(false); // 控制刪除對話框的顯示
-// const itemToDelete = ref(null); // 存儲要刪除的項目
 
-// function showDeleteDialog(item) {
-//   itemToDelete.value = item; // 存儲要刪除的項目
-//   dialogDelete.value = true; // 顯示刪除對話框
-// }
+//【串接資料庫】
+async function milestoneConnection() {
+  try {
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/milestone/milestone.php')
+    console.log(response)
+    milestoneStore.milestonePool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
+    if (response.data.length > 0) {
+      response.data.forEach(element => {
+        milestoneStore.milestonePool.push(element)
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-// function deleteItemConfirm() {
-//   if (itemToDelete.value) {
-//     const index = milestoneList.indexOf(itemToDelete.value);
-//     if (index !== -1) {
-//       milestoneList.splice(index, 1); // 從列表中刪除項目沒效 
-//     }
-//     itemToDelete.value = null;
-//     dialogDelete.value = false; // 隱藏刪除對話框
-//   }
-// }
+onMounted(() => {
+  milestoneConnection()
+})
 
-// function closeDelete() {
-//   dialogDelete.value = false; // 隱藏刪除對話框
-// }
 
 // 【換頁功能】
+const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = () => {
-  return (milestoneList.length) / itemsPerPage + 1;
+  return Math.floor((milestoneStore.milestonePool.length - 1) / itemsPerPage) + 1;
 }
 const displayMilestoneList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return milestoneList.slice(startIdx, endIdx);
+  return milestoneStore.milestonePool.slice(startIdx, endIdx);
 });
+
 
 //【查詢功能】
 const searchValue = ref('');
-function handleSearchChange(event) {
-  searchValue.value = event.target.value;
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
   console.log(searchValue.value);
 }
 
@@ -69,27 +67,7 @@ const filteredMilestoneList = computed(() => {
   });
 });
 
-//【資料庫連接】
-const milestoneList = reactive([])
-async function milestoneConnection() {
-  try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/results/milestone/milestone.php')
-    console.log(response)
 
-
-    if (response.data.length > 0) {
-      response.data.forEach(element => {
-        milestoneList.push(element)
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-onMounted(() => {
-  milestoneConnection()
-})
 
 </script>
 
@@ -99,7 +77,7 @@ onMounted(() => {
     <div class="content_wrap">
       <h1>成果管理｜服務里程碑</h1>
       <div class="search">
-        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue"  @input="handleSearchChange" />
+        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue"  @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>

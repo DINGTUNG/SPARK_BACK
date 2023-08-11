@@ -1,25 +1,32 @@
 <script setup>
-import { ref,defineProps } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
-const dialog = ref(false);
+
 const vueProps = defineProps({
   locationNoForUpdate: Number,
   locationNameForUpdate: String
 })
 
-const locationName=ref('')
+const locationName = ref('')
+
+const dialogDisplay = ref(false);
 
 function showDialog() {
+  dialogDisplay.value = true;
   locationName.value = vueProps.locationNameForUpdate
 }
 
-async function updateLocation(locationNoForUpdate,locationName) {
+function closeDialog() {
+  dialogDisplay.value = false;
+}
+
+async function updateLocation(locationNoForUpdate, locationName) {
   try {
     if (locationNoForUpdate == null) {
       throw new Error("location no. not found!")
     }
-    await locationStore.updateLocationBackend(locationNoForUpdate,locationName)
+    await locationStore.updateLocationBackend(locationNoForUpdate, locationName)
     locationStore.updateLocationFromLocationList(locationNoForUpdate, locationName)
     window.alert(`編輯成功!`);
   } catch (error) {
@@ -32,7 +39,7 @@ async function updateLocation(locationNoForUpdate,locationName) {
 </script>
 <template>
   <v-row class="row" style="flex: 0;">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
         <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
       </template>
@@ -41,21 +48,22 @@ async function updateLocation(locationNoForUpdate,locationName) {
           <span class="text-h5">編輯地區資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php" method="post"  @submit.prevent="updateLocation(vueProps.locationNoForUpdate,locationName)">
-            <label for="local">編輯地區內容
-              <input type="text" name="local" v-model="locationName">
+          <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php"
+            method="post" @submit.prevent="updateLocation(vueProps.locationNoForUpdate, locationName)">
+            <label for="location_name">編輯地區內容
+              <input type="text" name="location_name" v-model="locationName">
             </label>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                取消
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" type="submit">
+                儲存
+              </v-btn>
+            </v-card-actions>
           </form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false" type="submit">
-            儲存
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
@@ -118,5 +126,4 @@ label {
   margin-bottom: 50px;
   margin-right: 20px;
 }
-
 </style>

@@ -88,7 +88,7 @@ const filteredStaffList = computed(() => {
     <div class="content_wrap">
       <h1>後台管理｜後台人員</h1>
       <div class="search">
-        <Search :placeholder="'請輸入人員資訊'" :search-value="searchValue" @search="handleSearchChange" />
+        <Search :placeholder="'請輸入ID/姓名/權限/Email'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>

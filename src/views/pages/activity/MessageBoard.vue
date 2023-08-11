@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useMessageBoardStore } from '@/stores/activity/message-board.js';
 const messageBoardStore = useMessageBoardStore();
 
-async function getData() {
+async function getMessage() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/activity/message-board/get_message.php')
     messageBoardStore.messagePool.splice(0);
@@ -25,7 +25,7 @@ async function getData() {
 }
 
 onMounted(() => {
-  getData()
+  getMessage()
 })
 
 // 換頁

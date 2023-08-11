@@ -6,16 +6,16 @@ import CreateThanksLetter from '@/views/create-dialog/member/CreateThanksLetter.
 
 import { ref, reactive, computed, onMounted }  from 'vue'
 import axios from 'axios';
-
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 
 //串接資料庫
 // const LetterList = reactive([])
-async function getData() {
+async function thanksLetterConnection() {
   try {
     const response = await axios.post('http://localhost:8888/member/thanks_letter/thanks_letter.php')
+    thanksLetterStore.thanksLetterPool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -28,15 +28,15 @@ async function getData() {
 }
 
 onMounted(() => {
-  getData()
+  thanksLetterConnection()
 })
 
 // 換頁
 const page = ref(1)
-const pageCount = () => {
-  return ( thanksLetterStore.thanksLetterPool.length) / itemsPerPage + 1;
-}
 const itemsPerPage = 10;
+const pageCount = () => {
+  return Math.floor((thanksLetterStore.thanksLetterPool.length - 1) / itemsPerPage) + 1;
+}
 const displayedLetterList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;

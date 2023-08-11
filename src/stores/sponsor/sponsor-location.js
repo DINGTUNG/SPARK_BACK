@@ -70,11 +70,11 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     return new Promise((resolve, reject) => {
       axios(request)
         .then((response) => {
-          const deleteResult = response.data;
-          resolve(deleteResult);
+          const updateResult = response.data;
+          resolve(updateResult);
         })
         .catch((error) => {
-          console.log("From deleteLocationBackend:", error);
+          console.log("From updateLocationBackend:", error);
           reject(error);
         });
     });

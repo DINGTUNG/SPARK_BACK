@@ -13,10 +13,6 @@ try {
   $fileName = $_POST["file_name"] ?? null;
   
 
-
-
-
-
   // parameters validation
   if ($childrenId == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供childrenId)");

@@ -13,7 +13,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
     // create
-    function createThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
         // prepare data 
         const payLoad = new FormData();
         payLoad.append("children_id", childrenId);
@@ -25,7 +25,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost:8888/member/thanks_letter/thanks_letter.php`,
+            url: `http://localhost:8888/member/thanks_letter/create_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -40,7 +40,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
                     resolve(createResult);
                 })
                 .catch((error) => {
-                    console.log("From createThanksLetterBackend:", error);
+                    console.log("From CreateThanksLetterBackend:", error);
                     reject(error);
                 });
         });
@@ -49,8 +49,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
     return {
         thanksLetterPool,
-
-        createThanksLetterBackend
+        CreateThanksLetterBackend
     }
 
 })

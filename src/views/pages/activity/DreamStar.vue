@@ -1,6 +1,6 @@
 <script setup>
-import CreateDreamStar from '@/views/create-dialog/CreateDreamStar.vue';
-import UpdateDreamStar from '@/views/update-dialog/UpdateDreamStar.vue';
+import CreateDreamStar from '@/views/create-dialog/activity/CreateDreamStar.vue';
+import UpdateDreamStar from '@/views/update-dialog/activity/UpdateDreamStar.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, defineProps } from 'vue'
-import { useNewsStore } from '@/stores/news.js';
+import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
 
 const vueProps = defineProps({

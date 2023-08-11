@@ -1,6 +1,6 @@
 <script setup>
 import { ref,defineProps } from 'vue'
-import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
 const dialog = ref(false);
 const vueProps = defineProps({

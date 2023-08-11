@@ -3,7 +3,7 @@ import { ref } from 'vue'
 // const dialog = ref(false);
 
 
-import { useThanksLetterStore } from '@/stores/thanks-letter.js';
+import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 const dialogDisplay = ref(false);

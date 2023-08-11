@@ -2,17 +2,15 @@
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
-import { useSponsorOrderStore } from '@/stores/sponsor-order.js';
+import { useSponsorOrderStore } from '@/stores/sponsor/sponsor-order.js';
 
 const sponsorOrderStore = useSponsorOrderStore();
-
-
 
 // get data from sponsor_order
 async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-order/get_sponsor_order.php')
-
+    sponsorOrderStore.sponsorOrderPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
         sponsorOrderStore.sponsorOrderPool.push(element)
@@ -43,7 +41,6 @@ async function updateOrderStatus(item) {
   }
 }
 
-
 // 換頁
 const page = ref(1)
 const itemsPerPage = 10;
@@ -53,25 +50,47 @@ const pageCount = () => {
 const displaySponsorOrderList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return sponsorOrderStore.sponsorOrderPool.slice(startIdx, endIdx);
+  return filteredSponsorOrderList.value.slice(startIdx, endIdx);
 });
 
-</script>
 
+const searchValue = ref('');
+function handleSearchChange(newValue) {
+  searchValue.value = newValue;
+}
+
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+  }
+  return searchText;
+})
+
+const filteredSponsorOrderList = computed(() => {
+  return  sponsorOrderStore.sponsorOrderPool.filter((item) => { 
+    const obj = [item.sponsor_order_id, item.member_id]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
+  });
+});
+
+
+</script>
 
 <template>
   <div class="container">
     <div class="content_wrap">
       <h1>認養管理｜認養訂單</h1>
       <div class="search">
-        <Search :placeholder="'請輸入認養訂單ID'" />
+        <Search :placeholder="'請輸入認養訂單ID或會員ID'"
+        :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
           <thead>
             <tr>
               <th>No.</th>
-              <th>認養訂單編號</th>
               <th>認養訂單ID</th>
               <th>會員ID</th>
               <th>據點ID</th>
@@ -90,7 +109,6 @@ const displaySponsorOrderList = computed(() => {
           <tbody>
             <tr v-for="(item, index) in displaySponsorOrderList" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="sponsor_order_no">{{ item.sponsor_order_no }}</td>
               <td class="sponsor_order_id">{{ item.sponsor_order_id }}</td>
               <td class="member_id">{{ item.member_id }}</td>
               <td class="location_id">{{ item.location_id }}</td>

@@ -1,11 +1,11 @@
 <script setup>
-import CreateReports from '@/views/create-dialog/CreateReports.vue';
-import UpdateReports from '@/views/update-dialog/UpdateReports.vue';
-import DeleteReport from '@/views/delete-dialog/DeleteReport.vue';
+import CreateReports from '@/views/create-dialog/results/CreateReports.vue';
+import UpdateReports from '@/views/update-dialog/results/UpdateReports.vue';
+import DeleteReport from '@/views/delete-dialog/results/DeleteReport.vue';
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useReportStore } from '@/stores/reports.js';
+import { useReportStore } from '@/stores/results/reports.js';
 const reportStore = useReportStore();
 
 //api

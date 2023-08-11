@@ -1,11 +1,11 @@
 <script setup>
-import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
-import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
-import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
+import CreateLocation from '@/views/create-dialog/sponsor/CreateLocation.vue';
+import UpdateLocation from '@/views/update-dialog/sponsor/UpdateLocation.vue';
+import DeleteLocation from '@/views/delete-dialog/sponsor/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
 
 

@@ -3,7 +3,7 @@ import { ref, reactive, computed } from 'vue'
 // const dialog = ref(false);
 
 
-import { useCmsStaffStore } from '@/stores/cms-staff.js';
+import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
 const cmsStaffStore = useCmsStaffStore();
 
 const dialogDisplay = ref(false);

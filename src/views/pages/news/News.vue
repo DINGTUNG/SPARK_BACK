@@ -1,12 +1,12 @@
 <script setup>
-import CreateNews from '@/views/create-dialog/CreateNews.vue';
-import UpdateNews from '@/views/update-dialog/UpdateNews.vue';
-import DeleteNews from '@/views/delete-dialog/DeleteNews.vue';
+import CreateNews from '@/views/create-dialog/news/CreateNews.vue';
+import UpdateNews from '@/views/update-dialog/news/UpdateNews.vue';
+import DeleteNews from '@/views/delete-dialog/news/DeleteNews.vue';
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
-import { useNewsStore } from '@/stores/news.js';
+import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
 
 async function getData() {

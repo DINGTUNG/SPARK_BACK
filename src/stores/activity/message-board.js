@@ -45,6 +45,7 @@ export const useMessageBoardStore = defineStore('message-board', () => {
     for (let i = 0; i < messagePool.length; i++) {
       if (messagePool[i].message_no == messageNo) {
         messagePool.splice(i, 1);
+        
         break
       }
     }

@@ -1,6 +1,6 @@
 <script setup>
-import CreateDonateProject from '@/views/create-dialog/CreateDonateProject.vue';
-import UpdateDonateProject from '@/views/update-dialog/UpdateDonateProject.vue';
+import CreateDonateProject from '@/views/create-dialog/donate/CreateDonateProject.vue';
+import UpdateDonateProject from '@/views/update-dialog/donate/UpdateDonateProject.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';

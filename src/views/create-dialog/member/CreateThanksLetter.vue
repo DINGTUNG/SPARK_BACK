@@ -30,7 +30,7 @@ async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveD
         window.alert(`新增成功!`);
     } catch (error) {
         console.error(error);
-        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+        window.alert(`新增失敗!請聯絡管理員!`);
     } finally {
         closeDialog()
     }
@@ -51,10 +51,10 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="main_title">新增後台人員</span>
+                    <span class="main_title">新增感謝函</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost:8888/member/thanks_letter/thanks_letter.php" method="post"
+                    <form action="http://localhost:8888/member/thanks_letter/create_letter.php" method="post"
                         @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
                         <label for="">
                             <div class="input_title">兒童編號</div>
@@ -79,10 +79,10 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit">
+                            <v-btn class="update btn" variant="text" type="submit">
                                 確定
                             </v-btn>
                         </v-card-actions>

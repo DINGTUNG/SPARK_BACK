@@ -77,7 +77,7 @@ const filteredMilestoneList = computed(() => {
     <div class="content_wrap">
       <h1>成果管理｜服務里程碑</h1>
       <div class="search">
-        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue"  @search="handleSearchChange" />
+        <Search :placeholder="'請輸入里程碑資訊'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -99,7 +99,7 @@ const filteredMilestoneList = computed(() => {
 
               <td class="milestone_no">{{ item.milestone_no }}</td>
               <td class="milestone_id">{{ item.milestone_id }}</td>
-              <td class="milestone_title">{{ item.milestone_title }}</td>  
+              <td class="milestone_title">{{ item.milestone_title }}</td>
               <td class="milestone_date">{{ item.milestone_date }}</td>
               <td class="is_milestone_online">{{ item.is_milestone_online ? '已上架' : '未上架' }}</td>
               <td>
@@ -115,7 +115,7 @@ const filteredMilestoneList = computed(() => {
           </tbody>
         </v-table>
       </div>
-      <CreateMilestone  class="add" />
+      <CreateMilestone class="add" />
 
       <!-- 分頁 -->
       <div class="text-center">

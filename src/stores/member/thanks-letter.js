@@ -25,7 +25,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost:8888/member/thanks_letter/thanks_letter.php`,
+            url: `http://localhost:8888/member/thanks_letter/create_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -49,7 +49,6 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
     return {
         thanksLetterPool,
-
         CreateThanksLetterBackend
     }
 

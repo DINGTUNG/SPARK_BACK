@@ -58,7 +58,6 @@ export const useNewsStore = defineStore('news', () => {
     const payLoad = new FormData();
     payLoad.append("news_no", newsForUpdate.newsNo);
     payLoad.append("news_date", newsForUpdate.newsDate);
-
     payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
     payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
 

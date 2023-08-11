@@ -3,7 +3,7 @@ import CreateLocation from '@/views/create-dialog/sponsor/CreateLocation.vue';
 import UpdateLocation from '@/views/update-dialog/sponsor/UpdateLocation.vue';
 import DeleteLocation from '@/views/delete-dialog/sponsor/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
@@ -40,7 +40,6 @@ const displayLocationList = computed(() => {
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
-  console.log(searchValue.value);
 }
 
 const searchText = computed(() => {
@@ -95,7 +94,7 @@ const filteredLocationList = computed(() => {
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateLocation :locationNameForUpdate="item.location_name" />                
+                <UpdateLocation :locationNoForUpdate="parseInt(item.location_no)" :locationNameForUpdate="item.location_name" />                
                 <DeleteLocation :locationNoForDelete="parseInt(item.location_no)" />
               </td>
             </tr>

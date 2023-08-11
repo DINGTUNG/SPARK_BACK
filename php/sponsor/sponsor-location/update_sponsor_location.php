@@ -7,10 +7,15 @@ require_once("../../connect_chd102g3.php");
 
 try {
   $locationNo = $_POST["location_no"] ?? null;
+  $locationName = $_POST["location_name"] ?? null;
  
   // parameters validation
   if ($locationNo == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供location no)");
+  }
+
+  if ($locationName == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供location name)");
   }
 
   // check update record existed
@@ -29,6 +34,7 @@ try {
   $updateSql = "update sponsor_location set location_name = :location_name, updater='sir', update_time = Now() where location_no = :location_no ";
   $updateStmt = $pdo->prepare($updateSql);
   $updateStmt->bindValue(":location_no", $locationNo);
+  $updateStmt->bindValue(":location_name", $locationName);
   $updateResult = $updateStmt->execute();
   http_response_code(200);
   echo json_encode($updateResult);

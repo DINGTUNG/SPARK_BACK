@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useMilestoneStore } from '@/stores/milestone.js';
+import { useMilestoneStore } from '@/stores/results/milestone.js';
 const milestoneStore = useMilestoneStore();
 
 const vueProps = defineProps({
@@ -18,13 +18,13 @@ function closeDeleteDialog() {
 }
 
 
-async function deleteStaff(milestoneNoForDelete) {
+async function deleteMilestone(milestoneNoForDelete) {
     try {
         if (milestoneNoForDelete == null) {
             throw new Error("Milestone no. not found!")
         }
         await milestoneStore.deleteMilestoneBackend(milestoneNoForDelete)
-        milestoneStore.deleteMilestoneFromStaffPool(milestoneNoForDelete)
+        milestoneStore.deleteMilestoneFromMilestonePool(milestoneNoForDelete)
         window.alert(`刪除成功!剩下 ${milestoneStore.milestonePool.length} 筆資料`);
     } catch (error) {
         console.error(error);
@@ -51,7 +51,7 @@ async function deleteStaff(milestoneNoForDelete) {
                     <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
                         取消
                     </v-btn>
-                    <v-btn class="delete btn" variant="text" @click="deleteStaff(vueProps.staffNoForDelete)">
+                    <v-btn class="delete btn" variant="text" @click="deleteMilestone(vueProps.milestoneNoForDelete)">
                         刪除
                     </v-btn>
                     <v-spacer></v-spacer>

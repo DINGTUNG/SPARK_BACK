@@ -95,7 +95,9 @@ const filteredLocationList = computed(() => {
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateLocation :locationNameForUpdate="item.location_name" />                
+                <UpdateLocation 
+                :locationNoForUpdate="parseInt(item.location_no)"
+                :locationNameForUpdate="item.location_name" />              
                 <DeleteLocation :locationNoForDelete="parseInt(item.location_no)" />
               </td>
             </tr>

@@ -24,6 +24,8 @@ function showDialog() {
   newsForUpdate.newsNo = vueProps.newsNoForUpdate
   newsForUpdate.newsDate = vueProps.newsDateForUpdate
   newsForUpdate.newsImageFirst = vueProps.newsImageFirstForUpdate
+  console.log("狸貓", newsForUpdate.newsImageFirst);
+
   newsForUpdate.newsImageSecond = vueProps.newsImageSecondForUpdate
 }
 
@@ -90,7 +92,8 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔2</span></div>
-              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"  v-model="newsForUpdate.newsImageSecond">
+              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"
+                v-model="newsForUpdate.newsImageSecond">
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>

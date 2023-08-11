@@ -36,13 +36,13 @@ function handleSearchChange(newValue) {
 const searchText = computed(() => {
   let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
   if (!isNaN(+searchText)) {
-    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+    searchText = +searchText < 10 ? `0${searchText}` : searchText;
   }
   return searchText;
 })
 
 const filteredNewsList = computed(() => {
-  return newsStore.newsPool.filter((item) => { 
+  return newsStore.newsPool.filter((item) => {
     const obj = [item.news_id, item.news_title]
     const str = JSON.stringify(obj);
     return str.includes(searchText.value)
@@ -106,8 +106,9 @@ const displayNewsList = computed(() => {
               <td class="">{{ item.updater }}</td>
               <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" />
-                <DeleteNews :newsNoForDelete="parseInt(item.news_no)"/>
+                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" :newsDateForUpdate="item.news_date"
+                  />
+                <DeleteNews :newsNoForDelete="parseInt(item.news_no)" />
               </td>
             </tr>
           </tbody>

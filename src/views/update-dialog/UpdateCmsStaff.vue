@@ -1,39 +1,84 @@
 <script setup>
-import { ref } from 'vue'
-const dialog = ref(false);
+import { ref, defineProps } from 'vue'
+import { useCmsStaffStore } from '@/stores/cms-staff.js';
+const cmsStaffStore = useCmsStaffStore();
+
+
+const vueProps = defineProps({
+    staffNoForUpdate: Number,
+    staffAccountForUpdate: String,
+    staffPasswordForUpdate: String,
+})
+
+const staffAccount = ref('')
+const staffPassword = ref('')
+
+const dialogDisplay = ref(false);
+
+function showDialog() {
+    dialogDisplay.value = true;
+    staffAccount.value = vueProps.staffAccountForUpdate
+    staffPassword.value = vueProps.staffPasswordForUpdate
+}
+
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+
+
+async function updateStaff(staffNoForUpdate, staffAccount, staffPassword) {
+    try {
+        if (staffNoForUpdate == null) {
+            throw new Error("Staff no. not found!")
+        }
+        await cmsStaffStore.updateStaffBackend(staffNoForUpdate, staffAccount, staffPassword)
+        cmsStaffStore.updateStaffFromStaffPool(staffNoForUpdate, staffAccount, staffPassword)
+        window.alert(`編輯成功!`);
+    } catch (error) {
+        console.error(error);
+        window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
+    }
+}
+
+// const dialog = ref(false);
+
 </script>
 
 <template>
     <v-row class="row" style="flex: 0;">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+                <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
                     <span class="main_title">編輯後台人員</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="">
-                        <label for="">
-                            <div class="input_title">姓名</div>
-                            <input type="text">
+                    <form action="http://localhost/SPARK_BACK/php/cms/update_staff.php" method="post"
+                        @submit.prevent="updateStaff(vueProps.staffNoForUpdate, staffAccount, staffPassword)">
+                        <label for="staff_account">
+                            <div class="input_title">帳號</div>
+                            <input type="text" name="staff_account" v-model="staffAccount">
                         </label>
                         <label for="">
-                            <div class="input_title">Email</div>
-                            <input type="text">
+                            <div class="input_title">密碼</div>
+                            <input type="text" name="staff_password" v-model="staffPassword">
                         </label>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                                取消
+                            </v-btn>
+                            <v-btn class="update btn" variant="text" type="submit">
+                                儲存
+                            </v-btn>
+                        </v-card-actions>
                     </form>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        取消
-                    </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        儲存
-                    </v-btn>
-                </v-card-actions>
+
             </v-card>
         </v-dialog>
     </v-row>

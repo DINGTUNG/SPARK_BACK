@@ -49,6 +49,45 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     }
   }
 
+  // status
+  function updateLocationOnlineBackend(locationNo,locationOnline) {
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("location_no", locationNo);
+    payLoad.append("is_sponsor_location_online", locationOnline);
+
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/sponsor_location_status.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const updateResult = response.data;
+          resolve(updateResult);
+        })
+        .catch((error) => {
+          console.log("From updateLocationOnlineBackend:", error);
+          reject(error);
+        });
+    });
+  }
+
+  const updateOrderStatusFromLocationList = (locationNo,locationOnline) => {
+    for (let i = 0; i < locationList.length; i++) {
+      if (locationList[i].location_no == locationNo) {
+      locationList[i].is_sponsor_location_online = locationOnline
+      }
+    }
+  }
+
   //update
   function updateLocationBackend(locationNo,locationName) {
     // prepare data 
@@ -124,6 +163,8 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     locationList,
     deleteLocationBackend,
     deleteLocationFromLocationList,
+    updateLocationOnlineBackend,
+    updateOrderStatusFromLocationList,
     updateLocationBackend,
     updateLocationFromLocationList,
     createLocationBackend

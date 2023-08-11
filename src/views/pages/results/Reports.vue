@@ -25,8 +25,8 @@ async function reportConnection() {
 onMounted(() => {
   reportConnection()
 })
-//api
 
+//搜索
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
@@ -61,8 +61,21 @@ const displayReportsList = computed(() => {
   return filteredReportList.value.slice(startIdx, endIdx);
 });
 
+// 上下架
+async function UpdateReportOnline(item) {
+  try {
+    if (item.report_no == null) {
+      throw new Error("report no not found!")
+    }
+    await reportStore.updateReportOnlineBackend(item.report_no,item.is_report_online)
+    reportStore.updateReportFromReportsList(item.report_no,item.is_report_online)
 
-// 分頁
+    console.log(item.is_report_online);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 <template>
   <div class="container">
@@ -96,12 +109,18 @@ const displayReportsList = computed(() => {
               <td class="name">{{ item.report_title }}</td>
               <td class="online">{{ item.is_report_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
-                <v-switch v-model="item.is_report_online" color="#EBC483" density="compact" hide-details="true" inline inset></v-switch>
+                <v-switch v-model="item.is_report_online" color="#EBC483" density="compact" hide-details="true" inline inset true-value=1  @change="UpdateReportOnline(item)"></v-switch>
               </td>
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateReports />
+                <UpdateReports 
+                :reportsNoForUpdate="parseInt(item.report_no)" 
+                :reportsClassForUpdate="item.report_class"
+                :reportsYearForUpdate="parseInt(item.report_year)"
+                :reportsTitleForUpdate="item.report_title"
+                :reportsFileThirdForUpdate="item.report_file_path"
+                />
                 <DeleteReport :reportNoForDelete="parseInt(item.report_no)"/>
               </td>
             </tr>

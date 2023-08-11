@@ -4,7 +4,7 @@ import { useSparkActivityStore } from '@/stores/activity/spark-activity.js';
 const sparkActivityStore = useSparkActivityStore();
 
 const vueProps = defineProps({
-  messageNoForDelete: Number
+  sparkActivityNoForDelete: Number
 })
 
 const dialogDisplay = ref(false);
@@ -17,14 +17,14 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteMessage(messageNoForDelete) {
+async function deleteMessage(sparkActivityNoForDelete) {
   try {
-    if (messageNoForDelete == null) {
-      throw new Error("Message no. not found!")
+    if (sparkActivityNoForDelete == null) {
+      throw new Error("spark activity no. not found!")
     }
-    await sparkActivityStore.deleteMessageBackend(messageNoForDelete)
-    sparkActivityStore.deleteMessageFromMessagePool(messageNoForDelete)
-    window.alert(`刪除成功!剩下 ${sparkActivityStore.messagePool.length} 筆資料`);
+    await sparkActivityStore.deleteSparkActivityBackend(sparkActivityNoForDelete)
+    sparkActivityStore.deleteSparkActivityFromSparkActivityPool(sparkActivityNoForDelete)
+    window.alert(`刪除成功!剩下 ${sparkActivityStore.sparkActivityPool.length} 筆資料`);
   } catch (error) {
     console.error(error);
     window.alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
@@ -50,7 +50,7 @@ async function deleteMessage(messageNoForDelete) {
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.messageNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.sparkActivityNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

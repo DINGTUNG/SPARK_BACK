@@ -10,7 +10,7 @@ import axios from 'axios';
 export const useNewsStore = defineStore('news', () => {
   const newsPool = reactive([])
 
-  // // delete
+  // delete
   function deleteNewsBackend(newsNo) {
     // prepare data 
     const payLoad = new FormData();
@@ -49,6 +49,45 @@ export const useNewsStore = defineStore('news', () => {
     }
   }
 
+  // status
+  function updateNewsStatusBackend(newsNo,newsOnline) {
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("news_no", newsNo);
+    payLoad.append("is_news_online", newsOnline);
+
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/news/news_status.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const updateResult = response.data;
+          resolve(updateResult);
+        })
+        .catch((error) => {
+          console.log("From updateNewsBackend:", error);
+          reject(error);
+        });
+    });
+  }
+  const updateNewsStatusFromNewsPool = (newsNo,newsOnline) => {
+    for (let i = 0; i < newsPool.length; i++) {
+      if (newsPool[i].news_no == newsNo) {
+      newsPool[i].is_news_online = newsOnline
+      }
+    }
+  }
+
+
   // update
   function updateNewsBackend(newsForUpdate) {
 
@@ -57,6 +96,7 @@ export const useNewsStore = defineStore('news', () => {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("news_no", newsForUpdate.newsNo);
+    payLoad.append("news_title", newsForUpdate.newsTitle);
     payLoad.append("news_date", newsForUpdate.newsDate);
     payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
     payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
@@ -134,6 +174,8 @@ export const useNewsStore = defineStore('news', () => {
     newsPool,
     deleteNewsBackend,
     deleteNewsFromMessagePool,
+    updateNewsStatusBackend,
+    updateNewsStatusFromNewsPool,
     updateNewsBackend,
     updateNewsFromNewsPool,
     // createNewsBackend

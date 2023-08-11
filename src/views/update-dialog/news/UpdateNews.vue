@@ -5,29 +5,47 @@ const newsStore = useNewsStore();
 
 const vueProps = defineProps({
   newsNoForUpdate: Number,
+  newsTitleForUpdate: String,
   newsDateForUpdate: String,
+  newsContentFirstUpdate: String,
   newsImageFirstForUpdate: String,
-  newsImageSecondForUpdate: String
+  newsContentSecondUpdate: String,
+  newsImageSecondForUpdate: String,
+  newsContentThirdUpdate: String,
+  newsImageThirdForUpdate: String,
+  newsContentFourthUpdate: String,
+  newsImageFourthForUpdate: String,
 })
 
 const newsForUpdate = reactive({
   newsNo: null,
   newsDate: null,
+  newsTitle:"",
+  newsContentFirst:"",
   newsImageFirst: [],
-  newsImageSecond: []
+  newsContentSecond:"",
+  newsImageSecond: [],
+  newsContentThird:"",
+  newsImageThird: [],
+  newsContentFourth:"",
+  newsImageFourth: [],
 })
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
-
   dialogDisplay.value = true;
   newsForUpdate.newsNo = vueProps.newsNoForUpdate
+  newsForUpdate.newsTitle = vueProps.newsTitleForUpdate
   newsForUpdate.newsDate = vueProps.newsDateForUpdate
+  newsForUpdate.newsContentFirst=vueProps.newsContentFirstUpdate
   newsForUpdate.newsImageFirst['name'] = vueProps.newsImageFirstForUpdate
-  console.log("狸貓", newsForUpdate.newsImageFirst['name']);
-
+  newsForUpdate.newsContentSecond=vueProps.newsContentSecondUpdate
   newsForUpdate.newsImageSecond['name']  = vueProps.newsImageSecondForUpdate
+  newsForUpdate.newsContentThird=vueProps.newsContentThirdUpdate
+  newsForUpdate.newsImageThird['name']  = vueProps.newsImageThirdForUpdate
+  newsForUpdate.newsContentFourth=vueProps.newsContentFourthUpdate
+  newsForUpdate.newsImageFourth['name']  = vueProps.newsImageFourthForUpdate
 }
 
 function closeDialog() {
@@ -66,7 +84,7 @@ async function updateNews(newsNoForUpdate) {
             @submit.prevent="updateNews(vueProps.newsNoForUpdate)">
             <div class="form_item">
               <div class="name"><span>標題</span></div>
-              <input type="text" id="title">
+              <input type="text" id="title" v-model="newsForUpdate.newsTitle">
             </div>
             <div class="form_item">
               <div class="name"><span>日期</span></div>
@@ -74,9 +92,8 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="form_item">
               <div class="name"><span>段落1</span></div>
-              <textarea id="paragraph1" cols="70" rows="10"></textarea>
+              <textarea id="paragraph1" cols="70" rows="10" v-model="newsForUpdate.newsContentFirst"></textarea>
             </div>
-
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
               <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳圖檔"
@@ -88,13 +105,11 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="form_item">
               <div class="name"><span>段落2</span></div>
-              <textarea id="paragraph2" cols="70" rows="10"></textarea>
+              <textarea id="paragraph2" cols="70" rows="10" v-model="newsForUpdate.newsContentSecond"></textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔2</span></div>
-              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"
-                v-model="newsForUpdate.newsImageSecond">
-              
+              <v-file-input id="photo2" prepend-icon="none" accept="image/*" label="請上傳圖檔"  v-model="newsForUpdate.newsImageSecond">              
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>
@@ -102,11 +117,11 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="form_item">
               <div class="name"><span>段落3</span></div>
-              <textarea id="paragraph3" cols="70" rows="10"></textarea>
+              <textarea id="paragraph3" cols="70" rows="10" v-model="newsForUpdate.newsContentThird"></textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔3</span></div>
-              <v-file-input id="photo3" prepend-icon="none" accept="image/*" label="請上傳圖檔">
+              <v-file-input id="photo3" prepend-icon="none" accept="image/*" label="請上傳圖檔" v-model="newsForUpdate.newsImageThird">
                 <template v-slot:prepend-inner>
                   <label for="photo3" id="photo">上傳圖檔</label>
                 </template>
@@ -114,11 +129,11 @@ async function updateNews(newsNoForUpdate) {
             </div>
             <div class="form_item">
               <div class="name"><span>段落4</span></div>
-              <textarea id="paragraph4" cols="70" rows="10"></textarea>
+              <textarea id="paragraph4" cols="70" rows="10" v-model="newsForUpdate.newsContentFourth"></textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔4</span></div>
-              <v-file-input id="photo4" prepend-icon="none" accept="image/*" label="請上傳圖檔">
+              <v-file-input id="photo4" prepend-icon="none" accept="image/*" label="請上傳圖檔" v-model="newsForUpdate.newsImageFourth">
                 <template v-slot:prepend-inner>
                   <label for="photo4" id="photo">上傳圖檔</label>
                 </template>

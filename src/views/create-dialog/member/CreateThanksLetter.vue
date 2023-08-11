@@ -22,9 +22,9 @@ const sponsorOrderId = ref('')
 const receiveDate = ref('')
 const fileName = ref('')
 
-async function createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
     try {
-        const newThanksLetter = await thanksLetterStore.createThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
+        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
         addContentTonewThanksLetter(newThanksLetter)
         console.log(thanksLetterStore.thanksLetterPool);
         window.alert(`新增成功!`);
@@ -55,7 +55,7 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-card-title>
                 <v-card-text>
                     <form action="http://localhost:8888/member/thanks_letter/thanks_letter.php" method="post"
-                        @submit.prevent="createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
+                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
                         <label for="">
                             <div class="input_title">兒童編號</div>
                             <input type="text" name="children_id" v-model="childrenId">

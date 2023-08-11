@@ -50,7 +50,7 @@ const displayedDonateList = computed(() => {
 const donateList = reactive([])
 async function donateConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-project/donate_project.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-project/get_donate_project.php')
     console.log(response)
     if (response.data.length > 0) {
       response.data.forEach(element => {

@@ -13,7 +13,7 @@ const cmsStaffStore = useCmsStaffStore();
 // 串接資料庫
 async function staffConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/cms/get_staff.php')
     console.log(response)
     cmsStaffStore.staffPool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
     if (response.data.length > 0) {

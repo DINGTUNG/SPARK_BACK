@@ -2,34 +2,35 @@
 //【引入】
 import CreateMilestone from '@/views/create-dialog/CreateMilestone.vue'; //新增里程碑
 import UpdateMilestone from '@/views/update-dialog/UpdateMilestone.vue'; //編輯里程碑
+import DeleteMilestone from '@/views/delete-dialog/DeleteMilestone.vue'; //刪除里程碑
 import Search from '@/components/Search.vue'; //查詢
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios';
 
 //【刪除功能】
-const page = ref(1)
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
-const itemToDelete = ref(null); // 存儲要刪除的項目
+// const page = ref(1)
+// const dialogDelete = ref(false); // 控制刪除對話框的顯示
+// const itemToDelete = ref(null); // 存儲要刪除的項目
 
-function showDeleteDialog(item) {
-  itemToDelete.value = item; // 存儲要刪除的項目
-  dialogDelete.value = true; // 顯示刪除對話框
-}
+// function showDeleteDialog(item) {
+//   itemToDelete.value = item; // 存儲要刪除的項目
+//   dialogDelete.value = true; // 顯示刪除對話框
+// }
 
-function deleteItemConfirm() {
-  if (itemToDelete.value) {
-    const index = milestoneList.indexOf(itemToDelete.value);
-    if (index !== -1) {
-      milestoneList.splice(index, 1); // 從列表中刪除項目沒效 
-    }
-    itemToDelete.value = null;
-    dialogDelete.value = false; // 隱藏刪除對話框
-  }
-}
+// function deleteItemConfirm() {
+//   if (itemToDelete.value) {
+//     const index = milestoneList.indexOf(itemToDelete.value);
+//     if (index !== -1) {
+//       milestoneList.splice(index, 1); // 從列表中刪除項目沒效 
+//     }
+//     itemToDelete.value = null;
+//     dialogDelete.value = false; // 隱藏刪除對話框
+//   }
+// }
 
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
-}
+// function closeDelete() {
+//   dialogDelete.value = false; // 隱藏刪除對話框
+// }
 
 // 【換頁功能】
 const itemsPerPage = 10;
@@ -124,7 +125,8 @@ onMounted(() => {
               </td>
               <td class="update_and_delete">
                 <UpdateMilestone />
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+                <!-- <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon> -->
+                <DeleteMilestone :milestoneNoForDelete="parseInt(item.milestone_no)" />
               </td>
             </tr>
           </tbody>

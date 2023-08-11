@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
  require_once("../../connect_chd102g3.php");
 try{
-  $sql = "select * from reports";
+  $sql = "select * from reports where del_flg = 0";
   $location=$pdo->prepare($sql);
   $location->execute();
   

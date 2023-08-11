@@ -7,11 +7,9 @@ import {
 } from 'vue'
 import axios from 'axios';
 
-export const useCmsStaffStore = defineStore('template', () => {
+export const useCmsStaffStore = defineStore('cms_staff', () => {
 
     const staffPool = reactive([])
-
-
 
 
     // create
@@ -49,10 +47,53 @@ export const useCmsStaffStore = defineStore('template', () => {
     }
 
 
+    // delete
+    function deleteStaffBackend(staffNo) {
+        // prepare data 
+        const payLoad = new FormData();
+        payLoad.append("staff_no", staffNo);
+
+        // make a request
+        const request = {
+            method: "POST",
+            url: `http://localhost/SPARK_BACK/php/cms/delete_staff.php`,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data: payLoad,
+        };
+
+        // send request to backend server
+        return new Promise((resolve, reject) => {
+            axios(request)
+                .then((response) => {
+                    const deleteResult = response.data;
+                    resolve(deleteResult);
+                })
+                .catch((error) => {
+                    console.log("From deleteStaffBackend:", error);
+                    reject(error);
+                });
+        });
+    }
+
+    const deleteStaffFromStaffPool = (staffNo) => {
+        for (let i = 0; i < staffPool.length; i++) {
+            if (staffPool[i].staff_no == staffNo) {
+                staffPool.splice(i, 1);
+                break
+            }
+        }
+    }
+
+
+
     return {
         staffPool,
+        createStaffBackend,
+        deleteStaffBackend,
+        deleteStaffFromStaffPool,
 
-        createStaffBackend
     }
 
 })

@@ -1,77 +1,42 @@
 <script setup>
 import CreateNews from '@/views/create-dialog/CreateNews.vue';
 import UpdateNews from '@/views/update-dialog/UpdateNews.vue';
+import DeleteNews from '@/views/delete-dialog/DeleteNews.vue';
 import Search from '@/components/Search.vue';
-import { ref, reactive, computed,onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
-const page = ref(1)
-const dialog = ref(false)
+import { useNewsStore } from '@/stores/news.js';
+const newsStore = useNewsStore();
 
-const dialogDelete = ref(false); // 控制刪除對話框的顯示
-const itemToDelete = ref(null); // 存儲要刪除的項目
-
-function showDeleteDialog(item) {
-  itemToDelete.value = item; // 存儲要刪除的項目
-  console.log(itemToDelete)
-  dialogDelete.value = true; // 顯示刪除對話框
-}
-
-function deleteItemConfirm() {
-  if (itemToDelete.value) {
-    const index = newsList.indexOf(itemToDelete.value);
-    if (index !== -1) {
-      newsList.splice(index, 1); // 從列表中刪除項目沒效 
-    }
-    itemToDelete.value = null;
-    dialogDelete.value = false; // 隱藏刪除對話框
-  }
-}
-
-function closeDelete() {
-  dialogDelete.value = false; // 隱藏刪除對話框
-}
-
-// 換頁
-const pageCount = () => {
-  return (newsList.length) / itemsPerPage + 1;
-}
-// 換頁
-const itemsPerPage = 10;
-const displayedNewsList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return newsList.slice(startIdx, endIdx);
-});
-
-
-// const news = reactive([
-//   {
-//     id: '001',
-//     name: '星火30，感謝有您',
-//     date: '2023.01.17',
-//   },
-// ])
-
-
-
-const newsList = reactive([])
-async function newsConnection() {
+async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/news/news.php')
-    console.log(response)
+    const response = await axios.post('http://localhost/SPARK_BACK/php/news/get_news.php')
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        newsList.push(element)
+        newsStore.newsPool.push(element)
       });
     }
   } catch (error) {
     console.error(error);
   }
 }
+
 onMounted(() => {
-  newsConnection()
+  getData()
 })
+
+// 換頁
+const page = ref(1)
+const itemsPerPage = 10;
+const pageCount = () => {
+  return Math.floor((newsStore.newsPool.length - 1) / itemsPerPage) + 1;
+}
+const displayNewsList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return newsStore.newsPool.slice(startIdx, endIdx);
+});
 </script>
 
 
@@ -88,27 +53,37 @@ onMounted(() => {
             <tr>
               <th>No.</th>
               <th>消息編號</th>
-              <th>消息名稱</th>
+              <th>消息ID</th>
+              <th>標題</th>
               <th>日期</th>
               <th>狀態</th>
               <th>功能</th>
+              <th>創建者</th>
+              <th>創建時間</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedNewsList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayNewsList" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="td_id">{{ item.news_id }}</td>
-              <td class="name">{{ item.news_title }}</td>
-              <td class="date">{{ item.news_date }}</td>
-              <td class="online">{{ item.is_news_online ? '已上架' : '未上架' }}</td>
+              <td class="news_no">{{ item.news_no }}</td>
+              <td class="news_id">{{ item.news_id }}</td>
+              <td class="news_title">{{ item.news_title }}</td>
+              <td class="news_date">{{ item.news_date }}</td>
+              <td class="is_news_online">{{ item.is_news_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
-                <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
-                  inset></v-switch>
+                <v-switch v-model="item.is_news_online" color="#EBC483" density="compact" hide-details="true" inline inset
+                  true-value=1></v-switch>
               </td>
+              <td class="">{{ item.register }}</td>
+              <td class="">{{ item.regist_time }}</td>
+              <td class="">{{ item.updater }}</td>
+              <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateNews/>
-                <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon>
+                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" />
+                <DeleteNews />
               </td>
             </tr>
           </tbody>
@@ -121,25 +96,6 @@ onMounted(() => {
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-      <v-card class="delete_dialog">
-        <v-card-title class="text-center">
-          確定是否要刪除此消息？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-            刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-
   </div>
 </template>
 

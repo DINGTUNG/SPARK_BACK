@@ -1,10 +1,10 @@
 <script setup>
-import { ref, defineProps } from 'vue';
-import { useReportStore } from '@/stores/reports.js';
-const reportStore = useReportStore();
+import { ref, defineProps } from 'vue'
+import { useMessageBoardStore } from '@/stores/message-board.js';
+const messageBoardStore = useMessageBoardStore();
 
 const vueProps = defineProps({
-  reportNoForDelete: Number,
+  messageNoForDelete: Number
 })
 
 const dialogDisplay = ref(false);
@@ -17,21 +17,22 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteReport(reportNoForDelete) {
+async function deleteMessage(messageNoForDelete) {
   try {
-    if (reportNoForDelete == null) {
-      throw new Error("report no. not found!")
+    if (messageNoForDelete == null) {
+      throw new Error("Message no. not found!")
     }
-    await reportStore.deleteReportBackend(reportNoForDelete)
-    reportStore.deleteReportFromMessagePool(reportNoForDelete)
-    alert(`刪除成功!剩下 ${reportStore.reportsList.length} 筆資料`);
+    await messageBoardStore.deleteMessageBackend(messageNoForDelete)
+    messageBoardStore.deleteMessageFromMessagePool(messageNoForDelete)
+    window.alert(`刪除成功!剩下 ${messageBoardStore.messagePool.length} 筆資料`);
   } catch (error) {
     console.error(error);
-    alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
+    window.alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);
   } finally {
     closeDeleteDialog()
   }
 }
+
 </script>
 
 <template>
@@ -42,14 +43,14 @@ async function deleteReport(reportNoForDelete) {
       </template>
       <v-card class="delete_dialog" style="border-radius: 50px;">
         <v-card-title class="text-center title">
-          確定是否要刪除此報告？
+          確定是否要刪除此捐款專案？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text"  @click="deleteReport(reportNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.messageNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

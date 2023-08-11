@@ -9,18 +9,18 @@ import axios from 'axios';
 
 export const useSponsorLocationStore = defineStore('sponsor-location', () => {
 
-  const reportsList = reactive([])
+  const locationList = reactive([]);
 
   // delete
-  function deleteMessageBackend(messageNo) {
+  function deleteLocationBackend(locationNo) {
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("message_no", messageNo);
+    payLoad.append("location_no", locationNo);
 
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/delete_message.php`,
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/delete_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -35,34 +35,31 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
           resolve(deleteResult);
         })
         .catch((error) => {
-          console.log("From deleteMessageBackend:", error);
+          console.log("From deleteLocationBackend:", error);
           reject(error);
         });
     });
   }
-
-  const deleteMessageFromMessagePool = (messageNo) => {
-    for (let i = 0; i < messagePool.length; i++) {
-      if (messagePool[i].message_no == messageNo) {
-        messagePool.splice(i, 1);
+  const deleteLocationFromLocationList = (locationNo) => {
+    for (let i = 0; i < locationList.length; i++) {
+      if (locationList[i].location_no == locationNo) {
+        locationList.splice(i, 1);
         break
       }
     }
   }
 
-  // update
-  function updateMessageBackend(messageNo,sparkActivityNo,messageContent,memberNo) {
+  //update
+  function updateLocationBackend(locationNo,locationName) {
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("message_no", messageNo);
-    payLoad.append("spark_activity_no", sparkActivityNo);
-    payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
+    payLoad.append("location_no", locationNo);
+    payLoad.append("spark_location_name", locationName);
 
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/update_message.php`,
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -73,38 +70,34 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     return new Promise((resolve, reject) => {
       axios(request)
         .then((response) => {
-          const updateResult = response.data;
-          resolve(updateResult);
+          const deleteResult = response.data;
+          resolve(deleteResult);
         })
         .catch((error) => {
-          console.log("From updateMessageBackend:", error);
+          console.log("From deleteLocationBackend:", error);
           reject(error);
         });
     });
   }
-
-  const updateMessageFromMessagePool = (messageNo,sparkActivityNo,messageContent,memberNo) => {
-    for (let i = 0; i < messagePool.length; i++) {
-      if (messagePool[i].message_no == messageNo) {
-      messagePool[i].spark_activity_no = sparkActivityNo
-      messagePool[i].message_content = messageContent
-      messagePool[i].member_no = memberNo
+  const updateLocationFromLocationList = (locationNo, locationName) => {
+    for (let i = 0; i < locationList.length; i++) {
+      if (locationList[i].location_no == locationNo) {
+        locationList[i].location_Name = locationName
       }
     }
   }
 
-  // create
-  function createMessageBackend(sparkActivityNo,messageContent,memberNo) {
+
+  //create
+  function createLocationBackend(locationName) {
     // prepare data 
     const payLoad = new FormData();
-    payLoad.append("spark_activity_no", sparkActivityNo);
-    payLoad.append("message_content", messageContent);
-    payLoad.append("member_no", memberNo);
+    payLoad.append("location_name", locationName);
 
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/message-board/create_message.php`,
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/create_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -119,20 +112,24 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
           resolve(createResult);
         })
         .catch((error) => {
-          console.log("From createMessageBackend:", error);
+          console.log("From createLocationBackend:", error);
           reject(error);
         });
     });
   }
 
 
+
+
   return {
-    messagePool,
-    deleteMessageBackend,// 發出請求去後端抓取資料的過程
-    deleteMessageFromMessagePool,//
-    updateMessageBackend,//
-    updateMessageFromMessagePool,//
-    createMessageBackend//
+    locationList,
+    deleteLocationBackend,
+    deleteLocationFromLocationList,
+    createLocationBackend,
+    updateLocationBackend,
+    updateLocationFromLocationList
+
+
   }
 
 })

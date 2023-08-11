@@ -7,7 +7,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
-
+//api
 async function getSponsorLocation() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
@@ -26,6 +26,7 @@ onMounted(() => {
   getSponsorLocation();
 });
 
+//分頁
 const page = ref(1);
 const itemsPerPage = 10;
 const pageCount = computed(() => {
@@ -37,6 +38,8 @@ const displayLocationList = computed(() => {
   return filteredLocationList.value.slice(startIdx, endIdx);
 });
 
+
+//搜索
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
@@ -57,6 +60,23 @@ const filteredLocationList = computed(() => {
     return str.includes(searchText.value)
   });
 });
+
+//上下架
+async function UpdateLocationOnline(item) {
+  try {
+    if (item.location_no == null) {
+      throw new Error("location no not found!")
+    }
+    await locationStore.updateLocationOnlineBackend(item.location_no,item.is_sponsor_location_online)
+    locationStore.updateOrderStatusFromLocationList(item.location_no,item.is_sponsor_location_online)
+
+    // console.log(item.is_sponsor_location_online);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 </script>
 
@@ -89,7 +109,8 @@ const filteredLocationList = computed(() => {
               <td class="online">{{ item.is_sponsor_location_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.is_sponsor_location_online" color="#EBC483" density="compact" hide-details="true"
-                  inline inset true-value=1></v-switch>
+                  inline inset true-value=1 @change="UpdateLocationOnline(item)">
+                </v-switch>
               </td>
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>

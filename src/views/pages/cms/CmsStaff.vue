@@ -10,22 +10,7 @@ import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
 const cmsStaffStore = useCmsStaffStore();
 
 
-
-
-// 換頁功能
-const page = ref(1)
-const itemsPerPage = 10;
-const pageCount = () => {
-  return Math.floor((cmsStaffStore.staffPool.length - 1) / itemsPerPage) + 1;
-}
-const displayedStaffList = computed(() => {
-  const startIdx = (page.value - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  return cmsStaffStore.staffPool.slice(startIdx, endIdx);
-});
-
 // 串接資料庫
-// const staffList = reactive([])
 async function staffConnection() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
@@ -43,6 +28,19 @@ async function staffConnection() {
 onMounted(() => {
   staffConnection()
 })
+
+// 換頁功能
+const page = ref(1)
+const itemsPerPage = 10;
+const pageCount = () => {
+  return Math.floor((cmsStaffStore.staffPool.length - 1) / itemsPerPage) + 1;
+}
+const displayedStaffList = computed(() => {
+  const startIdx = (page.value - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  return cmsStaffStore.staffPool.slice(startIdx, endIdx);
+});
+
 
 // 查詢功能
 const searchValue = ref('');
@@ -103,7 +101,8 @@ const filteredStaffList = computed(() => {
               <td class="staff_account">{{ item.staff_account }}</td>
               <td class="staff_password">{{ item.staff_password }}</td>
               <td class="update_and_delete">
-                <UpdateCmsStaff />
+                <UpdateCmsStaff :staffNoForUpdate="parseInt(item.staff_no)" :staffAccountForUpdate="item.staff_account"
+                  :staffPasswordForUpdate="item.staff_password" />
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)" v-show="index !== 0">
                   mdi-pencil
                 </v-icon> -->

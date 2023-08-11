@@ -1,7 +1,5 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-// const dialog = ref(false);
-
 
 import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
 const cmsStaffStore = useCmsStaffStore();
@@ -81,10 +79,10 @@ const addContentToNewStaff = (newStaff) => {
                         </label>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit">
+                            <v-btn class="update btn" variant="text" type="submit">
                                 確定
                             </v-btn>
                         </v-card-actions>

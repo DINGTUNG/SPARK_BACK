@@ -87,12 +87,56 @@ export const useCmsStaffStore = defineStore('cms_staff', () => {
     }
 
 
+    // update
+    function updateStaffBackend(staffNo, staffAccount, staffPassword) {
+        // prepare data 
+        const payLoad = new FormData();
+        payLoad.append("staff_no", staffNo);
+        payLoad.append("staff_account", staffAccount);
+        payLoad.append("staff_password", staffPassword);
+
+        // make a request
+        const request = {
+            method: "POST",
+            url: `http://localhost/SPARK_BACK/php/cms/update_staff.php`,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data: payLoad,
+        };
+
+        // send request to backend server
+        return new Promise((resolve, reject) => {
+            axios(request)
+                .then((response) => {
+                    const updateResult = response.data;
+                    resolve(updateResult);
+                })
+                .catch((error) => {
+                    console.log("From updateMessageBackend:", error);
+                    reject(error);
+                });
+        });
+    }
+
+    const updateStaffFromStaffPool = (staffNo, staffAccount, staffPassword) => {
+        for (let i = 0; i < staffPool.length; i++) {
+            if (staffPool[i].staff_no == staffNo) {
+                staffPool[i].staff_account = staffAccount
+                staffPool[i].staff_password = staffPassword
+            }
+        }
+    }
+
+
 
     return {
         staffPool,
         createStaffBackend,
         deleteStaffBackend,
         deleteStaffFromStaffPool,
+        updateStaffBackend,
+        updateStaffFromStaffPool
 
     }
 

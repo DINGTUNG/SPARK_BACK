@@ -53,12 +53,13 @@ const filteredMilestoneList = computed(() => {
   const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
 
   return displayMilestoneList.value.filter(item => {
+    const noMatch = item.milestone_no.toString().includes(searchText);
     const idMatch = item.milestone_id.toString().includes(searchText);
     const titleMatch = item.milestone_title.toLowerCase().includes(searchText);
     const dateMatch = item.milestone_date.toString().includes(searchText);
     const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
     const indexMatch = ((page.value - 1) * itemsPerPage) + displayMilestoneList.value.indexOf(item) + 1 === parseInt(searchText);
-    return idMatch || titleMatch || dateMatch || onlineStatusMatch || indexMatch;
+    return noMatch || idMatch || titleMatch || dateMatch || onlineStatusMatch || indexMatch;
   });
 });
 
@@ -100,6 +101,7 @@ onMounted(() => {
             <tr>
               <th>No.</th>
               <th>里程碑編號</th>
+              <th>里程碑ID</th>
               <th>里程碑標題</th>
               <th>年度/月份</th>
               <th>狀態</th>
@@ -110,10 +112,12 @@ onMounted(() => {
           <tbody>
             <tr v-for="(item, index) in filteredMilestoneList" :key="item.milestone_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.milestone_id }}</td>
-              <td class="title">{{ item.milestone_title }}</td>  
-              <td class="date">{{ item.milestone_date }}</td>
-              <td class="online">{{ item.is_milestone_online ? '已上架' : '未上架' }}</td>
+
+              <td class="milestone_no">{{ item.milestone_no }}</td>
+              <td class="milestone_id">{{ item.milestone_id }}</td>
+              <td class="milestone_title">{{ item.milestone_title }}</td>  
+              <td class="milestone_date">{{ item.milestone_date }}</td>
+              <td class="is_milestone_online">{{ item.is_milestone_online ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>

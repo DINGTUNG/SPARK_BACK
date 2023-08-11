@@ -83,7 +83,7 @@ const displayNewsList = computed(() => {
               <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" />
-                <DeleteNews />
+                <DeleteNews :newsNoForDelete="parseInt(item.news_no)"/>
               </td>
             </tr>
           </tbody>

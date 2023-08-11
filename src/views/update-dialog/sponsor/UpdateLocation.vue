@@ -4,21 +4,21 @@ import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
 const dialog = ref(false);
 const vueProps = defineProps({
-  locationNoForUpdate: String
+  locationNameForUpdate: String
 })
 const locationNewName=ref('')
 
 function showDialog() {
-  locationNewName.value = vueProps.locationNoForUpdate
+  locationNewName.value = vueProps.locationNameForUpdate
 }
 
-async function updateLocation(locationNoForUpdate,locationNewName) {
+async function updateLocation(locationNameForUpdate,locationNewName) {
   try {
-    if (locationNoForUpdate == null) {
+    if (locationNameForUpdate == null) {
       throw new Error("location no. not found!")
     }
-    await locationStore.updateLocationBackend(locationNoForUpdate,locationNewName)
-    locationStore.updateLocationFromLocationList(locationNoForUpdate, locationNewName)
+    await locationStore.updateLocationBackend(locationNameForUpdate,locationNewName)
+    locationStore.updateLocationFromLocationList(locationNameForUpdate, locationNewName)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -39,7 +39,7 @@ async function updateLocation(locationNoForUpdate,locationNewName) {
           <span class="text-h5">編輯地區資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php" method="post"  @submit.prevent="updateLocation(vueProps.locationNoForUpdate,locationNewName)">
+          <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php" method="post"  @submit.prevent="updateLocation(vueProps.locationNameForUpdate,locationNewName)">
             <label for="local">編輯地區內容
               <input type="text" name="local" v-model="locationNewName">
             </label>

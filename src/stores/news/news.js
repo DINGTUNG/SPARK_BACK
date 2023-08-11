@@ -8,55 +8,59 @@ import {
 import axios from 'axios';
 
 export const useNewsStore = defineStore('news', () => {
-
   const newsPool = reactive([])
 
   // // delete
-  // function deleteMessageBackend(messageNo) {
-  //   // prepare data 
-  //   const payLoad = new FormData();
-  //   payLoad.append("message_no", messageNo);
-
-  //   // make a request
-  //   const request = {
-  //     method: "POST",
-  //     url: `http://localhost/SPARK_BACK/php/activity/message-board/delete_message.php`,
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //     data: payLoad,
-  //   };
-
-  //   // send request to backend server
-  //   return new Promise((resolve, reject) => {
-  //     axios(request)
-  //       .then((response) => {
-  //         const deleteResult = response.data;
-  //         resolve(deleteResult);
-  //       })
-  //       .catch((error) => {
-  //         console.log("From deleteMessageBackend:", error);
-  //         reject(error);
-  //       });
-  //   });
-  // }
-
-  // const deleteMessageFromMessagePool = (messageNo) => {
-  //   for (let i = 0; i < messagePool.length; i++) {
-  //     if (messagePool[i].message_no == messageNo) {
-  //       messagePool.splice(i, 1);
-  //       break
-  //     }
-  //   }
-  // }
-
-  // update
-  function updateNewsBackend(newsNo,newsDate,newsImageFirst) {
+  function deleteNewsBackend(newsNo) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("news_no", newsNo);
-    payLoad.append("news_date", newsDate);
-    payLoad.append("news_image_first", newsImageFirst.files[0]);
+
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/news/delete_news.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const deleteResult = response.data;
+          resolve(deleteResult);
+        })
+        .catch((error) => {
+          console.log("From deleteMessageBackend:", error);
+          reject(error);
+        });
+    });
+  }
+
+  const deleteNewsFromMessagePool = (newsNo) => {
+    for (let i = 0; i < newsPool.length; i++) {
+      if (newsPool[i].news_no == newsNo) {
+        newsPool.splice(i, 1);
+        break
+      }
+    }
+  }
+
+  // update
+  function updateNewsBackend(newsForUpdate) {
+
+    validateNewsForUpdate(newsForUpdate); //not finished
+
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("news_no", newsForUpdate.newsNo);
+    payLoad.append("news_date", newsForUpdate.newsDate);
+
+    payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
+    payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
 
 
     // make a request
@@ -83,11 +87,15 @@ export const useNewsStore = defineStore('news', () => {
     });
   }
 
-  const updateNewsFromNewsPool = (newsNo,newsDate,newsImageFirst) => {
+  const validateNewsForUpdate = (newsNoForUpdate) => {
+    return newsNoForUpdate
+  }
+
+  const updateNewsFromNewsPool = (newsNoForUpdate) => {
     for (let i = 0; i < newsPool.length; i++) {
-      if (newsPool[i].news_no == newsNo) {
-        newsPool[i].news_date = newsDate
-        newsPool[i].news_image_first = newsImageFirst.files[0]
+      if (newsPool[i].news_no == newsNoForUpdate.newsNo) {
+        newsPool[i].news_date = newsNoForUpdate.newsDate
+        newsPool[i].news_image_first = newsNoForUpdate.newsImageFirst
       }
     }
   }
@@ -125,6 +133,8 @@ export const useNewsStore = defineStore('news', () => {
 
   return {
     newsPool,
+    deleteNewsBackend,
+    deleteNewsFromMessagePool,
     updateNewsBackend,
     updateNewsFromNewsPool,
     // createNewsBackend

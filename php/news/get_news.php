@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *"); //標頭修改
 require_once("../connect_chd102g3.php");
 try {
-  $sql = "select * from news where del_flg = 0 order by news_no";
+  $sql = "select * from news where del_flg = 0";
   $news = $pdo->query($sql);
 
   if ($news->rowCount() == 0) { //找不到

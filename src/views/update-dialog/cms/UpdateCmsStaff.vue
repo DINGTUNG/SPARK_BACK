@@ -1,89 +1,79 @@
 <script setup>
-import { ref } from 'vue'
-// const dialog = ref(false);
+import { ref, defineProps } from 'vue'
+import { useCmsStaffStore } from '@/stores/cms-staff.js';
+const cmsStaffStore = useCmsStaffStore();
 
 
-import { useThanksLetterStore } from '@/stores/thanks-letter.js';
-const thanksLetterStore = useThanksLetterStore();
+const vueProps = defineProps({
+    staffNoForUpdate: Number,
+    staffAccountForUpdate: String,
+    staffPasswordForUpdate: String,
+})
+
+const staffAccount = ref('')
+const staffPassword = ref('')
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
     dialogDisplay.value = true;
+    staffAccount.value = vueProps.staffAccountForUpdate
+    staffPassword.value = vueProps.staffPasswordForUpdate
 }
 
 function closeDialog() {
     dialogDisplay.value = false;
 }
 
-const childrenId = ref('')
-const memberId = ref('')
-const sponsorOrderId = ref('')
-const receiveDate = ref('')
-const fileName = ref('')
 
-async function createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+async function updateStaff(staffNoForUpdate, staffAccount, staffPassword) {
     try {
-        const newThanksLetter = await thanksLetterStore.createThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
-        addContentTonewThanksLetter(newThanksLetter)
-        console.log(thanksLetterStore.thanksLetterPool);
-        window.alert(`新增成功!`);
+        if (staffNoForUpdate == null) {
+            throw new Error("Staff no. not found!")
+        }
+        await cmsStaffStore.updateStaffBackend(staffNoForUpdate, staffAccount, staffPassword)
+        cmsStaffStore.updateStaffFromStaffPool(staffNoForUpdate, staffAccount, staffPassword)
+        window.alert(`編輯成功!`);
     } catch (error) {
         console.error(error);
-        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+        window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
     } finally {
         closeDialog()
     }
 }
 
-const addContentTonewThanksLetter = (newThanksLetter) => {
-    thanksLetterStore.thanksLetterPool.push(newThanksLetter)
-}
+// const dialog = ref(false);
+
 </script>
 
 <template>
-    <v-row justify="end">
+    <v-row class="row" style="flex: 0;">
         <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props" @click="showDialog">
-                    新增
-                </v-btn>
+                <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="main_title">新增後台人員</span>
+                    <span class="main_title">編輯後台人員</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost:8888/member/thanks_letter/thanks_letter.php" method="post"
-                        @submit.prevent="createThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
-                        <label for="">
-                            <div class="input_title">兒童編號</div>
-                            <input type="text" name="children_id" v-model="childrenId">
+                    <form action="http://localhost/SPARK_BACK/php/cms/update_staff.php" method="post"
+                        @submit.prevent="updateStaff(vueProps.staffNoForUpdate, staffAccount, staffPassword)">
+                        <label for="staff_account">
+                            <div class="input_title">帳號</div>
+                            <input type="text" name="staff_account" v-model="staffAccount">
                         </label>
                         <label for="">
-                            <div class="input_title">會員編號</div>
-                            <input type="text" name="member_id" v-model="memberId">
+                            <div class="input_title">密碼</div>
+                            <input type="text" name="staff_password" v-model="staffPassword">
                         </label>
-                        <label for="">
-                            <div class="input_title">認養訂單ID</div>
-                            <input type="text" name="sponsor_order_id" v-model="sponsorOrderId">
-                        </label>
-                        <label for="">
-                            <div class="input_title">收件日期</div>
-                            <input type="text" name="receive_date" v-model="receiveDate">
-                        </label>
-                        <label for="">
-                            <div class="input_title">檔名</div>
-                            <input type="text" name="file_name" v-model="fileName">
-                        </label>
-
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit">
-                                確定
+                            <v-btn class="update btn" variant="text" type="submit">
+                                儲存
                             </v-btn>
                         </v-card-actions>
                     </form>

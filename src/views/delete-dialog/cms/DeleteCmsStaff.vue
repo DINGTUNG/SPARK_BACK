@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useCmsStaffStore } from '@/stores/cms-staff.js';
+import { useCmsStaffStore } from '@/stores/cms/cms-staff.js';
 const cmsStaffStore = useCmsStaffStore();
 
 const vueProps = defineProps({

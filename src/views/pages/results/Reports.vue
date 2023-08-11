@@ -1,11 +1,11 @@
 <script setup>
-import CreateReports from '@/views/create-dialog/CreateReports.vue';
-import UpdateReports from '@/views/update-dialog/UpdateReports.vue';
-import DeleteReport from '@/views/delete-dialog/DeleteReport.vue';
+import CreateReports from '@/views/create-dialog/results/CreateReports.vue';
+import UpdateReports from '@/views/update-dialog/results/UpdateReports.vue';
+import DeleteReport from '@/views/delete-dialog/results/DeleteReport.vue';
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useReportStore } from '@/stores/reports.js';
+import { useReportStore } from '@/stores/results/reports.js';
 const reportStore = useReportStore();
 
 //api
@@ -42,9 +42,9 @@ const searchText = computed(() => {
 })
 
 const filteredReportList = computed(() => {
-  return reportStore.reportsList.filter((item) => { // 修改这里
+  return reportStore.reportsList.filter((item) => { 
     const obj = [item.report_id, item.report_title,item.report_class]
-    const str = JSON.stringify(obj).toLowerCase();
+    const str = JSON.stringify(obj);
     return str.includes(searchText.value)
   });
 });

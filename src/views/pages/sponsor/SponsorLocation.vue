@@ -1,18 +1,16 @@
 <script setup>
-import CreateLocation from '@/views/create-dialog/CreateLocation.vue';
-import UpdateLocation from '@/views/update-dialog/UpdateLocation.vue';
-import DeleteLocation from '@/views/delete-dialog/DeleteLocation.vue';
+import CreateLocation from '@/views/create-dialog/sponsor/CreateLocation.vue';
+import UpdateLocation from '@/views/update-dialog/sponsor/UpdateLocation.vue';
+import DeleteLocation from '@/views/delete-dialog/sponsor/DeleteLocation.vue';
 import Search from '@/components/Search.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useSponsorLocationStore } from '@/stores/sponsor-location.js';
+import { useSponsorLocationStore } from '@/stores/sponsor/sponsor-location.js';
 const locationStore = useSponsorLocationStore();
-
 
 async function getSponsorLocation() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-location/get_sponsor_location.php');
-
     locationStore.locationList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -54,9 +52,9 @@ const searchText = computed(() => {
 })
 
 const filteredLocationList = computed(() => {
-  return locationStore.locationList.filter((item) => { // 修改这里
+  return locationStore.locationList.filter((item) => { 
     const obj = [item.location_id, item.location_name]
-    const str = JSON.stringify(obj).toLowerCase();
+    const str = JSON.stringify(obj);
     return str.includes(searchText.value)
   });
 });
@@ -97,7 +95,7 @@ const filteredLocationList = computed(() => {
               <td class="year">{{ item.updater }}</td>
               <td class="name">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateLocation :locationNoForUpdate="item.location_name" />                
+                <UpdateLocation :locationNameForUpdate="item.location_name" />                
                 <DeleteLocation :locationNoForDelete="parseInt(item.location_no)" />
               </td>
             </tr>

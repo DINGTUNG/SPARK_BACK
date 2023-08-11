@@ -129,7 +129,6 @@ export const useCmsStaffStore = defineStore('cms_staff', () => {
     }
 
 
-
     return {
         staffPool,
         createStaffBackend,

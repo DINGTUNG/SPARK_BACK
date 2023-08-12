@@ -10,24 +10,24 @@ try {
   $memberId = $_POST["member_id"] ?? null;
   $sponsorOrderId = $_POST["sponsor_order_id"] ?? null;
   $receiveDate = $_POST["receive_date"] ?? null;
-  $fileName = $_POST["file_name"] ?? null;
+  $thanksletterImg = $_POST["thanksletter_img"] ?? null;
   
 
   // parameters validation
   if ($childrenId == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供childrenId)");
+    throw new InvalidArgumentException($message = "參數不足(請提供兒童ID)");
   }
   if ($memberId == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供memberId)");
+    throw new InvalidArgumentException($message = "參數不足(請提供會員ID)");
   }
   if ($sponsorOrderId == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供sponsorOrderId)");
+    throw new InvalidArgumentException($message = "參數不足(請提供認養訂單ID)");
   }
   if ($receiveDate == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供receiveDate)");
+    throw new InvalidArgumentException($message = "參數不足(請提供收件日期)");
   }
-  if ($fileName == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供fileName)");
+  if ($thanksletterImg == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供感謝函圖檔)");
   }
 
 
@@ -35,24 +35,25 @@ try {
   $pdo->beginTransaction();
 
 
-  $createSql = "insert into thanks_letter(children_id, member_id, sponsor_order_id, receive_date, file_name) values(:children_id, :member_id, :sponsor_order_id, :receive_date, :file_name,'阿菜')";
+  $createSql = "insert into thanks_letter(children_id, member_id, sponsor_order_id, receive_date, thanksletter_img, register, updater) values(:children_id, :member_id, :sponsor_order_id, :receive_date, :thanksletter_img, '星火阿菜', '星火喵喵大財團')";
   $createStmt = $pdo->prepare($createSql);
   $createStmt->bindValue(":children_id", $childrenId);
   $createStmt->bindValue(":member_id", $memberId);
   $createStmt->bindValue(":sponsor_order_id", $sponsorOrderId);
   $createStmt->bindValue(":receive_date", $receiveDate);
-  $createStmt->bindValue(":file_name", $fileName);
+  $createStmt->bindValue(":thanksletter_img", $thanksletterImg);
+
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  $updateSql = "update thanks_letter set thanks_letter_id = concat('TL',LPAD(LAST_INSERT_ID(), 3, 0)) where thanks_letter_no = LAST_INSERT_ID()";
+  $updateSql = "update thanks_letter set thanks_letter_id = concat('TL',LPAD(LAST_INSERT_ID(), 3, 0)) where thanks_letter_id = LAST_INSERT_ID()";
   $updateStmt = $pdo->prepare($updateSql);
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
-  $selectSql = "select * from thanks_letter where thanks_letter_no = (select LAST_INSERT_ID())";
+  $selectSql = "select * from thanks_letter where thanks_letter_id = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
   $newMessage = $selectStmt->fetch(PDO::FETCH_ASSOC);
   http_response_code(200);
@@ -70,3 +71,25 @@ try {
   echo $e;
   $pdo->rollBack();
 }
+
+function copyFileToLocal( $thanksLetterId ,$file, $fileNo )
+{
+  $dir = "../../images/thanksletter/";
+  if (file_exists($dir) === false) {
+    mkdir($dir);
+  }
+
+  $filename = mkFilename(  $thanksLetterId, $file, $fileNo  );
+  $from = $file["tmp_name"];
+  $to = $dir . $filename;
+  return copy($from, $to);
+}
+
+function mkFilename( $file )
+{
+  $filename = $file;
+  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
+  $filename = "$filename.$fileExt";
+  return $filename;
+}
+

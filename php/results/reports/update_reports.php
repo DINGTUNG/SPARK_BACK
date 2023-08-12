@@ -5,15 +5,16 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-  $reportsNo = $_POST["report_no"] ?? null;
+  $reportNo = $_POST["report_no"] ?? null;
   $reportClass = $_POST["report_class"] ?? null;
+  var_dump($reportClass);
   $reportYear = $_POST["report_year"] ?? null;
   $reportTitle = $_POST["report_title"] ?? null;
   $reportsFile = $_FILES["reports_file_path"] ?? null;
 
 
   // parameters validation
-  if ($reportsNo == null) {
+  if ($reportNo == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供 report no)");
   }
   if ($reportClass == null) {
@@ -34,7 +35,7 @@ try {
   // check update record existed
   $checkRecordAliveSql = "SELECT COUNT(*) AS count FROM reports WHERE report_no = :report_no AND del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
-  $checkRecordAliveStmt->bindValue(":report_no", $reportsNo);
+  $checkRecordAliveStmt->bindValue(":report_no", $reportNo);
   $checkRecordAliveStmt->execute();
   $checkResult = $checkRecordAliveStmt->fetchAll(PDO::FETCH_ASSOC);
   $isNotExisted = $checkResult[0]['count'] == 0;
@@ -54,18 +55,18 @@ try {
   WHERE report_no = :report_no";
 
 $updateStmt = $pdo->prepare($updateSql);
-$updateStmt->bindValue(":report_no", $reportsNo);
+$updateStmt->bindValue(":report_no", $reportNo);
 $updateStmt->bindValue(":report_class", $reportClass);
 $updateStmt->bindValue(":report_year", $reportYear);
 $updateStmt->bindValue(":report_title", $reportTitle);
-$updateStmt->bindValue(":reports_file_path", mkFilename($reportsNo,$reportsFilePath));
+$updateStmt->bindValue(":reports_file_path", mkFilename($reportNo, $reportsFile, 1, $reportClass));
 $updateResult = $updateStmt->execute();
 
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }
 
-  if (!copyFileToLocal($reportNo, $reportsFile)) {
+  if (!copyFileToLocal($reportNo, $reportsFile,1)) {
     throw new UnexpectedValueException( $message = "檔案儲存失敗(move failed)");
   }
 
@@ -100,11 +101,16 @@ function copyFileToLocal($reportNo,$file,$fileNo)
   
 }
 
-function mkFilename($updateId, $fileNo)
+function mkFilename($updateId, $file, $fileNo, $reportClass)
 {
   $currentYear = date('Y');
-  $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep.pdf';
+  if ($reportClass == "年度") {
+    $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep';
+  } else {
+    $filename = 'R' . $currentYear . '_' . $fileNo . '_business_rep';
+  }
+  $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
+  $filename = "$filename.$fileExt";
   return $filename;
 }
-
 ?>

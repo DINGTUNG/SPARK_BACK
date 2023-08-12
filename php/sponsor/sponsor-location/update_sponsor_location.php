@@ -13,7 +13,6 @@ try {
   if ($locationNo == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供location no)");
   }
-
   if ($locationName == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供location name)");
   }

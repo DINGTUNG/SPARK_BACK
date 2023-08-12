@@ -34,4 +34,5 @@ export default defineConfig({
 			}
 		}
 	},
+  base: "/chd102/g3/back-end/", //緯育
 })

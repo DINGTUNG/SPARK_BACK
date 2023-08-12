@@ -19,7 +19,6 @@ async function createMessage(messageContent) {
   try {
     const newMessage = await messageBoardStore.createMessageBackend(messageContent)
     addContentToNewMessage(newMessage)
-    console.log(messageBoardStore.messagePool);
     window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);

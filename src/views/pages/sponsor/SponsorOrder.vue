@@ -7,7 +7,7 @@ import { useSponsorOrderStore } from '@/stores/sponsor/sponsor-order.js';
 const sponsorOrderStore = useSponsorOrderStore();
 
 // get data from sponsor_order
-async function getData() {
+async function getSponsorOrder() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-order/get_sponsor_order.php')
     sponsorOrderStore.sponsorOrderPool.splice(0);
@@ -22,7 +22,7 @@ async function getData() {
 }
 
 onMounted(() => {
-  getData()
+  getSponsorOrder()
 })
 
 // update order status
@@ -33,9 +33,6 @@ async function updateOrderStatus(item) {
     }
     await sponsorOrderStore.updateSponsorOrderBackend(item.sponsor_order_no,item.order_status)
     sponsorOrderStore.updateOrderStatusFromSponsorOrderPool(item.sponsor_order_no,item.order_status)
-
-    console.log(item.order_status);
-
   } catch (error) {
     console.error(error);
   }

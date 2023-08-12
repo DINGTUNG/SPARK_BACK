@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useSparkActivityStore } from '@/stores/activity/spark-activity.js';
 const sparkActivityStore = useSparkActivityStore();
 
-async function getData() {
+async function getSparkActivity() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/activity/spark-activity/get_spark_activity.php')
     sparkActivityStore.sparkActivityPool.splice(0);
@@ -25,8 +25,24 @@ async function getData() {
 }
 
 onMounted(() => {
-  getData()
+  getSparkActivity()
 })
+
+
+// update online status
+async function updateSparkActivityOnlineStatus(item) {
+  try {
+    if (item.spark_activity_no == null) {
+      throw new Error("spark_activity_no not found!")
+    }
+    await sparkActivityStore.updateSparkActivityOnlineStatusBackend(item.spark_activity_no,item.is_spark_activity_online)
+    sparkActivityStore.updateOnlineStatusFromSparkActivityPool(item.spark_activity_no,item.is_spark_activity_online)
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // 換頁
 const page = ref(1)
@@ -67,7 +83,7 @@ const filteredSparkActivityPool = computed(() => {
     <div class="content_wrap">
       <h1>活動管理｜星火活動</h1>
       <div class="search">
-        <Search :placeholder="'請輸入留言ID或會員ID'" :search-value="searchValue" @search="handleSearchChange" />
+        <Search :placeholder="'請輸入活動ID或活動名稱'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -96,21 +112,23 @@ const filteredSparkActivityPool = computed(() => {
               <td class="spark_activity_description">{{ item.spark_activity_description }}</td>
               <td class="spark_activity_start_date">{{ item.spark_activity_start_date }}</td>
               <td class="spark_activity_end_date">{{ item.spark_activity_end_date }}</td>
-              <td class="is_spark_activity_online">{{ item.is_spark_activity_online == 1 ? "進行中" : "已結束" }}</td>
+              <td class="is_spark_activity_online">{{ item.is_spark_activity_online == 1 ? "進行中" : "未開放" }}</td>
               <td>
-                <v-switch v-model="item.is_spark_activity_online" color="#EBC483" density="compact" hide-details="true" inline inset
-                  true-value=1 @change="updateSparkActivityStatus(item)"></v-switch>
+                <v-switch v-model="item.is_spark_activity_online" color="#EBC483" density="compact" hide-details="true"
+                  inline inset true-value=1 @change="updateSparkActivityOnlineStatus(item)"></v-switch>
               </td>
               <td class="register">{{ item.register }}</td>
               <td class="regist_time">{{ item.regist_time }}</td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateSparkActivity :messageNoForUpdate="parseInt(item.message_no)"
-                  :sparkActivityIdForUpdate="item.spark_activity_id" :messageContentForUpdate="item.message_content"
-                  :memberIdForUpdate="item.member_id" />
+                <UpdateSparkActivity :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)"
+                  :sparkActivityNameForUpdate="item.spark_activity_name"
+                  :sparkActivityDescriptionForUpdate="item.spark_activity_description"
+                  :sparkActivityStartDateForUpdate="item.spark_activity_start_date"
+                  :sparkActivityEndDateForUpdate="item.spark_activity_end_date" />
 
-                <DeleteSparkActivity :messageNoForDelete="parseInt(item.message_no)" />
+                <DeleteSparkActivity :sparkActivityNoForDelete="parseInt(item.spark_activity_no)" />
               </td>
             </tr>
           </tbody>
@@ -123,7 +141,7 @@ const filteredSparkActivityPool = computed(() => {
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <style scoped lang="scss">

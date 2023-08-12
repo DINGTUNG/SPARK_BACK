@@ -105,13 +105,13 @@ const backstageItem = reactive(
 </script>
 
 <template>
-  <v-card>
+  <v-card class="side_bar_container">
     <v-layout>
-      <v-navigation-drawer class="side_bar" style="width: 15vw">
+      <v-navigation-drawer class="side_bar" style="width: 15vw;height: 100vh;">
         <div class="logo">
           <img :src="'pictures/logo/logo_white.svg'" alt="星火logo" @click="router.push({
             path: '/home'
-          })">>
+          })">
         </div>
         <v-list :v-model="open" density="compact" style="padding-top: 10vh;padding-bottom: 0;">
           <v-list-group class="title mt-1 mb-1" :value="memberGroup">
@@ -189,7 +189,7 @@ const backstageItem = reactive(
         </v-list>
         <v-sheet color="#1D3D6C" class="bottom" style="width: 15vw;height:8vh">
           <p class="text-white">
-            管理員<a href="#" class="text-white ms-4">登出</a></p>
+            管理員<a href="/chd102/g3/back-end/login" class="text-white ms-4">登出</a></p>
         </v-sheet>
       </v-navigation-drawer>
     </v-layout>
@@ -197,6 +197,10 @@ const backstageItem = reactive(
 </template>
 
 <style scoped lang="scss">
+
+:deep(.v-navigation-drawer .v-navigation-drawer--left .v-navigation-drawer--active .v-theme--light .side_bar){
+  height: 0;
+}
 div.logo {
   position: fixed;
   cursor: pointer;

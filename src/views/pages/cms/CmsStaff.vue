@@ -13,7 +13,7 @@ const cmsStaffStore = useCmsStaffStore();
 // 串接資料庫
 async function staffConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/cms/cms_staff.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/cms/get_staff.php')
     console.log(response)
     cmsStaffStore.staffPool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
     if (response.data.length > 0) {
@@ -32,13 +32,13 @@ onMounted(() => {
 // 換頁功能
 const page = ref(1)
 const itemsPerPage = 10;
-const pageCount = () => {
-  return Math.floor((cmsStaffStore.staffPool.length - 1) / itemsPerPage) + 1;
-}
+const pageCount = computed(() => {
+  return Math.ceil(cmsStaffStore.staffPool.length / itemsPerPage);
+});
 const displayedStaffList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return cmsStaffStore.staffPool.slice(startIdx, endIdx);
+  return filteredStaffList.value.slice(startIdx, endIdx);
 });
 
 
@@ -49,20 +49,36 @@ function handleSearchChange(newValue) {
   console.log(searchValue.value);
 }
 
-const filteredStaffList = computed(() => {
-  const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}` : searchText;
+  }
+  return searchText;
+})
 
-  return displayedStaffList.value.filter(item => {
-    const idMatch = item.staff_id.toString().includes(searchText);
-    const nameMatch = item.staff_name.toLowerCase().includes(searchText);
-    const permissionMatch = item.staff_permission.toString().includes(searchText);
-    const emailMatch = item.staff_email.toString().includes(searchText);
-    const accountMatch = item.staff_account.toString().includes(searchText);
-    const passwordMatch = item.staff_password.toString().includes(searchText);
-    const indexMatch = ((page.value - 1) * itemsPerPage) + displayedStaffList.value.indexOf(item) + 1 === parseInt(searchText);
-    return idMatch || nameMatch || permissionMatch || emailMatch || accountMatch || passwordMatch || indexMatch;
+const filteredStaffList = computed(() => {
+  return cmsStaffStore.staffPool.filter((item) => {
+    const obj = [item.staff_id, item.staff_name, item.staff_permission, item.staff_email]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
   });
 });
+
+// const filteredStaffList = computed(() => {
+//   const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+
+//   return displayedStaffList.value.filter(item => {
+//     const idMatch = item.staff_id.toString().includes(searchText);
+//     const nameMatch = item.staff_name.toLowerCase().includes(searchText);
+//     const permissionMatch = item.staff_permission.toString().includes(searchText);
+//     const emailMatch = item.staff_email.toString().includes(searchText);
+//     const accountMatch = item.staff_account.toString().includes(searchText);
+//     const passwordMatch = item.staff_password.toString().includes(searchText);
+//     const indexMatch = ((page.value - 1) * itemsPerPage) + displayedStaffList.value.indexOf(item) + 1 === parseInt(searchText);
+//     return idMatch || nameMatch || permissionMatch || emailMatch || accountMatch || passwordMatch || indexMatch;
+//   });
+// });
 
 </script>
 
@@ -72,7 +88,7 @@ const filteredStaffList = computed(() => {
     <div class="content_wrap">
       <h1>後台管理｜後台人員</h1>
       <div class="search">
-        <Search :placeholder="'請輸入人員資訊'" :search-value="searchValue" @search="handleSearchChange" />
+        <Search :placeholder="'請輸入ID/姓名/權限/Email'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -90,7 +106,7 @@ const filteredStaffList = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in filteredStaffList" :key="item.staff_id" class="no-border">
+            <tr v-for="(item, index) in displayedStaffList" :key="item.staff_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
               <td class="staff_no">{{ item.staff_no }}</td>
@@ -116,7 +132,7 @@ const filteredStaffList = computed(() => {
 
       <!-- 分頁 -->
       <div class="text-center">
-        <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
+        <v-pagination v-model="page" :length="pageCount" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>

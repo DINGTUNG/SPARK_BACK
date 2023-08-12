@@ -13,7 +13,7 @@ try {
   $newsContentSecond = $_POST["news_content_second"] ?? null;
   $newsImageSecond = $_FILES["news_image_second"] ?? null;
   $newsContentThird = $_POST["news_content_third"] ?? null;
-  // $newsImageThird = $_FILES["news_image_third"] ?? null;
+  $newsImageThird = $_FILES["news_image_third"] ?? null;
   $newsContentFourth = $_POST["news_content_fourth"] ?? null;
   $newsImageFourth = $_FILES["news_image_fourth"] ?? null;
 
@@ -34,7 +34,7 @@ try {
     throw new InvalidArgumentException($message = "參數不足(請提供news image first)");
   }
   if ($newsContentSecond == null) {
-  //   throw new InvalidArgumentException($message = "參數不足(請提供news content second)");
+    throw new InvalidArgumentException($message = "參數不足(請提供news content second)");
   }
   if ($newsImageSecond == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供news image second)");
@@ -42,9 +42,9 @@ try {
   if ($newsContentThird == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供news content third)");
   }
-  // if ($newsImageThird == null) {
-  //   throw new InvalidArgumentException($message = "參數不足(請提供news image third)");
-  // }
+  if ($newsImageThird == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供news image third)");
+  }
   if ($newsContentFourth == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供news content fourth)");
   }
@@ -145,10 +145,15 @@ function copyFileToLocal($newsNo, $file, $fileNo)
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file, $fileNo)
+function mkFilename($updateId, $fileNo, $file)
 {
+  if ($file === null) {
+    return null; // Return null if $file is null to avoid issues
+  }
+  
   $filename =  'N' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
-  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
+  $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;
 }
+

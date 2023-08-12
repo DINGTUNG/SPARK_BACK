@@ -41,6 +41,7 @@ function showDialog() {
   console.log('vueProps:', vueProps);
   console.log('newsForUpdate:', newsForUpdate);
   console.log('newsContentFirstUpdate:', vueProps.newsContentFirstUpdate);
+
   dialogDisplay.value = true;
   newsForUpdate.newsNo = vueProps.newsNoForUpdate
   newsForUpdate.newsTitle = vueProps.newsTitleForUpdate
@@ -67,7 +68,7 @@ async function updateNews(newsNoForUpdate) {
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
-    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+    window.alert(`http status : ${error.response} 編輯失敗!請聯絡管理員!`);
   } finally {
     closeDialog()
   }

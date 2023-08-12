@@ -11,7 +11,7 @@ const reportStore = useReportStore();
 //api
 async function reportConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/get_reports.php')
     reportStore.reportsList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {

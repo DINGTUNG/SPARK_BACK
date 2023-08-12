@@ -79,7 +79,7 @@ try {
   news_content_fourth = :news_content_fourth,
   news_image_fourth = :news_image_fourth,
   updater='sir', 
-  update_time = Now(),
+  update_time = Now()
   where news_no = :news_no ";
 
   $updateStmt = $pdo->prepare($updateSql);
@@ -145,15 +145,15 @@ function copyFileToLocal($newsNo, $file, $fileNo)
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $fileNo, $file)
+function mkFilename($updateId, $file, $fileNo)
 {
-  if ($file === null) {
-    return null; // Return null if $file is null to avoid issues
-  }
-  
   $filename =  'N' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
-  $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
+  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;
 }
+
+
+
+
 

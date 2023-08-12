@@ -22,7 +22,7 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order.php`,
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order_status.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -37,7 +37,7 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
           resolve(updateResult);
         })
         .catch((error) => {
-          console.log("From updateMessageBackend:", error);
+          console.log("From updateSponsorOrderBackend:", error);
           reject(error);
         });
     });

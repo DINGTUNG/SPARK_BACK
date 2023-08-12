@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useMessageBoardStore } from '@/stores/activity/message-board.js';
-const messageBoardStore = useMessageBoardStore();
+import { useSparkActivityStore } from '@/stores/activity/spark-activity.js';
+const sparkActivityStore = useSparkActivityStore();
 
 const vueProps = defineProps({
   sparkActivityNoForUpdate: Number,
@@ -34,10 +34,10 @@ function closeDialog() {
 async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate) {
   try {
     if (sparkActivityNoForUpdate == null) {
-      throw new Error("Message no. not found!")
+      throw new Error("spark activity no. not found!")
     }
-    await messageBoardStore.updateSparkActivityBackend(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
-    messageBoardStore.updateSparkActivityFromSparkActivityPool(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    await sparkActivityStore.updateSparkActivityBackend(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    sparkActivityStore.updateSparkActivityFromSparkActivityPool(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);

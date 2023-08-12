@@ -6,23 +6,33 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-  $messageNo = $_POST["message_no"] ?? null;
-  $sparkActivityId = $_POST["spark_activity_id"] ?? null;
-  $messageContent = $_POST["message_content"] ?? null;
-  $memberId = $_POST["member_id"] ?? null;
+  $sparkActivityNo = $_POST["spark_activity_no"] ?? null;
+  $sparkActivityName = $_POST["spark_activity_name"] ?? null;
+  $sparkActivityDescription = $_POST["spark_activity_description"] ?? null;
+  $sparkActivityStartDate = $_POST["spark_activity_start_date"] ?? null;
+  $sparkActivityEndDate = $_POST["spark_activity_end_date"] ?? null;
 
   // parameters validation
-  if ($messageNo == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供message no)");
+  if ($sparkActivityNo == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供spark_activity_no)");
   }
-  if ($messageContent == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供message content)");
+  if ($sparkActivityName == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供spark_activity_name)");
+  }
+  if ($sparkActivityDescription == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供spark_activity_description)");
+  }
+  if ($sparkActivityStartDate == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供spark_activity_start_date)");
+  }
+  if ($sparkActivityEndDate == null) {
+    throw new InvalidArgumentException($message = "參數不足(spark_activity_end_date)");
   }
 
   // check update record existed
-  $checkRecordAliveSql = "select count(*) as count from message_board where message_no = :message_no and del_flg = 0";
+  $checkRecordAliveSql = "select count(*) as count from spark_activity where spark_activity_no = :spark_activity_no and del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
-  $checkRecordAliveStmt->bindValue(":message_no", $messageNo);
+  $checkRecordAliveStmt->bindValue(":spark_activity_no", $sparkActivityNo);
   $checkRecordAliveStmt->execute();
   $checkResult = $checkRecordAliveStmt->fetchAll(PDO::FETCH_ASSOC);
   $isNotExisted = $checkResult[0]['count'] == 0;
@@ -32,11 +42,13 @@ try {
   }
 
   // update record
-  $updateSql = "update message_board set message_content = :message_content,spark_activity_id = 'SP001',member_id = :member_id,updater='許咪咪', update_time = Now() where message_no = :message_no ";
+  $updateSql = "update spark_activity set spark_activity_name = :spark_activity_name,spark_activity_description = :spark_activity_description,spark_activity_start_date = :spark_activity_start_date,spark_activity_end_date=:spark_activity_end_date,updater='許咪咪', update_time = Now() where spark_activity_no = :spark_activity_no ";
   $updateStmt = $pdo->prepare($updateSql);
-  $updateStmt->bindValue(":message_no", $messageNo);
-  $updateStmt->bindValue(":message_content", $messageContent);
-  $updateStmt->bindValue(":member_id", $memberId);
+  $updateStmt->bindValue(":spark_activity_no", $sparkActivityNo);
+  $updateStmt->bindValue(":spark_activity_name", $sparkActivityName);
+  $updateStmt->bindValue(":spark_activity_description", $sparkActivityDescription);
+  $updateStmt->bindValue(":spark_activity_start_date", $sparkActivityStartDate);
+  $updateStmt->bindValue(":spark_activity_end_date", $sparkActivityEndDate);
   $updateResult = $updateStmt->execute();
   http_response_code(200);
   echo json_encode($updateResult);

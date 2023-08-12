@@ -1,44 +1,30 @@
 <script setup>
-import { ref, defineProps } from 'vue'
-import { useMessageBoardStore } from '@/stores/activity/message-board.js';
-const messageBoardStore = useMessageBoardStore();
+import { ref } from 'vue'
+import { useSparkActivityStore } from '@/stores/activity/spark-activity.js';
+const sparkActivityStore = useSparkActivityStore();
 
-const vueProps = defineProps({
-  sparkActivityNoForUpdate: Number,
-  sparkActivityNameForUpdate: String,
-  sparkActivityDescriptionForUpdate: String,
-  sparkActivityStartDateForUpdate: String,
-  sparkActivityEndDateForUpdate: String
-})
-
-const sparkActivityName = ref('')
-const sparkActivityDescription = ref('')
-const sparkActivityStartDate = ref('')
-const sparkActivityEndDate = ref('')
 
 const dialogDisplay = ref(false);
 
 function showDialog() {
   dialogDisplay.value = true;
-  sparkActivityName.value = vueProps.sparkActivityNameForUpdate
-  sparkActivityDescription.value = vueProps.sparkActivityDescriptionForUpdate
-  sparkActivityStartDate.value = vueProps.sparkActivityStartDateForUpdate
-  sparkActivityEndDate.value = vueProps.sparkActivityEndDateForUpdate
 }
 
 function closeDialog() {
   dialogDisplay.value = false;
 }
 
+const sparkActivityName = ref('')
+const sparkActivityDescription = ref('')
+const sparkActivityStartDate = ref('')
+const sparkActivityEndDate = ref('')
 
-async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate) {
+async function createSparkActivity(sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate) {
   try {
-    if (sparkActivityNoForUpdate == null) {
-      throw new Error("Message no. not found!")
-    }
-    await messageBoardStore.updateSparkActivityBackend(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
-    messageBoardStore.updateSparkActivityFromSparkActivityPool(sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
-    window.alert(`編輯成功!`);
+
+    const newActivity = await sparkActivityStore.createSparkActivityBackend(sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)
+    addNewActivityToActivityPool(newActivity)
+    window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
     window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
@@ -46,6 +32,11 @@ async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, 
     closeDialog()
   }
 }
+
+const addNewActivityToActivityPool = (newActivity) => {
+  sparkActivityStore.sparkActivityPool.push(newActivity)
+}
+
 
 </script>
 
@@ -62,8 +53,8 @@ async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, 
           新增星火活動
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateSparkActivity(vueProps.sparkActivityNoForUpdate, sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)">
+          <form action="http://localhost/SPARK_BACK/php/activity/spark-activity/create_spark_activity.php" method="post"
+            @submit.prevent="createSparkActivity(sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)">
 
             <div class="input_container">
               <div class="input_wrap">
@@ -103,9 +94,8 @@ async function updateSparkActivity(sparkActivityNoForUpdate, sparkActivityName, 
   </v-row>
 </template>
 <style scoped lang="scss">
-
-:deep(.v-btn){
-background-color: $primaryBrandBlue;
+:deep(.v-btn) {
+  background-color: $primaryBrandBlue;
 }
 
 :deep(.v-card .v-card-title) {

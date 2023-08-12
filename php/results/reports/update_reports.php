@@ -94,7 +94,7 @@ function copyFileToLocal($reportNo,$file,$fileNo)
     mkdir($dir);
   }
 
-  $filename = mkFilename($reportNo,$file,$fileNo);
+  $filename = mkFilename($reportNo,$file,$fileNo,$reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);

@@ -1,5 +1,7 @@
 <script setup>
 import { ref, defineProps, reactive } from 'vue'
+import { useReportStore } from '@/stores/results/reports.js';
+const reportStore = useReportStore();
 const vueProps = defineProps({
     reportsNoForUpdate: Number,
     reportsClassForUpdate: String,
@@ -10,7 +12,7 @@ const vueProps = defineProps({
 const reportsForUpdate = reactive({
     reportsNo: null,
     reportsClass: '',
-    reportsYear: '',
+    reportsYear: null,
     reportsTitle: '',
     reportsFile: []
 })
@@ -30,6 +32,23 @@ function showDialog() {
     reportsForUpdate.reportsFile['name'] = vueProps.reportsFileThirdForUpdate
 }
 
+async function updateReports(reportsNoForUpdate) {
+  try {
+    if (reportsNoForUpdate == null) {
+      throw new Error("reports no. not found!")
+    }
+    await reportStore.updateReportBackend(reportsForUpdate)
+    reportStore.updateReportFileFromReportsList(reportsForUpdate)
+    window.alert(`編輯成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+  } finally {
+    closeDialog()
+  }
+}
+
+
 </script>
 <template>
     <v-row justify="end">
@@ -43,8 +62,8 @@ function showDialog() {
                 </v-card-title>
                 <v-card-text>
                     <form id="reportFrom" method="POST"
-                        action="http://localhost/SPARK_BACK/php/results/reports/add_reports.php"
-                        enctype="multipart/form-data">
+                        action="http://localhost/SPARK_BACK/php/results/reports/update_reports.php"
+                        @submit.prevent="updateReports(vueProps.reportsNoForUpdate)">
                         <div class="form_item">
                             <div class="name"><span>報告分類</span></div>
                             <input type="text" id="title" name="report_class" v-model="reportsForUpdate.reportsClass">
@@ -59,7 +78,7 @@ function showDialog() {
                         </div>
                         <div class="imgblock form_item">
                             <div class="name"><span>報告</span></div>
-                            <v-file-input id="photo1" prepend-icon="none" name="report_file"
+                            <v-file-input id="photo1" prepend-icon="none" name="reports_file_path"
                                 v-model="reportsForUpdate.reportsFile">
                                 <template v-slot:prepend-inner>
                                     <label for="photo1" id="photo">修改報告</label>

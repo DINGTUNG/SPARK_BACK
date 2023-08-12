@@ -1,27 +1,17 @@
 <?php
     require_once("../../connect_chd102g3.php");
-    $story_no = $_GET['story_no'];
-    $sql = "SELECT * FROM story WHERE is_story_online=1 AND story_no=$story_no ORDER BY story_no DESC";
-    $result = $pdo->query($sql);
-    $stories = array();
-    header("Content-Type: application/json; charset=utf-8");
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        array_push($stories, array(
-            "story_no"=> $row['story_no'],
-            "story_id"=> $row['story_id'],
-            "story_title"=> $row['story_title'],
-            "story_date"=> $row['story_date'],
-            "story_image"=> $row['story_image'],
-            "story_brief"=> $row['story_brief'],
-            "story_detail"=> $row['story_detail'],
-            "story_detail_second"=> $row['story_detail_second'],
-            "story_detail_third"=> $row['story_detail_third'],
-          ));
+
+    try {
+        $story_no = $_GET['story_no'];
+        $sql = "SELECT * FROM story WHERE is_story_online=1 AND story_no= :story_no ORDER BY story_no DESC";
+        $getStoryStmt = $pdo->prepare($sql);
+        $getStoryStmt->bindValue(':story_no', $story_no);
+        $getStoryStmt->execute();  
+        $res = json_encode($getStoryStmt->fetchAll(PDO::FETCH_ASSOC));
+        echo $res;
+    } catch (PDOException $e) {
+        echo "錯誤行號 : ", $e->getLine(), "<br>";
+        echo "錯誤原因 : ", $e->getMessage(), "<br>";
+        echo "系統暫時不能正常運行，請稍後再試<br>";
     }
-    
-    $json = array(
-        "stories" => $stories
-    );
-        $res = json_encode($json);
-         echo $res;
-?>
+

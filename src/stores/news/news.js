@@ -98,8 +98,14 @@ export const useNewsStore = defineStore('news', () => {
     payLoad.append("news_no", newsForUpdate.newsNo);
     payLoad.append("news_title", newsForUpdate.newsTitle);
     payLoad.append("news_date", newsForUpdate.newsDate);
+    payLoad.append("news_content_first",newsForUpdate.newsContentFirst);
     payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
+    payLoad.append("news_content_second",newsForUpdate.newsContentSecond);
     payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
+    payLoad.append("news_content_third",newsForUpdate.newsContentThird);
+    payLoad.append("news_image_third", newsForUpdate.newsImageThird[0]);
+    payLoad.append("news_content_fourth",newsForUpdate.newsContentFourth);
+    payLoad.append("news_image_fourth", newsForUpdate.newsImageFourth[0]);
 
 
     // make a request
@@ -130,11 +136,17 @@ export const useNewsStore = defineStore('news', () => {
     return newsNoForUpdate
   }
 
-  const updateNewsFromNewsPool = (newsNoForUpdate) => {
+  const updateNewsFromNewsPool = (newsForUpdate) => {
     for (let i = 0; i < newsPool.length; i++) {
-      if (newsPool[i].news_no == newsNoForUpdate.newsNo) {
-        newsPool[i].news_date = newsNoForUpdate.newsDate
-        newsPool[i].news_image_first = newsNoForUpdate.newsImageFirst
+      if (newsPool[i].news_no == newsForUpdate.newsNo) {
+        newsPool[i].news_date = newsForUpdate.newsDate
+        newsPool[i].news_title = newsForUpdate.newsTitle
+        newsPool[i].news_content_first = newsForUpdate.newsContentFirst
+        newsPool[i].news_image_first = newsForUpdate.newsImageFirst
+        newsPool[i].news_content_second = newsForUpdate.newsContentSecond
+        newsPool[i].news_image_second = newsForUpdate.newsImageSecond
+        newsPool[i].news_content_third = newsForUpdate.newsContentThird
+        newsPool[i].news_image_fourth = newsForUpdate.newsImageFourth
       }
     }
   }

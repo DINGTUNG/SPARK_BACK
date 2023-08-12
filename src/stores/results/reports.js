@@ -79,48 +79,55 @@ export const useReportStore = defineStore('Report', () => {
     }
 
 
-    //up
-    // function updateReportBackend(reportNo,reportClass,reportTitle,reportFilePath) {
-    //     // prepare data 
-    //     const payLoad = new FormData();
-    //     payLoad.append("report_no", reportNo);
-    //     payLoad.append("report_Class", reportClass);
-    //     payLoad.append("report_Title", reportTitle);
-    //     payLoad.append("reports_file_path", reportFilePath);
+    //update
+    function updateReportBackend(reportsForUpdate) {
+
+      validateReportsForUpdate(reportsForUpdate);
+        // prepare data 
+        const payLoad = new FormData();
+        payLoad.append("report_no", reportsForUpdate.reportsNo);
+        payLoad.append("report_class", reportsForUpdate.reportsClass);
+        payLoad.append("report_year", reportsForUpdate.reportsYear);
+        payLoad.append("report_title", reportsForUpdate.reportsTitle);
+        payLoad.append("reports_file_path", reportsForUpdate.reportsFile[0]);
     
-    //     // make a request
-    //     const request = {
-    //       method: "POST",
-    //       url: `http://localhost/SPARK_BACK/php/activity/message-board/update_message.php`,
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //       data: payLoad,
-    //     };
+        // make a request
+        const request = {
+          method: "POST",
+          url: `http://localhost/SPARK_BACK/php/results/reports/update_reports.php`,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: payLoad,
+        };
     
-    //     // send request to backend server
-    //     return new Promise((resolve, reject) => {
-    //       axios(request)
-    //         .then((response) => {
-    //           const updateResult = response.data;
-    //           resolve(updateResult);
-    //         })
-    //         .catch((error) => {
-    //           console.log("From updateMessageBackend:", error);
-    //           reject(error);
-    //         });
-    //     });
-    //   }
+        // send request to backend server
+        return new Promise((resolve, reject) => {
+          axios(request)
+            .then((response) => {
+              const updateResult = response.data;
+              resolve(updateResult);
+            })
+            .catch((error) => {
+              console.log("From updateReportsBackend:", error);
+              reject(error);
+            });
+        });
+      }
+
+      const validateReportsForUpdate = (reportsNoForUpdate) => {
+        return reportsNoForUpdate
+      }
     
-    //   const updateMessageFromMessagePool = (messageNo,sparkActivityId,messageContent,memberId) => {
-    //     for (let i = 0; i < messagePool.length; i++) {
-    //       if (messagePool[i].message_no == messageNo) {
-    //       messagePool[i].spark_activity_id = sparkActivityId
-    //       messagePool[i].message_content = messageContent
-    //       messagePool[i].member_id = memberId
-    //       }
-    //     }
-    //   }
+      const updateReportFileFromReportsList = (reportsForUpdate) => {
+        for (let i = 0; i < reportsList.length; i++) {
+          if (reportsList[i].report_no ==  reportsForUpdate.reportsNo) {
+            reportsList[i].report_class = reportsForUpdate.reportsClass
+            reportsList[i].reports_year = reportsForUpdate.reportsYear
+            reportsList[i].reports_file_path = reportsForUpdate.reportsFile
+          }
+        }
+      }
 
 
 
@@ -130,6 +137,8 @@ export const useReportStore = defineStore('Report', () => {
         deleteReportBackend,
         deleteReportFromMessagePool,
         updateReportOnlineBackend,
-        updateReportFromReportsList
+        updateReportFromReportsList,
+        updateReportBackend,
+        updateReportFileFromReportsList
     }
 })

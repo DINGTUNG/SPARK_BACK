@@ -30,7 +30,6 @@ onMounted(() => {
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
-  console.log(newValue);
 };
 
 const searchText = computed(() => {
@@ -43,11 +42,12 @@ const searchText = computed(() => {
 
 const filteredReportList = computed(() => {
   return reportStore.reportsList.filter((item) => { 
-    const obj = [item.report_id, item.report_title,item.report_class]
+    const obj = [item.report_id, item.report_title, item.report_class];
     const str = JSON.stringify(obj);
-    return str.includes(searchText.value)
+    return str.includes(searchText.value);
   });
 });
+
 
 // 分頁
 const pageCount = () => {
@@ -101,13 +101,13 @@ async function UpdateReportOnline(item) {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayReportsList" :key="item.report_no" class="no-border">
-              <td class="no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="id">{{ item.report_id }}</td>
-              <td class="class">{{ item.report_class }}</td>
-              <td class="year">{{ item.report_year }}</td>
-              <td class="name">{{ item.report_title }}</td>
-              <td class="online">{{ item.is_report_online == 1 ? '已上架' : '未上架' }}</td>
+            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
+              <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
+              <td class="report_id">{{ item.report_id }}</td>
+              <td class="report_class">{{ item.report_class }}</td>
+              <td class="report_year">{{ item.report_year }}</td>
+              <td class="report_title">{{ item.report_title }}</td>
+              <td class="is_report_online">{{ item.is_report_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
                 <v-switch v-model="item.is_report_online" color="#EBC483" density="compact" hide-details="true" inline inset true-value=1  @change="UpdateReportOnline(item)"></v-switch>
               </td>

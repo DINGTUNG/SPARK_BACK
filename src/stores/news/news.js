@@ -1,12 +1,6 @@
-import {
-  defineStore
-} from 'pinia';
-
-import {
-  reactive
-} from 'vue'
+import { defineStore } from 'pinia';
+import { reactive } from 'vue'
 import axios from 'axios';
-
 export const useNewsStore = defineStore('news', () => {
   const newsPool = reactive([])
 
@@ -155,19 +149,6 @@ export const useNewsStore = defineStore('news', () => {
   // create
   function createNewsBackend(newsForUpdate) {
     validateNewsForUpdate(newsForUpdate);
-    // prepare data 
-    // const payLoad = new FormData();
-    // payLoad.append("news_no", newsForUpdate.newsNo);
-    // payLoad.append("news_title", newsForUpdate.newsTitle);
-    // payLoad.append("news_date", newsForUpdate.newsDate);
-    // payLoad.append("news_content_first",newsForUpdate.newsContentFirst);
-    // payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
-    // payLoad.append("news_content_second",newsForUpdate.newsContentSecond);
-    // payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
-    // payLoad.append("news_content_third",newsForUpdate.newsContentThird);
-    // payLoad.append("news_image_third", newsForUpdate.newsImageThird[0]);
-    // payLoad.append("news_content_fourth",newsForUpdate.newsContentFourth);
-    // payLoad.append("news_image_fourth", newsForUpdate.newsImageFourth[0]);
     const payLoad = {
       "news_no": newsForUpdate.newsNo,
       "news_title": newsForUpdate.newsTitle,
@@ -181,7 +162,6 @@ export const useNewsStore = defineStore('news', () => {
       "news_content_fourth": newsForUpdate.newsContentFourth,
       "news_image_fourth": newsForUpdate.newsImageFourth[0],
     }
-    console.log("--------", payLoad);
 
     // make a request
     const request = {
@@ -197,17 +177,16 @@ export const useNewsStore = defineStore('news', () => {
     return new Promise((resolve, reject) => {
       axios(request)
         .then((response) => {
-          const updateResult = response.data;
-          resolve(updateResult);
+          const createResult = response.data;
+          resolve(createResult);
         })
         .catch((error) => {
-          console.log("From updateNewsBackend:", error);
+          console.log("From createNewsBackend:", error);
           reject(error);
         });
     });
   }
-
-
+  
   return {
     newsPool,
     deleteNewsBackend,
@@ -218,5 +197,4 @@ export const useNewsStore = defineStore('news', () => {
     updateNewsFromNewsPool,
     createNewsBackend,
   }
-
 })

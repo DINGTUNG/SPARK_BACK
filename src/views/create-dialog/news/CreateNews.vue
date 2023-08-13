@@ -1,20 +1,14 @@
 <script setup>
 import { ref, reactive } from 'vue'
-const dialog = ref(false);
 import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
-
 const dialogDisplay = ref(false);
-
 function showDialog() {
   dialogDisplay.value = true;
 }
-
 function closeDialog() {
   dialogDisplay.value = false;
 }
-
-
 const newsForUpdate = reactive({
   newsNo:null,
   newsDate: null,
@@ -28,8 +22,6 @@ const newsForUpdate = reactive({
   newsContentFourth: "",
   newsImageFourth: [],
 })
-
-
 async function createNews(newsForUpdate) {
   try {
     const newNews = await newsStore.createNewsBackend(newsForUpdate)
@@ -48,10 +40,9 @@ const addContentToNewNews = (newNews) => {
   newsStore.newsPool.push(newNews)
 }
 </script>
-
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
         <v-btn color="primary" v-bind="props" @click="showDialog">
           新增
@@ -64,7 +55,6 @@ const addContentToNewNews = (newNews) => {
             <span class="text-h5">新增消息</span>
           </v-card-title>
           <v-card-text>
-
             <div class="form_item">
               <div class="name"><span>標題</span></div>
               <input type="text" id="title" name="news_title" v-model="newsForUpdate.newsTitle">
@@ -113,7 +103,7 @@ const addContentToNewNews = (newNews) => {
             <div class="imgblock form_item">
               <div class="name"><span>圖檔3</span></div>
               <v-file-input id="photo3" prepend-icon="none" name="news_image_third" v-model="newsForUpdate.newsImageThird">
-                <template v-slot:newsForUpdate.prepend-inner>
+                <template v-slot:prepend-inner>
                   <label for="photo3" id="photo">上傳圖檔</label>
                 </template>
               </v-file-input>
@@ -135,8 +125,8 @@ const addContentToNewNews = (newNews) => {
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
-              取消
+            <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                取消
             </v-btn>
             <v-btn color="blue-darken-1" variant="text" type="submit">
               儲存

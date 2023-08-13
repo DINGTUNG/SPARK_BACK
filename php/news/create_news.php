@@ -155,5 +155,5 @@ function mkFilename($updateId, $file, $fileNo)
   $filename = "$filename.$fileExt";
   return $filename;
 }
-
+?>
 

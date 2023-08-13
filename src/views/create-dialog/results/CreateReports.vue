@@ -1,78 +1,87 @@
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-const dialog = ref(false);
-
-const handleSubmit = async (event) => {
-    event.preventDefault();
+import { ref, reactive } from 'vue';
+import { useReportStore } from '@/stores/results/reports.js';
+const reportStore = useReportStore();
+const dialogDisplay = ref(false);
+function showDialog() {
+    dialogDisplay.value = true;
+}
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+const reportsForUpdate = reactive({
+    reportNo: null,
+    reportClass: "",
+    reportTitle: "",
+    reportYear: "",
+    reportsFile: [],
+})
+async function createReports(reportsForUpdate) {
+    console.log(reportsForUpdate)
     try {
-        const reportForm = document.getElementById('reportForm')
-        const formData = new FormData(reportForm);       
-        const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/add_reports.php', formData,{
-            headers:{
-                "Content-Type":'multipart/form-data'
-            }
-        })
+        const newReports = await reportStore.createReportsBackend(reportsForUpdate)
+        addContentToNewReports(newReports)
+        console.log(reportStore.reportsList);
+        console.log(reportsForUpdate)
+        window.alert(`新增成功!`);
     } catch (error) {
         console.error(error);
-        alert('新增失敗');
+        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
     }
-};
-
-// 監聽表單提交事件，呼叫 handleSubmit 處理
-// const reportForm = document.getElementById('reportForm');
-// if (reportForm) {
-//     reportForm.addEventListener('click', handleSubmit);
-// }
-
+}
+const addContentToNewReports = (newReports) => {
+    reportStore.reportsList.push(newReports)
+}
 </script>
 <template>
     <v-row justify="end">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
-                    新增
+                <v-btn color="primary" v-bind="props" @click="showDialog">
+                  新增
                 </v-btn>
             </template>
             <v-card>
-                <v-card-title>
-                    <span class="text-h5">新增報告</span>
-                </v-card-title>
-                <v-card-text>
-                    <form id="reportFrom" method="POST"
-                        action="http://localhost/SPARK_BACK/php/results/reports/add_reports.php"
-                        enctype="multipart/form-data">
+                <form action="http://localhost/SPARK_BACK/php/results/reports/create_reports.php" method="post" @submit.prevent="
+                    createReports(reportsForUpdate)">
+                    <v-card-title>
+                        <span class="text-h5">新增報告</span>
+                    </v-card-title>
+                    <v-card-text>
                         <div class="form_item">
                             <div class="name"><span>報告分類</span></div>
-                            <input type="text" id="title" name="report_class">
+                            <input type="text" id="class" name="report_class" v-model="reportsForUpdate.reportClass">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>年度</span></div>
-                            <input type="text" id="date" name="report_year">
+                            <input type="text" id="year" name="report_year" v-model="reportsForUpdate.reportYear">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>標題</span></div>
-                            <input type="text" id="date" name="report_title">
+                            <input type="text" id="title" name="report_title" v-model="reportsForUpdate.reportTitle">
                         </div>
                         <div class="imgblock form_item">
                             <div class="name"><span>報告</span></div>
-                            <v-file-input id="photo1" prepend-icon="none" name="report_file" >
+                            <v-file-input id="file" prepend-icon="none" name="reports_file_path"
+                                v-model="reportsForUpdate.reportsFile">
                                 <template v-slot:prepend-inner>
-                                    <label for="photo1" id="photo">上傳報告</label>
+                                    <label for="photo1" id="file">上傳報告</label>
                                 </template>
                             </v-file-input>
                         </div>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                            <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" @click="handleSubmit" type="button">
+                            <v-btn color="blue-darken-1" variant="text" type="submit">
                                 儲存
                             </v-btn>
                         </v-card-actions>
-                    </form>
                 </v-card-text>
+            </form>
             </v-card>
         </v-dialog>
     </v-row>

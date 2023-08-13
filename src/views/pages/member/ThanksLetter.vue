@@ -1,21 +1,20 @@
 <script setup>
 import Search from '@/components/Search.vue';
 import CreateThanksLetter from '@/views/create-dialog/member/CreateThanksLetter.vue';
-// import UpdateMessagePractice from '@/views/update-dialog/member/UpdateMessagePractice.vue';
-// import DeleteMessage from '@/views/delete-dialog/member/DeleteMessage.vue';
+import UpdateThanksLetter from '@/views/update-dialog/member/UpdateThanksLetter.vue';
+import DeleteThanksLetter from '@/views/delete-dialog/member/DeleteThanksLetter.vue';
 
-import { ref,  reactive, computed , onMounted }  from 'vue'
+import { ref, computed , onMounted }  from 'vue'
 import axios from 'axios';
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 
 //串接資料庫
-async function thanksLetterConnection() {
+async function thanksLetter() {
   try {
-    const response = await axios.post('http://localhost:8888/member/thanks_letter/thanks_letter.php')
-    thanksLetterStore.thanksLetterPool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
-
+    const response = await axios.post('http://localhost:8888/member/thanks-letter/thanks_letter.php')
+    thanksLetterStore.thanksLetterPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
         thanksLetterStore.thanksLetterPool.push(element)
@@ -27,8 +26,24 @@ async function thanksLetterConnection() {
 }
 
 onMounted(() => {
-  thanksLetterConnection()
+  thanksLetter()
 })
+
+
+// update sent status
+async function updateThanksLetterySentStatus(item) {
+  try {
+    if (item.thanks_letter_no == null) {
+      throw new Error("thanks_letter_no not found!")
+    }
+    await thanksLetterStore.updateThanksLetterSentStatusBackend(item.thanks_letter_no,item.is_thanks_letter_sent)
+    sparkActivityStore.updateSentStatusFromThanksLetterPool(item.thanks_letter_no,item.is_thanks_letter_sent)
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // 換頁
 const page = ref(1)
@@ -39,7 +54,7 @@ const pageCount = () => {
 const displayedLetterList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return  thanksLetterStore.thanksLetterPool.slice(startIdx, endIdx);
+  return  filteredThanksLetterPool.value.slice(startIdx, endIdx);
 });
 
 
@@ -102,26 +117,27 @@ const filteredLetterList = computed(() => {
               <td class="member_id">{{ item.member_id }}</td>
               <td class="sponsor_order_id">{{ item.sponsor_order_id }}</td>
               <td class="receive_date">{{ item.receive_date }}</td>
-              <td class="thanksletter_img">{{ item.thanksletter_img }}</td>
-              <td class="is_read">{{ item.is_read == 1 ? '已讀' : '未讀' }}</td>
+              <td class="file_name">{{ item.file_name }}</td>
+              <td class="is_read">{{ item.is_thanks_letter_sent == 1 ? '確認寄出' : '待確認' }}</td>
               <td>
-                <v-switch v-model="item.is_read" color="#EBC483" density="compact" hide-details="true" inline
-                inset true-value=1 @change="updateOrderStatus(item)">
+                <v-switch v-model="item.is_thanks_letter_sent" color="#EBC483" density="compact" hide-details="true" inline
+                inset true-value=1 @change="updateThanksLetterySentStatus(item)">
                 </v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateThanksLetter
-                :thanksLetterIdForUpdate="parseInt(item.thanks_letter_id)"
-                :childrenIdForUpdate="parseInt(item.children_id)"
-                :memberIdIdForUpdate="parseInt(item.memberId_id)"
-                :sponsorOrderIdForUpdate="parseInt(item.sponsor_order_id)"
-                :receiveDateIdForUpdate="parseInt(item.receive_date)"
+                :thanksLetterNoForUpdate="parseInt(item.thanks_letter_no)"
+                :childrenIdForUpdate="item.children_id"
+                :memberIdForUpdate="item.member_id"
+                :sponsorOrderIdForUpdate="item.sponsor_order_id"
+                :receiveDateForUpdate="item.receive_date"
+                :fileNameForUpdate="item.file_name"
                 />
 
                 <DeleteThanksLetter
-                :thanksLetterIdForDelete="parseInt(item.thanks_letter_id)" />
+                :thanksLetterNoForDelete="parseInt(item.thanks_letter_no)" />
               </td>
             </tr>
           </tbody>

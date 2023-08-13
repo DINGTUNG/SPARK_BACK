@@ -3,20 +3,20 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-require_once("../../connect_chd102g3.php");
+require_once("../../connect_chd102g3-yiiijie.php");
 
 try {
-  $messageNo = $_POST["message_no"] ?? null;
+  $thanksLetterNo = $_POST["thanks_letter_no"] ?? null;
 
   // parameters validation
-  if ($messageNo == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供message no)");
+  if ($thanksLetterNo == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供thanks letter no)");
   }
 
   // check delete record existed
-  $checkRecordAliveSql = "select count(*) as count from message_board where message_no = :message_no and del_flg = 0";
+  $checkRecordAliveSql = "select count(*) as count from thanks_letter where thanks_letter_no = :thanks_letter_no and del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
-  $checkRecordAliveStmt->bindValue(":message_no", $messageNo);
+  $checkRecordAliveStmt->bindValue(":thanks_letter_no", $thanksLetterNo);
   $checkRecordAliveStmt->execute();
   $checkResult = $checkRecordAliveStmt->fetchAll(PDO::FETCH_ASSOC);
   $isNotExisted = $checkResult[0]['count'] == 0;
@@ -26,14 +26,14 @@ try {
   }
 
   // delete record
-  $updateDeleteSql = "update message_board set del_flg = 1,updater='許咪咪', update_time=Now() where message_no = :message_no ";
+  $updateDeleteSql = "update thanks_letter set del_flg = 1,updater='星火喵喵大財團', update_time = Now() where thanks_letter_no = :thanks_letter_no ";
   $updateDeleteStmt = $pdo->prepare($updateDeleteSql);
-  $updateDeleteStmt->bindValue(":message_no", $messageNo);
+  $updateDeleteStmt->bindValue(":thanks_letter_no", $thanksLetterNo);
   $updateDeleteResult = $updateDeleteStmt->execute();
   http_response_code(200);
   echo json_encode($updateDeleteResult);
 
-  echo "參數不足(請提供message no)"; 
+  echo "參數不足(請提供thanks letter no)"; 
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
   echo $e->getMessage();

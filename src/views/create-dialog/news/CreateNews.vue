@@ -10,7 +10,7 @@ function closeDialog() {
   dialogDisplay.value = false;
 }
 const newsForUpdate = reactive({
-  newsNo:null,
+  newsNo: null,
   newsDate: null,
   newsTitle: "",
   newsContentFirst: "",
@@ -70,7 +70,8 @@ const addContentToNewNews = (newNews) => {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
-              <v-file-input id="photo1" prepend-icon="none" name="news_image_first" v-model="newsForUpdate.newsImageFirst">
+              <v-file-input id="photo1" prepend-icon="none" name="news_image_first"
+                v-model="newsForUpdate.newsImageFirst">
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
@@ -80,14 +81,16 @@ const addContentToNewNews = (newNews) => {
               <div class="name">
                 <span>段落2</span>
               </div>
-              <textarea id="paragraph2" cols="70" rows="10" name="news_content_second" v-model="newsForUpdate.newsContentSecond">
+              <textarea id="paragraph2" cols="70" rows="10" name="news_content_second"
+                v-model="newsForUpdate.newsContentSecond">
               </textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name">
                 <span>圖檔2</span>
               </div>
-              <v-file-input id="photo2" prepend-icon="none" name="news_image_second" v-model="newsForUpdate.newsImageSecond">
+              <v-file-input id="photo2" prepend-icon="none" name="news_image_second"
+                v-model="newsForUpdate.newsImageSecond">
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>
@@ -97,7 +100,8 @@ const addContentToNewNews = (newNews) => {
               <div class="name">
                 <span>段落3</span>
               </div>
-              <textarea id="paragraph3" cols="70" rows="10" name="news_content_third" v-model="newsForUpdate.newsContentThird">
+              <textarea id="paragraph3" cols="70" rows="10" name="news_content_third"
+                v-model="newsForUpdate.newsContentThird">
               </textarea>
             </div>
             <div class="imgblock form_item">
@@ -115,7 +119,8 @@ const addContentToNewNews = (newNews) => {
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔4</span></div>
-              <v-file-input id="photo4" prepend-icon="none" name="news_image_fourth" v-model="newsForUpdate.newsImageFourth">
+              <v-file-input id="photo4" prepend-icon="none" name="news_image_fourth"
+                v-model="newsForUpdate.newsImageFourth">
                 <template v-slot:prepend-inner>
                   <label for="photo4" id="photo">上傳圖檔
                   </label>
@@ -284,5 +289,4 @@ textarea {
   margin-bottom: 50px;
   margin-right: 20px;
 
-}
-</style>
+}</style>

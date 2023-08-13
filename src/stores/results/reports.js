@@ -129,8 +129,41 @@ export const useReportStore = defineStore('Report', () => {
         }
       }
 
+    //create
+    function createReportsBackend(reportsForUpdate) {
+      validateReportsForUpdate(reportsForUpdate);
+      const payLoad = {
+        "report_no": reportsForUpdate.reportNo,
+        "report_class": reportsForUpdate.reportClass,
+        "report_title": reportsForUpdate.reportTitle,
+        "report_year": reportsForUpdate.reportYear,
+        "reports_file_path": reportsForUpdate.reportsFile[0],
+      }
+    
+    
+      const request = {
+        method: "POST",
+        url: `http://localhost/SPARK_BACK/php/results/reports/create_reports.php`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: payLoad,
+      };
 
 
+      return new Promise((resolve, reject) => {
+        axios(request)
+          .then((response) => {
+            const createResult = response.data;
+            resolve(createResult);
+          })
+          .catch((error) => {
+            console.log("From createReportsBackend:", error);
+            reject(error);
+          });
+      });
+    
+    }
 
     return {
         reportsList,
@@ -139,6 +172,7 @@ export const useReportStore = defineStore('Report', () => {
         updateReportOnlineBackend,
         updateReportFromReportsList,
         updateReportBackend,
-        updateReportFileFromReportsList
-    }
+        updateReportFileFromReportsList,
+        createReportsBackend,
+      }
 })

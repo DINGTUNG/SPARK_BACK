@@ -1,31 +1,76 @@
-<script setup>
-import { ref } from 'vue'
-const dialog = ref(false);
+<script setup> //
+import { ref, defineProps } from 'vue'
+import { useMilestoneStore } from '@/stores/results/milestone.js';
+const milestoneStore = useMilestoneStore();
+
+const vueProps = defineProps({
+    milestoneNoForUpdate: Number,
+    milestoneTitleForUpdate: String,
+    milestoneDateForUpdate: String,
+    milestoneContentForUpdate: String,
+    milestoneImageForUpdate: String,
+})
+
+const milestoneTitle = ref('')
+const milestoneDate = ref('')
+const milestoneContent = ref('')
+const milestoneImage = ref('')
+
+const dialogDisplay = ref(false);
+
+function showDialog() {
+    dialogDisplay.value = true;
+    milestoneTitle.value = vueProps.milestoneTitleForUpdate
+    milestoneDate.value = vueProps.milestoneDateForUpdate
+    milestoneContent.value = vueProps.milestoneContentForUpdate
+    milestoneImage.value = vueProps.milestoneImageForUpdate
+}
+
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+
+async function updateMilestone(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage) {
+    try {
+        if (milestoneNoForUpdate == null) {
+            throw new Error("Milestone no. not found!")
+        }
+        await milestoneStore.updateMilestoneBackend(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage)
+        milestoneStore.updateMilestoneFromMilestonePool(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage)
+        window.alert(`編輯成功!`);
+    } catch (error) {
+        console.error(error);
+        window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
+    }
+}
+
 </script>
 
 <template>
     <v-row class="row" style="flex: 0;">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+                <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
                     <span class="main_title">編輯里程碑</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="">
+                    <form action="http://localhost/SPARK_BACK/php/results/milestone/update_milestone.php" method="post" @submit.prevent="updateMilestone(vueProps.milestoneNoForUpdate, milestoneTitle, milestoneDate, milestoneContent, milestoneImage)">
                         <label for="">
                             <div class="input_title">標題</div>
-                            <input type="text">
+                            <input type="text" name="milestone_title" v-model="milestoneTitle">
                         </label>
                         <label for="">
                             <div class="input_title">年度/月份</div>
-                            <input type="month">
+                            <input type="month" name="milestone_date" v-model="milestoneDate">
                         </label>
                         <label for="">
                             <div class="input_title">內文</div>
-                            <textarea name="" id="" cols="70" rows="10"></textarea>
+                            <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneContent"></textarea>
                         </label>
 
                         <div class="imgblock">
@@ -42,10 +87,10 @@ const dialog = ref(false);
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                    <v-btn class="cancel btn" variant="text" @click="closeDialog">
                         取消
                     </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                    <v-btn class="update btn" variant="text" type="submit">
                         儲存
                     </v-btn>
                 </v-card-actions>

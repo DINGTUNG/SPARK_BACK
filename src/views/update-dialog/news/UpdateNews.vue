@@ -38,10 +38,6 @@ function closeDialog() {
 }
 
 function showDialog() {
-  console.log('vueProps:', vueProps);
-  console.log('newsForUpdate:', newsForUpdate);
-  console.log('newsContentFirstUpdate:', vueProps.newsContentFirstUpdate);
-
   dialogDisplay.value = true;
   newsForUpdate.newsNo = vueProps.newsNoForUpdate
   newsForUpdate.newsTitle = vueProps.newsTitleForUpdate

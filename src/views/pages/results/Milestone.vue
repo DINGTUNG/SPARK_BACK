@@ -6,21 +6,21 @@ import UpdateMilestone from '@/views/update-dialog/results/UpdateMilestone.vue';
 import DeleteMilestone from '@/views/delete-dialog/results/DeleteMilestone.vue'; //刪除里程碑
 
 
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
 import { useMilestoneStore } from '@/stores/results/milestone.js';
 const milestoneStore = useMilestoneStore();
 
 
 //【串接資料庫】
-async function milestoneConnection() {
+async function getMilestone() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/results/milestone/milestone.php')
-    console.log(response)
-    milestoneStore.milestonePool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/milestone/get_milestone.php');
+    milestoneStore.milestonePool.splice(0);
+
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        milestoneStore.milestonePool.push(element)
+        milestoneStore.milestonePool.push(element);
       });
     }
   } catch (error) {
@@ -29,20 +29,20 @@ async function milestoneConnection() {
 }
 
 onMounted(() => {
-  milestoneConnection()
-})
+  getMilestone();
+});
 
 
 // 【換頁功能】
 const page = ref(1)
 const itemsPerPage = 10;
-const pageCount = () => {
-  return Math.floor((milestoneStore.milestonePool.length - 1) / itemsPerPage) + 1;
-}
+const pageCount = computed(() => {
+  return Math.ceil(milestoneStore.milestonePool.length / itemsPerPage);
+});
 const displayMilestoneList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return milestoneStore.milestonePool.slice(startIdx, endIdx);
+  return filteredMilestoneList.value.slice(startIdx, endIdx);
 });
 
 
@@ -53,21 +53,36 @@ function handleSearchChange(newValue) {
   console.log(searchValue.value);
 }
 
-const filteredMilestoneList = computed(() => {
-  const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}` : searchText;
+  }
+  return searchText;
+})
 
-  return displayMilestoneList.value.filter(item => {
-    const noMatch = item.milestone_no.toString().includes(searchText);
-    const idMatch = item.milestone_id.toString().includes(searchText);
-    const titleMatch = item.milestone_title.toLowerCase().includes(searchText);
-    const dateMatch = item.milestone_date.toString().includes(searchText);
-    const onlineStatusMatch = ((item.is_milestone_online && '已上架'.includes(searchText)) || (!item.is_milestone_online && '未上架'.includes(searchText)));
-    const indexMatch = ((page.value - 1) * itemsPerPage) + displayMilestoneList.value.indexOf(item) + 1 === parseInt(searchText);
-    return noMatch || idMatch || titleMatch || dateMatch || onlineStatusMatch || indexMatch;
+const filteredMilestoneList = computed(() => {
+  return milestoneStore.milestonePool.filter((item) => {
+    const obj = [item.milestone_id, item.milestone_title, item.milestone_date]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
   });
 });
 
 
+//【切換上下架功能】
+async function UpdateMilestoneOnlineStatus(item) {
+  try {
+    if (item.milestone_no == null) {
+      throw new Error("milestone no not found!")
+    }
+    await milestoneStore.updateMilestoneOnlineStatusBackend(item.milestone_no,item.is_milestone_online)
+    milestoneStore.updateOrderStatusFromMilestoneList(item.milestone_no,item.is_milestone_online)
+
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 </script>
 
@@ -84,7 +99,6 @@ const filteredMilestoneList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>里程碑編號</th>
               <th>里程碑ID</th>
               <th>里程碑標題</th>
               <th>年度/月份</th>
@@ -94,21 +108,19 @@ const filteredMilestoneList = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in filteredMilestoneList" :key="item.milestone_id" class="no-border">
+            <tr v-for="(item, index) in displayMilestoneList" :key="item.milestone_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
-              <td class="milestone_no">{{ item.milestone_no }}</td>
-              <td class="milestone_id">{{ item.milestone_id }}</td>
-              <td class="milestone_title">{{ item.milestone_title }}</td>
-              <td class="milestone_date">{{ item.milestone_date }}</td>
-              <td class="is_milestone_online">{{ item.is_milestone_online ? '已上架' : '未上架' }}</td>
+              <td class="id">{{ item.milestone_id }}</td>
+              <td class="title">{{ item.milestone_title }}</td>
+              <td class="date">{{ item.milestone_date }}</td>
+              <td class="online">{{ item.is_milestone_online == 1 ? '已上架' : '未上架' }}</td>
               <td>
-                <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
-                  inset></v-switch>
+                <v-switch v-model="item.is_milestone_online" color="#EBC483" density="compact" hide-details="true" inline
+                  inset true-value=1 @change="UpdateMilestoneOnlineStatus(item)"></v-switch>
               </td>
               <td class="update_and_delete">
-                <UpdateMilestone />
-                <!-- <v-icon size="small" @click="showDeleteDialog(item)">mdi-delete</v-icon> -->
+                <UpdateMilestone :milestoneNoForUpdate="parseInt(item.milestone_no)" :milestoneTitleForUpdate="item.milestone_title" :milestoneDateForUpdate="item.milestone_date" :milestoneContentForUpdate="item.milestone_content" :milestoneImageForUpdate="item.milestone_image"/>
                 <DeleteMilestone :milestoneNoForDelete="parseInt(item.milestone_no)" />
               </td>
             </tr>
@@ -119,7 +131,7 @@ const filteredMilestoneList = computed(() => {
 
       <!-- 分頁 -->
       <div class="text-center">
-        <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
+        <v-pagination v-model="page" :length="pageCount" rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>

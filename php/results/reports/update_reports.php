@@ -7,7 +7,6 @@ require_once("../../connect_chd102g3.php");
 try {
   $reportNo = $_POST["report_no"] ?? null;
   $reportClass = $_POST["report_class"] ?? null;
-  var_dump($reportClass);
   $reportYear = $_POST["report_year"] ?? null;
   $reportTitle = $_POST["report_title"] ?? null;
   $reportsFile = $_FILES["reports_file_path"] ?? null;
@@ -94,7 +93,7 @@ function copyFileToLocal($reportNo,$file,$fileNo)
     mkdir($dir);
   }
 
-  $filename = mkFilename($reportNo,$file,$fileNo);
+  $filename = mkFilename($reportNo,$file,$fileNo,$reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);

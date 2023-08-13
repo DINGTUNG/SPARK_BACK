@@ -4,8 +4,6 @@ header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 require_once("../connect_chd102g3.php");
 try {
-
-  $newsNo = $_POST["news_no"] ?? null;
   $newsTitle = $_POST["news_title"] ?? null;
   $newsDate = $_POST["news_date"] ?? null;
   $newsContentFirst = $_POST["news_content_first"] ?? null;
@@ -18,9 +16,6 @@ try {
   $newsImageFourth = $_FILES["news_image_fourth"] ?? null;
 
   // parameters validation
-  if ($newsNo == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供news no)");
-  }
   if ($newsTitle == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供news title)");
   }
@@ -86,7 +81,7 @@ try {
     :news_no )";
 
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":news_no", $newsNo);
+  $createStmt->bindValue(":news_no",$newsNo);
   $createStmt->bindValue(":news_title",$newsTitle);
   $createStmt->bindValue(":news_date", $newsDate);
   $createStmt->bindValue(":news_content_first", $newsContentFirst);
@@ -98,8 +93,6 @@ try {
   $createStmt->bindValue(":news_content_fourth", $newsContentFourth);
   $createStmt->bindValue(":news_image_fourth", mkFilename($newsNo, $newsImageFourth, 4));
   $createResult = $createStmt->execute();
-
-
 
   if (!$createResult) {
     throw new Exception();
@@ -118,14 +111,16 @@ try {
   }
 
   $updateSql = "update news set news_id = concat('N',LPAD(LAST_INSERT_ID(), 3, 0)) where news_no = LAST_INSERT_ID()";
-
   $updateStmt = $pdo->prepare($updateSql);
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
-  $pdo->commit();
+  $selectSql = "select * from news where news_no = (select LAST_INSERT_ID())";
+  $selectStmt = $pdo->query($selectSql);
+  $newMessage = $selectStmt->fetch
+  (PDO::FETCH_ASSOC);
   http_response_code(200);
-  echo json_encode($updateResult);
+  echo json_encode($newMessage);
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
   echo $e->getMessage();
@@ -140,22 +135,18 @@ try {
   $pdo->rollBack();
 }
 
-function addFile($newsNo, $file, $fileNo)
+function copyFileToLocal($newsNo, $file, $fileNo)
 {
   $dir = "../../images/news/";
-  if (!file_exists($dir)) {
-    mkdir($dir, 0777, true);
+  if (file_exists($dir) === false) {
+    mkdir($dir);
   }
+
   $filename = mkFilename($newsNo, $file, $fileNo);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
-  if (move_uploaded_file($from, $to)) {
-    return $filename; // Return the newly added filename
-  } else {
-    throw new Exception("檔案新增失敗");
-  }
+  return copy($from, $to);
 }
-
 
 function mkFilename($updateId, $file, $fileNo)
 {
@@ -164,10 +155,5 @@ function mkFilename($updateId, $file, $fileNo)
   $filename = "$filename.$fileExt";
   return $filename;
 }
+?>
 
-try {
-    $addedFilename = addFile($newsNo, $newsImageFirst, 1);
-  } catch (Exception $e) {
-    // 處理檔案新增失敗的情況
-    echo $e->getMessage();
-  }

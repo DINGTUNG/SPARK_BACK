@@ -65,21 +65,6 @@ const filteredStaffList = computed(() => {
   });
 });
 
-// const filteredStaffList = computed(() => {
-//   const searchText = searchValue.value.toString().toLowerCase(); // 確保將 searchValue 轉換為字符串並進行小寫轉換
-
-//   return displayedStaffList.value.filter(item => {
-//     const idMatch = item.staff_id.toString().includes(searchText);
-//     const nameMatch = item.staff_name.toLowerCase().includes(searchText);
-//     const permissionMatch = item.staff_permission.toString().includes(searchText);
-//     const emailMatch = item.staff_email.toString().includes(searchText);
-//     const accountMatch = item.staff_account.toString().includes(searchText);
-//     const passwordMatch = item.staff_password.toString().includes(searchText);
-//     const indexMatch = ((page.value - 1) * itemsPerPage) + displayedStaffList.value.indexOf(item) + 1 === parseInt(searchText);
-//     return idMatch || nameMatch || permissionMatch || emailMatch || accountMatch || passwordMatch || indexMatch;
-//   });
-// });
-
 </script>
 
 

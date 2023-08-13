@@ -1,21 +1,68 @@
 <script setup>
-import { ref } from 'vue'
-const dialog = ref(false);
+import { ref, reactive, computed } from 'vue'
+
+import { useDonateStore } from '@/stores/donate/donate-project.js';
+const DonateStore = useDonateStore();
+
+const dialogDisplay = ref(false);
+
+function showDialog() {
+  dialogDisplay.value = true;
+}
+
+function closeDialog() {
+  dialogDisplay.value = false;
+}
+
+// //超過最多字數會變紅色字
+// const getStyle = (count, maxCount) => {
+//   return {
+//     color: count >= maxCount ? 'red' : 'black',
+//   };
+// };
+
+// const donateForUpdate = reactive({
+//   donateNo: null,
+//   donateName: "",
+//   donateStartDate: null,
+//   donateEndDate: null,
+//   donateSummarize: "",
+//   donateImage: [],
+// })
+
+const donateName = ref('')
+const donateStartDate = ref('')
+const donateEndDate = ref('')
+const donateSummarize = ref('')
+const donateImage = ref('')
+
+async function CreateDonateProject(donateName, donateStartDate, donateEndDate, donateSummarize, donateImage) {
+  try {
+    const newDonateProject = await DonateStore.createDonateBackend(donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)
+    addContentToNewDonate(newDonateProject)
+    console.log(DonateStore.donatePool);
+    window.alert(`新增成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+  } finally {
+    closeDialog()
+  }
+}
+
+const addContentToNewDonate = (newDonateProject) => {
+  DonateStore.donatePool.push(newDonateProject)
+}
 
 
-// const fileName = ref("");
 
-// function onFileChange(event) {
-//   // 更新檔案名稱
-//   fileName.value = event.target.files[0]?.name || "";
-// }
 </script>
 
 <template>
   <v-row justify="end">
-    <v-dialog v-model="dialog" persistent width="50%">
+    <v-dialog v-model="dialogDisplay" persistent width="50%">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props">
+        <v-btn color="primary" v-bind="props" @click="showDialog">
           新增
         </v-btn>
       </template>
@@ -25,45 +72,50 @@ const dialog = ref(false);
           <span class="main_title">新增捐款專案</span>
         </v-card-title>
         <v-card-text>
-          <form action="">
+
+          <form action="http://localhost/SPARK_BACK/php/donate/donate-project/create_donate_project.php" method="post"
+            @submit.prevent="CreateDonateProject(donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)">
             <label for="">
               <div class="input_title">標題</div>
-              <input type="text">
+              <input type="text" name="donate_project_name" v-model="donateName">
             </label>
             <label for="">
               <div class="input_title">開始日期</div>
-              <input type="date">
+              <input type="date" name="donate_project_start_date" v-model="donateStartDate">
             </label>
             <label for="">
               <div class="input_title">結束日期</div>
-              <input type="date">
+              <input type="date" name="donate_project_end_date" v-model="donateEndDate">
             </label>
             <label for="">
               <div class="input_title">內文</div>
-              <textarea name="" id="" cols="70" rows="10"></textarea>
+              <textarea name="donate_project_summarize" v-model="donateSummarize" placeholder="60~70字可獲得最佳顯示效果喔~"
+                cols="70" rows="10"></textarea>
             </label>
+            <!-- <span class="count" :style="getStyle(donate_project_summarize.length, 50)">{{ donate_project_summarize.length
+            }}<span> /
+                50</span></span> -->
 
             <div class="imgblock">
               <span>封面照片</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none">
+              <v-file-input name="donate_project_image" id="coverPic" prepend-icon="none" v-model="donateImage">
                 <template v-slot:prepend-inner>
-                  <label for="book">上傳圖檔</label>
+                  <label for="coverPic">上傳圖檔</label>
                 </template>
               </v-file-input>
             </div>
-
-
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                取消
+              </v-btn>
+              <v-btn class="update btn" variant="text" type="submit">
+                確定
+              </v-btn>
+            </v-card-actions>
           </form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-            儲存
-          </v-btn>
-        </v-card-actions>
+
       </v-card>
     </v-dialog>
   </v-row>

@@ -50,7 +50,7 @@ export const useNewsStore = defineStore('news', () => {
   }
 
   // status
-  function updateNewsStatusBackend(newsNo,newsOnline) {
+  function updateNewsStatusBackend(newsNo, newsOnline) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("news_no", newsNo);
@@ -79,10 +79,10 @@ export const useNewsStore = defineStore('news', () => {
         });
     });
   }
-  const updateNewsStatusFromNewsPool = (newsNo,newsOnline) => {
+  const updateNewsStatusFromNewsPool = (newsNo, newsOnline) => {
     for (let i = 0; i < newsPool.length; i++) {
       if (newsPool[i].news_no == newsNo) {
-      newsPool[i].is_news_online = newsOnline
+        newsPool[i].is_news_online = newsOnline
       }
     }
   }
@@ -98,8 +98,14 @@ export const useNewsStore = defineStore('news', () => {
     payLoad.append("news_no", newsForUpdate.newsNo);
     payLoad.append("news_title", newsForUpdate.newsTitle);
     payLoad.append("news_date", newsForUpdate.newsDate);
+    payLoad.append("news_content_first", newsForUpdate.newsContentFirst);
     payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
+    payLoad.append("news_content_second", newsForUpdate.newsContentSecond);
     payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
+    payLoad.append("news_content_third", newsForUpdate.newsContentThird);
+    payLoad.append("news_image_third", newsForUpdate.newsImageThird[0]);
+    payLoad.append("news_content_fourth", newsForUpdate.newsContentFourth);
+    payLoad.append("news_image_fourth", newsForUpdate.newsImageFourth[0]);
 
 
     // make a request
@@ -130,44 +136,76 @@ export const useNewsStore = defineStore('news', () => {
     return newsNoForUpdate
   }
 
-  const updateNewsFromNewsPool = (newsNoForUpdate) => {
+  const updateNewsFromNewsPool = (newsForUpdate) => {
     for (let i = 0; i < newsPool.length; i++) {
-      if (newsPool[i].news_no == newsNoForUpdate.newsNo) {
-        newsPool[i].news_date = newsNoForUpdate.newsDate
-        newsPool[i].news_image_first = newsNoForUpdate.newsImageFirst
+      if (newsPool[i].news_no == newsForUpdate.newsNo) {
+        newsPool[i].news_date = newsForUpdate.newsDate
+        newsPool[i].news_title = newsForUpdate.newsTitle
+        newsPool[i].news_content_first = newsForUpdate.newsContentFirst
+        newsPool[i].news_image_first = newsForUpdate.newsImageFirst
+        newsPool[i].news_content_second = newsForUpdate.newsContentSecond
+        newsPool[i].news_image_second = newsForUpdate.newsImageSecond
+        newsPool[i].news_content_third = newsForUpdate.newsContentThird
+        newsPool[i].news_image_fourth = newsForUpdate.newsImageFourth
       }
     }
   }
 
-  // // create
-  // function createNewsBackend(newsDate,newsImageFirst) {
-  //   // prepare data 
-  //   const payLoad = new FormData();
-  //   payLoad.append("message_content", messageContent);
 
-  //   // make a request
-  //   const request = {
-  //     method: "POST",
-  //     url: `http://localhost/SPARK_BACK/php/activity/message-board/create_message.php`,
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //     data: payLoad,
-  //   };
+  // create
+  function createNewsBackend(newsForUpdate) {
+    validateNewsForUpdate(newsForUpdate);
+    // prepare data 
+    // const payLoad = new FormData();
+    // payLoad.append("news_no", newsForUpdate.newsNo);
+    // payLoad.append("news_title", newsForUpdate.newsTitle);
+    // payLoad.append("news_date", newsForUpdate.newsDate);
+    // payLoad.append("news_content_first",newsForUpdate.newsContentFirst);
+    // payLoad.append("news_image_first", newsForUpdate.newsImageFirst[0]);
+    // payLoad.append("news_content_second",newsForUpdate.newsContentSecond);
+    // payLoad.append("news_image_second", newsForUpdate.newsImageSecond[0]);
+    // payLoad.append("news_content_third",newsForUpdate.newsContentThird);
+    // payLoad.append("news_image_third", newsForUpdate.newsImageThird[0]);
+    // payLoad.append("news_content_fourth",newsForUpdate.newsContentFourth);
+    // payLoad.append("news_image_fourth", newsForUpdate.newsImageFourth[0]);
+    const payLoad = {
+      "news_no": newsForUpdate.newsNo,
+      "news_title": newsForUpdate.newsTitle,
+      "news_date": newsForUpdate.newsDate,
+      "news_content_first": newsForUpdate.newsContentFirst,
+      "news_image_first": newsForUpdate.newsImageFirst[0],
+      "news_content_second": newsForUpdate.newsContentSecond,
+      "news_image_second": newsForUpdate.newsImageSecond[0],
+      "news_content_third": newsForUpdate.newsContentThird,
+      "news_image_third": newsForUpdate.newsImageThird[0],
+      "news_content_fourth": newsForUpdate.newsContentFourth,
+      "news_image_fourth": newsForUpdate.newsImageFourth[0],
+    }
+    console.log("--------", payLoad);
 
-  //   // send request to backend server
-  //   return new Promise((resolve, reject) => {
-  //     axios(request)
-  //       .then((response) => {
-  //         const createResult = response.data;
-  //         resolve(createResult);
-  //       })
-  //       .catch((error) => {
-  //         console.log("From createMessageBackend:", error);
-  //         reject(error);
-  //       });
-  //   });
-  // }
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/news/create_news.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const updateResult = response.data;
+          resolve(updateResult);
+        })
+        .catch((error) => {
+          console.log("From updateNewsBackend:", error);
+          reject(error);
+        });
+    });
+  }
 
 
   return {
@@ -178,7 +216,7 @@ export const useNewsStore = defineStore('news', () => {
     updateNewsStatusFromNewsPool,
     updateNewsBackend,
     updateNewsFromNewsPool,
-    // createNewsBackend
+    createNewsBackend,
   }
 
 })

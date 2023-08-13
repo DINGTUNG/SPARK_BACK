@@ -2,7 +2,8 @@
 header("Access-Control-Allow-Origin: *");
  require_once("../../connect_chd102g3.php");
 try{
-  $sql = "select * from reports where report_class ='年度'";
+  $sql = "SELECT * FROM reports WHERE report_class = '年度' AND del_flg = 0;
+  ";
   $location=$pdo->prepare($sql);
   $location->execute();
   if( $location->rowCount() == 0 ){ 

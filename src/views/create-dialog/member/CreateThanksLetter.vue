@@ -1,11 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-// const dialog = ref(false);
-
-
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
-const thanksLetterStore = useThanksLetterStore();
 
+const thanksLetterStore = useThanksLetterStore();
 const dialogDisplay = ref(false);
 
 function showDialog() {
@@ -20,11 +17,11 @@ const childrenId = ref('')
 const memberId = ref('')
 const sponsorOrderId = ref('')
 const receiveDate = ref('')
-const fileName = ref('')
+const thanksletterImg = ref('')
 
-async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg) {
     try {
-        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
+        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg)
         addContentTonewThanksLetter(newThanksLetter)
         console.log(thanksLetterStore.thanksLetterPool);
         window.alert(`新增成功!`);
@@ -55,7 +52,7 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-card-title>
                 <v-card-text>
                     <form action="http://localhost:8888/member/thanks_letter/create_letter.php" method="post"
-                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
+                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg)">
                         <label for="">
                             <div class="input_title">兒童編號</div>
                             <input type="text" name="children_id" v-model="childrenId">
@@ -68,14 +65,18 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                             <div class="input_title">認養訂單ID</div>
                             <input type="text" name="sponsor_order_id" v-model="sponsorOrderId">
                         </label>
-                        <label for="">
+                        <label for="date" class="custom-label">
                             <div class="input_title">收件日期</div>
-                            <input type="text" name="receive_date" v-model="receiveDate">
+                            <input type="date" id="date" name="receive_date" v-model="receiveDate">
                         </label>
-                        <label for="">
-                            <div class="input_title">檔名</div>
-                            <input type="text" name="file_name" v-model="fileName">
-                        </label>
+                        <div class="imgblock">
+                            <span>圖片</span>
+                            <v-file-input variant="outlined" id="thanksletter" prepend-icon="none" name="thanksletter_img" v-model="thanksletterImg">
+                                <template v-slot:prepend-inner>
+                                    <label for="thanksletter">上傳圖檔</label>
+                                </template>
+                            </v-file-input>
+                        </div>
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -94,33 +95,34 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
     </v-row>
 </template>
 <style scoped lang="scss">
-:deep(.v-btn.v-btn--density-default) {
-    background-color: $primaryBrandBlue !important;
-
-}
-
 :deep(.v-dialog > .v-overlay__content) {
-    width: 50%;
+  width: 50%;
 }
 
 :deep(.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated) {
-    height: 50%;
-    top: 50%;
-    border-radius: 60px;
-    overflow: hidden;
+  height: 50%;
+  top: 50%;
+  border-radius: 60px;
+  overflow: hidden;
 }
 
 :deep(.v-btn__content) {
-    color: #ffff !important;
+  color: #ffff !important;
 }
 
 :deep(.v-card .v-card-title) {
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 }
 
-label {
-    @include flex_hm();
+:deep(.v-dialog > .v-overlay__content > .v-card > .v-card-text) {
+  padding: 500px;
+
+}
+
+:deep(.imgblock[data-v-bea6dedf] .v-field.v-field--appended) {
+  position: relative;
+  right: 20px;
 }
 
 .main_title {
@@ -131,25 +133,52 @@ label {
 }
 
 .imgblock {
+  display: flex;
+
+  span {
+    // @include flex_vm();
+    // justify-content: start;
+    width: 10vw;
+    text-align: right;
+    @include h4_PC;
+  }
+
+  input {
+    height: 5vh;
+    padding-left: 10px;
+    padding-top: 5px;
+    margin-left: 1vw;
+    width: 2vw;
+    width: 50%;
+    border: 1px solid;
+    border-radius: $br_MB;
+  }
+
+  :deep(.v-field.v-field--appended) {
     display: flex;
+  }
 
-    input[type="file"] {
-        border: 1px transparent;
-    }
+  :deep(.v-input__control) {
+    width: 50%;
+    height: 5vh;
+    margin-left: -21px;
+  }
 
-
-    input {
-        height: 5vh;
-        padding-left: 10px;
-        padding-top: 5px;
-        margin-left: 1vw;
-        width: 2vw;
-        width: 50%;
-        border: 1px solid;
-        border-radius: $br_MB;
-    }
+  label {
+    @include flex_vm();
+    margin-bottom: 0;
+    position: relative;
+    left: 19vw;
+    padding: 10px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    width: 6vw;
+    color: #ffff;
+    @include h5_PC;
+  }
 
 }
+
 
 input {
     height: 5vh;
@@ -168,7 +197,7 @@ label {
 
     //用來固定欄位名的寬度，方便對齊
     .input_title {
-        width: 4vw;
+        width: 10vw;
         text-align: right;
         @include h4_PC;
     }
@@ -183,18 +212,19 @@ label {
     }
 }
 
-:deep(.v-btn.v-btn--density-default) {
-    background-color: $primaryBrandBlue !important;
-    width: 137px;
-    height: 55px;
-    border-radius: 50px;
-    margin: 30px 20px 60px 0;
-    // margin-bottom: 50px;
-    // margin-right: 20px;
-    @include h5_PC;
+:deep(.v-field__outline) {
+  border: 1px solid;
+  border-radius: $br_MB;
 }
 
-:deep(.v-btn__content) {
-    font-size: 20px;
+:deep(.v-btn.v-btn--density-default) {
+  background-color: $primaryBrandBlue !important;
+  width: 5.5vw;
+  height: 6vh;
+  border-radius: 50px;
+  margin: 30px 20px 60px 0;
+  // margin-bottom: 50px;
+  // margin-right: 20px;
+  @include h5_PC;
 }
 </style>

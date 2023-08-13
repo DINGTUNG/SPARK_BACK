@@ -13,14 +13,14 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
     // create
-    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg) {
         // prepare data 
         const payLoad = new FormData();
         payLoad.append("children_id", childrenId);
         payLoad.append("member_id", memberId);
         payLoad.append("sponsor_order_id", sponsorOrderId);
         payLoad.append("receive_date", receiveDate);
-        payLoad.append("file_name", fileName);
+        payLoad.append("thanksletter_img", thanksletterImg);
 
         // make a request
         const request = {

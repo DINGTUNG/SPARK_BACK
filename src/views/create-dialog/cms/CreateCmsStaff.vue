@@ -37,9 +37,6 @@ async function createStaff(staffName, staffPermission, staffEmail, staffAccount,
 const addContentToNewStaff = (newStaff) => {
     cmsStaffStore.staffPool.push(newStaff)
 }
-
-
-
 </script>
 
 <template>

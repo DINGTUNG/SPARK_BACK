@@ -4,14 +4,13 @@ import CreateThanksLetter from '@/views/create-dialog/member/CreateThanksLetter.
 // import UpdateMessagePractice from '@/views/update-dialog/member/UpdateMessagePractice.vue';
 // import DeleteMessage from '@/views/delete-dialog/member/DeleteMessage.vue';
 
-import { ref, reactive, computed, onMounted }  from 'vue'
+import { ref,  reactive, computed , onMounted }  from 'vue'
 import axios from 'axios';
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 
 //串接資料庫
-// const LetterList = reactive([])
 async function thanksLetterConnection() {
   try {
     const response = await axios.post('http://localhost:8888/member/thanks_letter/thanks_letter.php')
@@ -61,9 +60,8 @@ const filteredLetterList = computed(() => {
     const memberIdMatch = item.member_id.toString().includes(searchText);
     const sponsorOrderIdMatch = item.sponsor_order_id.toString().includes(searchText);
     const receiveDateMatch = item.receive_date.toString().includes(searchText);
-    const fileNameMatch = item.file_name.toString().includes(searchText);
     const indexMatch = ((page.value - 1) * itemsPerPage) + displayedLetterList.value.indexOf(item) + 1 === parseInt(searchText);
-    return idMatch || childrenIdMatch || memberIdMatch || sponsorOrderIdMatch || receiveDateMatch || fileNameMatch || indexMatch;
+    return idMatch || childrenIdMatch || memberIdMatch || sponsorOrderIdMatch || receiveDateMatch || indexMatch;
   });
 });
 
@@ -104,22 +102,26 @@ const filteredLetterList = computed(() => {
               <td class="member_id">{{ item.member_id }}</td>
               <td class="sponsor_order_id">{{ item.sponsor_order_id }}</td>
               <td class="receive_date">{{ item.receive_date }}</td>
-              <td class="file_name">{{ item.file_name }}</td>
-              <td class="is_read">{{ item.is_read ? '未讀' : '已讀' }}</td>
+              <td class="thanksletter_img">{{ item.thanksletter_img }}</td>
+              <td class="is_read">{{ item.is_read == 1 ? '已讀' : '未讀' }}</td>
               <td>
                 <v-switch v-model="item.is_read" color="#EBC483" density="compact" hide-details="true" inline
-                  inset></v-switch>
+                inset true-value=1 @change="updateOrderStatus(item)">
+                </v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <!-- <UpdateMessagePractice 
-                :messageNoForUpdate="parseInt(item.message_no)"
-                :sparkActivityNoForUpdate="parseInt(item.spark_activity_no)" 
-                :messageContentForUpdate="item.message_content"
-                :memberNoForUpdate="parseInt(item.member_no)" /> -->
+                <UpdateThanksLetter
+                :thanksLetterIdForUpdate="parseInt(item.thanks_letter_id)"
+                :childrenIdForUpdate="parseInt(item.children_id)"
+                :memberIdIdForUpdate="parseInt(item.memberId_id)"
+                :sponsorOrderIdForUpdate="parseInt(item.sponsor_order_id)"
+                :receiveDateIdForUpdate="parseInt(item.receive_date)"
+                />
 
-                <!-- <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" /> -->
+                <DeleteThanksLetter
+                :thanksLetterIdForDelete="parseInt(item.thanks_letter_id)" />
               </td>
             </tr>
           </tbody>

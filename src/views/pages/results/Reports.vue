@@ -11,7 +11,7 @@ const reportStore = useReportStore();
 //api
 async function reportConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/reports.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/get_reports.php')
     reportStore.reportsList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -111,8 +111,8 @@ async function UpdateReportOnline(item) {
               <td>
                 <v-switch v-model="item.is_report_online" color="#EBC483" density="compact" hide-details="true" inline inset true-value=1  @change="UpdateReportOnline(item)"></v-switch>
               </td>
-              <td class="year">{{ item.updater }}</td>
-              <td class="name">{{ item.update_time }}</td>
+              <td class="updater">{{ item.updater }}</td>
+              <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateReports 
                 :reportsNoForUpdate="parseInt(item.report_no)" 

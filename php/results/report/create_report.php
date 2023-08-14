@@ -4,10 +4,10 @@ header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 require_once("../../connect_chd102g3.php");
 try {
-    $reportClass = $_POST["report_class"] ?? null;
-    $reportYear = $_POST["report_year"] ?? null;
-    $reportTitle = $_POST["report_title"] ?? null;
-    $reportFile = $_FILES["report_file_path"] ?? null;
+  $reportClass = $_POST["report_class"] ?? null;
+  $reportYear = $_POST["report_year"] ?? null;
+  $reportTitle = $_POST["report_title"] ?? null;
+  $reportFile = $_FILES["report_file_path"] ?? null;
 
   // parameters validation
   if ($reportClass == null) {
@@ -24,37 +24,33 @@ try {
   }
   $pdo->beginTransaction();
 
-
   // update record
-  $createSql = "insert into report
+  $createSql = "INSERT INTO report
   (report_class,
   report_year,
   report_title,
   report_file_path,
   updater,
-  update_time,
-  report_no) 
-  values
+  update_time) 
+  VALUES
   (:report_class,
     :report_year,
     :report_title,
     :report_file_path,
     'sir',
-    Now(),
-    :report_no)";
+    Now())";
 
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":report_no",$reportNo);
-  $createStmt->bindValue(":report_class",$reportClass);
-  $createStmt->bindValue(":report_title",$reportTitle);
+  $createStmt->bindValue(":report_class", $reportClass);
   $createStmt->bindValue(":report_year", $reportYear);
-  $createStmt->bindValue(":report_file_path", mkFilename($reportNo, $reportFile, 1,$reportClass));
+  $createStmt->bindValue(":report_title", $reportTitle);
+  $createStmt->bindValue(":report_file_path", mkFilename($reportFile, 1, $reportClass));
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($reportNo, $reportFile, 1,$reportClass)) {
+  if (!copyFileToLocal($reportFile, 1, $reportClass)) {
     throw new Exception();
   }
 
@@ -65,8 +61,7 @@ try {
 
   $selectSql = "select * from report where report_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
-  $newMessage = $selectStmt->fetch
-  (PDO::FETCH_ASSOC);
+  $newMessage = $selectStmt->fetch(PDO::FETCH_ASSOC);
   http_response_code(200);
   echo json_encode($newMessage);
 } catch (InvalidArgumentException $e) {
@@ -80,24 +75,24 @@ try {
 } catch (Exception $e) {
   http_response_code(500);
   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
   $pdo->rollBack();
 }
 
-function copyFileToLocal($reportNo,$file,$fileNo,$reportClass)
+function copyFileToLocal($file, $fileNo, $reportClass)
 {
   $dir = "../../../PDF/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($reportNo,$file,$fileNo,$reportClass);
+  $filename = mkFilename($file, $fileNo, $reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
-  
 }
 
-function mkFilename($updateId, $file, $fileNo, $reportClass)
+function mkFilename($file, $fileNo, $reportClass)
 {
   $currentYear = date('Y');
   if ($reportClass == "年度") {

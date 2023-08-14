@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 require_once("../../connect_chd102g3.php");
 try {
-  $sql = "select * from report where del_flg = 0";
+  $sql = "select * from report where del_flg = 0 order by report_no";
   $location = $pdo->query($sql);
 
   //----------------------------------------

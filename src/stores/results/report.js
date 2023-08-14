@@ -129,13 +129,13 @@ export const useReportStore = defineStore('Report', () => {
       }
 
     //create
-    function createReportBackend(reportForUpdate) {
+    function createReportBackend(reportForCreate) {
       const payLoad = {
-        "report_no": reportForUpdate.reportNo,
-        "report_class": reportForUpdate.reportClass,
-        "report_title": reportForUpdate.reportTitle,
-        "report_year": reportForUpdate.reportYear,
-        "report_file_path": reportForUpdate.reportFile[0],
+        "report_no": reportForCreate.reportNo,
+        "report_class": reportForCreate.reportClass,
+        "report_title": reportForCreate.reportTitle,
+        "report_year": reportForCreate.reportYear,
+        "report_file_path": reportForCreate.reportFile[0],
       }
       const request = {
         method: "POST",

@@ -9,7 +9,7 @@ function showDialog() {
 function closeDialog() {
   dialogDisplay.value = false;
 }
-const newsForUpdate = reactive({
+const newsForCreate = reactive({
   newsNo: null,
   newsDate: null,
   newsTitle: "",
@@ -22,11 +22,10 @@ const newsForUpdate = reactive({
   newsContentFourth: "",
   newsImageFourth: [],
 })
-async function createNews(newsForUpdate) {
+async function createNews(newsForCreate) {
   try {
-    const newNews = await newsStore.createNewsBackend(newsForUpdate)
+    const newNews = await newsStore.createNewsBackend(newsForCreate)
     addContentToNewNews(newNews)
-    console.log(newsStore.newsPool);
     window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
@@ -50,28 +49,28 @@ const addContentToNewNews = (newNews) => {
       </template>
       <v-card>
         <form action="http://localhost/SPARK_BACK/php/news/create_news.php" method="post" @submit.prevent="
-          createNews(newsForUpdate)">
+          createNews(newsForCreate)">
           <v-card-title>
             <span class="text-h5">新增消息</span>
           </v-card-title>
           <v-card-text>
             <div class="form_item">
               <div class="name"><span>標題</span></div>
-              <input type="text" id="title" name="news_title" v-model="newsForUpdate.newsTitle">
+              <input type="text" id="title" name="news_title" v-model="newsForCreate.newsTitle">
             </div>
             <div class="form_item">
               <div class="name"><span>日期</span></div>
-              <input type="date" id="date" name="news_date" v-model="newsForUpdate.newsDate">
+              <input type="date" id="date" name="news_date" v-model="newsForCreate.newsDate">
             </div>
             <div class="form_item">
               <div class="name"><span>段落1</span></div>
               <textarea id="paragraph1" cols="70" rows="10" name="news_content_first"
-                v-model="newsForUpdate.newsContentFirst"></textarea>
+                v-model="newsForCreate.newsContentFirst"></textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔1</span></div>
               <v-file-input id="photo1" prepend-icon="none" name="news_image_first"
-                v-model="newsForUpdate.newsImageFirst">
+                v-model="newsForCreate.newsImageFirst">
                 <template v-slot:prepend-inner>
                   <label for="photo1" id="photo">上傳圖檔</label>
                 </template>
@@ -82,7 +81,7 @@ const addContentToNewNews = (newNews) => {
                 <span>段落2</span>
               </div>
               <textarea id="paragraph2" cols="70" rows="10" name="news_content_second"
-                v-model="newsForUpdate.newsContentSecond">
+                v-model="newsForCreate.newsContentSecond">
               </textarea>
             </div>
             <div class="imgblock form_item">
@@ -90,7 +89,7 @@ const addContentToNewNews = (newNews) => {
                 <span>圖檔2</span>
               </div>
               <v-file-input id="photo2" prepend-icon="none" name="news_image_second"
-                v-model="newsForUpdate.newsImageSecond">
+                v-model="newsForCreate.newsImageSecond">
                 <template v-slot:prepend-inner>
                   <label for="photo2" id="photo">上傳圖檔</label>
                 </template>
@@ -101,12 +100,13 @@ const addContentToNewNews = (newNews) => {
                 <span>段落3</span>
               </div>
               <textarea id="paragraph3" cols="70" rows="10" name="news_content_third"
-                v-model="newsForUpdate.newsContentThird">
+                v-model="newsForCreate.newsContentThird">
               </textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔3</span></div>
-              <v-file-input id="photo3" prepend-icon="none" name="news_image_third" v-model="newsForUpdate.newsImageThird">
+              <v-file-input id="photo3" prepend-icon="none" name="news_image_third"
+                v-model="newsForCreate.newsImageThird">
                 <template v-slot:prepend-inner>
                   <label for="photo3" id="photo">上傳圖檔</label>
                 </template>
@@ -115,12 +115,12 @@ const addContentToNewNews = (newNews) => {
             <div class="form_item">
               <div class="name"><span>段落4</span></div>
               <textarea id="paragraph4" cols="70" rows="10" name="news_content_fourth"
-                v-model="newsForUpdate.newsContentFourth"></textarea>
+                v-model="newsForCreate.newsContentFourth"></textarea>
             </div>
             <div class="imgblock form_item">
               <div class="name"><span>圖檔4</span></div>
               <v-file-input id="photo4" prepend-icon="none" name="news_image_fourth"
-                v-model="newsForUpdate.newsImageFourth">
+                v-model="newsForCreate.newsImageFourth">
                 <template v-slot:prepend-inner>
                   <label for="photo4" id="photo">上傳圖檔
                   </label>
@@ -131,7 +131,7 @@ const addContentToNewNews = (newNews) => {
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn class="cancel btn" variant="text" @click="closeDialog">
-                取消
+              取消
             </v-btn>
             <v-btn color="blue-darken-1" variant="text" type="submit">
               儲存

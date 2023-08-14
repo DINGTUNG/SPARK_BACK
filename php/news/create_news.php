@@ -75,6 +75,7 @@ try {
     throw new Exception();
   }
   $lastInsertId = $pdo->lastInsertId();
+  
   $updateSql ="UPDATE
   news
 SET

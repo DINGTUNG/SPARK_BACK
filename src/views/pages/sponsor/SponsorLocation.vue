@@ -20,6 +20,7 @@ async function getSponsorLocation() {
   } catch (error) {
     console.error(error);
   }
+  console.log(locationStore.locationList)
 }
 
 onMounted(() => {

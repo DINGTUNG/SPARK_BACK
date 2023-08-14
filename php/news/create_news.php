@@ -46,9 +46,7 @@ try {
   if ($newsImageFourth == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供news image fourth)");
   }
-
   $pdo->beginTransaction();
-
 
   // update record
   $createSql = "insert into news

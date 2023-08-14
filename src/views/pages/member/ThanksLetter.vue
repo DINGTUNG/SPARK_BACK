@@ -11,9 +11,10 @@ const thanksLetterStore = useThanksLetterStore();
 
 
 //串接資料庫
-async function thanksLetter() {
+async function getThanksLetter() {
   try {
-    const response = await axios.post('http://localhost:8888/member/thanks-letter/thanks_letter.php')
+    const response = await axios.post('http://localhost/SPARK_BACK/php/member/thanks-letter/get_thanks_letter.php')
+    // const response = await axios.post('http://localhost:8888/member/thanks-letter/thanks_letter.php')
     thanksLetterStore.thanksLetterPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -26,7 +27,7 @@ async function thanksLetter() {
 };
 
 onMounted(() => {
-  thanksLetter()
+  getThanksLetter()
 });
 
 
@@ -37,7 +38,7 @@ async function updateThanksLetterSentStatus(item) {
       throw new Error("thanks_letter_no not found!")
     }
     await thanksLetterStore.updateThanksLetterSentStatusBackend(item.thanks_letter_no,item.is_thanks_letter_sent)
-    sparkActivityStore.updateSentStatusFromThanksLetterPool(item.thanks_letter_no,item.is_thanks_letter_sent)
+    thanksLetterStore.updateSentStatusFromThanksLetterPool(item.thanks_letter_no,item.is_thanks_letter_sent)
 
   } catch (error) {
     console.error(error);
@@ -117,7 +118,7 @@ const filteredLetterList = computed(() => {
               <td class="member_id">{{ item.member_id }}</td>
               <td class="sponsor_order_id">{{ item.sponsor_order_id }}</td>
               <td class="receive_date">{{ item.receive_date }}</td>
-              <td class="file_name">{{ item.file_name }}</td>
+              <td class="file_name">{{ item.thanks_letter_file }}</td>
               <td class="is_thanks_letter_sent">
                 {{ item.is_thanks_letter_sent == 1 ? '已寄出' : '待確認' }}</td>
               <td>
@@ -134,7 +135,7 @@ const filteredLetterList = computed(() => {
                 :memberIdForUpdate="item.member_id"
                 :sponsorOrderIdForUpdate="item.sponsor_order_id"
                 :receiveDateForUpdate="item.receive_date"
-                :fileNameForUpdate="item.file_name"
+                :thanksLetterFileForUpdate="item.thanks_letter_file"
                 />
 
                 <DeleteThanksLetter

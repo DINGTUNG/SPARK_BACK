@@ -3,10 +3,11 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
- require_once("../../connect_chd102g3-yiiijie.php");
+//  require_once("../../connect_chd102g3-yiiijie.php");
+ require_once("../../connect_chd102g3.php");
 try{
   $sql = "select * from thanks_letter
-  where del_flg = 0";
+  where del_flg = 0 order by thanks_letter_no";
   $thanksLetter = $pdo->query($sql);
   
   if( $thanksLetter->rowCount() == 0 ){ //找不到

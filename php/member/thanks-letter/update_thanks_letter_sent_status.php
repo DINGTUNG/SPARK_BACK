@@ -3,7 +3,9 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-require_once("../../connect_chd102g3-yiiijie.php");
+// require_once("../../connect_chd102g3-yiiijie.php");
+require_once("../../connect_chd102g3.php");
+
 
 try {
   $thanksLetterNo = $_POST["thanks_letter_no"] ?? null;
@@ -40,5 +42,6 @@ WHERE
   echo $e->getMessage();
 } catch (Exception $e) {
   http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
 }

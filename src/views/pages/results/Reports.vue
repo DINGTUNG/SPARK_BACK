@@ -119,7 +119,7 @@ async function UpdateReportOnline(item) {
                 :reportsClassForUpdate="item.report_class"
                 :reportsYearForUpdate="parseInt(item.report_year)"
                 :reportsTitleForUpdate="item.report_title"
-                :reportsFileThirdForUpdate="item.report_file_path"
+                :reportsFileForUpdate="item.report_file_path"
                 />
                 <DeleteReport :reportNoForDelete="parseInt(item.report_no)"/>
               </td>

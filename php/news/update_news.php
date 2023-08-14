@@ -134,7 +134,7 @@ try {
 
 function copyFileToLocal($newsNo, $file, $fileNo)
 {
-  $dir = "../../images/news/origin";
+  $dir = "../../images/news/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }

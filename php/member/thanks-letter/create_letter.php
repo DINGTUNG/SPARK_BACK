@@ -10,7 +10,11 @@ try {
   $memberId = $_POST["member_id"] ?? null;
   $sponsorOrderId = $_POST["sponsor_order_id"] ?? null;
   $receiveDate = $_POST["receive_date"] ?? null;
+<<<<<<< Updated upstream:php/member/thanks-letter/create_letter.php
   $fileName = $_FILES["file_name"] ?? null;
+=======
+  $thanksletterImg = $_FILES["thanksletter_img"] ?? null;
+>>>>>>> Stashed changes:php/member/thanks_letter/create_letter.php
   
 
   // parameters validation
@@ -41,7 +45,12 @@ try {
   $createStmt->bindValue(":member_id", $memberId);
   $createStmt->bindValue(":sponsor_order_id", $sponsorOrderId);
   $createStmt->bindValue(":receive_date", $receiveDate);
+<<<<<<< Updated upstream:php/member/thanks-letter/create_letter.php
   $createStmt->bindValue(":file_name", mkFilename($thanksLetterNo, $fileName));
+=======
+  // $createStmt->bindValue(":thanksletter_img", $thanksletterImg);
+  $createStmt->bindValue(":file_name", $fileName);
+>>>>>>> Stashed changes:php/member/thanks_letter/create_letter.php
 
   $createResult = $createStmt->execute();
 

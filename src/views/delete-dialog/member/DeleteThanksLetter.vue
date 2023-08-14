@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useThanksLetterStore } from '@/stores/stores/member/thanks-letter.js';
+import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 const vueProps = defineProps({

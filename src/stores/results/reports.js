@@ -85,11 +85,11 @@ export const useReportStore = defineStore('Report', () => {
         // prepare data 
         
         const payLoad = new FormData();
-        payLoad.append("report_no", reportsForUpdate.reportsNo);
-        payLoad.append("report_class", reportsForUpdate.reportsClass);
-        payLoad.append("report_year", reportsForUpdate.reportsYear);
-        payLoad.append("report_title", reportsForUpdate.reportsTitle);
-        payLoad.append("reports_file_path", reportsForUpdate.reportsFile[0]);
+        payLoad.append("report_no", reportsNo);
+        payLoad.append("report_class",reportsClass);
+        payLoad.append("report_year", reportsYear);
+        payLoad.append("report_title", reportsTitle);
+        payLoad.append("reports_file_path",reportsFile[0]);
     
         // make a request
         const request = {
@@ -115,23 +115,19 @@ export const useReportStore = defineStore('Report', () => {
         });
       }
 
-      const validateReportsForUpdate = (reportsNoForUpdate) => {
-        return reportsNoForUpdate
-      }
-    
-      const updateReportFileFromReportsList = (reportsForUpdate) => {
+      const updateReportFileFromReportsList = (reportsNo, reportsClass, reportsYear, reportsTitle, reportsFile) => {
         for (let i = 0; i < reportsList.length; i++) {
-          if (reportsList[i].report_no ==  reportsForUpdate.reportsNo) {
-            reportsList[i].report_class = reportsForUpdate.reportsClass
-            reportsList[i].reports_year = reportsForUpdate.reportsYear
-            reportsList[i].reports_file_path = reportsForUpdate.reportsFile
+          if (reportsList[i].report_no ==  reportsNo) {
+            reportsList[i].report_class = reportsClass
+            reportsList[i].reports_year = reportsYear
+            reportsList[i].reports_title = reportsTitle
+            reportsList[i].reports_file_path = reportsFile
           }
         }
       }
 
     //create
     function createReportsBackend(reportsForUpdate) {
-      validateReportsForUpdate(reportsForUpdate);
       const payLoad = {
         "report_no": reportsForUpdate.reportNo,
         "report_class": reportsForUpdate.reportClass,

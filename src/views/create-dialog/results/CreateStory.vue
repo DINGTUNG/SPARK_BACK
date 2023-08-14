@@ -47,7 +47,7 @@ if (storyForm) {
           <span class="text-h5">新增故事</span>
         </v-card-title>
         <v-card-text>
-          <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php" enctype="multipart/form-data">
+          <form id="storyForm" method="POST" action="http://localhost/SPARK_BACK/php/results/story/add_story.php">
             <div class="form_item">
               <label for=""><span>標題</span></label>
               <input type="text" name="story_title" required>

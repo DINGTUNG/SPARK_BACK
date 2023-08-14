@@ -2,7 +2,6 @@
 import { ref, reactive, defineProps } from 'vue'
 import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
-
 const vueProps = defineProps({
   newsNoForUpdate: Number,
   newsTitleForUpdate: String,
@@ -15,8 +14,7 @@ const vueProps = defineProps({
   newsImageThirdForUpdate: String,
   newsContentFourthUpdate: String,
   newsImageFourthForUpdate: String,
-})
-
+});
 const newsForUpdate = reactive({
   newsNo: null,
   newsDate: null,
@@ -51,8 +49,6 @@ function showDialog() {
   newsForUpdate.newsContentFourth = vueProps.newsContentFourthUpdate
   newsForUpdate.newsImageFourth['name'] = vueProps.newsImageFourthForUpdate
 }
-
-
 
 async function updateNews(newsNoForUpdate) {
   try {

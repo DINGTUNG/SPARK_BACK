@@ -3,7 +3,6 @@ import { reactive } from 'vue'
 import axios from 'axios';
 export const useNewsStore = defineStore('news', () => {
   const newsPool = reactive([])
-
   // delete
   function deleteNewsBackend(newsNo) {
     // prepare data 
@@ -18,6 +17,7 @@ export const useNewsStore = defineStore('news', () => {
         "Content-Type": "multipart/form-data",
       },
       data: payLoad,
+      
     };
 
     // send request to backend server
@@ -31,9 +31,10 @@ export const useNewsStore = defineStore('news', () => {
           console.log("From deleteMessageBackend:", error);
           reject(error);
         });
-    });
+    }
+  
+    );
   }
-
   const deleteNewsFromMessagePool = (newsNo) => {
     for (let i = 0; i < newsPool.length; i++) {
       if (newsPool[i].news_no == newsNo) {
@@ -80,7 +81,6 @@ export const useNewsStore = defineStore('news', () => {
       }
     }
   }
-
 
   // update
   function updateNewsBackend(newsForUpdate) {

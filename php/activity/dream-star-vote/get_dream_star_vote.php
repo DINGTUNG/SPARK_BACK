@@ -5,7 +5,7 @@ require_once("../../connect_chd102g3.php");
 try {
 
   //執行sql指令並取得pdoStatement
-  $sql = "select * from dream_star_vote";
+  $sql = "select * from dream_star_vote order by vote_time";
   $dream_star_vote = $pdo->query($sql);
 
   //----------------------------------------

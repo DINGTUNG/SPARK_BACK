@@ -42,7 +42,6 @@ async function updateStaff(staffNoForUpdate, staffAccount, staffPassword) {
     }
 }
 
-// const dialog = ref(false);
 
 </script>
 

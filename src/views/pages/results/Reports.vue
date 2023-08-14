@@ -9,7 +9,7 @@ import { useReportStore } from '@/stores/results/reports.js';
 const reportStore = useReportStore();
 
 //api
-async function reportConnection() {
+async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/get_reports.php')
     reportStore.reportsList.splice(0);
@@ -21,9 +21,10 @@ async function reportConnection() {
   } catch (error) {
     console.error(error);
   }
+  console.log(reportStore.reportsList)
 }
 onMounted(() => {
-  reportConnection()
+  getData()
 })
 
 //搜索
@@ -101,7 +102,7 @@ async function UpdateReportOnline(item) {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayReportsList" :key="item.report_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="report_id">{{ item.report_id }}</td>
               <td class="report_class">{{ item.report_class }}</td>
@@ -119,7 +120,7 @@ async function UpdateReportOnline(item) {
                 :reportsClassForUpdate="item.report_class"
                 :reportsYearForUpdate="parseInt(item.report_year)"
                 :reportsTitleForUpdate="item.report_title"
-                :reportsFileThirdForUpdate="item.report_file_path"
+                :reportsFileForUpdate="item.report_file_path"
                 />
                 <DeleteReport :reportNoForDelete="parseInt(item.report_no)"/>
               </td>

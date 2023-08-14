@@ -6,6 +6,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
     const thanksLetterPool = reactive([])
 
+<<<<<<< HEAD
     // delete
     function deleteThanksLetterBackend(thanksLetterNo) {
     // prepare data 
@@ -144,6 +145,8 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
 
+=======
+>>>>>>> 9539f19d342a0a6fd70cfbd9c33d8770e5833238
     // create
     function CreateThanksLetterBackend(thanksLetterForUpdate) {
         validateThanksLetterForUpdate(thanksLetterForUpdate);

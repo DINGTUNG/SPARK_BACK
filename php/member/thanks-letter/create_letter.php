@@ -6,17 +6,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3-yiiijie.php");
 
 try {
-  // $childrenId = $_POST["children_id"] ?? null;
-  // $memberId = $_POST["member_id"] ?? null;
-  // $sponsorOrderId = $_POST["sponsor_order_id"] ?? null;
-  // $receiveDate = $_POST["receive_date"] ?? null;
-  // $fileName = $_FILES["file_name"] ?? null;
-
-  $childrenId = "1";
-  $memberId = "123";
-  $sponsorOrderId = "123";
-  $receiveDate = "123";
-  $fileName = "123";
+  $childrenId = $_POST["children_id"] ?? null;
+  $memberId = $_POST["member_id"] ?? null;
+  $sponsorOrderId = $_POST["sponsor_order_id"] ?? null;
+  $receiveDate = $_POST["receive_date"] ?? null;
+  $fileName = $_FILES["file_name"] ?? null;
   
 
   // parameters validation

@@ -15,7 +15,7 @@ try {
     $get_memberInfoStmt->execute();
 
     $memberInfoRow = $get_memberInfoStmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($memberInfoRow);
+    echo json_encode($memberInfoRow[0]);
 } 
 } catch ( PDOException $e ) {
   echo $e->getMessage();

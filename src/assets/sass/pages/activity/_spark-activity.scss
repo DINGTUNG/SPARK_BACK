@@ -36,6 +36,14 @@ div.container {
         height: 6vh;
       }
 
+      td.spark_activity_description{
+        max-width: 10vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+      }
+
       tbody tr:nth-child(odd) {
         background-color: $functionalLightGrey1;
       }

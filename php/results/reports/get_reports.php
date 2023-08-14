@@ -1,18 +1,18 @@
 <?php
 header("Access-Control-Allow-Origin: *");
- require_once("../../connect_chd102g3.php");
-try{
+header("Access-Control-Allow-Methods: PUT, GET, POST");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+require_once("../../connect_chd102g3.php");
+try {
   $sql = "select * from reports where del_flg = 0";
-  $location=$pdo->prepare($sql);
-  $location->execute();
-  
-  if( $location->rowCount() == 0 ){ 
-      echo"{}";
-  }else{ 
-    $localRow=$location->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($localRow);
-  }	
-}catch(PDOException $e){
-  echo $e->getMessage();
+  $location = $pdo->query($sql);
+
+  //----------------------------------------
+  $locationRow = $location->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($locationRow);
+} catch (Exception $e) {
+  echo "錯誤行號 : ", $e->getLine(), "<br>";
+  echo "錯誤原因 : ", $e->getMessage(), "<br>";
+  echo "系統暫時不能正常運行，請稍後再試<br>";
 }
-?>

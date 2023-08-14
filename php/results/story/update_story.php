@@ -58,7 +58,7 @@
         $statement->bindValue(':story_detail_second', $story_detail_second);
         $statement->bindValue(':story_detail_third', $story_detail_third);
         $result = $statement->execute();
-        header("Location:http://localhost:5174/story");
+        header("Location: http://localhost:5174/chd102/g3/back-end/story");
 
     } catch(PDOException $e){
         echo "錯誤行號 : ", $e->getLine(), "<br>";

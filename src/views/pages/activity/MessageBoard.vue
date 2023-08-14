@@ -1,7 +1,7 @@
 <script setup>
 import Search from '@/components/Search.vue';
-import CreateMessagePractice from '@/views/create-dialog/activity/CreateMessagePractice.vue';
-import UpdateMessagePractice from '@/views/update-dialog/activity/UpdateMessagePractice.vue';
+// import CreateMessagePractice from '@/views/create-dialog/activity/CreateMessagePractice.vue';
+// import UpdateMessagePractice from '@/views/update-dialog/activity/UpdateMessagePractice.vue';
 import DeleteMessage from '@/views/delete-dialog/activity/DeleteMessage.vue';
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
@@ -91,9 +91,9 @@ const filteredMessageBoardPool = computed(() => {
               <td class="member_id">{{ item.member_id }}</td>
               <td class="message_date">{{ item.message_date }}</td>
               <td class="update_and_delete">
-                <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)"
+                <!-- <UpdateMessagePractice :messageNoForUpdate="parseInt(item.message_no)"
                   :sparkActivityIdForUpdate="item.spark_activity_id" :messageContentForUpdate="item.message_content"
-                  :memberIdForUpdate="item.member_id" />
+                  :memberIdForUpdate="item.member_id" /> -->
 
                 <DeleteMessage :messageNoForDelete="parseInt(item.message_no)" />
               </td>
@@ -101,7 +101,7 @@ const filteredMessageBoardPool = computed(() => {
           </tbody>
         </v-table>
       </div>
-      <CreateMessagePractice class="add" />
+      <!-- <CreateMessagePractice class="add" /> -->
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"

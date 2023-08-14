@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: http://localhost:5174");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -11,11 +11,10 @@ require '../../../PHPMailer/PHPMailer.php';
 require '../../../PHPMailer/SMTP.php';
 
 try {
-    $member_account = $_POST['member_account'];
-    // $member_account = "kayla881221@gmail.com";
 
-    $verification_code = uniqid();
-    $baseURL = "http://localhost:5173/chd102/g3/register?verification_code=";
+    $member_account = $_GET['member_account'];
+
+    $verification_code = uniqid(); //產生驗證碼
 
 
     //設定SMTP

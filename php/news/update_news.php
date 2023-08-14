@@ -97,8 +97,6 @@ try {
   $updateResult = $updateStmt->execute();
 
 
-
-
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue';
-import { useReportStore } from '@/stores/results/reports.js';
+import { useReportStore } from '@/stores/results/report.js';
 const reportStore = useReportStore();
 
 const vueProps = defineProps({
@@ -23,8 +23,8 @@ async function deleteReport(reportNoForDelete) {
       throw new Error("report no. not found!")
     }
     await reportStore.deleteReportBackend(reportNoForDelete)
-    reportStore.deleteReportFromReportsList(reportNoForDelete)
-    alert(`刪除成功!剩下 ${reportStore.reportsList.length} 筆資料`);
+    reportStore.deleteReportFromReportList(reportNoForDelete)
+    alert(`刪除成功!剩下 ${reportStore.reportList.length} 筆資料`);
   } catch (error) {
     console.error(error);
     alert(`http status : ${error.response.data} 刪除失敗!請聯絡管理員!`);

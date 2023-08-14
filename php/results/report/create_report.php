@@ -7,7 +7,7 @@ try {
     $reportClass = $_POST["report_class"] ?? null;
     $reportYear = $_POST["report_year"] ?? null;
     $reportTitle = $_POST["report_title"] ?? null;
-    $reportsFile = $_FILES["reports_file_path"] ?? null;
+    $reportFile = $_FILES["report_file_path"] ?? null;
 
   // parameters validation
   if ($reportClass == null) {
@@ -19,18 +19,18 @@ try {
   if ($reportTitle == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供report title)");
   }
-  if ($reportsFile == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供reports ile path)");
+  if ($reportFile == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供report ile path)");
   }
   $pdo->beginTransaction();
 
 
   // update record
-  $createSql = "insert into reports
+  $createSql = "insert into report
   (report_class,
   report_year,
   report_title,
-  reports_file_path,
+  report_file_path,
   updater,
   update_time,
   report_no) 
@@ -38,7 +38,7 @@ try {
   (:report_class,
     :report_year,
     :report_title,
-    :reports_file_path,
+    :report_file_path,
     'sir',
     Now(),
     :report_no)";
@@ -48,22 +48,22 @@ try {
   $createStmt->bindValue(":report_class",$reportClass);
   $createStmt->bindValue(":report_title",$reportTitle);
   $createStmt->bindValue(":report_year", $reportYear);
-  $createStmt->bindValue(":reports_file_path", mkFilename($reportNo, $reportsFile, 1,$reportClass));
+  $createStmt->bindValue(":report_file_path", mkFilename($reportNo, $reportFile, 1,$reportClass));
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($reportNo, $reportsFile, 1)) {
+  if (!copyFileToLocal($reportNo, $reportFile, 1,$reportClass)) {
     throw new Exception();
   }
 
-  $updateSql = "update reports set report_id = concat('R',LPAD(LAST_INSERT_ID(), 3, 0)) where report_no = LAST_INSERT_ID()";
+  $updateSql = "update report set report_id = concat('R',LPAD(LAST_INSERT_ID(), 3, 0)) where report_no = LAST_INSERT_ID()";
   $updateStmt = $pdo->prepare($updateSql);
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
-  $selectSql = "select * from reports where report_no = (select LAST_INSERT_ID())";
+  $selectSql = "select * from report where report_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
   $newMessage = $selectStmt->fetch
   (PDO::FETCH_ASSOC);
@@ -83,7 +83,7 @@ try {
   $pdo->rollBack();
 }
 
-function copyFileToLocal($reportNo,$file,$fileNo)
+function copyFileToLocal($reportNo,$file,$fileNo,$reportClass)
 {
   $dir = "../../../PDF/";
   if (file_exists($dir) === false) {
@@ -109,4 +109,3 @@ function mkFilename($updateId, $file, $fileNo, $reportClass)
   $filename = "$filename.$fileExt";
   return $filename;
 }
-?>

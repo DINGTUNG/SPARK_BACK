@@ -1,16 +1,19 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5174");
+
+
  require_once("../../connect_chd102g3.php");
 try{
-  $sql = "SELECT * FROM reports WHERE report_class = '年度' AND del_flg = 0;
+  $sql = "SELECT * FROM report WHERE report_class = '財務' AND del_flg = 0;
   ";
   $location=$pdo->prepare($sql);
   $location->execute();
+  
   if( $location->rowCount() == 0 ){ 
       echo"{}";
-  }else{
+  }else{ 
     $localRow=$location->fetchAll(PDO::FETCH_ASSOC);
-   
     echo json_encode($localRow);
   }	
 }catch(PDOException $e){

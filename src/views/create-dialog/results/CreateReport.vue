@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue';
-import { useReportStore } from '@/stores/results/reports.js';
+import { useReportStore } from '@/stores/results/report.js';
 const reportStore = useReportStore();
 const dialogDisplay = ref(false);
 function showDialog() {
@@ -9,18 +9,18 @@ function showDialog() {
 function closeDialog() {
     dialogDisplay.value = false;
 }
-const reportsForUpdate = reactive({
+const reportForUpdate = reactive({
     reportNo: null,
     reportClass: "",
     reportTitle: "",
     reportYear: "",
-    reportsFile: [],
+    reportFile: [],
 })
-async function createReports(reportsForUpdate) {
+async function createReport(reportForUpdate) {
     try {
-        const newReports = await reportStore.createReportsBackend(reportsForUpdate)
-        addContentToNewReports(newReports)
-        console.log(reportsForUpdate)
+        const newReport = await reportStore.createReportBackend(reportForUpdate)
+        addContentToNewReport(newReport)
+        console.log(reportForUpdate)
         window.alert(`新增成功!`);
     } catch (error) {
         console.error(error);
@@ -29,8 +29,8 @@ async function createReports(reportsForUpdate) {
         closeDialog()
     }
 }
-const addContentToNewReports = (newReports) => {
-    reportStore.reportsList.push(newReports)
+const addContentToNewReport = (newReport) => {
+    reportStore.reportList.push(newReport)
 }
 </script>
 <template>
@@ -42,28 +42,28 @@ const addContentToNewReports = (newReports) => {
                 </v-btn>
             </template>
             <v-card>
-                <form action="http://localhost/SPARK_BACK/php/results/reports/create_reports.php" method="post" @submit.prevent="
-                    createReports(reportsForUpdate)">
+                <form action="http://localhost/SPARK_BACK/php/results/report/create_report.php" method="post" @submit.prevent="
+                    createReport(reportForUpdate)">
                     <v-card-title>
                         <span class="text-h5">新增報告</span>
                     </v-card-title>
                     <v-card-text>
                         <div class="form_item">
                             <div class="name"><span>報告分類</span></div>
-                            <input type="text" id="class" name="report_class" v-model="reportsForUpdate.reportClass">
+                            <input type="text" id="class" name="report_class" v-model="reportForUpdate.reportClass">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>年度</span></div>
-                            <input type="text" id="year" name="report_year" v-model="reportsForUpdate.reportYear">
+                            <input type="text" id="year" name="report_year" v-model="reportForUpdate.reportYear">
                         </div>
                         <div class="form_item">
                             <div class="name"><span>標題</span></div>
-                            <input type="text" id="title" name="report_title" v-model="reportsForUpdate.reportTitle">
+                            <input type="text" id="title" name="report_title" v-model="reportForUpdate.reportTitle">
                         </div>
                         <div class="imgblock form_item">
                             <div class="name"><span>報告</span></div>
-                            <v-file-input id="file" prepend-icon="none" name="reports_file_path"
-                                v-model="reportsForUpdate.reportsFile">
+                            <v-file-input id="file" prepend-icon="none" name="report_file_path"
+                                v-model="reportForUpdate.reportFile">
                                 <template v-slot:prepend-inner>
                                     <label for="photo1" id="file">上傳報告</label>
                                 </template>

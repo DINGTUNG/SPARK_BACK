@@ -6,11 +6,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-  $reportsNo = $_POST["report_no"] ?? null;
+  $reportNo = $_POST["report_no"] ?? null;
   $reportOnline = $_POST["is_report_online"] ?? null;
   // parameters validation
-  if ($reportsNo == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供reports no)");
+  if ($reportNo == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供report no)");
   }
   if ($reportOnline == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供report online)");
@@ -18,7 +18,7 @@ try {
 
    // update record
   $updateSql = "UPDATE
-  reports
+  report
 SET
   updater = 'sir',
   update_time = NOW(), 
@@ -30,7 +30,7 @@ SET
 WHERE
   report_no = :report_no";
   $updateStmt = $pdo->prepare($updateSql);
-  $updateStmt->bindValue(":report_no", $reportsNo);
+  $updateStmt->bindValue(":report_no", $reportNo);
   $updateResult = $updateStmt->execute();
   http_response_code(200);
   echo json_encode($updateResult);

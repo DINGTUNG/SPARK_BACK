@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue'
 import axios from 'axios';
 export const useReportStore = defineStore('Report', () => {
-    const reportsList = reactive([])
-    //de
+    const reportList = reactive([])
+    //delete
     function deleteReportBackend(reportNo) {
         // prepare data 
         const payLoad = new FormData();
@@ -11,7 +11,7 @@ export const useReportStore = defineStore('Report', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/results/reports/delete_reports.php`,
+            url: `http://localhost/SPARK_BACK/php/results/report/delete_report.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -30,10 +30,10 @@ export const useReportStore = defineStore('Report', () => {
                 });
         });
     }
-    const deleteReportFromReportsList = (reportNo) => {
-        for (let i = 0; i < reportsList.length; i++) {
-            if (reportsList[i].report_no == reportNo) {
-                reportsList.splice(i, 1);
+    const deleteReportFromReportList = (reportNo) => {
+        for (let i = 0; i < reportList.length; i++) {
+            if (reportList[i].report_no == reportNo) {
+                reportList.splice(i, 1);
                 break
             }
         }
@@ -49,7 +49,7 @@ export const useReportStore = defineStore('Report', () => {
       // make a request
       const request = {
         method: "POST",
-        url: `http://localhost/SPARK_BACK/php/results/reports/reports_status.php`,
+        url: `http://localhost/SPARK_BACK/php/results/report/report_status.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -70,31 +70,30 @@ export const useReportStore = defineStore('Report', () => {
       });
     }
   
-    const updateReportFromReportsList = (reportNo,reportOnline) => {
-      for (let i = 0; i < reportsList.length; i++) {
-        if (reportsList[i].report_no == reportNo) {
-        reportsList[i].is_report_online = reportOnline
+    const updateReportFromReportList = (reportNo,reportOnline) => {
+      for (let i = 0; i < reportList.length; i++) {
+        if (reportList[i].report_no == reportNo) {
+        reportList[i].is_report_online = reportOnline
         }
       }
     }
 
 
     //update
-    function updateReportBackend(reportsForUpdate) {
+    function updateReportBackend(reportForUpdate) {
 
-      validateReportsForUpdate(reportsForUpdate);
         // prepare data 
         const payLoad = new FormData();
-        payLoad.append("report_no", reportsForUpdate.reportsNo);
-        payLoad.append("report_class", reportsForUpdate.reportsClass);
-        payLoad.append("report_year", reportsForUpdate.reportsYear);
-        payLoad.append("report_title", reportsForUpdate.reportsTitle);
-        payLoad.append("reports_file_path", reportsForUpdate.reportsFile[0]);
+        payLoad.append("report_no", reportForUpdate.reportNo);
+        payLoad.append("report_class", reportForUpdate.reportClass);
+        payLoad.append("report_year", reportForUpdate.reportYear);
+        payLoad.append("report_title", reportForUpdate.reportTitle);
+        payLoad.append("report_file_path", reportForUpdate.reportFile[0]);
     
         // make a request
         const request = {
           method: "POST",
-          url: `http://localhost/SPARK_BACK/php/results/reports/update_reports.php`,
+          url: `http://localhost/SPARK_BACK/php/results/report/update_report.php`,
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -110,39 +109,37 @@ export const useReportStore = defineStore('Report', () => {
               resolve(updateResult);
             })
             .catch((error) => {
-              console.log("From updateReportsBackend:", error);
+              console.log("From updateReportBackend:", error);
               reject(error);
             });
         });
       }
 
-      const validateReportsForUpdate = (reportsNoForUpdate) => {
-        return reportsNoForUpdate
-      }
-    
-      const updateReportFileFromReportsList = (reportsForUpdate) => {
-        for (let i = 0; i < reportsList.length; i++) {
-          if (reportsList[i].report_no ==  reportsForUpdate.reportsNo) {
-            reportsList[i].report_class = reportsForUpdate.reportsClass
-            reportsList[i].reports_year = reportsForUpdate.reportsYear
-            reportsList[i].reports_file_path = reportsForUpdate.reportsFile
+      const updateReportFileFromReportList = (reportForUpdate) => {
+        console.log("1",reportList);
+        for (let i = 0; i < reportList.length; i++) {
+          if (reportList[i].report_no ==  reportForUpdate.reportNo) {
+            reportList[i].report_class = reportForUpdate.reportClass
+            reportList[i].report_year = reportForUpdate.reportYear
+            reportList[i].report_title = reportForUpdate.reportTitle
+            reportList[i].report_file_path = reportForUpdate.reportFile
           }
         }
+        console.log("2",reportList);
       }
 
     //create
-    function createReportsBackend(reportsForUpdate) {
-      validateReportsForUpdate(reportsForUpdate);
+    function createReportBackend(reportForUpdate) {
       const payLoad = {
-        "report_no": reportsForUpdate.reportNo,
-        "report_class": reportsForUpdate.reportClass,
-        "report_title": reportsForUpdate.reportTitle,
-        "report_year": reportsForUpdate.reportYear,
-        "reports_file_path": reportsForUpdate.reportsFile[0],
+        "report_no": reportForUpdate.reportNo,
+        "report_class": reportForUpdate.reportClass,
+        "report_title": reportForUpdate.reportTitle,
+        "report_year": reportForUpdate.reportYear,
+        "report_file_path": reportForUpdate.reportFile[0],
       }
       const request = {
         method: "POST",
-        url: `http://localhost/SPARK_BACK/php/results/reports/create_reports.php`,
+        url: `http://localhost/SPARK_BACK/php/results/report/create_report.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -157,7 +154,7 @@ export const useReportStore = defineStore('Report', () => {
             resolve(createResult);
           })
           .catch((error) => {
-            console.log("From createReportsBackend:", error);
+            console.log("From createReportBackend:", error);
             reject(error);
           });
       });
@@ -165,13 +162,13 @@ export const useReportStore = defineStore('Report', () => {
     }
 
     return {
-        reportsList,
+        reportList,
         deleteReportBackend,
-        deleteReportFromReportsList,
+        deleteReportFromReportList,
         updateReportOnlineBackend,
-        updateReportFromReportsList,
+        updateReportFromReportList,
         updateReportBackend,
-        updateReportFileFromReportsList,
-        createReportsBackend,
+        updateReportFileFromReportList,
+        createReportBackend,
       }
 })

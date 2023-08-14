@@ -1,27 +1,27 @@
 <script setup>
-import CreateReports from '@/views/create-dialog/results/CreateReports.vue';
-import UpdateReports from '@/views/update-dialog/results/UpdateReports.vue';
+import CreateReport from '@/views/create-dialog/results/CreateReport.vue';
+import UpdateReport from '@/views/update-dialog/results/UpdateReport.vue';
 import DeleteReport from '@/views/delete-dialog/results/DeleteReport.vue';
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useReportStore } from '@/stores/results/reports.js';
+import { useReportStore } from '@/stores/results/report.js';
 const reportStore = useReportStore();
 
 //api
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/results/reports/get_reports.php')
-    reportStore.reportsList.splice(0);
+    const response = await axios.post('http://localhost/SPARK_BACK/php/results/report/get_report.php')
+    reportStore.reportList.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        reportStore.reportsList.push(element);
+        reportStore.reportList.push(element);
       });
     }
   } catch (error) {
     console.error(error);
   }
-  console.log(reportStore.reportsList)
+  console.log(reportStore.reportList)
 }
 onMounted(() => {
   getData()
@@ -42,7 +42,7 @@ const searchText = computed(() => {
 })
 
 const filteredReportList = computed(() => {
-  return reportStore.reportsList.filter((item) => { 
+  return reportStore.reportList.filter((item) => { 
     const obj = [item.report_id, item.report_title, item.report_class];
     const str = JSON.stringify(obj);
     return str.includes(searchText.value);
@@ -56,7 +56,7 @@ const pageCount = () => {
 }
 const page = ref(1)
 const itemsPerPage = 10;
-const displayReportsList = computed(() => {
+const displayReportList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   return filteredReportList.value.slice(startIdx, endIdx);
@@ -69,7 +69,7 @@ async function UpdateReportOnline(item) {
       throw new Error("report no not found!")
     }
     await reportStore.updateReportOnlineBackend(item.report_no,item.is_report_online)
-    reportStore.updateReportFromReportsList(item.report_no,item.is_report_online)
+    reportStore.updateReportFromReportList(item.report_no,item.is_report_online)
 
     console.log(item.is_report_online);
 
@@ -102,7 +102,7 @@ async function UpdateReportOnline(item) {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayReportList" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="report_id">{{ item.report_id }}</td>
               <td class="report_class">{{ item.report_class }}</td>
@@ -115,12 +115,12 @@ async function UpdateReportOnline(item) {
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateReports 
-                :reportsNoForUpdate="parseInt(item.report_no)" 
-                :reportsClassForUpdate="item.report_class"
-                :reportsYearForUpdate="parseInt(item.report_year)"
-                :reportsTitleForUpdate="item.report_title"
-                :reportsFileForUpdate="item.report_file_path"
+                <UpdateReport 
+                :reportNoForUpdate="parseInt(item.report_no)" 
+                :reportClassForUpdate="item.report_class"
+                :reportYearForUpdate="parseInt(item.report_year)"
+                :reportTitleForUpdate="item.report_title"
+                :reportFileForUpdate="item.report_file_path"
                 />
                 <DeleteReport :reportNoForDelete="parseInt(item.report_no)"/>
               </td>
@@ -128,7 +128,7 @@ async function UpdateReportOnline(item) {
           </tbody>
         </v-table>
       </div>
-      <CreateReports class="add" />
+      <CreateReport class="add" />
       <div class="text-center">
         <v-pagination v-model="page" :length=pageCount() rounded="circle" prev-icon="mdi-chevron-left"
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
@@ -137,5 +137,5 @@ async function UpdateReportOnline(item) {
   </div>
 </template>
 <style scoped lang="scss">
-@import "@/assets/sass/pages/results/reports";
+@import "@/assets/sass/pages/results/report";
 </style>

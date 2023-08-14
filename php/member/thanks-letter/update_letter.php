@@ -64,18 +64,55 @@ try {
   $updateStmt->bindValue(":member_id", $memberId);
   $updateStmt->bindValue(":sponsor_order_id", $sponsorOrderId);
   $updateStmt->bindValue(":receive_date", $receiveDate);
-  $updateStmt->bindValue(":file_name", mkFilename($thanksLetterNo, $file_name));
+  $updateStmt->bindValue(":file_name", mkFilename($thanksLetterNo, $fileName, 1));
   $updateResult = $updateStmt->execute();
+
+
+
+  if (!$updateResult) {
+    throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
+  }
+  if (!copyFileToLocal($thanksLetterNo, $fileName, 1)) {
+    throw new UnexpectedValueException($message = "圖檔儲存失敗(copy failed)");
+  }
+ 
+  $pdo->commit();
   
   http_response_code(200);
-  echo json_encode($updateResult);
-} catch (InvalidArgumentException $e) {
-  http_response_code(400);
-  echo $e->getMessage();
-} catch (UnexpectedValueException $e) {
-  http_response_code(412);
-  echo $e->getMessage();
-} catch (Exception $e) {
-  http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
-}
+    echo json_encode($updateResult);
+  } catch (InvalidArgumentException $e) {
+    http_response_code(400);
+    echo $e->getMessage();
+    $pdo->rollBack();
+  } catch (UnexpectedValueException $e) {
+    http_response_code(412);
+    echo $e->getMessage();
+    $pdo->rollBack();
+  } catch (Exception $e) {
+    http_response_code(500);
+    echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+    $pdo->rollBack();
+  }
+
+  function copyFileToLocal($thanksLetterNo, $file, $fileNo)
+  {
+    $dir = "../../images/thanks-letter/";
+    if (file_exists($dir) === false) {
+      mkdir($dir);
+    }
+
+    $filename = mkFilename($thanksLetterNo, $file, $fileNo);
+    $from = $file["tmp_name"];
+    $to = $dir . $filename;
+    return copy($from, $to);
+  }
+
+  function mkFilename($updateId, $file, $fileNo)
+  {
+    $filename =  'TL' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
+    $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
+    $filename = "$filename.$fileExt";
+    return $filename;
+  }
+
+

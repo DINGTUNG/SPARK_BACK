@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-import { useThanksLetterStore } from '@/stores/stores/member/thanks-letter.js';
+import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
 const vueProps = defineProps({
@@ -17,7 +17,7 @@ function closeDeleteDialog() {
   dialogDisplay.value = false;
 }
 
-async function deleteMessage(thanksLetterNoForDelete) {
+async function deleteThanksLetter(thanksLetterNoForDelete) {
   try {
     if (thanksLetterNoForDelete == null) {
       throw new Error("thanks letter no. not found!")
@@ -50,7 +50,7 @@ async function deleteMessage(thanksLetterNoForDelete) {
           <v-btn class="cancel btn" variant="text" @click="closeDeleteDialog">
             取消
           </v-btn>
-          <v-btn class="delete btn" variant="text" @click="deleteMessage(vueProps.thanksLetterNoForDelete)">
+          <v-btn class="delete btn" variant="text" @click="deleteThanksLetter(vueProps.thanksLetterNoForDelete)">
             刪除
           </v-btn>
           <v-spacer></v-spacer>

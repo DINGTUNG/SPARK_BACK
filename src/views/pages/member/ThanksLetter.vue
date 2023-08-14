@@ -23,15 +23,15 @@ async function thanksLetter() {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 onMounted(() => {
   thanksLetter()
-})
+});
 
 
 // update sent status
-async function updateThanksLetterySentStatus(item) {
+async function updateThanksLetterSentStatus(item) {
   try {
     if (item.thanks_letter_no == null) {
       throw new Error("thanks_letter_no not found!")
@@ -46,15 +46,15 @@ async function updateThanksLetterySentStatus(item) {
 
 
 // 換頁
+const pageCount = () => {
+  return Math.ceil(filteredLetterList.value.length / itemsPerPage);
+}
 const page = ref(1)
 const itemsPerPage = 10;
-const pageCount = () => {
-  return Math.floor((thanksLetterStore.thanksLetterPool.length - 1) / itemsPerPage) + 1;
-}
-const displayedLetterList = computed(() => {
+const displayLetterList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  return  filteredThanksLetterPool.value.slice(startIdx, endIdx);
+  return filteredLetterList.value.slice(startIdx, endIdx);
 });
 
 
@@ -62,26 +62,27 @@ const displayedLetterList = computed(() => {
 const searchValue = ref('');
 function handleSearchChange(newValue) {
   searchValue.value = newValue;
-  console.log(searchValue.value);
-}
+  console.log(newValue);
+};
+
+const searchText = computed(() => {
+  let searchText = searchValue.value ? searchValue.value.trim() : '';
+  if (!isNaN(+searchText)) {
+    searchText = +searchText < 10 ? `0${searchText}` : searchText;
+  }
+  return searchText;
+})
 
 const filteredLetterList = computed(() => {
-  const searchText = searchValue.value.toString();
-  // 確保將 searchValue 轉換為字符串並進行小寫轉換
-
-  return displayedLetterList.value.filter(item => {
-    const idMatch = item.thanks_letter_id.toString().includes(searchText);
-    const childrenIdMatch = item.children_id.toString().includes(searchText);
-    const memberIdMatch = item.member_id.toString().includes(searchText);
-    const sponsorOrderIdMatch = item.sponsor_order_id.toString().includes(searchText);
-    const receiveDateMatch = item.receive_date.toString().includes(searchText);
-    const indexMatch = ((page.value - 1) * itemsPerPage) + displayedLetterList.value.indexOf(item) + 1 === parseInt(searchText);
-    return idMatch || childrenIdMatch || memberIdMatch || sponsorOrderIdMatch || receiveDateMatch || indexMatch;
+  return thanksLetterStore.thanksLetterPool.filter((item) => {
+    const obj = [item.thanks_letter_id, item.children_id, item.member_id, item.sponsor_order_id ]
+    const str = JSON.stringify(obj);
+    return str.includes(searchText.value)
   });
 });
 
-</script>
 
+</script>
 <template>
   <div class="container">
     <div class="content_wrap">
@@ -109,19 +110,19 @@ const filteredLetterList = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in filteredLetterList" :key="item.thanks_letter_id" class="no-border">
+            <tr v-for="(item, index) in displayLetterList" :key="item.thanks_letter_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-
               <td class="thanks_letter_id">{{ item.thanks_letter_id }}</td>
               <td class="children_id">{{ item.children_id }}</td>
               <td class="member_id">{{ item.member_id }}</td>
               <td class="sponsor_order_id">{{ item.sponsor_order_id }}</td>
               <td class="receive_date">{{ item.receive_date }}</td>
               <td class="file_name">{{ item.file_name }}</td>
-              <td class="is_read">{{ item.is_thanks_letter_sent == 1 ? '確認寄出' : '待確認' }}</td>
+              <td class="is_thanks_letter_sent">
+                {{ item.is_thanks_letter_sent == 1 ? '已寄出' : '待確認' }}</td>
               <td>
                 <v-switch v-model="item.is_thanks_letter_sent" color="#EBC483" density="compact" hide-details="true" inline
-                inset true-value=1 @change="updateThanksLetterySentStatus(item)">
+                inset true-value=1 @change="updateThanksLetterSentStatus(item)">
                 </v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
@@ -147,7 +148,7 @@ const filteredLetterList = computed(() => {
       <!-- 分頁 -->
       <div class="text-center">
         <v-pagination v-model="page" :length="pageCount()" rounded="circle" prev-icon="mdi-chevron-left"
-          next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
+        next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
   </div>

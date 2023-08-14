@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 
 const thanksLetterStore = useThanksLetterStore();
@@ -8,20 +8,21 @@ const dialogDisplay = ref(false);
 function showDialog() {
     dialogDisplay.value = true;
 }
-
 function closeDialog() {
     dialogDisplay.value = false;
 }
+const thanksLetterForUpdate = reactive({
+    thanksLetterNo: null,
+    childrenId: "",
+    memberId: "",
+    sponsorOrderId: "",
+    receiveDate: null,
+    fileName: [],
+})
 
-const childrenId = ref('')
-const memberId = ref('')
-const sponsorOrderId = ref('')
-const receiveDate = ref('')
-const fileName = ref('')
-
-async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
+async function CreateThanksLetter(thanksLetterForUpdate) {
     try {
-        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
+        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(thanksLetterForUpdate)
         addContentTonewThanksLetter(newThanksLetter)
         console.log(thanksLetterStore.thanksLetterPool);
         window.alert(`新增成功!`);
@@ -47,33 +48,33 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-btn>
             </template>
             <v-card>
-                <v-card-title>
-                    <span class="main_title">新增感謝函</span>
-                </v-card-title>
-                <v-card-text>
-                    <form action="http://localhost:8888/member/thanks_letter/create_letter.php" method="post"
-                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
+                <form action="http://localhost:8888/member/create_letter.php" method="post" @submit.prevent="
+                CreateThanksLetter(thanksLetterForUpdate)">
+                    <v-card-title>
+                        <span class="main_title">新增感謝函</span>
+                    </v-card-title>
+                    <v-card-text>
                         <label for="">
-                            <div class="input_title">兒童編號</div>
-                            <input type="text" name="children_id" v-model="childrenId">
+                            <div class="input_title">兒童ID</div>
+                            <input type="text" name="children_id" v-model="thanksLetterForUpdate.childrenId">
                         </label>
                         <label for="">
-                            <div class="input_title">會員編號</div>
-                            <input type="text" name="member_id" v-model="memberId">
+                            <div class="input_title">會員ID</div>
+                            <input type="text" name="member_id" v-model="thanksLetterForUpdate.memberId">
                         </label>
                         <label for="">
                             <div class="input_title">認養訂單ID</div>
-                            <input type="text" name="sponsor_order_id" v-model="sponsorOrderId">
+                            <input type="text" name="sponsor_order_id" v-model="thanksLetterForUpdate.sponsorOrderId">
                         </label>
                         <label for="date" class="custom-label">
                             <div class="input_title">收件日期</div>
-                            <input type="date" id="date" name="receive_date" v-model="receiveDate">
+                            <input type="date" id="date" name="receive_date" v-model="thanksLetterForUpdate.receiveDate">
                         </label>
-                        <div class="imgblock">
+                        <div class="imgblock form_item">
                             <span>圖片</span>
-                            <v-file-input variant="outlined" id="thanksletter" prepend-icon="none" name="file_name" v-model="fileName" >
+                            <v-file-input variant="outlined" id="photo1" prepend-icon="none" name="file_name" v-model="thanksLetterForUpdate.fileName" >
                                 <template v-slot:prepend-inner>
-                                    <label for="thanksletter">上傳圖檔</label>
+                                    <label for="photo1" id="photo">上傳圖檔</label>
                                 </template>
                             </v-file-input>
                         </div>
@@ -86,10 +87,9 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                             <v-btn class="update btn" variant="text" type="submit">
                                 確定
                             </v-btn>
-                        </v-card-actions>
-                    </form>
-                </v-card-text>
-
+                        </v-card-actions>                    
+                    </v-card-text>
+                </form>
             </v-card>
         </v-dialog>
     </v-row>
@@ -175,6 +175,57 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
     width: 6vw;
     color: #ffff;
     @include h5_PC;
+  }
+
+}
+
+.form_item {
+  display: flex;
+  width: 80%;
+  margin: 0 auto 2%;
+  gap: 6%;
+
+  div.name {
+    width: 20%;
+    display: flex;
+
+    span {
+      margin-left: auto;
+    }
+  }
+
+}
+
+.imgblock {
+  margin: 5% auto 2%;
+
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+
+  :deep(.v-field__input) {
+    font-size: 12px;
+    line-height: 5vh;
+    padding: 0;
+  }
+
+  :deep(.v-input__control) {
+    width: 70%;
+    height: 5vh;
+  }
+
+  label#photo {
+    margin-bottom: 0;
+    position: absolute;
+    padding: 10px;
+    width: fit-content;
+    top: -5px;
+    right: -100px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    color: #ffff;
+    cursor: pointer;
+    font-size: 14px;
   }
 
 }

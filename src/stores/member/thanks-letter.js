@@ -1,10 +1,5 @@
-import {
-    defineStore
-} from 'pinia';
-
-import {
-    reactive
-} from 'vue'
+import { defineStore } from 'pinia';
+import { reactive } from 'vue'
 import axios from 'axios';
 
 export const useThanksLetterStore = defineStore('thanks-letter', () => {
@@ -12,7 +7,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
     const thanksLetterPool = reactive([])
 
     // delete
-    function deleteThanksLetterBackend(thanksLetterId) {
+    function deleteThanksLetterBackend(thanksLetterNo) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("thanks_letter_no", thanksLetterNo);
@@ -52,71 +47,78 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
     // update
-    function updateThanksLetterBackend(thanksLetterNo, childrenId, memberId, sponsorOrderId, receiveDate, fileName ) {
+    function updateThanksLetterBackend(thanksLetterForUpdate){
 
-    // prepare data 
-    const payLoad = new FormData();
-    payLoad.append("thanks_letter_no", thanksLetterNo);
-    payLoad.append("children_id", childrenId);
-    payLoad.append("member_id", memberId);
-    payLoad.append("sponsor_order_id", sponsorOrderId);
-    payLoad.append("receive_date", receiveDate);
-    payLoad.append("file_name", fileName[0]);
+        validateThanksLetterForUpdate(thanksLetterForUpdate);
+
+        // prepare data 
+        const payLoad = new FormData();
+        payLoad.append("thanks_letter_no", thanksLetterForUpdate.thanksLetterNo);
+        payLoad.append("children_id", thanksLetterForUpdate.childrenId);
+        payLoad.append("member_id", thanksLetterForUpdate.memberId);
+        payLoad.append("sponsor_order_id", thanksLetterForUpdate.sponsorOrderId);
+        payLoad.append("receive_date", thanksLetterForUpdate.receiveDate);
+        payLoad.append("file_name", thanksLetterForUpdate.fileName[0]);
+
+    
+        // make a request
+        const request = {
+            method: "POST",
+            url: `http://localhost:8888/member/thanks-letter/update_letter.php`,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data: payLoad,
+        };
+    
+        // send request to backend server
+        return new Promise((resolve, reject) => {
+            axios(request)
+                .then((response) => {
+                const updateResult = response.data;
+                resolve(updateResult);
+                })
+                .catch((error) => {
+                console.log("From updateThanksLetterBackend:", error);
+                reject(error);
+                });
+        });
+    }
+
+    const validateThanksLetterForUpdate = (thanksLetterNoForUpdate) => {
+        return thanksLetterNoForUpdate
+      }
+
+    const updateThanksLetterFromThanksLetterPool = (thanksLetterForUpdate) => {
+        for (let i = 0; i < thanksLetterPool.length; i++) {
+          if (thanksLetterPool[i].thanks_letter_no == thanksLetterForUpdate.thanksLetterNo)
+          {
+            thanksLetterPool[i].children_id = thanksLetterForUpdate.childrenId
+            thanksLetterPool[i].member_id = thanksLetterForUpdate.memberId
+            thanksLetterPool[i].sponsor_order_id = thanksLetterForUpdate.sponsorOrderId
+            thanksLetterPool[i].receive_date = thanksLetterForUpdate.receiveDate
+            thanksLetterPool[i].file_name = thanksLetterForUpdate.fileName
+            }
+        }
+    }
 
 
-    // make a request
-    const request = {
+    // update status
+    function updateThanksLetterSentStatusBackend(thanksLetterNo,isThanksLetterSent) {
+        // prepare data 
+        const payLoad = new FormData();
+        payLoad.append("thanks_letter_no", thanksLetterNo);
+        payLoad.append("is_thanks_letter_sent", isThanksLetterSent);
+
+        // make a request
+        const request = {
         method: "POST",
-        url: `http://localhost:8888/member/thanks-letter/update_letter.php`,
+        url: `http://localhost:8888/member/thanks-letter/update_thanks_letter_sent_status.php`,
         headers: {
             "Content-Type": "multipart/form-data",
         },
         data: payLoad,
-    };
-
-    // send request to backend server
-    return new Promise((resolve, reject) => {
-        axios(request)
-            .then((response) => {
-            const updateResult = response.data;
-            resolve(updateResult);
-            })
-            .catch((error) => {
-            console.log("From updateThanksLetterBackend:", error);
-            reject(error);
-            });
-    });
-  }
-
-  const updateThanksLetterFromThanksLetterPool = (thanksLetterNo, childrenId, memberId, sponsorOrderId, receiveDate, fileName ) => {
-    for (let i = 0; i < thanksLetterPool.length; i++) {
-        if (thanksLetterPool[i].thanks_letter_no == thanksLetterNo) {
-            thanksLetterPool[i].children_id = childrenId
-            thanksLetterPool[i].member_id = memberId
-            thanksLetterPool[i].sponsor_order_id = sponsorOrderId
-            thanksLetterPool[i].receive_date = receiveDate
-            thanksLetterPool[i].file_name = fileName
-        }
-    }
-  }
-
-
-  // update status
-  function updateThanksLetterSentStatusBackend(thanksLetterNo,isThanksLetterSent) {
-    // prepare data 
-    const payLoad = new FormData();
-    payLoad.append("thanks_letter_no", thanksLetterNo);
-    payLoad.append("is_thanks_letter_sent", isThanksLetterSent);
-
-    // make a request
-    const request = {
-      method: "POST",
-      url: `http://localhost:8888/member/thanks-letter/update_thanks_letter_sent_status.php`,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: payLoad,
-    };
+        };
 
     // send request to backend server
     return new Promise((resolve, reject) => {
@@ -143,14 +145,16 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
     // create
-    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
-        // prepare data 
-        const payLoad = new FormData();
-        payLoad.append("children_id", childrenId);
-        payLoad.append("member_id", memberId);
-        payLoad.append("sponsor_order_id", sponsorOrderId);
-        payLoad.append("receive_date", receiveDate);
-        payLoad.append("file_name", fileName);
+    function CreateThanksLetterBackend(thanksLetterForUpdate) {
+        validateThanksLetterForUpdate(thanksLetterForUpdate);
+        const payLoad = {
+            "thanks_letter_no": thanksLetterForUpdate.thanksLetterNo,
+            "children_id": thanksLetterForUpdate.childrenId,
+            "member_id": thanksLetterForUpdate.memberId,
+            "sponsor_order_id": thanksLetterForUpdate.sponsorOrderId,
+            "receive_date": thanksLetterForUpdate.receiveDate,
+            "file_name": thanksLetterForUpdate.fileName[0],
+        }
 
         // make a request
         const request = {

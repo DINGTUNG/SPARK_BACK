@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { reactive, defineProps } from 'vue'
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
@@ -12,13 +12,15 @@ const vueProps = defineProps({
     fileNameForUpdate: String,
 })
 
+const thanksLetterForUpdate = reactive({
+    thanksLetterNo: null,
+    childrenId: "",
+    memberId: "",
+    sponsorOrderId: "",
+    receiveDate: null,
+    fileName: [],
+})
 
-const childrenId = ref('')
-const memberId = ref('')
-const sponsorOrderId = ref('')
-const receiveDate = ref('')
-
-const dialogDisplay = ref(false);
 
 function closeDialog() {
   dialogDisplay.value = false;
@@ -26,24 +28,24 @@ function closeDialog() {
 
 function showDialog() {
     dialogDisplay.value = true;
-    childrenId.value = vueProps.childrenIdForUpdate
-    memberId.value = vueProps.memberIdForUpdate
-    sponsorOrderId.value = vueProps.sponsorOrderIdForUpdate
-    receiveDate.value = vueProps.receiveDateForUpdate
-    fileNameForUpdate.fileName['name'] = vueProps.newsImageFirstForUpdate
+    thanksLetterForUpdate.thanksLetterNo = vueProps.thanksLetterNoForUpdate
+    thanksLetterForUpdate.childrenId = vueProps.childrenIdForUpdate
+    thanksLetterForUpdate.memberId = vueProps.memberIdForUpdate
+    thanksLetterForUpdate.sponsorOrderId = vueProps.sponsorOrderIdForUpdate
+    thanksLetterForUpdate.receiveDate = vueProps.receiveDateForUpdate
+    thanksLetterForUpdate.fileName['name'] = vueProps.fileNameForUpdate
 }
 
 
 
 async function updateThanksLetter
-(thanksLetterNoForUpdate,
-childrenId, memberId, sponsorOrderId, receiveDate ) {
+(thanksLetterNoForUpdate) {
   try {
     if (thanksLetterNoForUpdate == null) {
       throw new Error("thanks letter no. not found!")
     }
-    await thanksLetterStore.updateThanksLetterBackend(thanksLetterNoForUpdate, childrenId, memberId, sponsorOrderId, receiveDate )
-    thanksLetterStore.updateThanksLetterFromThanksLetterPool(thanksLetterNoForUpdate, childrenId, memberId, sponsorOrderId, receiveDate )
+    await thanksLetterStore.updateThanksLetterBackend(thanksLetterNoForUpdate)
+    thanksLetterStore.updateThanksLetterFromThanksLetterPool(thanksLetterNoForUpdate)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -66,27 +68,39 @@ childrenId, memberId, sponsorOrderId, receiveDate ) {
         </v-card-title>
         <v-card-text>
           <form action="http://localhost:8888/member/thanks-letter/update_letter.php" method="post"
-            @submit.prevent="updateThanksLetter(vueProps.thanksLetterNoForUpdate, childrenId, memberId, sponsorOrderId, receiveDate )">
+            @submit.prevent="updateThanksLetter(vueProps.thanksLetterNoForUpdate)">
 
             <div class="input_container">
               <div class="input_wrap">
                 <label for="children_id">兒童ID</label> <input type="text" name="children_id"
-                  v-model="childrenId">
+                  v-model="thanksLetterForUpdate.childrenId">
               </div>
 
               <div class="input_wrap">
                 <label for="member_id">會員ID</label> <input type="text"
-                  name="member_id" v-model="memberId">
+                  name="member_id" v-model="thanksLetterForUpdate.memberId">
               </div>
 
               <div class="input_wrap">
                 <label for="sponsor_order_id">認養訂單ID</label>
-                <input type="date" name="sponsor_order_id" v-model="sponsorOrderId">
+                <input type="date" name="sponsor_order_id" v-model="thanksLetterForUpdate.sponsorOrderId">
               </div>
 
               <div class="input_wrap">
                 <label for="receive_date">收件日期</label> <input type="date" name="receive_date"
-                  v-model="receiveDate" class="date">
+                  v-model="thanksLetterForUpdate.receiveDate" class="date">
+              </div>
+
+              <div class="imgblock form_item">
+                <div class="name">
+                  <span>感謝函圖檔</span>
+                </div>
+                <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳感謝函圖檔"
+                  v-model="thanksLetterForUpdate.fileName" name="file_name">
+                  <template v-slot:prepend-inner>
+                    <label for="photo1" id="photo">上傳圖檔</label>
+                  </template>
+                </v-file-input>
               </div>
             </div>
 
@@ -112,6 +126,56 @@ childrenId, memberId, sponsorOrderId, receiveDate ) {
   font-weight: bold;
   text-align: center;
   margin: 8vh 0 0;
+}
+
+.form_item {
+  display: flex;
+  width: 80%;
+  margin: 0 auto 2%;
+  gap: 6%;
+
+  div.name {
+    width: 20%;
+    display: flex;
+
+    span {
+      margin-left: auto;
+    }
+  }
+}
+
+.imgblock {
+  margin: 5% auto 2%;
+
+  :deep(.v-field.v-field--appended) {
+    display: flex;
+  }
+
+  :deep(.v-field__input) {
+    font-size: 12px;
+    line-height: 5vh;
+    padding: 0;
+  }
+
+  :deep(.v-input__control) {
+    width: 70%;
+    height: 5vh;
+  }
+
+  label#photo {
+    margin-bottom: 0;
+    position: absolute;
+    padding: 10px;
+    width: fit-content;
+    top: -5px;
+    right: -100px;
+    background-color: $primaryBrandBlue;
+    border-radius: 50px;
+    color: #ffff;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
 }
 
 form {

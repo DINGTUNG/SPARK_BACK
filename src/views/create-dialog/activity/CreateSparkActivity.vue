@@ -63,8 +63,8 @@ const addNewActivityToActivityPool = (newActivity) => {
               </div>
 
               <div class="input_wrap">
-                <label for="spark_activity_description">星火活動描述</label> <input type="text"
-                  name="spark_activity_description" v-model="sparkActivityDescription">
+                <label for="spark_activity_description">星火活動描述</label>                 <textarea class="description" name="spark_activity_description" v-model="sparkActivityDescription"
+                  id="spark_activity_description"></textarea>
               </div>
 
               <div class="input_wrap">
@@ -129,6 +129,14 @@ form {
         height: 6vh;
         border: 2px solid $primaryBrandBlue;
         border-radius: 10px;
+      }
+
+      textarea.description {
+        padding: 1vh 1vw;
+        border: 2px solid $primaryBrandBlue;
+        border-radius: 10px;
+        width: 25vw;
+        height: 30vh;
       }
     }
   }

@@ -43,10 +43,10 @@ const login = () => {
 
 <template>
   <div class="login_container">
-    <img :src="'/pictures/login/shooting_star_white.svg'" alt="shooting_star_white" class="shooting_star_white">
-    <img :src="'/pictures/login/logo.png'" alt="logo" class="logo">
-    <img :src="'/pictures/login/shooting_star_gold.png'" alt="shooting_star_gold" class="shooting_star_gold">
-    <img :src="'/pictures/login/three_stars.svg'" alt="three_stars" class="three_stars">
+    <img :src="'pictures/login/shooting_star_white.svg'" alt="shooting_star_white" class="shooting_star_white">
+    <img :src="'pictures/login/logo.png'" alt="logo" class="logo">
+    <img :src="'pictures/login/shooting_star_gold.png'" alt="shooting_star_gold" class="shooting_star_gold">
+    <img :src="'pictures/login/three_stars.svg'" alt="three_stars" class="three_stars">
 
     <div class="login_wrap">
       <h2>後台登入</h2>
@@ -62,8 +62,8 @@ const login = () => {
           <input :type="showPassword ? 'password' : 'text'" class="password" v-model="password" placeholder="輸入您的密碼"
               name="memPsw" autocomplete="current-password">
           <span class="toggle" @click="showHide">
-            <img class="eye" v-if="showPassword" :src="'/pictures/login/eye_hide.svg'" alt="hide" />
-            <img v-else class="eye" :src="'/pictures/login/eye_show.svg'" alt="show" /></span>
+            <img class="eye" v-if="showPassword" :src="'pictures/login/eye_hide.svg'" alt="hide" />
+            <img v-else class="eye" :src="'pictures/login/eye_show.svg'" alt="show" /></span>
           <div class="password_wrapper" ref="passwordField"
             :class="{ 'animate__animated animate__headShake': errorAccount }">
           </div>

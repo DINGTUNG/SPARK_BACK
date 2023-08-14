@@ -90,7 +90,7 @@ async function updateReports(reportsNoForUpdate) {
                             <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit" @click="closeDialog">
+                            <v-btn color="blue-darken-1" variant="text" type="submit">
                                 儲存
                             </v-btn>
                         </v-card-actions>

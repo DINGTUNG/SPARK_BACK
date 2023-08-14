@@ -300,4 +300,5 @@ textarea {
   margin-bottom: 50px;
   margin-right: 20px;
 
-}</style>
+}
+</style>

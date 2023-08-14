@@ -17,11 +17,11 @@ const childrenId = ref('')
 const memberId = ref('')
 const sponsorOrderId = ref('')
 const receiveDate = ref('')
-const thanksletterImg = ref('')
+const fileName = ref('')
 
-async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg) {
+async function CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
     try {
-        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg)
+        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName)
         addContentTonewThanksLetter(newThanksLetter)
         console.log(thanksLetterStore.thanksLetterPool);
         window.alert(`新增成功!`);
@@ -52,7 +52,7 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-card-title>
                 <v-card-text>
                     <form action="http://localhost:8888/member/thanks_letter/create_letter.php" method="post"
-                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg)">
+                        @submit.prevent="CreateThanksLetter(childrenId, memberId, sponsorOrderId, receiveDate, fileName)">
                         <label for="">
                             <div class="input_title">兒童編號</div>
                             <input type="text" name="children_id" v-model="childrenId">
@@ -71,7 +71,7 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                         </label>
                         <div class="imgblock">
                             <span>圖片</span>
-                            <v-file-input variant="outlined" id="thanksletter" prepend-icon="none" name="thanksletter_img" v-model="thanksletterImg">
+                            <v-file-input variant="outlined" id="thanksletter" prepend-icon="none" name="file_name" v-model="fileName" >
                                 <template v-slot:prepend-inner>
                                     <label for="thanksletter">上傳圖檔</label>
                                 </template>

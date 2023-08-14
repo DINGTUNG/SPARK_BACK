@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 // header("Access-Control-Allow-Origin: https://tibamef2e.com");//緯育
-// header("Access-Control-Allow-Origin: http://localhost:5173");//本地端
+// header("Access-Control-Allow-Origin: http://localhost:5174");//本地端
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -11,7 +11,7 @@ require_once("../../connect_chd102g3.php");
 try {
   $sql = "
   select * from spark_activity 
-  where del_flg = 0 order by spark_activity_no";
+  where del_flg = 0 and is_spark_activity_online = 1";
   $spark_activity = $pdo->query($sql);
 
   //----------------------------------------

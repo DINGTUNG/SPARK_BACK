@@ -11,21 +11,20 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
     const thanksLetterPool = reactive([])
 
-
     // create
-    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, thanksletterImg) {
+    function CreateThanksLetterBackend(childrenId, memberId, sponsorOrderId, receiveDate, fileName) {
         // prepare data 
         const payLoad = new FormData();
         payLoad.append("children_id", childrenId);
         payLoad.append("member_id", memberId);
         payLoad.append("sponsor_order_id", sponsorOrderId);
         payLoad.append("receive_date", receiveDate);
-        payLoad.append("thanksletter_img", thanksletterImg);
+        payLoad.append("file_name", fileName);
 
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost:8888/member/thanks_letter/create_letter.php`,
+            url: `http://localhost:8888/member/thanks-letter/create_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -49,7 +48,13 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
     return {
         thanksLetterPool,
-        CreateThanksLetterBackend
+        CreateThanksLetterBackend,
+        deleteThanksLetterBackend,
+        deleteThanksLetterFromThanksLetterPool,
+        updateThanksLetterSentStatusBackend,
+        updateSentStatusFromThanksLetterPool,
+        updateThanksLetterBackend,
+        updateThanksLetterFromThanksLetterPool,
     }
 
 })

@@ -69,9 +69,6 @@ async function UpdateLocationOnline(item) {
     }
     await locationStore.updateLocationOnlineBackend(item.location_no,item.is_sponsor_location_online)
     locationStore.updateOrderStatusFromLocationList(item.location_no,item.is_sponsor_location_online)
-
-    // console.log(item.is_sponsor_location_online);
-
   } catch (error) {
     console.error(error);
   }

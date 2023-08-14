@@ -2,12 +2,12 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 require_once("../../connect_chd102g3.php");
 
 try {
   $reportNo = $_POST["report_no"] ?? null;
   $reportClass = $_POST["report_class"] ?? null;
-  var_dump($reportClass);
   $reportYear = $_POST["report_year"] ?? null;
   $reportTitle = $_POST["report_title"] ?? null;
   $reportsFile = $_FILES["reports_file_path"] ?? null;

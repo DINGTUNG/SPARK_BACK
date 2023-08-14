@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
  require_once("../../connect_chd102g3-yiiijie.php");
 try{
   $sql = "select * from thanks_letter
-  where del_flg = 0 order by thanks_letter_id";
+  where del_flg = 0 order by thanks_letter_no";
   $location=$pdo->prepare($sql);
   $location->execute();
   

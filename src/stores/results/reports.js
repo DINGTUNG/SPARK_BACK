@@ -80,16 +80,15 @@ export const useReportStore = defineStore('Report', () => {
 
 
     //update
-    function updateReportBackend(reportsForUpdate) {
+    function updateReportBackend(reportsNo, reportsClass, reportsYear, reportsTitle, reportsFile) {
 
-      validateReportsForUpdate(reportsForUpdate);
         // prepare data 
         const payLoad = new FormData();
-        payLoad.append("report_no", reportsForUpdate.reportsNo);
-        payLoad.append("report_class", reportsForUpdate.reportsClass);
-        payLoad.append("report_year", reportsForUpdate.reportsYear);
-        payLoad.append("report_title", reportsForUpdate.reportsTitle);
-        payLoad.append("reports_file_path", reportsForUpdate.reportsFile[0]);
+        payLoad.append("report_no", reportsNo);
+        payLoad.append("report_class",reportsClass);
+        payLoad.append("report_year", reportsYear);
+        payLoad.append("report_title", reportsTitle);
+        payLoad.append("reports_file_path",reportsFile[0]);
     
         // make a request
         const request = {
@@ -115,22 +114,51 @@ export const useReportStore = defineStore('Report', () => {
         });
       }
 
-      const validateReportsForUpdate = (reportsNoForUpdate) => {
-        return reportsNoForUpdate
-      }
-    
-      const updateReportFileFromReportsList = (reportsForUpdate) => {
+      const updateReportFileFromReportsList = (reportsNo, reportsClass, reportsYear, reportsTitle, reportsFile) => {
         for (let i = 0; i < reportsList.length; i++) {
-          if (reportsList[i].report_no ==  reportsForUpdate.reportsNo) {
-            reportsList[i].report_class = reportsForUpdate.reportsClass
-            reportsList[i].reports_year = reportsForUpdate.reportsYear
-            reportsList[i].reports_file_path = reportsForUpdate.reportsFile
+          if (reportsList[i].report_no ==  reportsNo) {
+            reportsList[i].report_class = reportsClass
+            reportsList[i].reports_year = reportsYear
+            reportsList[i].reports_title = reportsTitle
+            reportsList[i].reports_file_path = reportsFile
           }
         }
       }
 
+    //create
+    function createReportsBackend(reportsForUpdate) {
+      const payLoad = {
+        "report_no": reportsForUpdate.reportNo,
+        "report_class": reportsForUpdate.reportClass,
+        "report_title": reportsForUpdate.reportTitle,
+        "report_year": reportsForUpdate.reportYear,
+        "reports_file_path": reportsForUpdate.reportsFile[0],
+      }
+    
+    
+      const request = {
+        method: "POST",
+        url: `http://localhost/SPARK_BACK/php/results/reports/create_reports.php`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: payLoad,
+      };
 
 
+      return new Promise((resolve, reject) => {
+        axios(request)
+          .then((response) => {
+            const createResult = response.data;
+            resolve(createResult);
+          })
+          .catch((error) => {
+            console.log("From createReportsBackend:", error);
+            reject(error);
+          });
+      });
+    
+    }
 
     return {
         reportsList,
@@ -139,6 +167,7 @@ export const useReportStore = defineStore('Report', () => {
         updateReportOnlineBackend,
         updateReportFromReportsList,
         updateReportBackend,
-        updateReportFileFromReportsList
-    }
+        updateReportFileFromReportsList,
+        createReportsBackend,
+      }
 })

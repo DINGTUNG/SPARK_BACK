@@ -11,6 +11,8 @@ import {
   
     const milestonePool = reactive([])
   
+
+
     // 【create】
     function createMilestoneBackend(milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
       // prepare data 
@@ -43,6 +45,7 @@ import {
           });
       });
     }
+
 
 
     // 【delete】
@@ -83,6 +86,97 @@ import {
             }
         }
     }
+
+
+
+    // 【update status】
+    function updateMilestoneOnlineStatusBackend(milestoneNo,ismilestoneOnline) {
+      // prepare data 
+      const payLoad = new FormData();
+      payLoad.append("milestone_no", milestoneNo);
+      payLoad.append("is_milestone_online", ismilestoneOnline);
+
+      // make a request
+      const request = {
+        method: "POST",
+        url: `http://localhost/SPARK_BACK/php/results/milestone/milestone_status.php`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: payLoad,
+      };
+
+      // send request to backend server
+      return new Promise((resolve, reject) => {
+        axios(request)
+          .then((response) => {
+            const updateResult = response.data;
+            resolve(updateResult);
+          })
+          .catch((error) => {
+            console.log("From updateMilestoneBackend:", error);
+            reject(error);
+          });
+      });
+    }
+
+    const updateOnlineStatusFromMilestonePool = (milestoneNo,isMilestoneOnline) => {
+      for (let i = 0; i < milestonePool.length; i++) {
+        if (milestonePool[i].milestone_no == milestoneNo) {
+          milestonePool[i].is_milestone_online = isMilestoneOnline
+        }
+      }
+    }
+
+
+
+    // 【update】
+    function updateMilestoneBackend(milestoneNo, milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
+      // prepare data 
+      const payLoad = new FormData();
+      payLoad.append("milestone_no", milestoneNo);
+      payLoad.append("milestone_title", milestoneTitle);
+      payLoad.append("milestone_date", milestoneDate);
+      payLoad.append("milestone_content", milestoneContent);
+      payLoad.append("milestone_image", milestoneImage);
+
+      // make a request
+      const request = {
+          method: "POST",
+          url: `http://localhost/SPARK_BACK/php/results/milestone/update_milestone.php`,
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+          data: payLoad,
+      };
+
+      // send request to backend server
+      return new Promise((resolve, reject) => {
+          axios(request)
+              .then((response) => {
+                  const updateResult = response.data;
+                  resolve(updateResult);
+              })
+              .catch((error) => {
+                  console.log("From updateMilestoneBackend:", error);
+                  reject(error);
+              });
+      });
+    }
+
+    const updateMilestoneFromMilestonePool = (milestoneNo, milestoneTitle, milestoneDate, milestoneContent, milestoneImage) => {
+      for (let i = 0; i < milestonePool.length; i++) {
+          if (milestonePool[i].milestone_no == milestoneNo) {
+              milestonePool[i].milestone_title = milestoneTitle
+              milestonePool[i].milestone_date = milestoneDate
+              milestonePool[i].milestone_content = milestoneContent
+              milestonePool[i].milestone_image = milestoneImage
+          }
+      }
+    }    
+
+
+
   
   
     return {
@@ -90,6 +184,10 @@ import {
       createMilestoneBackend,
       deleteMilestoneBackend,
       deleteMilestoneFromMilestonePool,
+      updateMilestoneOnlineStatusBackend,
+      updateOnlineStatusFromMilestonePool,
+      updateMilestoneBackend,
+      updateMilestoneFromMilestonePool
     }
   
   })

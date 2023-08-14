@@ -45,8 +45,9 @@ const displayDreamStarVoteList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>IP</th>
+              <th>投票IP</th>
               <th>夢想之星ID</th>
+              <th>投票時間</th>
             </tr>
           </thead>
 
@@ -55,6 +56,7 @@ const displayDreamStarVoteList = computed(() => {
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="ip">{{ item.vote_ip }}</td>
               <td class="dream_star_no">{{ item.dream_star_id }}</td>
+              <td class="vote_time">{{ item.vote_time }}</td>
             </tr>
           </tbody>
         </v-table>

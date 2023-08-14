@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 try{
   $sql = "select * from dream_star
-  where del_flg = 0 order by dream_star_no";
+  where del_flg = 0 and is_dream_star_online = 1 order by dream_star_no";
   $dream_star=$pdo->prepare($sql);
   $dream_star->execute();
   
@@ -24,4 +24,3 @@ try{
 }catch(PDOException $e){
   echo $e->getMessage();
 }
-?>

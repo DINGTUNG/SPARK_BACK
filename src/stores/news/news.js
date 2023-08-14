@@ -31,9 +31,7 @@ export const useNewsStore = defineStore('news', () => {
           console.log("From deleteMessageBackend:", error);
           reject(error);
         });
-    }
-  
-    );
+    });
   }
   const deleteNewsFromMessagePool = (newsNo) => {
     for (let i = 0; i < newsPool.length; i++) {

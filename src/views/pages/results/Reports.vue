@@ -102,7 +102,7 @@ async function UpdateReportOnline(item) {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayReportsList" :key="item.report_id" class="no-border">
+            <tr v-for="(item, index) in displayReportsList" :key="item.id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="report_id">{{ item.report_id }}</td>
               <td class="report_class">{{ item.report_class }}</td>

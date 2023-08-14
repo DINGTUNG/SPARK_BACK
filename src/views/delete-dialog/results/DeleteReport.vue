@@ -23,7 +23,7 @@ async function deleteReport(reportNoForDelete) {
       throw new Error("report no. not found!")
     }
     await reportStore.deleteReportBackend(reportNoForDelete)
-    reportStore.deleteReportFromMessagePool(reportNoForDelete)
+    reportStore.deleteReportFromReportsList(reportNoForDelete)
     alert(`刪除成功!剩下 ${reportStore.reportsList.length} 筆資料`);
   } catch (error) {
     console.error(error);

@@ -30,7 +30,7 @@ export const useReportStore = defineStore('Report', () => {
                 });
         });
     }
-    const deleteReportFromMessagePool = (reportNo) => {
+    const deleteReportFromReportsList = (reportNo) => {
         for (let i = 0; i < reportsList.length; i++) {
             if (reportsList[i].report_no == reportNo) {
                 reportsList.splice(i, 1);
@@ -106,6 +106,7 @@ export const useReportStore = defineStore('Report', () => {
           axios(request)
             .then((response) => {
               const updateResult = response.data;
+              console.log('Backend Response:', updateResult); 
               resolve(updateResult);
             })
             .catch((error) => {
@@ -139,8 +140,6 @@ export const useReportStore = defineStore('Report', () => {
         "report_year": reportsForUpdate.reportYear,
         "reports_file_path": reportsForUpdate.reportsFile[0],
       }
-    
-    
       const request = {
         method: "POST",
         url: `http://localhost/SPARK_BACK/php/results/reports/create_reports.php`,
@@ -168,7 +167,7 @@ export const useReportStore = defineStore('Report', () => {
     return {
         reportsList,
         deleteReportBackend,
-        deleteReportFromMessagePool,
+        deleteReportFromReportsList,
         updateReportOnlineBackend,
         updateReportFromReportsList,
         updateReportBackend,

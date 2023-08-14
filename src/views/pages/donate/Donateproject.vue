@@ -106,7 +106,12 @@ const filteredDonateList = computed(() => {
                   inset></v-switch>
               </td>
               <td class="update_and_delete">
-                <UpdateDonateProject />
+                <UpdateDonateProject :donateNoForUpdate="parseInt(item.donate_project_no)"
+                  :donateNameForUpdate="item.donate_project_name"
+                  :donateStartDateForUpdate="item.donate_project_start_date"
+                  :donateEndDateForUpdate="item.donate_project_end_date"
+                  :donateSummarizeForUpdate="item.donate_project_summarize"
+                  :donateImageForUpdate="item.donate_project_image" />
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                   mdi-pencil
                 </v-icon> -->

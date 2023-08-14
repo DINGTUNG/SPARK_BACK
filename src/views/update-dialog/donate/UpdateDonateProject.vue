@@ -1,58 +1,130 @@
 <script setup>
-import { ref } from 'vue'
-const dialog = ref(false);
+import { ref, reactive, defineProps } from 'vue'
+import { useDonateStore } from '@/stores/donate/donate-project.js';
+const DonateStore = useDonateStore();
+
+const vueProps = defineProps({
+    donateNoForUpdate: Number,
+    donateNameForUpdate: String,
+    donateStartDateForUpdate: String,
+    donateEndDateForUpdate: String,
+    donateSummarizeForUpdate: String,
+    donateImageForUpdate: String,
+})
+
+// const donateForUpdate = reactive({
+//     donateNo: null,
+//     donateName: "",
+//     donateStartDate: null,
+//     donateEndDate: null,
+//     donateSummarize: "",
+//     donateImage: [],
+// })
+
+const donateName = ref('')
+const donateStartDate = ref('')
+const donateEndDate = ref('')
+const donateSummarize = ref('')
+const donateImage = ref('')
+
+const dialogDisplay = ref(false);
+
+function closeDialog() {
+    dialogDisplay.value = false;
+}
+
+function showDialog() {
+    // console.log('vueProps:', vueProps);
+    // console.log('donateForUpdate:', donateForUpdate);
+
+    donateName.value = vueProps.donateNameForUpdate
+    donateStartDate.value = vueProps.donateStartDateForUpdate
+    donateEndDate.value = vueProps.donateEndDateForUpdate
+    donateSummarize.value = vueProps.donateSummarizeForUpdate
+    donateImage.value = vueProps.donateImageForUpdate
+
+    // dialogDisplay.value = true;
+    // donateForUpdate.donateNo = vueProps.donateNoForUpdate
+    // donateForUpdate.donateName = vueProps.donateNameForUpdate
+    // donateForUpdate.donateStartDate = vueProps.donateStartDateForUpdate
+    // donateForUpdate.donateEndDate = vueProps.donateEndDateForUpdate
+    // donateForUpdate.donateSummarize = vueProps.donateSummarizeForUpdate
+    // donateForUpdate.donateImage['name'] = vueProps.donateImageForUpdate
+}
+
+
+
+async function updateDonate(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage) {
+    try {
+        if (donateNoForUpdate == null) {
+            throw new Error("donate project no. not found!")
+        }
+        await DonateStore.updateDonateBackend(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)
+        DonateStore.updateDonateFromDonatePool(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)
+        window.alert(`編輯成功!`);
+    } catch (error) {
+        console.error(error);
+        window.alert(`http status : ${error.response} 編輯失敗!請聯絡管理員!`);
+    } finally {
+        closeDialog()
+    }
+}
+
 </script>
 
 <template>
     <v-row class="row" style="flex: 0;">
-        <v-dialog v-model="dialog" persistent width="50%">
+        <v-dialog v-model="dialogDisplay" persistent width="50%">
             <template v-slot:activator="{ props }">
-                <v-icon size="small" class="me-2 icon" v-bind="props">mdi-pencil</v-icon>
+                <v-icon size="small" class="me-2 icon" v-bind="props" @click="showDialog">mdi-pencil</v-icon>
             </template>
             <v-card>
                 <v-card-title>
                     <span class="main_title">編輯捐款專案</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="">
+                    <form action="http://localhost/SPARK_BACK/php/donate/donate-project/update_donate_project.php"
+                        method="post"
+                        @submit.prevent="updateDonate(vueProps.donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)">
                         <label for="">
                             <div class="input_title">標題</div>
-                            <input type="text">
+                            <input type="text" name="donate_project_name" v-model="donateName">
                         </label>
                         <label for="">
                             <div class="input_title">開始日期</div>
-                            <input type="date">
+                            <input type="date" name="donate_project_start_date" v-model="donateStartDate">
                         </label>
                         <label for="">
                             <div class="input_title">結束日期</div>
-                            <input type="date">
+                            <input type="date" name="donate_project_end_date" v-model="donateEndDate">
                         </label>
                         <label for="">
                             <div class="input_title">內文</div>
-                            <textarea name="" id="" cols="70" rows="10"></textarea>
+                            <textarea name="donate_project_summarize" cols="70" rows="10"
+                                v-model="donateSummarize"></textarea>
                         </label>
 
                         <div class="imgblock">
                             <span>封面照片</span>
-                            <v-file-input variant="outlined" id="book" prepend-icon="none">
+                            <v-file-input variant="outlined" id="coverPic" prepend-icon="none" accept="image/*"
+                                label="請上傳圖檔">
                                 <template v-slot:prepend-inner>
-                                    <label for="book">上傳圖檔</label>
+                                    <label for="coverPic">上傳圖檔</label>
                                 </template>
                             </v-file-input>
                         </div>
 
-
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                                取消
+                            </v-btn>
+                            <v-btn class="update btn" variant="text" type="submit">
+                                儲存
+                            </v-btn>
+                        </v-card-actions>
                     </form>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        取消
-                    </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                        儲存
-                    </v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
     </v-row>

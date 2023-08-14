@@ -48,7 +48,7 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-btn>
             </template>
             <v-card>
-                <form action="http://localhost:8888/member/create_letter.php" method="post" @submit.prevent="
+                <form action="http://localhost:8888/member/thanks-letter/create_letter.php" method="post" @submit.prevent="
                 CreateThanksLetter(thanksLetterForUpdate)">
                     <v-card-title>
                         <span class="main_title">新增感謝函</span>

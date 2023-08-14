@@ -1,5 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5174");
+
+
  require_once("../../connect_chd102g3.php");
 try{
   $sql = "SELECT * FROM reports WHERE report_class = '財務' AND del_flg = 0;

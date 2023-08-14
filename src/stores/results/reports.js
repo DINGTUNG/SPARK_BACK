@@ -78,12 +78,12 @@ export const useReportStore = defineStore('Report', () => {
       }
     }
 
-
     //update
     function updateReportBackend(reportsForUpdate) {
-
+      
       validateReportsForUpdate(reportsForUpdate);
         // prepare data 
+        
         const payLoad = new FormData();
         payLoad.append("report_no", reportsForUpdate.reportsNo);
         payLoad.append("report_class", reportsForUpdate.reportsClass);

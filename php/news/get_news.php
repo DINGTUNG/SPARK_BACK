@@ -1,5 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *"); //標頭修改
+header("Access-Control-Allow-Methods: PUT, GET, POST");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 require_once("../connect_chd102g3.php");
 try {
   $sql = "select * from news where del_flg = 0";

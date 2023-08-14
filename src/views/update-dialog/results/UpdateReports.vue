@@ -61,7 +61,7 @@ async function updateReports(reportsNoForUpdate) {
                     <span class="text-h5">修改報告</span>
                 </v-card-title>
                 <v-card-text>
-                    <form id="reportFrom" method="POST"
+                    <form id="reportFrom" method="post"
                         action="http://localhost/SPARK_BACK/php/results/reports/update_reports.php"
                         @submit.prevent="updateReports(vueProps.reportsNoForUpdate)">
                         <div class="form_item">
@@ -78,7 +78,7 @@ async function updateReports(reportsNoForUpdate) {
                         </div>
                         <div class="imgblock form_item">
                             <div class="name"><span>報告</span></div>
-                            <v-file-input id="photo1" prepend-icon="none" name="reports_file_path"
+                            <v-file-input id="photo1" prepend-icon="none" name="reports_file_path" accept="image/*"
                                 v-model="reportsForUpdate.reportsFile">
                                 <template v-slot:prepend-inner>
                                     <label for="photo1" id="photo">修改報告</label>
@@ -90,7 +90,7 @@ async function updateReports(reportsNoForUpdate) {
                             <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
                                 取消
                             </v-btn>
-                            <v-btn color="blue-darken-1" variant="text" type="submit" @click="closeDialog">
+                            <v-btn color="blue-darken-1" variant="text" type="submit">
                                 儲存
                             </v-btn>
                         </v-card-actions>

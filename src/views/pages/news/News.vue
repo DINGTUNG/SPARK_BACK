@@ -5,7 +5,6 @@ import DeleteNews from '@/views/delete-dialog/news/DeleteNews.vue';
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-
 import { useNewsStore } from '@/stores/news/news.js';
 const newsStore = useNewsStore();
 
@@ -109,7 +108,7 @@ async function updateNewsOnline(item) {
           </thead>
           <tbody>
             
-            <tr v-for="(item, index) in displayNewsList" :key="item.id" class="no-border">
+            <tr v-for="(item, index) in displayNewsList" :key="item.news_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="news_no">{{ item.news_no }}</td>
               <td class="news_id">{{ item.news_id }}</td>
@@ -125,7 +124,9 @@ async function updateNewsOnline(item) {
               <td class="">{{ item.updater }}</td>
               <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" :newsTitleForUpdate="item.news_title"
+                <UpdateNews 
+                  :newsNoForUpdate="parseInt(item.news_no)" 
+                  :newsTitleForUpdate="item.news_title"
                   :newsDateForUpdate="item.news_date" 
                   :newsContentFirstUpdate="item.news_content_first"
                   :newsImageFirstForUpdate="item.news_image_first" 

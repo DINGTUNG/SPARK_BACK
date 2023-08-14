@@ -17,11 +17,9 @@ const reportsForUpdate = reactive({
     reportsFile: [],
 })
 async function createReports(reportsForUpdate) {
-    console.log(reportsForUpdate)
     try {
         const newReports = await reportStore.createReportsBackend(reportsForUpdate)
         addContentToNewReports(newReports)
-        console.log(reportStore.reportsList);
         console.log(reportsForUpdate)
         window.alert(`新增成功!`);
     } catch (error) {

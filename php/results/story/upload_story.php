@@ -19,7 +19,7 @@
         $stmt->bindValue(':status_code', $status_code);
         $stmt->bindValue(':story_no', $story_no);
         $stmt->execute();
-        header("Location:http://localhost:5174/chd102/g3/back-end/story");
+        header("Location:http://localhost:5173/chd102/g3/back-end/story");
 
 
     } catch(PDOException $e){

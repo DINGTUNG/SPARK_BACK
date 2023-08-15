@@ -13,6 +13,7 @@ async function getData() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/report/get_report.php')
     reportStore.reportList.splice(0);
+    console.log(response)
     if (response.data.length > 0) {
       response.data.forEach(element => {
         reportStore.reportList.push(element);

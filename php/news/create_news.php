@@ -88,7 +88,7 @@ SET
   news_image_third =:news_image_third,
   news_content_fourth =:news_content_fourth,
   news_image_fourth =:news_image_fourth,
-  updater = '北七',
+  updater = 'sir',
   update_time = Now()
 WHERE
   news_no = :last_insert_id";

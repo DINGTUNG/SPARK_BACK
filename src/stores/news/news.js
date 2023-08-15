@@ -82,9 +82,6 @@ export const useNewsStore = defineStore('news', () => {
 
   // update
   function updateNewsBackend(newsForUpdate) {
-
-    validateNewsForUpdate(newsForUpdate); //not finished
-
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("news_no", newsForUpdate.newsNo);

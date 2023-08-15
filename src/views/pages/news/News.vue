@@ -136,8 +136,7 @@ async function updateNewsOnline(item) {
                   :newsImageThirdForUpdate="item.news_image_third" 
                   :newsContentFourthUpdate="item.news_content_fourth"
                   :newsImageFourthForUpdate="item.news_image_fourth" 
-                  />
-                
+                  />        
                 <DeleteNews :newsNoForDelete="parseInt(item.news_no)" />
               </td>
             </tr>
@@ -153,7 +152,6 @@ async function updateNewsOnline(item) {
     </div>
   </div>
 </template>
-
 <style scoped lang="scss">
 @import "@/assets/sass/pages/news/news";
 </style>

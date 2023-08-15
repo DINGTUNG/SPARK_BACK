@@ -12,9 +12,8 @@ require '../../../PHPMailer/SMTP.php';
 
 try {
 
-    $member_account = $_GET['member_account'];
-
-    $verification_code = uniqid(); //產生驗證碼
+    $verification_code = uniqid();
+    $baseURL = "http://localhost:5174/chd102/g3/register?verification_code=";
 
 
     //設定SMTP

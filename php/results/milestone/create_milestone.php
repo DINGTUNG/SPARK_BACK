@@ -6,11 +6,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
-
   $milestoneTitle = $_POST["milestone_title"] ?? null;
   $milestoneDate = $_POST["milestone_date"] ?? null;
   $milestoneContent = $_POST["milestone_content"] ?? null;
   $milestoneImage = $_FILES["milestone_image"] ?? null;
+  $milestoneImageName = $_FILES["milestone_image"]['name'] ?? null;
 
   // parameters validation
   if ($milestoneTitle == null) {
@@ -25,32 +25,61 @@ try {
   if ($milestoneImage == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供milestone image)");
   }
+  $pdo->beginTransaction();
   
   // create record
-  $pdo->beginTransaction();
+  $createSql = "INSERT INTO milestone
+  ( 
+  milestone_title, 
+  milestone_date, 
+  milestone_content, 
+  milestone_image, 
+  updater, 
+  update_time) 
+  VALUES
+  (
+  :milestone_title, 
+  :milestone_date, 
+  :milestone_content, 
+  :milestone_image_name, 
+  'Kay', 
+  Now())";
 
-  $createSql = "insert into milestone(milestone_no, milestone_title, 
-  milestone_date, milestone_content, milestone_image, updater, update_time) values(:milestone_no, :milestone_title, :milestone_date, :milestone_content, :milestone_image, 'Kay', Now())";
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":milestone_no", $milestoneNo);
   $createStmt->bindValue(":milestone_title", $milestoneTitle);
   $createStmt->bindValue(":milestone_date", $milestoneDate);
   $createStmt->bindValue(":milestone_content", $milestoneContent);
-  $createStmt->bindValue(":milestone_image", mkFilename($milestoneNo, $milestoneImage,1));
-
+  $createStmt->bindValue(":milestone_image_name", $milestoneImageName);
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($milestoneNo, $milestoneImage, 1)) {
-    throw new Exception();
-  }
-  $updateSql = "update milestone set milestone_id = concat('M',LPAD(LAST_INSERT_ID(), 3, 0)) where milestone_no = LAST_INSERT_ID()";
+  $lastInsertId = $pdo->lastInsertId();
+
+  $updateSql = "UPDATE
+  milestone
+SET
+  milestone_id = CONCAT('M', LPAD(:last_insert_id, 3, 0)),
+  milestone_image = :milestone_image_name
+WHERE
+  milestone_no = :last_insert_id";
+
   $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":last_insert_id", $lastInsertId);
+  $updateStmt->bindValue(":milestone_image_name", mkFilename($lastInsertId,$milestoneImage,$milestoneImageName));
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
+  if (!$updateResult) {
+    throw new Exception();
+  }
+
+  if (!copyFileToLocal($lastInsertId,$milestoneImage,$milestoneImageName)) {
+    throw new Exception();
+  }
+  
+  
   $selectSql = "select * from milestone where milestone_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
   $newMessage = $selectStmt->fetch(PDO::FETCH_ASSOC);
@@ -71,25 +100,23 @@ try {
   $pdo->rollBack();
 }
 
-function copyFileToLocal($milestoneNo, $file, $fileNo)
+function copyFileToLocal($lastInsertId, $milestoneImage, $milestoneImageName)
 {
   $dir = "../../../images/milestone/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($milestoneNo, $file, $fileNo);
-  $from = $file["tmp_name"];
+  $filename = mkFilename($lastInsertId, $milestoneImage, $milestoneImageName);
+  $from = $milestoneImage["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($milestoneNo, $file, $fileNo)
+function mkFilename($lastInsertId, $milestoneImage, $milestoneImageName)
 {
-  $filename =  'M' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . 
-  $fileNo;
-  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
-  $filename = "$filename.$fileExt";
+  $filename =  'M' . str_pad($lastInsertId, 3, "0", STR_PAD_LEFT) . '_' . 
+  $milestoneImageName;
   return $filename;
 }
 

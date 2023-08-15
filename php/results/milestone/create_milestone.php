@@ -60,8 +60,8 @@ try {
   $updateSql = "UPDATE
   milestone
 SET
-  milestone_id = CONCAT('M', LPAD(:last_insert_id, 3, 0))
-  milestone_image = :milestone_image_name,
+  milestone_id = CONCAT('M', LPAD(:last_insert_id, 3, 0)),
+  milestone_image = :milestone_image_name
 WHERE
   milestone_no = :last_insert_id";
 
@@ -108,7 +108,7 @@ function copyFileToLocal($lastInsertId, $milestoneImage, $milestoneImageName)
   }
 
   $filename = mkFilename($lastInsertId, $milestoneImage, $milestoneImageName);
-  $from = $file["tmp_name"];
+  $from = $milestoneImage["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }

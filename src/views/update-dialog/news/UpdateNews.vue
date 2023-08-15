@@ -50,9 +50,9 @@ function showDialog() {
   newsForUpdate.newsImageFourth['name'] = vueProps.newsImageFourthForUpdate
 }
 
-async function updateNews(newsNoForUpdate) {
+async function updateNews() {
   try {
-    if (newsNoForUpdate == null) {
+    if (newsForUpdate.newsNo == null) {
       throw new Error("news no. not found!")
     }
     await newsStore.updateNewsBackend(newsForUpdate)
@@ -79,7 +79,7 @@ async function updateNews(newsNoForUpdate) {
         </v-card-title>
         <v-card-text>
           <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
-            @submit.prevent="updateNews(vueProps.newsNoForUpdate)">
+            @submit.prevent="updateNews">
             <div class="form_item">
               <div class="name"><span>標題</span></div>
               <input type="text" id="title" v-model="newsForUpdate.newsTitle" name="news_title">

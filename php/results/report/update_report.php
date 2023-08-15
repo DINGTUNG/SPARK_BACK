@@ -10,7 +10,7 @@ try {
   $reportClass = $_POST["report_class"] ?? null;
   $reportYear = $_POST["report_year"] ?? null;
   $reportTitle = $_POST["report_title"] ?? null;
-  $reportsFile = $_FILES["reports_file_path"] ?? null;
+  $reportFile = $_FILES["report_file_path"] ?? null;
 
 
   // parameters validation
@@ -26,14 +26,14 @@ try {
   if ($reportTitle == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供 report title)");
   }
-  if ($reportsFile == null) {
-    throw new InvalidArgumentException($message = "參數不足(請提供 reports file )");
+  if ($reportFile == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供 report file )");
   }
 
   $pdo->beginTransaction();
 
   // check update record existed
-  $checkRecordAliveSql = "SELECT COUNT(*) AS count FROM reports WHERE report_no = :report_no AND del_flg = 0";
+  $checkRecordAliveSql = "SELECT COUNT(*) AS count FROM report WHERE report_no = :report_no AND del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
   $checkRecordAliveStmt->bindValue(":report_no", $reportNo);
   $checkRecordAliveStmt->execute();
@@ -45,29 +45,29 @@ try {
   }
 
   // update record
-  $updateSql = "UPDATE reports SET
+  $updateSql = "UPDATE report SET
   report_class = :report_class,
   report_year = :report_year,
   report_title = :report_title,
-  reports_file_path = :reports_file_path,
+  report_file_path = :report_file_path,
   updater = 'sir',
   update_time = NOW()
   WHERE report_no = :report_no";
 
-$updateStmt = $pdo->prepare($updateSql);
-$updateStmt->bindValue(":report_no", $reportNo);
-$updateStmt->bindValue(":report_class", $reportClass);
-$updateStmt->bindValue(":report_year", $reportYear);
-$updateStmt->bindValue(":report_title", $reportTitle);
-$updateStmt->bindValue(":reports_file_path", mkFilename($reportNo, $reportsFile, 1, $reportClass));
-$updateResult = $updateStmt->execute();
+  $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":report_no", $reportNo);
+  $updateStmt->bindValue(":report_class", $reportClass);
+  $updateStmt->bindValue(":report_year", $reportYear);
+  $updateStmt->bindValue(":report_title", $reportTitle);
+  $updateStmt->bindValue(":report_file_path", mkFilename($reportNo, $reportFile, 1, $reportClass));
+  $updateResult = $updateStmt->execute();
 
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }
 
-  if (!copyFileToLocal($reportNo, $reportsFile,1)) {
-    throw new UnexpectedValueException( $message = "檔案儲存失敗(move failed)");
+  if (!copyFileToLocal($reportNo, $reportFile, 1, $reportClass)) {
+    throw new UnexpectedValueException($message = "檔案儲存失敗(file stored failed)");
   }
 
   $pdo->commit();
@@ -87,30 +87,31 @@ $updateResult = $updateStmt->execute();
   $pdo->rollBack();
 }
 
-function copyFileToLocal($reportNo,$file,$fileNo)
+function copyFileToLocal($reportNo, $file, $fileNo, $reportClass)
 {
   $dir = "../../../PDF/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($reportNo,$file,$fileNo,$reportClass);
+  $filename = mkFilename($reportNo, $file, $fileNo, $reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
-  
 }
 
 function mkFilename($updateId, $file, $fileNo, $reportClass)
 {
+
   $currentYear = date('Y');
   if ($reportClass == "年度") {
-    $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep';
-  } else {
     $filename = 'R' . $currentYear . '_' . $fileNo . '_business_rep';
+  }else if ($reportClass == "財務") {
+    $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep';
+  }else{
+    throw new UnexpectedValueException($message = "報告種類有誤");
   }
   $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;
 }
-?>

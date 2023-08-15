@@ -124,10 +124,6 @@ export const useNewsStore = defineStore('news', () => {
     });
   }
 
-  const validateNewsForUpdate = (newsNoForUpdate) => {
-    return newsNoForUpdate
-  }
-
   const updateNewsFromNewsPool = (newsForUpdate) => {
     for (let i = 0; i < newsPool.length; i++) {
       if (newsPool[i].news_no == newsForUpdate.newsNo) {
@@ -143,22 +139,20 @@ export const useNewsStore = defineStore('news', () => {
     }
   }
 
-
   // create
-  function createNewsBackend(newsForUpdate) {
-    validateNewsForUpdate(newsForUpdate);
+  function createNewsBackend(newsForCreate) {
     const payLoad = {
-      "news_no": newsForUpdate.newsNo,
-      "news_title": newsForUpdate.newsTitle,
-      "news_date": newsForUpdate.newsDate,
-      "news_content_first": newsForUpdate.newsContentFirst,
-      "news_image_first": newsForUpdate.newsImageFirst[0],
-      "news_content_second": newsForUpdate.newsContentSecond,
-      "news_image_second": newsForUpdate.newsImageSecond[0],
-      "news_content_third": newsForUpdate.newsContentThird,
-      "news_image_third": newsForUpdate.newsImageThird[0],
-      "news_content_fourth": newsForUpdate.newsContentFourth,
-      "news_image_fourth": newsForUpdate.newsImageFourth[0],
+      "news_no": newsForCreate.newsNo,
+      "news_title": newsForCreate.newsTitle,
+      "news_date": newsForCreate.newsDate,
+      "news_content_first": newsForCreate.newsContentFirst,
+      "news_image_first": newsForCreate.newsImageFirst[0],
+      "news_content_second": newsForCreate.newsContentSecond,
+      "news_image_second": newsForCreate.newsImageSecond[0],
+      "news_content_third": newsForCreate.newsContentThird,
+      "news_image_third": newsForCreate.newsImageThird[0],
+      "news_content_fourth": newsForCreate.newsContentFourth,
+      "news_image_fourth": newsForCreate.newsImageFourth[0],
     }
 
     // make a request

@@ -11,20 +11,20 @@ function showDialog() {
 function closeDialog() {
     dialogDisplay.value = false;
 }
-const thanksLetterForUpdate = reactive({
+const thanksLetterForCreate = reactive({
     thanksLetterNo: null,
     childrenId: "",
     memberId: "",
     sponsorOrderId: "",
-    receiveDate: null,
-    fileName: [],
+    receiveDate: "",
+    thanksLetterFile: [],
 })
 
-async function CreateThanksLetter(thanksLetterForUpdate) {
+async function CreateThanksLetter(thanksLetterForCreate) {
     try {
-        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(thanksLetterForUpdate)
-        addContentTonewThanksLetter(newThanksLetter)
-        console.log(thanksLetterStore.thanksLetterPool);
+        const newThanksLetter = await thanksLetterStore.CreateThanksLetterBackend(thanksLetterForCreate)
+        addContentToNewThanksLetter(newThanksLetter)
+ 
         window.alert(`新增成功!`);
     } catch (error) {
         console.error(error);
@@ -34,7 +34,7 @@ async function CreateThanksLetter(thanksLetterForUpdate) {
     }
 }
 
-const addContentTonewThanksLetter = (newThanksLetter) => {
+const addContentToNewThanksLetter = (newThanksLetter) => {
     thanksLetterStore.thanksLetterPool.push(newThanksLetter)
 }
 </script>
@@ -48,31 +48,33 @@ const addContentTonewThanksLetter = (newThanksLetter) => {
                 </v-btn>
             </template>
             <v-card>
-                <form action="http://localhost:8888/member/thanks-letter/create_letter.php" method="post" @submit.prevent="
-                CreateThanksLetter(thanksLetterForUpdate)">
+              <form action="http://localhost/SPARK-BACK/php/member/thanks-letter/create_letter.php" method="post" @submit.prevent="
+                CreateThanksLetter(thanksLetterForCreate)">
+                <!-- <form action="http://localhost:8888/member/thanks-letter/create_letter.php" method="post" @submit.prevent="
+                CreateThanksLetter(thanksLetterForUpdate)"> -->
                     <v-card-title>
                         <span class="main_title">新增感謝函</span>
                     </v-card-title>
                     <v-card-text>
                         <label for="">
                             <div class="input_title">兒童ID</div>
-                            <input type="text" name="children_id" v-model="thanksLetterForUpdate.childrenId">
+                            <input type="text" name="children_id" v-model="thanksLetterForCreate.childrenId">
                         </label>
                         <label for="">
                             <div class="input_title">會員ID</div>
-                            <input type="text" name="member_id" v-model="thanksLetterForUpdate.memberId">
+                            <input type="text" name="member_id" v-model="thanksLetterForCreate.memberId">
                         </label>
                         <label for="">
                             <div class="input_title">認養訂單ID</div>
-                            <input type="text" name="sponsor_order_id" v-model="thanksLetterForUpdate.sponsorOrderId">
+                            <input type="text" name="sponsor_order_id" v-model="thanksLetterForCreate.sponsorOrderId">
                         </label>
                         <label for="date" class="custom-label">
                             <div class="input_title">收件日期</div>
-                            <input type="date" id="date" name="receive_date" v-model="thanksLetterForUpdate.receiveDate">
+                            <input type="date" id="date" name="receive_date" v-model="thanksLetterForCreate.receiveDate">
                         </label>
                         <div class="imgblock form_item">
                             <span>圖片</span>
-                            <v-file-input variant="outlined" id="photo1" prepend-icon="none" name="file_name" v-model="thanksLetterForUpdate.fileName" >
+                            <v-file-input variant="outlined" id="photo1" prepend-icon="none" name="thanks_letter_file" v-model="thanksLetterForCreate.thanksLetterFile" >
                                 <template v-slot:prepend-inner>
                                     <label for="photo1" id="photo">上傳圖檔</label>
                                 </template>

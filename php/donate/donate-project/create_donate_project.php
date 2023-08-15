@@ -71,7 +71,8 @@ try {
   $pdo->rollBack();
 } catch (Exception $e) {
   http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
   $pdo->rollBack();
 }
 

@@ -15,7 +15,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost:8888/member/thanks-letter/delete_letter.php`,
+      url: `http://localhost/SPARK_BACK/php/member/thanks-letter/delete_letter.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -49,8 +49,6 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
     // update
     function updateThanksLetterBackend(thanksLetterForUpdate){
 
-        validateThanksLetterForUpdate(thanksLetterForUpdate);
-
         // prepare data 
         const payLoad = new FormData();
         payLoad.append("thanks_letter_no", thanksLetterForUpdate.thanksLetterNo);
@@ -58,13 +56,13 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         payLoad.append("member_id", thanksLetterForUpdate.memberId);
         payLoad.append("sponsor_order_id", thanksLetterForUpdate.sponsorOrderId);
         payLoad.append("receive_date", thanksLetterForUpdate.receiveDate);
-        payLoad.append("file_name", thanksLetterForUpdate.fileName[0]);
+        payLoad.append("thanks_letter_file", thanksLetterForUpdate.thanksLetterFile[0]);
 
     
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost:8888/member/thanks-letter/update_letter.php`,
+            url: `http://localhost/SPARK_BACK/php/member/thanks-letter/update_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -85,10 +83,6 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         });
     }
 
-    const validateThanksLetterForUpdate = (thanksLetterNoForUpdate) => {
-        return thanksLetterNoForUpdate
-      }
-
     const updateThanksLetterFromThanksLetterPool = (thanksLetterForUpdate) => {
         for (let i = 0; i < thanksLetterPool.length; i++) {
           if (thanksLetterPool[i].thanks_letter_no == thanksLetterForUpdate.thanksLetterNo)
@@ -97,7 +91,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
             thanksLetterPool[i].member_id = thanksLetterForUpdate.memberId
             thanksLetterPool[i].sponsor_order_id = thanksLetterForUpdate.sponsorOrderId
             thanksLetterPool[i].receive_date = thanksLetterForUpdate.receiveDate
-            thanksLetterPool[i].file_name = thanksLetterForUpdate.fileName
+            thanksLetterPool[i].thanks_letter_file = thanksLetterForUpdate.thanksLetterFile[0]["name"]
             }
         }
     }
@@ -113,7 +107,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
         method: "POST",
-        url: `http://localhost:8888/member/thanks-letter/update_thanks_letter_sent_status.php`,
+        url: `http://localhost/SPARK_BACK/php/member/thanks-letter/update_thanks_letter_sent_status.php`,
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -137,7 +131,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
   const updateSentStatusFromThanksLetterPool = (thanksLetterNo,isThanksLetterSent) => {
     for (let i = 0; i < thanksLetterPool.length; i++) {
       if (thanksLetterPool[i].thanks_letter_no == thanksLetterNo) {
-        sparkActivityPool[i].is_thanks_letter_sent = isThanksLetterSent
+        thanksLetterPool[i].is_thanks_letter_sent = isThanksLetterSent
       }
     }
   }
@@ -145,21 +139,20 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
 
 
     // create
-    function CreateThanksLetterBackend(thanksLetterForUpdate) {
-        validateThanksLetterForUpdate(thanksLetterForUpdate);
+    function CreateThanksLetterBackend(thanksLetterForCreate) {
         const payLoad = {
-            "thanks_letter_no": thanksLetterForUpdate.thanksLetterNo,
-            "children_id": thanksLetterForUpdate.childrenId,
-            "member_id": thanksLetterForUpdate.memberId,
-            "sponsor_order_id": thanksLetterForUpdate.sponsorOrderId,
-            "receive_date": thanksLetterForUpdate.receiveDate,
-            "file_name": thanksLetterForUpdate.fileName[0],
+            "thanks_letter_no": thanksLetterForCreate.thanksLetterNo,
+            "children_id": thanksLetterForCreate.childrenId,
+            "member_id": thanksLetterForCreate.memberId,
+            "sponsor_order_id": thanksLetterForCreate.sponsorOrderId,
+            "receive_date": thanksLetterForCreate.receiveDate,
+            "thanks_letter_file": thanksLetterForCreate.thanksLetterFile[0],
         }
 
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost:8888/member/thanks-letter/create_letter.php`,
+            url: `http://localhost/SPARK_BACK/php/member/thanks-letter/create_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },

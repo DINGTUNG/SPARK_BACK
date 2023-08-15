@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, defineProps } from 'vue'
+import { ref,reactive, defineProps } from 'vue'
 import { useThanksLetterStore } from '@/stores/member/thanks-letter.js';
 const thanksLetterStore = useThanksLetterStore();
 
@@ -9,7 +9,7 @@ const vueProps = defineProps({
     memberIdForUpdate: String,
     sponsorOrderIdForUpdate: String,
     receiveDateForUpdate: String,
-    fileNameForUpdate: String,
+    thanksLetterFileForUpdate: String,
 })
 
 const thanksLetterForUpdate = reactive({
@@ -17,10 +17,11 @@ const thanksLetterForUpdate = reactive({
     childrenId: "",
     memberId: "",
     sponsorOrderId: "",
-    receiveDate: null,
-    fileName: [],
+    receiveDate: "",
+    thanksLetterFile: [],
 })
 
+const dialogDisplay = ref(false);
 
 function closeDialog() {
   dialogDisplay.value = false;
@@ -33,9 +34,8 @@ function showDialog() {
     thanksLetterForUpdate.memberId = vueProps.memberIdForUpdate
     thanksLetterForUpdate.sponsorOrderId = vueProps.sponsorOrderIdForUpdate
     thanksLetterForUpdate.receiveDate = vueProps.receiveDateForUpdate
-    thanksLetterForUpdate.fileName['name'] = vueProps.fileNameForUpdate
+    thanksLetterForUpdate.thanksLetterFile['name'] = vueProps.thanksLetterFileForUpdate
 }
-
 
 
 async function updateThanksLetter
@@ -44,8 +44,8 @@ async function updateThanksLetter
     if (thanksLetterNoForUpdate == null) {
       throw new Error("thanks letter no. not found!")
     }
-    await thanksLetterStore.updateThanksLetterBackend(thanksLetterNoForUpdate)
-    thanksLetterStore.updateThanksLetterFromThanksLetterPool(thanksLetterNoForUpdate)
+    await thanksLetterStore.updateThanksLetterBackend(thanksLetterForUpdate)
+    thanksLetterStore.updateThanksLetterFromThanksLetterPool(thanksLetterForUpdate)
     window.alert(`編輯成功!`);
   } catch (error) {
     console.error(error);
@@ -67,7 +67,9 @@ async function updateThanksLetter
           編輯感謝函
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost:8888/member/thanks-letter/update_letter.php" method="post"
+          <!-- <form action="http://localhost:8888/member/thanks-letter/update_letter.php" method="post"
+            @submit.prevent="updateThanksLetter(vueProps.thanksLetterNoForUpdate)"> -->
+            <form action="http://localhost/SPARK_BACK/php/member/thanks-letter/update_letter.php" method="post"
             @submit.prevent="updateThanksLetter(vueProps.thanksLetterNoForUpdate)">
 
             <div class="input_container">
@@ -83,7 +85,7 @@ async function updateThanksLetter
 
               <div class="input_wrap">
                 <label for="sponsor_order_id">認養訂單ID</label>
-                <input type="date" name="sponsor_order_id" v-model="thanksLetterForUpdate.sponsorOrderId">
+                <input type="text" name="sponsor_order_id" v-model="thanksLetterForUpdate.sponsorOrderId">
               </div>
 
               <div class="input_wrap">
@@ -96,7 +98,7 @@ async function updateThanksLetter
                   <span>感謝函圖檔</span>
                 </div>
                 <v-file-input id="photo1" prepend-icon="none" accept="image/*" label="請上傳感謝函圖檔"
-                  v-model="thanksLetterForUpdate.fileName" name="file_name">
+                  v-model="thanksLetterForUpdate.thanksLetterFile" name="thanks_letter_file">
                   <template v-slot:prepend-inner>
                     <label for="photo1" id="photo">上傳圖檔</label>
                   </template>

@@ -48,77 +48,84 @@ try {
   }
   $pdo->beginTransaction();
 
-  // update record
-  $createSql = "insert into news
+  // create record
+  $createSql = "INSERT INTO news
   (news_title,
   news_date,
   news_content_first,
   news_image_first,
-  news_content_second,
-  news_image_second,
-  news_content_third,
-  news_image_third,
-  news_content_fourth,
-  news_image_fourth,
   updater,
-  update_time,
-  news_no) 
-  values
+  update_time) 
+  VALUES
   (:news_title,
     :news_date,
     :news_content_first,
     :news_image_first,
-    :news_content_second,
-    :news_image_second,
-    :news_content_third,
-    :news_image_third,
-    :news_content_fourth,
-    :news_image_fourth,
     'sir',
-    Now(),
-    :news_no )";
+    Now())";
 
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":news_no",$newsNo);
-  $createStmt->bindValue(":news_title",$newsTitle);
+  $createStmt->bindValue(":news_title", $newsTitle);
   $createStmt->bindValue(":news_date", $newsDate);
   $createStmt->bindValue(":news_content_first", $newsContentFirst);
-  $createStmt->bindValue(":news_image_first", mkFilename($newsNo, $newsImageFirst, 1));
-  $createStmt->bindValue(":news_content_second", $newsContentSecond);
-  $createStmt->bindValue(":news_image_second", mkFilename($newsNo, $newsImageSecond, 2));
-  $createStmt->bindValue(":news_content_third", $newsContentThird);
-  $createStmt->bindValue(":news_image_third", mkFilename($newsNo, $newsImageThird, 3));
-  $createStmt->bindValue(":news_content_fourth", $newsContentFourth);
-  $createStmt->bindValue(":news_image_fourth", mkFilename($newsNo, $newsImageFourth, 4));
+  $createStmt->bindValue(":news_image_first", mkFilename('temp', $newsImageFirst, 1));
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($newsNo, $newsImageFirst, 1)) {
-    throw new Exception();
-  }
-  if (!copyFileToLocal($newsNo, $newsImageSecond, 2)) {
-    throw new Exception();
-  }
-  if (!copyFileToLocal($newsNo, $newsImageThird, 3)) {
-    throw new Exception();
-  }
-  if (!copyFileToLocal($newsNo, $newsImageFourth, 4)) {
-    throw new Exception();
-  }
-
-  $updateSql = "update news set news_id = concat('N',LPAD(LAST_INSERT_ID(), 3, 0)) where news_no = LAST_INSERT_ID()";
+  $lastInsertId = $pdo->lastInsertId();
+  
+  $updateSql ="UPDATE
+  news
+SET
+  news_id = CONCAT('N', LPAD(:last_insert_id, 3, 0)),
+  news_content_first = :news_content_first,
+  news_image_first =:news_image_first,
+  news_content_second = :news_content_second,
+  news_image_second =:news_image_second,
+  news_content_third =:news_content_third,
+  news_image_third =:news_image_third,
+  news_content_fourth =:news_content_fourth,
+  news_image_fourth =:news_image_fourth,
+  updater = '北七',
+  update_time = Now()
+WHERE
+  news_no = :last_insert_id";
   $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":last_insert_id", $lastInsertId);
+  $updateStmt->bindValue(":news_content_first", $newsContentFirst);
+  $updateStmt->bindValue(":news_image_first", mkFilename($lastInsertId, $newsImageFirst, 1));
+  $updateStmt->bindValue(":news_content_second", $newsContentSecond);
+  $updateStmt->bindValue(":news_image_second", mkFilename($lastInsertId, $newsImageSecond, 2));
+  $updateStmt->bindValue(":news_content_third", $newsContentThird);
+  $updateStmt->bindValue(":news_image_third", mkFilename($lastInsertId, $newsImageThird, 3));
+  $updateStmt->bindValue(":news_content_fourth", $newsContentFourth);
+  $updateStmt->bindValue(":news_image_fourth", mkFilename($lastInsertId, $newsImageFourth, 4));
   $updateResult = $updateStmt->execute();
   $pdo->commit();
 
+  if (!$updateResult) {
+    throw new Exception();
+  }
+  if (!copyFileToLocal($lastInsertId, $newsImageFirst, 1)) {
+    throw new Exception();
+  }
+  if (!copyFileToLocal($lastInsertId, $newsImageSecond, 2)) {
+    throw new Exception();
+  }
+  if (!copyFileToLocal($lastInsertId, $newsImageThird, 3)) {
+    throw new Exception();
+  }
+  if (!copyFileToLocal($lastInsertId, $newsImageFourth, 4)) {
+    throw new Exception();
+  }
+
   $selectSql = "select * from news where news_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
-  $newMessage = $selectStmt->fetch
-  (PDO::FETCH_ASSOC);
+  $newNews = $selectStmt->fetch(PDO::FETCH_ASSOC);
   http_response_code(200);
-  echo json_encode($newMessage);
+  echo json_encode($newNews);
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
   echo $e->getMessage();
@@ -129,29 +136,29 @@ try {
   $pdo->rollBack();
 } catch (Exception $e) {
   http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
+  echo $e;
   $pdo->rollBack();
 }
 
-function copyFileToLocal($newsNo, $file, $fileNo)
+function copyFileToLocal($lastInsertId, $file, $fileNo)
 {
   $dir = "../../images/news/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($newsNo, $file, $fileNo);
+  $filename = mkFilename($lastInsertId, $file, $fileNo);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file, $fileNo)
+function mkFilename($lastInsertId, $file, $fileNo)
 {
-  $filename =  'N' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
+  $filename =  'N' . str_pad($lastInsertId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
   $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;
 }
-?>
-

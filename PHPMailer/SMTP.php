@@ -1389,7 +1389,7 @@ class SMTP
     }
 
     /**
-     * Reports an error number and string.
+     * Report an error number and string.
      *
      * @param int    $errno   The error number returned by PHP
      * @param string $errmsg  The error message returned by PHP

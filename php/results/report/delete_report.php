@@ -14,7 +14,7 @@ try {
   }
 
   // check delete record existed
-  $checkRecordAliveSql = "select count(*) as count from reports where report_no = :report_no and del_flg = 0";
+  $checkRecordAliveSql = "select count(*) as count from report where report_no = :report_no and del_flg = 0";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
   $checkRecordAliveStmt->bindValue(":report_no", $reportNo);
   $checkRecordAliveStmt->execute();
@@ -26,7 +26,7 @@ try {
   }
 
   // delete record
-  $updateDeleteSql = "update reports set del_flg = 1,updater='sir', update_time=Now() where report_no = :report_no ";
+  $updateDeleteSql = "update report set del_flg = 1,updater='sir', update_time=Now() where report_no = :report_no ";
   $updateDeleteStmt = $pdo->prepare($updateDeleteSql);
   $updateDeleteStmt->bindValue(":report_no", $reportNo);
   $updateDeleteResult = $updateDeleteStmt->execute();
@@ -43,6 +43,7 @@ try {
   
 } catch (Exception $e) {
   http_response_code(500);
-  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
 }
 ?>

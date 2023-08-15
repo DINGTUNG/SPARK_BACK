@@ -1,10 +1,10 @@
 <script setup>
 //【引入】
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useMilestoneStore } from '@/stores/results/milestone.js'
 
 //
-const milestoneStore = useMilestoneStore();
+const MilestoneStore = useMilestoneStore();
 const dialogDisplay = ref(false);
 
 function showDialog() {
@@ -15,33 +15,34 @@ function closeDialog() {
     dialogDisplay.value = false;
 }
 
-const milestoneTitle = ref('')
-const milestoneDate = ref('')
-const milestoneContent = ref('')
-const milestoneImage = ref('')
+const milestoneForUpdate = reactive({
+  milestoneNo: null,
+  milestoneTitle: "",
+  milestoneDate: null,
+  milestoneContent: "",
+  milestoneImage: [],
+})
 
-async function createMilestone(milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
-    try {
-        const newMilestone = await milestoneStore.createMilestoneBackend(milestoneTitle, milestoneDate, milestoneContent, milestoneImage)
-        addContentToNewMilestone(newMilestone)
-        console.log(milestoneStore.milestonePool);
-        window.alert(`新增成功!`);
-    } catch (error) {
-        console.error(error);
-        window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
-    } finally {
-        closeDialog()
-    }
+async function createMilestone(milestoneForUpdate) {
+  console.log(milestoneForUpdate)
+  try {
+    const newMilestone = await MilestoneStore.createMilestoneBackend(milestoneForUpdate)
+    addContentToNewMilestone(newMilestone)
+    console.log(MilestoneStore.milestonePool);
+    window.alert(`新增成功!`);
+  } catch (error) {
+    console.error(error);
+    window.alert(`http status : ${error.response.data} 新增失敗!請聯絡管理員!`);
+  } finally {
+    closeDialog()
+  }
 }
 
 const addContentToNewMilestone = (newMilestone) => {
-  milestoneStore.milestonePool.push(newMilestone)
+  MilestoneStore.milestonePool.push(newMilestone)
 }
 
 </script>
-
-
-
 
 
 <template>
@@ -58,23 +59,23 @@ const addContentToNewMilestone = (newMilestone) => {
           <span class="main_title">新增里程碑</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/results/milestone/create_milestone.php" method="post" @submit.prevent="createMilestone(milestoneTitle, milestoneDate, milestoneContent, milestoneImage)">
+          <form action="http://localhost/SPARK_BACK/php/results/milestone/create_milestone.php" method="post" @submit.prevent="createMilestone(milestoneForUpdate)">
             <label for="">
               <div class="input_title">標題</div>
-              <input type="text" name="milestone_title" v-model="milestoneTitle">
+              <input type="text" name="milestone_title" v-model="milestoneForUpdate.milestoneTitle">
             </label>
             <label for="">
               <div class="input_title">年度/月份</div>
-              <input type="month" name="milestone_date" v-model="milestoneDate">
+              <input type="month" name="milestone_date" v-model="milestoneForUpdate.milestoneDate">
             </label>
             <label for="">
               <div class="input_title">內文</div>
-              <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneContent"></textarea>
+              <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneForUpdate.milestoneContent"></textarea>
             </label>
 
             <div class="imgblock">
               <span>圖片</span>
-              <v-file-input variant="outlined" id="book" prepend-icon="none" name="milestone_image" v-model="milestoneImage">
+              <v-file-input variant="outlined" id="book" prepend-icon="none" name="milestone_image" v-model="milestoneForUpdate.milestoneImage">
                 <template v-slot:prepend-inner>
                   <label for="book">上傳圖檔</label>
                 </template>

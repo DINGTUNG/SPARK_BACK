@@ -9,18 +9,18 @@ import DeleteMilestone from '@/views/delete-dialog/results/DeleteMilestone.vue';
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
 import { useMilestoneStore } from '@/stores/results/milestone.js';
-const milestoneStore = useMilestoneStore();
+const MilestoneStore = useMilestoneStore();
 
 
 //【串接資料庫】
 async function getMilestone() {
   try {
     const response = await axios.post('http://localhost/SPARK_BACK/php/results/milestone/get_milestone.php');
-    milestoneStore.milestonePool.splice(0);
+    MilestoneStore.milestonePool.splice(0);
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
-        milestoneStore.milestonePool.push(element);
+        MilestoneStore.milestonePool.push(element);
       });
     }
   } catch (error) {
@@ -37,7 +37,7 @@ onMounted(() => {
 const page = ref(1)
 const itemsPerPage = 10;
 const pageCount = computed(() => {
-  return Math.ceil(milestoneStore.milestonePool.length / itemsPerPage);
+  return Math.ceil(MilestoneStore.milestonePool.length / itemsPerPage);
 });
 const displayMilestoneList = computed(() => {
   const startIdx = (page.value - 1) * itemsPerPage;
@@ -62,7 +62,7 @@ const searchText = computed(() => {
 })
 
 const filteredMilestoneList = computed(() => {
-  return milestoneStore.milestonePool.filter((item) => {
+  return MilestoneStore.milestonePool.filter((item) => {
     const obj = [item.milestone_id, item.milestone_title, item.milestone_date]
     const str = JSON.stringify(obj);
     return str.includes(searchText.value)
@@ -76,8 +76,8 @@ async function UpdateMilestoneOnlineStatus(item) {
     if (item.milestone_no == null) {
       throw new Error("milestone no not found!")
     }
-    await milestoneStore.updateMilestoneOnlineStatusBackend(item.milestone_no,item.is_milestone_online)
-    milestoneStore.updateOrderStatusFromMilestoneList(item.milestone_no,item.is_milestone_online)
+    await MilestoneStore.updateMilestoneOnlineStatusBackend(item.milestone_no,item.is_milestone_online)
+    MilestoneStore.updateOrderStatusFromMilestoneList(item.milestone_no,item.is_milestone_online)
 
   } catch (error) {
     console.error(error);

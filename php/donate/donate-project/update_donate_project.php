@@ -64,7 +64,7 @@ try {
   $updateStmt->bindValue(":donate_project_start_date",$donateStartDate);
   $updateStmt->bindValue(":donate_project_end_date", $donateEndDate);
   $updateStmt->bindValue(":donate_project_summarize", $donateSummarize);
-  $updateStmt->bindValue(":donate_project_image", mkFilename($donateNo, $donateImage, 1));
+  $updateStmt->bindValue(":donate_project_image", mkFilename($donateNo, $donateImage));
 
   $updateResult = $updateStmt->execute();
 
@@ -73,8 +73,8 @@ try {
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }
-  if (!copyFileToLocal($donateNo, $donateImage, 1)) {
-    throw new UnexpectedValueException($message = "檔案1儲存失敗(copy failed)");
+  if (!copyFileToLocal($donateNo, $donateImage)) {
+    throw new UnexpectedValueException($message = "檔案儲存失敗(copy failed)");
   }
 
   $pdo->commit();
@@ -95,22 +95,22 @@ try {
   $pdo->rollBack();
 }
 
-function copyFileToLocal($donateNo, $file, $fileNo)
+function copyFileToLocal($donateNo, $file)
 {
-  $dir = "../../images/donate-project/";
+  $dir = "../../../images/donate-project/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($donateNo, $file, $fileNo);
+  $filename = mkFilename($donateNo, $file);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file, $fileNo)
+function mkFilename($updateId, $file)
 {
-  $filename =  'DP' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
+  $filename =  'DP' . str_pad($updateId, 3, "0", STR_PAD_LEFT);
   $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;

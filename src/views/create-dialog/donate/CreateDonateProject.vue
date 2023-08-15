@@ -1,9 +1,7 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
-
+import { ref, reactive } from 'vue'
 import { useDonateStore } from '@/stores/donate/donate-project.js';
 const DonateStore = useDonateStore();
-
 const dialogDisplay = ref(false);
 
 function showDialog() {
@@ -21,7 +19,7 @@ function closeDialog() {
 //   };
 // };
 
-const donateForUpdate = reactive({
+const donateForCreate = reactive({
   donateNo: null,
   donateName: "",
   donateStartDate: null,
@@ -30,18 +28,11 @@ const donateForUpdate = reactive({
   donateImage: [],
 })
 
-// const donateName = ref('')
-// const donateStartDate = ref('')
-// const donateEndDate = ref('')
-// const donateSummarize = ref('')
-// const donateImage = ref('')
 
-async function CreateDonateProject(donateForUpdate) {
-  console.log(donateForUpdate)
+async function createDonateProject(donateForCreate) {
   try {
-    const newDonateProject = await DonateStore.createDonateBackend(donateForUpdate)
+    const newDonateProject = await DonateStore.createDonateBackend(donateForCreate)
     addContentToNewDonate(newDonateProject)
-    console.log(DonateStore.donatePool);
     window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
@@ -54,8 +45,6 @@ async function CreateDonateProject(donateForUpdate) {
 const addContentToNewDonate = (newDonateProject) => {
   DonateStore.donatePool.push(newDonateProject)
 }
-
-
 
 </script>
 
@@ -75,22 +64,22 @@ const addContentToNewDonate = (newDonateProject) => {
         <v-card-text>
 
           <form action="http://localhost/SPARK_BACK/php/donate/donate-project/create_donate_project.php" method="post"
-            @submit.prevent="CreateDonateProject(donateForUpdate)">
+            @submit.prevent="createDonateProject(donateForCreate)">
             <label for="">
               <div class="input_title">標題</div>
-              <input type="text" name="donate_project_name" v-model="donateForUpdate.donateName">
+              <input type="text" name="donate_project_name" v-model="donateForCreate.donateName">
             </label>
             <label for="">
               <div class="input_title">開始日期</div>
-              <input type="date" name="donate_project_start_date" v-model="donateForUpdate.donateStartDate">
+              <input type="date" name="donate_project_start_date" v-model="donateForCreate.donateStartDate">
             </label>
             <label for="">
               <div class="input_title">結束日期</div>
-              <input type="date" name="donate_project_end_date" v-model="donateForUpdate.donateEndDate">
+              <input type="date" name="donate_project_end_date" v-model="donateForCreate.donateEndDate">
             </label>
             <label for="">
               <div class="input_title">內文</div>
-              <textarea name="donate_project_summarize" v-model="donateForUpdate.donateSummarize"
+              <textarea name="donate_project_summarize" v-model="donateForCreate.donateSummarize"
                 placeholder="60~70字可獲得最佳顯示效果喔~" cols="70" rows="10"></textarea>
             </label>
             <!-- <span class="count" :style="getStyle(donate_project_summarize.length, 50)">{{ donate_project_summarize.length
@@ -100,7 +89,7 @@ const addContentToNewDonate = (newDonateProject) => {
             <div class="imgblock">
               <span>封面照片</span>
               <v-file-input name="donate_project_image" id="coverPic" prepend-icon="none"
-                v-model="donateForUpdate.donateImage">
+                v-model="donateForCreate.donateImage">
                 <template v-slot:prepend-inner>
                   <label for="coverPic">上傳圖檔</label>
                 </template>

@@ -48,7 +48,7 @@ export const useDonateStore = defineStore('donate_project', () => {
     // update
     function updateDonateBackend(donateForUpdate) {
 
-        validateDonateForUpdate(donateForUpdate); //not finished
+        // validateDonateForUpdate(donateForUpdate); //not finished
 
         // prepare data 
         const payLoad = new FormData();
@@ -84,9 +84,9 @@ export const useDonateStore = defineStore('donate_project', () => {
         });
     }
 
-    const validateDonateForUpdate = (donateNoForUpdate) => {
-        return donateNoForUpdate
-    }
+    // const validateDonateForUpdate = (donateNoForUpdate) => {
+    //     return donateNoForUpdate
+    // }
 
     const updateDonateFromDonatePool = (donateForUpdate) => {
         for (let i = 0; i < donatePool.length; i++) {
@@ -101,23 +101,15 @@ export const useDonateStore = defineStore('donate_project', () => {
     }
 
     // create
-    function createDonateBackend(donateForUpdate) {
-        validateDonateForUpdate(donateForUpdate);
-        // prepare data 
-        // const payLoad = new FormData();
-        // payLoad.append("donate_project_name", donateName);
-        // payLoad.append("donate_project_start_date", donateStartDate);
-        // payLoad.append("donate_project_end_date", donateEndDate);
-        // payLoad.append("donate_project_summarize", donateSummarize);
-        // payLoad.append("donate_project_image", donateImage);
+    function createDonateBackend(donateForCreate) {
 
         const payLoad = {
-            "donate_project_no": donateForUpdate.donateNo,
-            "donate_project_name": donateForUpdate.donateName,
-            "donate_project_start_date": donateForUpdate.donateStartDate,
-            "donate_project_end_date": donateForUpdate.donateEndDate,
-            "donate_project_summarize": donateForUpdate.donateSummarize,
-            "donate_project_image": donateForUpdate.donateImage[0],
+            "donate_project_no": donateForCreate.donateNo,
+            "donate_project_name": donateForCreate.donateName,
+            "donate_project_start_date": donateForCreate.donateStartDate,
+            "donate_project_end_date": donateForCreate.donateEndDate,
+            "donate_project_summarize": donateForCreate.donateSummarize,
+            "donate_project_image": donateForCreate.donateImage[0],
         }
 
 

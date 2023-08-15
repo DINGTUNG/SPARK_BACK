@@ -34,32 +34,19 @@ function closeDialog() {
 }
 
 function showDialog() {
-    // console.log('vueProps:', vueProps);
-    // console.log('donateForUpdate:', donateForUpdate);
     dialogDisplay.value = true;
-
     donateForUpdate.donateNo = vueProps.donateNoForUpdate
     donateForUpdate.donateName = vueProps.donateNameForUpdate
     donateForUpdate.donateStartDate = vueProps.donateStartDateForUpdate
     donateForUpdate.donateEndDate = vueProps.donateEndDateForUpdate
     donateForUpdate.donateSummarize = vueProps.donateSummarizeForUpdate
     donateForUpdate.donateImage['name'] = vueProps.donateImageForUpdate
-
-    // dialogDisplay.value = true;
-    // donateForUpdate.donateNo = vueProps.donateNoForUpdate
-    // donateForUpdate.donateName = vueProps.donateNameForUpdate
-    // donateForUpdate.donateStartDate = vueProps.donateStartDateForUpdate
-    // donateForUpdate.donateEndDate = vueProps.donateEndDateForUpdate
-    // donateForUpdate.donateSummarize = vueProps.donateSummarizeForUpdate
-    // donateForUpdate.donateImage['name'] = vueProps.donateImageForUpdate
 }
 
-
-
-async function updateDonate(donateNoForUpdate) {
+async function updateDonate() {
 
     try {
-        if (donateNoForUpdate == null) {
+        if (donateForUpdate.donateNo == null) {
             throw new Error("donate project no. not found!")
         }
         await DonateStore.updateDonateBackend(donateForUpdate)
@@ -72,7 +59,6 @@ async function updateDonate(donateNoForUpdate) {
         closeDialog()
     }
 }
-
 </script>
 
 <template>
@@ -87,7 +73,7 @@ async function updateDonate(donateNoForUpdate) {
                 </v-card-title>
                 <v-card-text>
                     <form action="http://localhost/SPARK_BACK/php/donate/donate-project/update_donate_project.php"
-                        method="post" @submit.prevent="updateDonate(donateForUpdate)">
+                        method="post" @submit.prevent="updateDonate">
                         <label for="">
                             <div class="input_title">標題</div>
                             <input type="text" name="donate_project_name" v-model="donateForUpdate.donateName">

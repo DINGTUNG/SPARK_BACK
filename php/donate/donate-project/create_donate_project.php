@@ -34,27 +34,43 @@ try {
   // create record
   $pdo->beginTransaction();
 
-  $createSql = "insert into donate_project(donate_project_no, donate_project_name,donate_project_start_date, donate_project_end_date, donate_project_summarize, donate_project_image, updater, update_time) values(:donate_project_no, :donate_project_name, :donate_project_start_date, :donate_project_end_date, :donate_project_summarize, :donate_project_image, '董杯杯', Now())";
+  $createSql = "INSERT INTO donate_project(donate_project_name, donate_project_start_date, donate_project_end_date, donate_project_summarize, donate_project_image, updater, update_time) VALUES(:donate_project_name, :donate_project_start_date, :donate_project_end_date, :donate_project_summarize, :donate_project_image, '董杯杯', Now())";
+  
   $createStmt = $pdo->prepare($createSql);
-  $createStmt->bindValue(":donate_project_no", $donateNo);
   $createStmt->bindValue(":donate_project_name", $donateName);
   $createStmt->bindValue(":donate_project_start_date", $donateStartDate);
   $createStmt->bindValue(":donate_project_end_date", $donateEndDate);
   $createStmt->bindValue(":donate_project_summarize", $donateSummarize);
-  $createStmt->bindValue(":donate_project_image", mkFilename($donateNo, $donateImage, 1));
+  $createStmt->bindValue(":donate_project_image", mkFilename('temp', $donateImage));
 
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($donateNo, $donateImage, 1)) {
+
+  $lastInsertId = $pdo->lastInsertId();
+
+  $updateSql = "UPDATE donate_project SET
+  donate_project_id = CONCAT('DP', LPAD(:last_insert_id, 3, 0)),
+  donate_project_image =:donate_project_image,
+  updater = '董杯杯',
+  update_time = Now()
+WHERE
+  donate_project_no = :last_insert_id";
+  $updateStmt = $pdo->prepare($updateSql);
+  $updateStmt->bindValue(":last_insert_id", $lastInsertId);
+  $updateStmt->bindValue(":donate_project_image", mkFilename($lastInsertId, $donateImage));
+    $updateResult = $updateStmt->execute();
+  $pdo->commit();
+
+  if (!$updateResult) {
     throw new Exception();
   }
-  $updateSql = "update donate_project set donate_project_id = concat('DP',LPAD(LAST_INSERT_ID(), 3, 0)) where donate_project_no = LAST_INSERT_ID()";
-  $updateStmt = $pdo->prepare($updateSql);
-  $updateResult = $updateStmt->execute();
-  $pdo->commit();
+  if (!copyFileToLocal($lastInsertId, $donateImage)) {
+    throw new Exception();
+  }
+  
 
   $selectSql = "select * from donate_project where donate_project_no = (select LAST_INSERT_ID())";
   $selectStmt = $pdo->query($selectSql);
@@ -77,22 +93,22 @@ try {
 }
 
 
-function copyFileToLocal($donateNo, $file, $fileNo)
+function copyFileToLocal($lastInsertId, $file)
 {
   $dir = "../../../images/donate-project/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($donateNo, $file, $fileNo);
+  $filename = mkFilename($lastInsertId, $file);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file, $fileNo)
+function mkFilename($lastInsertId, $file)
 {
-  $filename =  'DP' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
+  $filename =  'DP' . str_pad($lastInsertId, 3, "0", STR_PAD_LEFT);
   $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";
   return $filename;

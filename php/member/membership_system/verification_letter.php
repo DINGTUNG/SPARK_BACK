@@ -30,7 +30,15 @@ try {
     $mail->From = "spark.children.org@gmail.com"; //設定寄件人電郵
     $mail->FromName = "=?UTF-8?B?" . base64_encode("星火兒童認養協會") . "?="; //設定寄件人名稱
     $mail->Subject = "=?UTF-8?B?" . base64_encode("星火兒童認養協會會員驗證信") . "?="; //設定郵件主題
-    $mail->Body = "<p>感謝您的註冊！</p></br><p>要驗證您的帳號請複製: ".$verification_code." 至註冊頁面</p>";  //設定郵件內容
+    $mail->Body = "
+    <p>親愛的<span style = 'color:blue'>".$member_account."<span><p>
+    <br>
+    <p>星火協會感謝您的註冊！，我們誠摯的希望能與您共同守護貧困兒童的幸福未來</p>
+    </br>
+    <p>要驗證您的帳號請複製以下驗證碼: ".$verification_code." 至註冊頁面
+    </p>
+    "
+    ;  //設定郵件內容
     $mail->IsHTML(true);  //設定是否使用HTML格式
     $mail->addAddress($member_account); //設定收件人電郵及名稱
 

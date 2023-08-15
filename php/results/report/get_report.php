@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header("Access-Control-Allow-Origin: http://localhost:5174")
+// header("Access-Control-Allow-Origin: http://localhost:5174");
 
 require_once("../../connect_chd102g3.php");
 try {

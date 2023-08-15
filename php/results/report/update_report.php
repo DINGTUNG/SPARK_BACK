@@ -59,14 +59,14 @@ try {
   $updateStmt->bindValue(":report_class", $reportClass);
   $updateStmt->bindValue(":report_year", $reportYear);
   $updateStmt->bindValue(":report_title", $reportTitle);
-  $updateStmt->bindValue(":report_file_path", mkFilename($reportNo, $reportFile, 1, $reportClass));
+  $updateStmt->bindValue(":report_file_path", mkFilename($reportNo, $reportFile, $reportClass));
   $updateResult = $updateStmt->execute();
 
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }
 
-  if (!copyFileToLocal($reportNo, $reportFile, 1, $reportClass)) {
+  if (!copyFileToLocal($reportNo, $reportFile, $reportClass)) {
     throw new UnexpectedValueException($message = "檔案儲存失敗(file stored failed)");
   }
 
@@ -87,27 +87,27 @@ try {
   $pdo->rollBack();
 }
 
-function copyFileToLocal($reportNo, $file, $fileNo, $reportClass)
+function copyFileToLocal($reportNo, $file, $reportClass)
 {
   $dir = "../../../PDF/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($reportNo, $file, $fileNo, $reportClass);
+  $filename = mkFilename($reportNo, $file, $reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file, $fileNo, $reportClass)
+function mkFilename($updateId, $file, $reportClass)
 {
 
   $currentYear = date('Y');
-  if ($reportClass == "年度") {
-    $filename = 'R' . $currentYear . '_' . $fileNo . '_business_rep';
-  }else if ($reportClass == "財務") {
-    $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep';
+  if ($reportClass == "財務") {
+    $filename = 'R' . $currentYear . '_'  . '_finance_rep';
+  }else if ($reportClass == "年度") {
+    $filename = 'R' . $currentYear . '_'  . '_years_rep';
   }else{
     throw new UnexpectedValueException($message = "報告種類有誤");
   }

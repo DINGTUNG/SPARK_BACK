@@ -5,7 +5,7 @@ header("Access-Control-Allow-Credentials: true");
 // header("Access-Control-Allow-Origin: http://localhost:5174");//本地端
 require_once("../connect_chd102g3.php");
 try {
-  $sql = "select * from news where del_flg = 0";
+  $sql = "select * from news where del_flg = 0 and is_news_online = 1";
   $news = $pdo->query($sql);
 
   if ($news->rowCount() == 0) { //找不到

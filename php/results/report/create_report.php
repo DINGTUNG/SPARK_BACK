@@ -44,13 +44,13 @@ try {
   $createStmt->bindValue(":report_class", $reportClass);
   $createStmt->bindValue(":report_year", $reportYear);
   $createStmt->bindValue(":report_title", $reportTitle);
-  $createStmt->bindValue(":report_file_path", mkFilename($reportFile, 1, $reportClass));
+  $createStmt->bindValue(":report_file_path", mkFilename($reportFile, $reportClass));
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
     throw new Exception();
   }
-  if (!copyFileToLocal($reportFile, 1, $reportClass)) {
+  if (!copyFileToLocal($reportFile, $reportClass)) {
     throw new Exception();
   }
 
@@ -79,26 +79,26 @@ try {
   $pdo->rollBack();
 }
 
-function copyFileToLocal($file, $fileNo, $reportClass)
+function copyFileToLocal($file, $reportClass)
 {
   $dir = "../../../PDF/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($file, $fileNo, $reportClass);
+  $filename = mkFilename($file, $reportClass);
   $from = $file["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($file, $fileNo, $reportClass)
+function mkFilename($file, $reportClass)
 {
   $currentYear = date('Y');
-  if ($reportClass == "年度") {
-    $filename = 'R' . $currentYear . '_' . $fileNo . '_finance_rep';
+  if ($reportClass == "財務") {
+    $filename = 'R' . $currentYear . '_'  . '_finance_rep';
   } else {
-    $filename = 'R' . $currentYear . '_' . $fileNo . '_business_rep';
+    $filename = 'R' . $currentYear . '_' . '_years_rep';
   }
   $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
   $filename = "$filename.$fileExt";

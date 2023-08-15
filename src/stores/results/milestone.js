@@ -14,13 +14,19 @@ import {
 
 
     // 【create】
-    function createMilestoneBackend(milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
+    function createMilestoneBackend(milestoneForUpdate) {
+
+      validateMilestoneForUpdate(milestoneForUpdate);
+
       // prepare data 
-      const payLoad = new FormData();
-      payLoad.append("milestone_title", milestoneTitle);
-      payLoad.append("milestone_date", milestoneDate);
-      payLoad.append("milestone_content", milestoneContent);
-      payLoad.append("milestone_image", milestoneImage);
+      const payLoad = {
+          "milestone_no": milestoneForUpdate.milestoneNo,
+          "milestone_title": milestoneForUpdate.milestoneTitle,
+          "milestone_date": milestoneForUpdate.milestoneDate,
+          "milestone_content": milestoneForUpdate.milestoneContent,
+          "milestone_image": milestoneForUpdate.milestoneImage[0],
+    }
+
 
       // make a request
       const request = {
@@ -162,6 +168,10 @@ import {
                   reject(error);
               });
       });
+    }
+
+    const validateMilestoneForUpdate = (milestoneNoForUpdate) => {
+      return milestoneNoForUpdate
     }
 
     const updateMilestoneFromMilestonePool = (milestoneNo, milestoneTitle, milestoneDate, milestoneContent, milestoneImage) => {

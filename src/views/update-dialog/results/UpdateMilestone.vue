@@ -75,14 +75,12 @@ async function updateMilestone(milestoneNoForUpdate, milestoneTitle, milestoneDa
 
                         <div class="imgblock">
                             <span>圖片</span>
-                            <v-file-input variant="outlined" id="book" prepend-icon="none">
+                            <v-file-input variant="outlined" id="book" prepend-icon="none" accept="image/*" label="請上傳圖檔">
                                 <template v-slot:prepend-inner>
                                     <label for="book">上傳圖檔</label>
                                 </template>
                             </v-file-input>
                         </div>
-
-
                     </form>
                 </v-card-text>
                 <v-card-actions>

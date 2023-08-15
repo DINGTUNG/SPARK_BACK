@@ -6,10 +6,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once("../../connect_chd102g3.php");
 
 try {
+
   $milestoneTitle = $_POST["milestone_title"] ?? null;
   $milestoneDate = $_POST["milestone_date"] ?? null;
   $milestoneContent = $_POST["milestone_content"] ?? null;
-  $milestoneImage = $_POST["milestone_image"] ?? null;
+  $milestoneImage = $_FILES["milestone_image"] ?? null;
 
   // parameters validation
   if ($milestoneTitle == null) {
@@ -24,21 +25,25 @@ try {
   if ($milestoneImage == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供milestone image)");
   }
-
+  
   // create record
   $pdo->beginTransaction();
 
-
-  $createSql = "insert into milestone(milestone_title, milestone_date, milestone_content,milestone_image,updater) values(:milestone_title, :milestone_date, :milestone_content, :milestone_image, 'Kay')";
+  $createSql = "insert into milestone(milestone_no, milestone_title, 
+  milestone_date, milestone_content, milestone_image, updater, update_time) values(:milestone_no, :milestone_title, :milestone_date, :milestone_content, :milestone_image, 'Kay', Now())";
   $createStmt = $pdo->prepare($createSql);
+  $createStmt->bindValue(":milestone_no", $milestoneNo);
   $createStmt->bindValue(":milestone_title", $milestoneTitle);
   $createStmt->bindValue(":milestone_date", $milestoneDate);
   $createStmt->bindValue(":milestone_content", $milestoneContent);
-  $createStmt->bindValue(":milestone_image", $milestoneImage);
+  $createStmt->bindValue(":milestone_image", mkFilename($milestoneNo, $milestoneImage,1));
 
   $createResult = $createStmt->execute();
 
   if (!$createResult) {
+    throw new Exception();
+  }
+  if (!copyFileToLocal($milestoneNo, $milestoneImage, 1)) {
     throw new Exception();
   }
   $updateSql = "update milestone set milestone_id = concat('M',LPAD(LAST_INSERT_ID(), 3, 0)) where milestone_no = LAST_INSERT_ID()";
@@ -61,6 +66,31 @@ try {
   $pdo->rollBack();
 } catch (Exception $e) {
   http_response_code(500);
-  echo $e;
+  echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+  echo $e->getMessage();
   $pdo->rollBack();
 }
+
+function copyFileToLocal($milestoneNo, $file, $fileNo)
+{
+  $dir = "../../../images/milestone/";
+  if (file_exists($dir) === false) {
+    mkdir($dir);
+  }
+
+  $filename = mkFilename($milestoneNo, $file, $fileNo);
+  $from = $file["tmp_name"];
+  $to = $dir . $filename;
+  return copy($from, $to);
+}
+
+function mkFilename($milestoneNo, $file, $fileNo)
+{
+  $filename =  'M' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . 
+  $fileNo;
+  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
+  $filename = "$filename.$fileExt";
+  return $filename;
+}
+
+?>

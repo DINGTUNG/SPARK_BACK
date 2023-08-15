@@ -12,7 +12,7 @@ try {
   $donateStartDate = $_POST["donate_project_start_date"] ?? null;
   $donateEndDate = $_POST["donate_project_end_date"] ?? null;
   $donateSummarize = $_POST["donate_project_summarize"] ?? null;
-  $donateImage = $_POST["donate_project_image"] ?? null;
+  $donateImage = $_FILES["donate_project_image"] ?? null;
 
   // parameters validation
   if ($donateNo == null) {
@@ -64,21 +64,20 @@ try {
   $updateStmt->bindValue(":donate_project_start_date",$donateStartDate);
   $updateStmt->bindValue(":donate_project_end_date", $donateEndDate);
   $updateStmt->bindValue(":donate_project_summarize", $donateSummarize);
-  $updateStmt->bindValue(":donate_project_image", $donateImage);
+  $updateStmt->bindValue(":donate_project_image", mkFilename($donateNo, $donateImage, 1));
 
   $updateResult = $updateStmt->execute();
 
 
 
+  if (!$updateResult) {
+    throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
+  }
+  if (!copyFileToLocal($donateNo, $donateImage, 1)) {
+    throw new UnexpectedValueException($message = "檔案1儲存失敗(copy failed)");
+  }
 
-  // if (!$updateResult) {
-  //   throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
-  // }
-  // if (!copyFileToLocal($donateNo, $donateImage, 1)) {
-  //   throw new UnexpectedValueException($message = "檔案1儲存失敗(copy failed)");
-  // }
-
-  // $pdo->commit();
+  $pdo->commit();
   http_response_code(200);
   echo json_encode($updateResult);
 } catch (InvalidArgumentException $e) {
@@ -95,26 +94,26 @@ try {
   $pdo->rollBack();
 }
 
-// function copyFileToLocal($donateNo, $file, $fileNo)
-// {
-//   $dir = "../../images/donate-project/";
-//   if (file_exists($dir) === false) {
-//     mkdir($dir);
-//   }
+function copyFileToLocal($donateNo, $file, $fileNo)
+{
+  $dir = "../../images/donate-project/";
+  if (file_exists($dir) === false) {
+    mkdir($dir);
+  }
 
-//   $filename = mkFilename($donateNo, $file, $fileNo);
-//   $from = $file["tmp_name"];
-//   $to = $dir . $filename;
-//   return copy($from, $to);
-// }
+  $filename = mkFilename($donateNo, $file, $fileNo);
+  $from = $file["tmp_name"];
+  $to = $dir . $filename;
+  return copy($from, $to);
+}
 
-// function mkFilename($updateId, $file, $fileNo)
-// {
-//   $filename =  'DP' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
-//   $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
-//   $filename = "$filename.$fileExt";
-//   return $filename;
-// }
+function mkFilename($updateId, $file, $fileNo)
+{
+  $filename =  'DP' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . $fileNo;
+  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
+  $filename = "$filename.$fileExt";
+  return $filename;
+}
 
 
 

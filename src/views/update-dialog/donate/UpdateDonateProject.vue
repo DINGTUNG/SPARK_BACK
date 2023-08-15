@@ -12,20 +12,20 @@ const vueProps = defineProps({
     donateImageForUpdate: String,
 })
 
-// const donateForUpdate = reactive({
-//     donateNo: null,
-//     donateName: "",
-//     donateStartDate: null,
-//     donateEndDate: null,
-//     donateSummarize: "",
-//     donateImage: [],
-// })
+const donateForUpdate = reactive({
+    donateNo: null,
+    donateName: "",
+    donateStartDate: null,
+    donateEndDate: null,
+    donateSummarize: "",
+    donateImage: [],
+})
 
-const donateName = ref('')
-const donateStartDate = ref('')
-const donateEndDate = ref('')
-const donateSummarize = ref('')
-const donateImage = ref('')
+// const donateName = ref('')
+// const donateStartDate = ref('')
+// const donateEndDate = ref('')
+// const donateSummarize = ref('')
+// const donateImage = ref('')
 
 const dialogDisplay = ref(false);
 
@@ -36,12 +36,14 @@ function closeDialog() {
 function showDialog() {
     // console.log('vueProps:', vueProps);
     // console.log('donateForUpdate:', donateForUpdate);
+    dialogDisplay.value = true;
 
-    donateName.value = vueProps.donateNameForUpdate
-    donateStartDate.value = vueProps.donateStartDateForUpdate
-    donateEndDate.value = vueProps.donateEndDateForUpdate
-    donateSummarize.value = vueProps.donateSummarizeForUpdate
-    donateImage.value = vueProps.donateImageForUpdate
+    donateForUpdate.donateNo = vueProps.donateNoForUpdate
+    donateForUpdate.donateName = vueProps.donateNameForUpdate
+    donateForUpdate.donateStartDate = vueProps.donateStartDateForUpdate
+    donateForUpdate.donateEndDate = vueProps.donateEndDateForUpdate
+    donateForUpdate.donateSummarize = vueProps.donateSummarizeForUpdate
+    donateForUpdate.donateImage['name'] = vueProps.donateImageForUpdate
 
     // dialogDisplay.value = true;
     // donateForUpdate.donateNo = vueProps.donateNoForUpdate
@@ -54,13 +56,14 @@ function showDialog() {
 
 
 
-async function updateDonate(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage) {
+async function updateDonate(donateNoForUpdate) {
+
     try {
         if (donateNoForUpdate == null) {
             throw new Error("donate project no. not found!")
         }
-        await DonateStore.updateDonateBackend(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)
-        DonateStore.updateDonateFromDonatePool(donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)
+        await DonateStore.updateDonateBackend(donateForUpdate)
+        DonateStore.updateDonateFromDonatePool(donateForUpdate)
         window.alert(`編輯成功!`);
     } catch (error) {
         console.error(error);
@@ -84,30 +87,29 @@ async function updateDonate(donateNoForUpdate, donateName, donateStartDate, dona
                 </v-card-title>
                 <v-card-text>
                     <form action="http://localhost/SPARK_BACK/php/donate/donate-project/update_donate_project.php"
-                        method="post"
-                        @submit.prevent="updateDonate(vueProps.donateNoForUpdate, donateName, donateStartDate, donateEndDate, donateSummarize, donateImage)">
+                        method="post" @submit.prevent="updateDonate(donateForUpdate)">
                         <label for="">
                             <div class="input_title">標題</div>
-                            <input type="text" name="donate_project_name" v-model="donateName">
+                            <input type="text" name="donate_project_name" v-model="donateForUpdate.donateName">
                         </label>
                         <label for="">
                             <div class="input_title">開始日期</div>
-                            <input type="date" name="donate_project_start_date" v-model="donateStartDate">
+                            <input type="date" name="donate_project_start_date" v-model="donateForUpdate.donateStartDate">
                         </label>
                         <label for="">
                             <div class="input_title">結束日期</div>
-                            <input type="date" name="donate_project_end_date" v-model="donateEndDate">
+                            <input type="date" name="donate_project_end_date" v-model="donateForUpdate.donateEndDate">
                         </label>
                         <label for="">
                             <div class="input_title">內文</div>
                             <textarea name="donate_project_summarize" cols="70" rows="10"
-                                v-model="donateSummarize"></textarea>
+                                v-model="donateForUpdate.donateSummarize"></textarea>
                         </label>
 
                         <div class="imgblock">
                             <span>封面照片</span>
                             <v-file-input variant="outlined" id="coverPic" prepend-icon="none" accept="image/*"
-                                label="請上傳圖檔">
+                                label="請上傳圖檔" v-model="donateForUpdate.donateImage">
                                 <template v-slot:prepend-inner>
                                     <label for="coverPic">上傳圖檔</label>
                                 </template>

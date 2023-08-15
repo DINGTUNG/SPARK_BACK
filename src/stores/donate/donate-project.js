@@ -1,16 +1,9 @@
-import {
-    defineStore
-} from 'pinia';
-
-import {
-    reactive
-} from 'vue'
+import { defineStore } from 'pinia';
+import { reactive } from 'vue'
 import axios from 'axios';
 
 export const useDonateStore = defineStore('donate_project', () => {
-
     const donatePool = reactive([])
-
 
     // delete
     function deleteDonateBackend(donateNo) {

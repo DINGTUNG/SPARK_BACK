@@ -135,25 +135,6 @@ async function UpdateMilestoneOnlineStatus(item) {
           next-icon="mdi-chevron-right" active-color="#F5F4EF" color="#E7E6E1"></v-pagination>
       </div>
     </div>
-
-    <v-dialog v-model="dialogDelete" max-width="800px" persistent>
-
-      <v-card class="delete_dialog">
-        <v-card-title class="text-center">
-          確定是否要刪除此里程碑？
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#F2DFBF" variant="text" @click="closeDelete">
-            取消
-          </v-btn>
-          <v-btn color="#F2DFBF" variant="text" @click="deleteItemConfirm">
-            刪除
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 

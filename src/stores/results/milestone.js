@@ -1,18 +1,10 @@
-import {
-    defineStore
-  } from 'pinia';
-  
-  import {
-    reactive
-  } from 'vue'
-  import axios from 'axios';
+import { defineStore } from 'pinia';
+import { reactive } from 'vue'
+import axios from 'axios';
   
   export const useMilestoneStore = defineStore('milestone', () => {
-  
     const milestonePool = reactive([])
   
-
-
     // 【create】
     function createMilestoneBackend(milestoneForUpdate) {
 
@@ -137,14 +129,14 @@ import {
 
 
     // 【update】
-    function updateMilestoneBackend(milestoneNo, milestoneTitle, milestoneDate, milestoneContent, milestoneImage) {
+    function updateMilestoneBackend(milestoneForUpdate) {
       // prepare data 
       const payLoad = new FormData();
-      payLoad.append("milestone_no", milestoneNo);
-      payLoad.append("milestone_title", milestoneTitle);
-      payLoad.append("milestone_date", milestoneDate);
-      payLoad.append("milestone_content", milestoneContent);
-      payLoad.append("milestone_image", milestoneImage);
+      payLoad.append("milestone_no", milestoneForUpdate.milestoneNo);
+      payLoad.append("milestone_title", milestoneForUpdate.milestoneTitle);
+      payLoad.append("milestone_date", milestoneForUpdate.milestoneDate);
+      payLoad.append("milestone_content", milestoneForUpdate.milestoneContent);
+      payLoad.append("milestone_image", milestoneForUpdate.milestoneImage[0]);
 
       // make a request
       const request = {
@@ -170,25 +162,23 @@ import {
       });
     }
 
-    const validateMilestoneForUpdate = (milestoneNoForUpdate) => {
-      return milestoneNoForUpdate
+    const validateMilestoneForUpdate = (donateNoForUpdate) => {
+      return donateNoForUpdate
     }
 
-    const updateMilestoneFromMilestonePool = (milestoneNo, milestoneTitle, milestoneDate, milestoneContent, milestoneImage) => {
+    const updateMilestoneFromMilestonePool = (milestoneForUpdate) => {
       for (let i = 0; i < milestonePool.length; i++) {
-          if (milestonePool[i].milestone_no == milestoneNo) {
-              milestonePool[i].milestone_title = milestoneTitle
-              milestonePool[i].milestone_date = milestoneDate
-              milestonePool[i].milestone_content = milestoneContent
-              milestonePool[i].milestone_image = milestoneImage
+          if (milestonePool[i].milestone_no == milestoneForUpdate.milestoneNo) {
+              milestonePool[i].milestone_title = milestoneForUpdate.milestoneTitle
+              milestonePool[i].milestone_date = milestoneForUpdate.milestoneDate
+              milestonePool[i].milestone_content = milestoneForUpdate.milestoneContent
+              milestonePool[i].milestone_image = milestoneForUpdate.milestoneImage
           }
       }
     }    
 
 
 
-  
-  
     return {
       milestonePool,
       createMilestoneBackend,

@@ -1,7 +1,7 @@
-<script setup> //
-import { ref, defineProps } from 'vue'
+<script setup> 
+import { ref, defineProps, reactive } from 'vue'
 import { useMilestoneStore } from '@/stores/results/milestone.js';
-const milestoneStore = useMilestoneStore();
+const MilestoneStore = useMilestoneStore();
 
 const vueProps = defineProps({
     milestoneNoForUpdate: Number,
@@ -11,36 +11,41 @@ const vueProps = defineProps({
     milestoneImageForUpdate: String,
 })
 
-const milestoneTitle = ref('')
-const milestoneDate = ref('')
-const milestoneContent = ref('')
-const milestoneImage = ref('')
+const milestoneForUpdate = reactive({
+    milestoneNo: null,
+    milestoneTitle: "",
+    milestoneDate: null,
+    milestoneContent: "",
+    milestoneImage: [],
+})
 
 const dialogDisplay = ref(false);
-
-function showDialog() {
-    dialogDisplay.value = true;
-    milestoneTitle.value = vueProps.milestoneTitleForUpdate
-    milestoneDate.value = vueProps.milestoneDateForUpdate
-    milestoneContent.value = vueProps.milestoneContentForUpdate
-    milestoneImage.value = vueProps.milestoneImageForUpdate
-}
 
 function closeDialog() {
     dialogDisplay.value = false;
 }
 
-async function updateMilestone(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage) {
+function showDialog() {
+    dialogDisplay.value = true;
+    milestoneForUpdate.milestoneNo = vueProps.milestoneNoForUpdate
+    milestoneForUpdate.milestoneTitle = vueProps.milestoneTitleForUpdate
+    milestoneForUpdate.milestoneDate = vueProps.milestoneDateForUpdate
+    milestoneForUpdate.milestoneContent = vueProps.milestoneContentForUpdate
+    milestoneForUpdate.milestoneImage['name'] = vueProps.milestoneImageForUpdate
+}
+
+async function updateMilestone() {
+
     try {
-        if (milestoneNoForUpdate == null) {
-            throw new Error("Milestone no. not found!")
+        if (milestoneForUpdate.milestoneNo == null) {
+            throw new Error("milestone project no. not found!")
         }
-        await milestoneStore.updateMilestoneBackend(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage)
-        milestoneStore.updateMilestoneFromMilestonePool(milestoneNoForUpdate, milestoneTitle, milestoneDate,milestoneContent, milestoneImage)
+        await MilestoneStore.updateMilestoneBackend(milestoneForUpdate)
+        MilestoneStore.updateMilestoneFromMilestonePool(milestoneForUpdate)
         window.alert(`編輯成功!`);
     } catch (error) {
         console.error(error);
-        window.alert(`http status : ${error.response.data} 編輯失敗!請聯絡管理員!`);
+        window.alert(`http status : ${error.response} 編輯失敗!請聯絡管理員!`);
     } finally {
         closeDialog()
     }
@@ -59,39 +64,40 @@ async function updateMilestone(milestoneNoForUpdate, milestoneTitle, milestoneDa
                     <span class="main_title">編輯里程碑</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost/SPARK_BACK/php/results/milestone/update_milestone.php" method="post" @submit.prevent="updateMilestone(vueProps.milestoneNoForUpdate, milestoneTitle, milestoneDate, milestoneContent, milestoneImage)">
+                    <form action="http://localhost/SPARK_BACK/php/results/milestone/update_milestone.php" method="post" @submit.prevent="updateMilestone">
                         <label for="">
                             <div class="input_title">標題</div>
-                            <input type="text" name="milestone_title" v-model="milestoneTitle">
+                            <input type="text" name="milestone_title" v-model="milestoneForUpdate.milestoneTitle">
                         </label>
                         <label for="">
                             <div class="input_title">年度/月份</div>
-                            <input type="month" name="milestone_date" v-model="milestoneDate">
+                            <input type="month" name="milestone_date" v-model="milestoneForUpdate.milestoneDate">
                         </label>
                         <label for="">
                             <div class="input_title">內文</div>
-                            <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneContent"></textarea>
+                            <textarea name="milestone_content" id="" cols="70" rows="10" v-model="milestoneForUpdate.milestoneContent"></textarea>
                         </label>
 
                         <div class="imgblock">
                             <span>圖片</span>
-                            <v-file-input variant="outlined" id="book" prepend-icon="none" accept="image/*" label="請上傳圖檔">
+                            <v-file-input variant="outlined" id="coverPic" prepend-icon="none" accept="image/*" label="請上傳圖檔" v-model="milestoneForUpdate.milestoneImage">
                                 <template v-slot:prepend-inner>
-                                    <label for="book">上傳圖檔</label>
+                                    <label for="coverPic">上傳圖檔</label>
                                 </template>
                             </v-file-input>
                         </div>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn class="cancel btn" variant="text" @click="closeDialog">
+                                取消
+                            </v-btn>
+                            <v-btn class="update btn" variant="text" type="submit">
+                                儲存
+                            </v-btn>
+                        </v-card-actions>
                     </form>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn class="cancel btn" variant="text" @click="closeDialog">
-                        取消
-                    </v-btn>
-                    <v-btn class="update btn" variant="text" type="submit">
-                        儲存
-                    </v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
     </v-row>

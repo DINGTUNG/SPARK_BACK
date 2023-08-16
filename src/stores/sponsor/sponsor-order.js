@@ -10,10 +10,10 @@ import axios from 'axios';
 export const useSponsorOrderStore = defineStore('sponsor-order', () => {
 
   const sponsorOrderPool = reactive([])
+  
 
-
-  // update
-  function updateSponsorOrderBackend(sponsorOrderNo,orderStatus) {
+  // update order status
+  function updateSponsorOrderStatusBackend(sponsorOrderNo,orderStatus) {
     // prepare data 
     const payLoad = new FormData();
     payLoad.append("sponsor_order_no", sponsorOrderNo);
@@ -37,7 +37,7 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
           resolve(updateResult);
         })
         .catch((error) => {
-          console.log("From updateSponsorOrderBackend:", error);
+          console.log("From updateSponsorOrderStatusBackend:", error);
           reject(error);
         });
     });
@@ -50,13 +50,53 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
       }
     }
   }
+  
+  // update children id
+  function updateSponsorOrderBackend(sponsorOrderNo,childrenId) {
+    // prepare data 
+    const payLoad = new FormData();
+    payLoad.append("sponsor_order_no", sponsorOrderNo);
+    payLoad.append("children_id", childrenId);
 
+    // make a request
+    const request = {
+      method: "POST",
+      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order.php`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: payLoad,
+    };
+
+    // send request to backend server
+    return new Promise((resolve, reject) => {
+      axios(request)
+        .then((response) => {
+          const updateResult = response.data;
+          resolve(updateResult);
+        })
+        .catch((error) => {
+          console.log("From updateSponsorOrderBackend:", error);
+          reject(error);
+        });
+    });
+  }
+
+  const updateSponsorOrderFromSponsorOrderPool = (sponsorOrderNo,childrenId) => {
+    for (let i = 0; i < sponsorOrderPool.length; i++) {
+      if (sponsorOrderPool[i].sponsor_order_no == sponsorOrderNo) {
+      sponsorOrderPool[i].children_id = childrenId
+      }
+    }
+  }
   
 
   return {
     sponsorOrderPool,
+    updateSponsorOrderStatusBackend,
+    updateOrderStatusFromSponsorOrderPool,
     updateSponsorOrderBackend,
-    updateOrderStatusFromSponsorOrderPool
+    updateSponsorOrderFromSponsorOrderPool
   }
 
 })

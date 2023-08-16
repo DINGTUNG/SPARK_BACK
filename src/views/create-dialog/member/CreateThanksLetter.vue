@@ -28,6 +28,7 @@ async function CreateThanksLetter(thanksLetterForCreate) {
     window.alert(`新增成功!`);
   } catch (error) {
     console.error(error);
+    
     window.alert(`新增失敗!請聯絡管理員!`);
   } finally {
     closeDialog()

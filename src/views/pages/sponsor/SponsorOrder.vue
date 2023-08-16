@@ -2,6 +2,7 @@
 import Search from '@/components/Search.vue';
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios';
+import UpdateSponsorOrder from '@/views/update-dialog/sponsor/UpdateSponsorOrder.vue';
 import { useSponsorOrderStore } from '@/stores/sponsor/sponsor-order.js';
 
 const sponsorOrderStore = useSponsorOrderStore();
@@ -31,8 +32,8 @@ async function updateOrderStatus(item) {
     if (item.sponsor_order_no == null) {
       throw new Error("sponsor order no not found!")
     }
-    await sponsorOrderStore.updateSponsorOrderBackend(item.sponsor_order_no,item.order_status)
-    sponsorOrderStore.updateOrderStatusFromSponsorOrderPool(item.sponsor_order_no,item.order_status)
+    await sponsorOrderStore.updateSponsorOrderStatusBackend(item.sponsor_order_no, item.order_status)
+    sponsorOrderStore.updateOrderStatusFromSponsorOrderPool(item.sponsor_order_no, item.order_status)
   } catch (error) {
     console.error(error);
   }
@@ -59,13 +60,13 @@ function handleSearchChange(newValue) {
 const searchText = computed(() => {
   let searchText = searchValue.value ? searchValue.value.trim().toUpperCase() : '';
   if (!isNaN(+searchText)) {
-    searchText = +searchText < 10 ? `0${searchText}`: searchText;
+    searchText = +searchText < 10 ? `0${searchText}` : searchText;
   }
   return searchText;
 })
 
 const filteredSponsorOrderList = computed(() => {
-  return  sponsorOrderStore.sponsorOrderPool.filter((item) => { 
+  return sponsorOrderStore.sponsorOrderPool.filter((item) => {
     const obj = [item.sponsor_order_id, item.member_id]
     const str = JSON.stringify(obj);
     return str.includes(searchText.value)
@@ -80,8 +81,7 @@ const filteredSponsorOrderList = computed(() => {
     <div class="content_wrap">
       <h1>認養管理｜認養訂單</h1>
       <div class="search">
-        <Search :placeholder="'請輸入認養訂單ID或會員ID'"
-        :search-value="searchValue" @search="handleSearchChange" />
+        <Search :placeholder="'請輸入認養訂單ID或會員ID'" :search-value="searchValue" @search="handleSearchChange" />
       </div>
       <div class="table_container">
         <v-table>
@@ -101,6 +101,7 @@ const filteredSponsorOrderList = computed(() => {
               <th>功能</th>
               <th>更新者</th>
               <th>更新時間</th>
+              <th>編輯</th>
             </tr>
           </thead>
           <tbody>
@@ -114,7 +115,7 @@ const filteredSponsorOrderList = computed(() => {
               <td class="payment_plan">{{ item.payment_plan }}</td>
               <td class="payment_method">{{ item.payment_method }}</td>
               <td class="children_id">{{ item.children_id }}</td>
-              <td class="expiry_month">{{ item.expiry_month }}</td>
+              <td class="expiry_date">{{ item.expiry_date }}</td>
               <td class="order_status">{{ item.order_status == 1 ? "繼續" : "終止" }}</td>
               <td>
                 <v-switch v-model="item.order_status" color="#EBC483" density="compact" hide-details="true" inline inset
@@ -122,6 +123,10 @@ const filteredSponsorOrderList = computed(() => {
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>
+              <td class="update_and_delete">
+                <UpdateSponsorOrder :sponsorOrderNoForUpdate="parseInt(item.sponsor_order_no)"
+                  :childrenIdForUpdate="item.children_id" />
+              </td>
             </tr>
           </tbody>
         </v-table>

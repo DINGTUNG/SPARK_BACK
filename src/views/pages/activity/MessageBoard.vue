@@ -10,7 +10,7 @@ const messageBoardStore = useMessageBoardStore();
 
 async function getMessage() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/message-board/get_message.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/activity/message-board/get_message.php')
     messageBoardStore.messagePool.splice(0);
 
     if (response.data.length > 0) {

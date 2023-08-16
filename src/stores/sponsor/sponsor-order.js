@@ -22,7 +22,7 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order_status.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-order/update_sponsor_order_status.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -61,7 +61,7 @@ export const useSponsorOrderStore = defineStore('sponsor-order', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-order/update_sponsor_order.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },

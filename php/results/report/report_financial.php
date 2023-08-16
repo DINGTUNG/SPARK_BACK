@@ -1,9 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://tibamef2e.com"); //緯育
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header("Access-Control-Allow-Origin: https://tibamef2e.com");//緯育
-// header("Access-Control-Allow-Origin: http://localhost:5174");//本地端
+
 
 
  require_once("../../connect_chd102g3.php");

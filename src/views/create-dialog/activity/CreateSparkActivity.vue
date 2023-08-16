@@ -53,7 +53,7 @@ const addNewActivityToActivityPool = (newActivity) => {
           新增星火活動
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/spark-activity/create_spark_activity.php" method="post"
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/create_spark_activity.php" method="post"
             @submit.prevent="createSparkActivity(sparkActivityName, sparkActivityDescription, sparkActivityStartDate, sparkActivityEndDate)">
 
             <div class="input_container">

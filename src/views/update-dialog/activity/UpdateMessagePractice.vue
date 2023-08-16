@@ -57,7 +57,7 @@ async function updateMessage(messageNoForUpdate, sparkActivityId, messageContent
           <span class="text-h5">編輯留言資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/update_message.php" method="post"
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/activity/message-board/update_message.php" method="post"
             @submit.prevent="updateMessage(vueProps.messageNoForUpdate, sparkActivityId, messageContent, memberId)">
             <label for="spark_activity_id">星火活動ID</label> <input type="text" name="spark_activity_id"
               v-model="sparkActivityId">

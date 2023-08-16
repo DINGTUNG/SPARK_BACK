@@ -10,7 +10,7 @@ const sparkActivityStore = useSparkActivityStore();
 
 async function getSparkActivity() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/spark-activity/get_spark_activity.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/get_spark_activity.php')
     sparkActivityStore.sparkActivityPool.splice(0);
 
     if (response.data.length > 0) {

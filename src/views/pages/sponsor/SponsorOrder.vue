@@ -10,7 +10,7 @@ const sponsorOrderStore = useSponsorOrderStore();
 // get data from sponsor_order
 async function getSponsorOrder() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-order/get_sponsor_order.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-order/get_sponsor_order.php')
     sponsorOrderStore.sponsorOrderPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {

@@ -120,7 +120,12 @@ async function UpdateMilestoneOnlineStatus(item) {
                   inset true-value=1 @change="UpdateMilestoneOnlineStatus(item)"></v-switch>
               </td>
               <td class="update_and_delete">
-                <UpdateMilestone :milestoneNoForUpdate="parseInt(item.milestone_no)" :milestoneTitleForUpdate="item.milestone_title" :milestoneDateForUpdate="item.milestone_date" :milestoneContentForUpdate="item.milestone_content" :milestoneImageForUpdate="item.milestone_image"/>
+                <UpdateMilestone :milestoneNoForUpdate="parseInt(item.milestone_no)" 
+                :milestoneTitleForUpdate="item.milestone_title" 
+                :milestoneDateForUpdate="item.milestone_date" 
+                :milestoneContentForUpdate="item.milestone_content" 
+                :milestoneImageForUpdate="item.milestone_image"/>
+                
                 <DeleteMilestone :milestoneNoForDelete="parseInt(item.milestone_no)" />
               </td>
             </tr>

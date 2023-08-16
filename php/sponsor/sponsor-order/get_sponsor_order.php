@@ -5,7 +5,7 @@ require_once("../../connect_chd102g3.php");
 try {
 
   //執行sql指令並取得pdoStatement
-  $sql = "select * from sponsor_order";
+  $sql = "select * from sponsor_order order by sponsor_order_no";
   $sponsor_order = $pdo->query($sql);
 
   //----------------------------------------

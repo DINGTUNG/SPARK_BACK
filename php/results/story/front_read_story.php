@@ -1,5 +1,8 @@
 <?php
     require_once("../../connect_chd102g3.php");
+    header("Access-Control-Allow-Credentials: true");
+    header("Access-Control-Allow-Methods: PUT, GET, POST");
+    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
     try {
         $sql = "SELECT * FROM story WHERE is_story_online=1 AND del_flg=0 ORDER BY story_no DESC";

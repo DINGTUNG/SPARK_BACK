@@ -11,7 +11,7 @@ export const useReportStore = defineStore('Report', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/results/report/delete_report.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/results/report/delete_report.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -49,7 +49,7 @@ export const useReportStore = defineStore('Report', () => {
       // make a request
       const request = {
         method: "POST",
-        url: `http://localhost/SPARK_BACK/php/results/report/report_status.php`,
+        url: `https://tibamef2e.com/chd102/g3/back-end/php/results/report/report_status.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -93,7 +93,7 @@ export const useReportStore = defineStore('Report', () => {
         // make a request
         const request = {
           method: "POST",
-          url: `http://localhost/SPARK_BACK/php/results/report/update_report.php`,
+          url: `https://tibamef2e.com/chd102/g3/back-end/php/results/report/update_report.php`,
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -139,7 +139,7 @@ export const useReportStore = defineStore('Report', () => {
       }
       const request = {
         method: "POST",
-        url: `http://localhost/SPARK_BACK/php/results/report/create_report.php`,
+        url: `https://tibamef2e.com/chd102/g3/back-end/php/results/report/create_report.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },

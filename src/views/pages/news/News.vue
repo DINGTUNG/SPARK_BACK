@@ -11,7 +11,7 @@ const newsStore = useNewsStore();
 //api
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/news/get_news.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/news/get_news.php')
     newsStore.newsPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {

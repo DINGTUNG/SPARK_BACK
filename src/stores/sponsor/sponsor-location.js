@@ -20,7 +20,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/delete_sponsor_location.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-location/delete_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -59,7 +59,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/sponsor_location_status.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-location/sponsor_location_status.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -98,7 +98,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/update_sponsor_location.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-location/update_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -135,7 +135,7 @@ export const useSponsorLocationStore = defineStore('sponsor-location', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/sponsor/sponsor-location/create_sponsor_location.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-location/create_sponsor_location.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },

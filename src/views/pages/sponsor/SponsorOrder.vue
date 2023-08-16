@@ -96,7 +96,7 @@ const filteredSponsorOrderList = computed(() => {
               <th>繳款專案</th>
               <th>繳款方式</th>
               <th>兒童ID</th>
-              <th>繳款到期月份</th>
+              <th>繳款到期日</th>
               <th>訂單狀態</th>
               <th>功能</th>
               <th>更新者</th>

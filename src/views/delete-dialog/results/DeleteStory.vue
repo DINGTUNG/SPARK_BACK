@@ -15,7 +15,7 @@ function closeDeleteDialog() {
 const props = defineProps(['storyNo']);
 
 const deleteItemConfirm = () => {//把要刪除的id傳到php
-  window.location.assign(`http://localhost/SPARK_BACK/php/results/story/delete_story.php?story_no=${props.storyNo}`)
+  window.location.assign(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/delete_story.php?story_no=${props.storyNo}`)
 }
 
 

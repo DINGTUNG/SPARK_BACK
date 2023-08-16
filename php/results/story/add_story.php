@@ -47,7 +47,7 @@
         );
         $response = json_encode($json);
         echo $response;
-        header("Location: http://localhost:5173/story");
+        header("Location: https://tibamef2e.com/chd102/g3/back-end/story");
     } else {
         $json = array(
             "ok" => false,
@@ -55,6 +55,6 @@
         );
         $response = json_encode($json);
         echo $response;
-        header("Location: http://localhost:5173/story");
+        header("Location: https://tibamef2e.com/chd102/g3/back-end/story");
     }
 ?>

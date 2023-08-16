@@ -49,7 +49,7 @@ const displayedDreamStarList = computed(() => {
 const dreamStarList = reactive([])
 async function dreamStarConnection() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/activity/dream-star/get_dream_star.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/activity/dream-star/get_dream_star.php')
     console.log(response)
     if (response.data.length > 0) {
       response.data.forEach(element => {

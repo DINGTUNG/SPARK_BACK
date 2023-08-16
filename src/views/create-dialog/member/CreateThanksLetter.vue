@@ -49,7 +49,7 @@ const addContentToNewThanksLetter = (newThanksLetter) => {
         </v-btn>
       </template>
       <v-card>
-        <form action="http://localhost/SPARK-BACK/php/member/thanks-letter/create_letter.php" method="post"
+        <form action="https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/create_letter.php" method="post"
           @submit.prevent="
             CreateThanksLetter(thanksLetterForCreate)">
           <!-- <form action="http://localhost:8888/member/thanks-letter/create_letter.php" method="post" @submit.prevent="

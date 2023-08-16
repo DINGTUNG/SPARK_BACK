@@ -22,7 +22,7 @@ const displayedMemberInfo = computed(() => {
 const MemberInfo = reactive([])
 async function memberConnection() {
   try {
-    const response = await axios.post('http://localhost:8888/member/member_info/member_info.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/member/member_info/member_info.php')
     console.log(response)
     if (response.data.length > 0) {
       response.data.forEach(element => {

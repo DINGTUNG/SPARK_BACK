@@ -7,7 +7,7 @@ const donateOrderPool = reactive([])
 
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-order/get_donate_order.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-order/get_donate_order.php')
 
     if (response.data.length > 0) {
       response.data.forEach(element => {

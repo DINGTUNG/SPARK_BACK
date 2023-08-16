@@ -47,7 +47,7 @@ const addContentToNewMessage = (newMessage) => {
           <span class="text-h5">新增留言資料</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/activity/message-board/create_message.php" method="post"
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/activity/message-board/create_message.php" method="post"
             @submit.prevent="createMessage(messageContent)">
             <label for="message_content">留言內容</label> <input type="text" name="message_content" v-model="messageContent">
             <v-card-actions>

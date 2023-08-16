@@ -73,9 +73,7 @@ async function updateNewsOnline(item) {
     }
     await newsStore.updateNewsStatusBackend(item.news_no, item.is_news_online)
     newsStore.updateNewsStatusFromNewsPool(item.news_no, item.is_news_online)
-
     console.log(item.is_news_online);
-
   } catch (error) {
     console.error(error);
   }
@@ -93,7 +91,6 @@ async function updateNewsOnline(item) {
           <thead>
             <tr>
               <th>No.</th>
-              <th>消息編號</th>
               <th>消息ID</th>
               <th>標題</th>
               <th>日期</th>
@@ -110,7 +107,6 @@ async function updateNewsOnline(item) {
             
             <tr v-for="(item, index) in displayNewsList" :key="item.news_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
-              <td class="news_no">{{ item.news_no }}</td>
               <td class="news_id">{{ item.news_id }}</td>
               <td class="news_title">{{ item.news_title }}</td>
               <td class="news_date">{{ item.news_date }}</td>

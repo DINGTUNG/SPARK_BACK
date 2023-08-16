@@ -8,7 +8,7 @@ header("Access-Control-Allow-Origin: https://tibamef2e.com");//緯育
 
  require_once("../../connect_chd102g3.php");
 try{
-  $sql = "SELECT * FROM report WHERE report_class = '財務' AND del_flg = 0;
+  $sql = "SELECT * FROM report WHERE report_class = '財務' AND del_flg = 0 AND is_report_online = 0;
   ";
   $location=$pdo->prepare($sql);
   $location->execute();

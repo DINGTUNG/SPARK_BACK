@@ -1,12 +1,11 @@
 <script setup>
-// import { useRouter } from 'vue-router';
-// const router = useRouter();
-
 </script>
 
 <template>
   <div class="container">
-    <img :src="'pictures/home/cms_home.png'" alt="">
+    <!-- <Images :imgSrc="'pictures/home/cms_home.png'" /> -->
+    <!-- <img :src="'https://tibamef2e.com//chd102/g3/back-end/pictures/home/cms_home.png'" alt=""> -->
+    <img src="../../public/pictures/home/cms_home.png" alt="">
   </div>
 </template>
 

@@ -7,12 +7,16 @@ require_once("../../connect_chd102g3.php");
 
 try {
   $donateProjectId = $_POST["donate_project_id"] ?? null;
+  $donateProjectName = $_POST["donate_project_name"] ?? null;
   $donatePrice = $_POST["donate_price"] ?? null;
 
 
   // parameters validation
   if ($donateProjectId == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供 donate_project_id)");
+  }
+  if ($donateProjectName == null) {
+    throw new InvalidArgumentException($message = "參數不足(請提供 donate_project_name)");
   }
   if ($donatePrice == null) {
     throw new InvalidArgumentException($message = "參數不足(請提供 donate_price)");
@@ -26,17 +30,20 @@ try {
   $createSql = "INSERT INTO donate_order(
     member_id,
     donate_project_id,
+    donate_project_name,
     donate_price,
-    donate_date
+    donate_time
 )
 VALUES(
     'A001',
     :donate_project_id,
+    :donate_project_name,
     :donate_price,
-    CURDATE()
+    now()
 )";
   $createStmt = $pdo->prepare($createSql);
   $createStmt->bindValue(":donate_project_id", $donateProjectId);
+  $createStmt->bindValue(":donate_project_name", $donateProjectName);
   $createStmt->bindValue(":donate_price", $donatePrice);
   $createResult = $createStmt->execute();
 

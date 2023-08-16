@@ -64,7 +64,7 @@ async function updateMilestone() {
                     <span class="main_title">編輯里程碑</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/update_milestone.php" method="post" @submit.prevent="updateMilestone">
+                    <form action="https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/update_milestone.php" method="post" @submit.prevent="updateMilestone">
                         <label for="">
                             <div class="input_title">標題</div>
                             <input type="text" name="milestone_title" v-model="milestoneForUpdate.milestoneTitle">

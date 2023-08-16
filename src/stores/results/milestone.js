@@ -23,7 +23,7 @@ import axios from 'axios';
       // make a request
       const request = {
         method: "POST",
-        url: `http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/create_milestone.php`,
+        url: `https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/create_milestone.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -55,7 +55,7 @@ import axios from 'axios';
       // make a request
       const request = {
           method: "POST",
-          url: `http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/delete_milestone.php`,
+          url: `https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/delete_milestone.php`,
           headers: {
               "Content-Type": "multipart/form-data",
           },
@@ -97,7 +97,7 @@ import axios from 'axios';
       // make a request
       const request = {
         method: "POST",
-        url: `http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/milestone_status.php`,
+        url: `https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/milestone_status.php`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -141,7 +141,7 @@ import axios from 'axios';
       // make a request
       const request = {
           method: "POST",
-          url: `http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/update_milestone.php`,
+          url: `https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/update_milestone.php`,
           headers: {
               "Content-Type": "multipart/form-data",
           },

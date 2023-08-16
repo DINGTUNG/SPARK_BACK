@@ -59,7 +59,7 @@ const addContentToNewMilestone = (newMilestone) => {
           <span class="main_title">新增里程碑</span>
         </v-card-title>
         <v-card-text>
-          <form action="http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/create_milestone.php" method="post" @submit.prevent="createMilestone(milestoneForUpdate)">
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/create_milestone.php" method="post" @submit.prevent="createMilestone(milestoneForUpdate)">
             <label for="">
               <div class="input_title">標題</div>
               <input type="text" name="milestone_title" v-model="milestoneForUpdate.milestoneTitle">

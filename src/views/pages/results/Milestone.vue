@@ -15,7 +15,7 @@ const MilestoneStore = useMilestoneStore();
 //【串接資料庫】
 async function getMilestone() {
   try {
-    const response = await axios.post('http://tibamef2e.com/chd102/g3/back-end/php/results/milestone/get_milestone.php');
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/milestone/get_milestone.php');
     MilestoneStore.milestonePool.splice(0);
 
     if (response.data.length > 0) {

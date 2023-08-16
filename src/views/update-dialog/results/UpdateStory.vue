@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, reactive, onMounted } from 'vue';
+import { ref, defineProps, reactive } from 'vue';
 import axios from 'axios';
 const dialog = ref(false);
 
@@ -15,10 +15,10 @@ const storyFormData = reactive({
   story_image: '',
 });
 // 獲取該 story_no 的資料
-const url = `http://localhost/SPARK_BACK/php/results/story/update_story.php?story_no=${props.storyNo}`;
+const url = `https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php?story_no=${props.storyNo}`;
 async function getUpdateNo() {
   try {
-    const response = await axios.post(`http://localhost/SPARK_BACK/php/results/story/update_data_story.php?story_no=${props.storyNo}`)
+    const response = await axios.post(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_data_story.php?story_no=${props.storyNo}`)
     const data = response.data;
     if( data )  {
       storyFormData.story_title = data[0].story_title;

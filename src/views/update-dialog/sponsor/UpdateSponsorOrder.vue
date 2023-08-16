@@ -52,7 +52,7 @@ async function updateSponsorOrder(sponsorOrderNoForUpdate, childrenId) {
           編輯認養訂單
         </v-card-title>
         <v-card-text>
-          <form action="http://localhost/SPARK_BACK/php/sponsor/sponsor-order/update_sponsor_order.php" method="post"
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-order/update_sponsor_order.php" method="post"
             @submit.prevent="updateSponsorOrder(vueProps.sponsorOrderNoForUpdate,childrenId)">
 
             <div class="input_container">

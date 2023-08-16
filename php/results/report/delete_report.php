@@ -1,7 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://tibamef2e.com"); //緯育
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 
 require_once("../../connect_chd102g3.php");
 
@@ -46,4 +49,3 @@ try {
    echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
   echo $e->getMessage();
 }
-?>

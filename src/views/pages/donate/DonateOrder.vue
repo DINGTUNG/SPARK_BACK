@@ -7,7 +7,7 @@ const donateOrderPool = reactive([])
 
 async function getData() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-order/get_donate_order.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-order/get_donate_order.php')
 
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -72,6 +72,7 @@ const filteredDonateOrderPool = computed(() => {
               <th>捐款訂單ID</th>
               <th>會員ID</th>
               <th>捐款專案ID</th>
+              <th>捐款專案名稱</th>
               <th>捐款金額</th>
               <th>捐款日期</th>
             </tr>
@@ -82,8 +83,9 @@ const filteredDonateOrderPool = computed(() => {
               <td class="donate_order_id">{{ item.donate_order_id }}</td>
               <td class="member_id">{{ item.member_id}}</td>
               <td class="donate_project_id">{{ item.donate_project_id }}</td>
+              <td class="donate_project_name">{{ item.donate_project_name }}</td>
               <td class="donate_price">{{ item.donate_price }}</td>
-              <td class="donate_date">{{ item.donate_date }}</td>
+              <td class="donate_date">{{ item.donate_time }}</td>
             </tr>
           </tbody>
         </v-table>

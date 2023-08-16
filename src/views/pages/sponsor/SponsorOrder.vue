@@ -10,7 +10,7 @@ const sponsorOrderStore = useSponsorOrderStore();
 // get data from sponsor_order
 async function getSponsorOrder() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/sponsor/sponsor-order/get_sponsor_order.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/sponsor/sponsor-order/get_sponsor_order.php')
     sponsorOrderStore.sponsorOrderPool.splice(0);
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -96,7 +96,7 @@ const filteredSponsorOrderList = computed(() => {
               <th>繳款專案</th>
               <th>繳款方式</th>
               <th>兒童ID</th>
-              <th>繳款到期月份</th>
+              <th>繳款到期日</th>
               <th>訂單狀態</th>
               <th>功能</th>
               <th>更新者</th>

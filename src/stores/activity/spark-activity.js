@@ -20,7 +20,7 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/spark-activity/delete_spark_activity.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/delete_spark_activity.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -64,7 +64,7 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/spark-activity/update_spark_activity.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/update_spark_activity.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -106,7 +106,7 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/spark-activity/update_spark_activity_online_status.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/update_spark_activity_online_status.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -148,7 +148,7 @@ export const useSparkActivityStore = defineStore('spark-activity', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/activity/spark-activity/create_spark_activity.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/activity/spark-activity/create_spark_activity.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },

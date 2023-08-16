@@ -63,8 +63,8 @@ const addContentToNewDonate = (newDonateProject) => {
         </v-card-title>
         <v-card-text>
 
-          <form action="http://localhost/SPARK_BACK/php/donate/donate-project/create_donate_project.php" method="post"
-            @submit.prevent="createDonateProject(donateForCreate)">
+          <form action="https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/create_donate_project.php"
+            method="post" @submit.prevent="createDonateProject(donateForCreate)">
             <label for="">
               <div class="input_title">標題</div>
               <input type="text" name="donate_project_name" v-model="donateForCreate.donateName">

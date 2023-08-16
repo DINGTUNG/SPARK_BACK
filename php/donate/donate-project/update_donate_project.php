@@ -61,6 +61,7 @@ try {
 
   $updateStmt = $pdo->prepare($updateSql);
   $updateStmt->bindValue(":donate_project_no", $donateNo);
+  $updateStmt->bindValue(":donate_project_name", $donateName);
   $updateStmt->bindValue(":donate_project_start_date",$donateStartDate);
   $updateStmt->bindValue(":donate_project_end_date", $donateEndDate);
   $updateStmt->bindValue(":donate_project_summarize", $donateSummarize);

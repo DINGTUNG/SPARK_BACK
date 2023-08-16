@@ -14,7 +14,7 @@ export const useDonateStore = defineStore('donate_project', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/donate/donate-project/delete_donate_project.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/delete_donate_project.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -63,7 +63,7 @@ export const useDonateStore = defineStore('donate_project', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/donate/donate-project/update_donate_project.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/update_donate_project.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -117,7 +117,7 @@ export const useDonateStore = defineStore('donate_project', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/donate/donate-project/create_donate_project.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/create_donate_project.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },

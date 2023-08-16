@@ -25,7 +25,7 @@ export const useCmsStaffStore = defineStore('cms_staff', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/cms/create_staff.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/cms/create_staff.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -56,7 +56,7 @@ export const useCmsStaffStore = defineStore('cms_staff', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/cms/delete_staff.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/cms/delete_staff.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -98,7 +98,7 @@ export const useCmsStaffStore = defineStore('cms_staff', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/cms/update_staff.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/cms/update_staff.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },

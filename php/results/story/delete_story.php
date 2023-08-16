@@ -4,7 +4,7 @@
     $sql = "UPDATE story SET del_flg=1, updater='希', updater_time=Now() WHERE story_no = ".$story_no;
 
     if ($pdo->query($sql)) {
-        header('Location: http://localhost:5173/story');
+        header('Location: https://tibamef2e.com/chd102/g3/back-end/story');
     } else {
         echo('刪除失敗'.$conn->error);
     }

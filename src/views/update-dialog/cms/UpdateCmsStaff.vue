@@ -56,7 +56,7 @@ async function updateStaff(staffNoForUpdate, staffAccount, staffPassword) {
                     <span class="main_title">編輯後台人員</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost/SPARK_BACK/php/cms/update_staff.php" method="post"
+                    <form action="https://tibamef2e.com/chd102/g3/back-end/php/cms/update_staff.php" method="post"
                         @submit.prevent="updateStaff(vueProps.staffNoForUpdate, staffAccount, staffPassword)">
                         <label for="staff_account">
                             <div class="input_title">帳號</div>

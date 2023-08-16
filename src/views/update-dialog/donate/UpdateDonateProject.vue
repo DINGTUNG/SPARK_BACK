@@ -72,7 +72,8 @@ async function updateDonate() {
                     <span class="main_title">編輯捐款專案</span>
                 </v-card-title>
                 <v-card-text>
-                    <form action="http://localhost/SPARK_BACK/php/donate/donate-project/update_donate_project.php"
+                    <form
+                        action="https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/update_donate_project.php"
                         method="post" @submit.prevent="updateDonate">
                         <label for="">
                             <div class="input_title">標題</div>

@@ -13,7 +13,7 @@ require '../../../PHPMailer/SMTP.php';
 try {
 
 
-    $member_account = $_GET["member_account"];
+    $member_account = $_POST["member_account"];
     $verification_code = uniqid();
 
 

@@ -16,9 +16,15 @@ const getStyle = (count, maxCount) => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/add_story.php', formData)
     const storyForm = document.getElementById('storyForm')
     const formData = new FormData(storyForm);
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/add_story.php', formData)
+    if (response.data.ok) {
+      alert('新增成功');
+      window.location.reload();
+    } else {
+      alert('新增失敗');
+    }
   } catch (error) {
     console.error(error);
     alert('新增失敗');

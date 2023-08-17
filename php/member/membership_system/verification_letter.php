@@ -24,8 +24,9 @@ try {
     $mail->SMTPAuth = true;
     $mail->Host = "smtp.gmail.com"; //SMTP服務器
 
-    $mail->Port = 465; // TLS only
+    $mail->Port = 587; // TLS only
     $mail->SMTPSecure = 'tls'; // ssl is deprecated
+
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
     $mail->Username = "spark.children.org@gmail.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
     $mail->Password = "sykgftthshieczus"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼

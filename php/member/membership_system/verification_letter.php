@@ -1,4 +1,5 @@
 <?php
+// header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Origin: https://tibamef2e.com/");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
@@ -26,6 +27,7 @@ try {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
     $mail->Username = "spark.children.org@gmail.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
     $mail->Password = "sykgftthshieczus"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼
+    $mail->SMTPAutoTLS = false; //關掉TLS
 
     //設定郵件資訊
     $mail->From = "spark.children.org@gmail.com"; //設定寄件人電郵

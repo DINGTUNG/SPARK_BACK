@@ -17,7 +17,7 @@ try {
 
   $pdo->beginTransaction();
   // check duplicate ip
-  $checkRecordAliveSql = "select count(*) as count from dream_star_vote where vote_ip = :vote_ip";
+  $checkRecordAliveSql = "select count(*) as count from dream_star_vote where vote_ip = :vote_ip and CAST(vote_time AS DATE) = CURDATE() ";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
   $checkRecordAliveStmt->bindValue(":vote_ip", $ip);
   $checkRecordAliveStmt->execute();

@@ -13,7 +13,7 @@ const thanksLetterStore = useThanksLetterStore();
 //串接資料庫
 async function getThanksLetter() {
   try {
-    const response = await axios.post('http://localhost/SPARK_BACK/php/member/thanks-letter/get_thanks_letter.php')
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/get_thanks_letter.php')
     // const response = await axios.post('http://localhost:8888/member/thanks-letter/thanks_letter.php')
     thanksLetterStore.thanksLetterPool.splice(0);
     if (response.data.length > 0) {

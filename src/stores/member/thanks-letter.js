@@ -15,7 +15,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
     // make a request
     const request = {
       method: "POST",
-      url: `http://localhost/SPARK_BACK/php/member/thanks-letter/delete_letter.php`,
+      url: `https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/delete_letter.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -62,7 +62,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/member/thanks-letter/update_letter.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/update_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -107,7 +107,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
         method: "POST",
-        url: `http://localhost/SPARK_BACK/php/member/thanks-letter/update_thanks_letter_sent_status.php`,
+        url: `https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/update_thanks_letter_sent_status.php`,
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -152,7 +152,7 @@ export const useThanksLetterStore = defineStore('thanks-letter', () => {
         // make a request
         const request = {
             method: "POST",
-            url: `http://localhost/SPARK_BACK/php/member/thanks-letter/create_letter.php`,
+            url: `https://tibamef2e.com/chd102/g3/back-end/php/member/thanks-letter/create_letter.php`,
             headers: {
                 "Content-Type": "multipart/form-data",
             },

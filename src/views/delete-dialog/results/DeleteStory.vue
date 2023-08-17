@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios';
 
 const dialogDisplay = ref(false);
 
@@ -15,7 +16,22 @@ function closeDeleteDialog() {
 const props = defineProps(['storyNo']);
 
 const deleteItemConfirm = () => {//把要刪除的id傳到php
-  window.location.assign(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/delete_story.php?story_no=${props.storyNo}`)
+    const formData = new FormData();
+    formData.append('story_no', props.storyNo);
+    axios.post('https://tibamef2e.com/chd102/g3/back-end/php/story/delet_story.php', formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data.status == "ok") {
+          alert('刪除成功');
+          closeDeleteDialog();
+          location.reload();
+        } else {
+          alert('刪除失敗');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 }
 
 

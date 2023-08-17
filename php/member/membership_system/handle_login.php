@@ -1,6 +1,7 @@
 <?php
-require_once("../../connect_chd102g3.php");
-header("Access-Control-Allow-Origin: https://tibamef2e.com/chd102/g3/");
+require_once("../../connect_chd102g3-yiiijie.php");
+// header("Access-Control-Allow-Origin: https://tibamef2e.com/chd102/g3/");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");

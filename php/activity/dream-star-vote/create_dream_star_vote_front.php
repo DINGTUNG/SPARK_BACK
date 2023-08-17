@@ -15,9 +15,20 @@ try {
     throw new InvalidArgumentException($message = "參數不足(請提供dream_star_id)");
   }
 
-  // create record
   $pdo->beginTransaction();
+  // check duplicate ip
+  $checkRecordAliveSql = "select count(*) as count from dream_star_vote where vote_ip = :vote_ip";
+  $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
+  $checkRecordAliveStmt->bindValue(":vote_ip", $ip);
+  $checkRecordAliveStmt->execute();
+  $checkResult = $checkRecordAliveStmt->fetchAll(PDO::FETCH_ASSOC);
+  $isExisted = $checkResult[0]['count'] != 0;
 
+  if ($isExisted) {
+    throw new UnexpectedValueException($message = "您今天已經投過票囉!");
+  }
+
+  // create record
   $createSql = "INSERT INTO dream_star_vote(vote_ip, dream_star_id,vote_time)
   VALUES(:vote_ip, :dream_star_id,now())";
   $createStmt = $pdo->prepare($createSql);
@@ -28,6 +39,8 @@ try {
   if (!$createResult) {
     throw new Exception();
   }
+
+  $pdo->commit();
   http_response_code(200);
 } catch (InvalidArgumentException $e) {
   http_response_code(400);
@@ -42,6 +55,7 @@ try {
   echo $e;
   $pdo->rollBack();
 }
+
 
 function get_ip()
 {

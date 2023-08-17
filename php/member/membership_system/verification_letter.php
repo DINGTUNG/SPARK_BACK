@@ -1,15 +1,16 @@
 <?php
 // header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Origin: https://tibamef2e.com/");
+header("Access-Control-Allow-Origin: https://tibamef2e.com");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-require '../../../PHPMailer/Exception.php';
-require '../../../PHPMailer/PHPMailer.php';
-require '../../../PHPMailer/SMTP.php';
+include "PHPMailer/Exception.php";
+include "PHPMailer/PHPMailer.php";
+include "PHPMailer/SMTP.php";
 
 try {
 
@@ -24,10 +25,12 @@ try {
     $mail->SMTPAuth = true;
     $mail->Host = "smtp.gmail.com"; //SMTP服務器
 
-    $mail->Port = 587; // TLS only
-    $mail->SMTPSecure = 'tls'; // ssl is deprecated
+    // $mail->Port = 587; // TLS only
+    // $mail->SMTPSecure = 'tls'; // ssl is deprecated
+    $mail->Port = 465; //SSL預設Port 是465, TLS預設Port 是587
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
 
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
+    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
     $mail->Username = "spark.children.org@gmail.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
     $mail->Password = "sykgftthshieczus"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼
 

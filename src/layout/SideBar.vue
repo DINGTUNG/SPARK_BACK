@@ -189,7 +189,7 @@ const backstageItem = reactive(
         </v-list>
         <v-sheet color="#1D3D6C" class="bottom" style="width: 15vw;height:8vh">
           <p class="text-white">
-            管理員<a href="/chd102/g3/back-end/login" class="text-white ms-4">登出</a></p>
+            管理員<a href="/chd102/g3/back-end/" class="text-white ms-4">登出</a></p>
         </v-sheet>
       </v-navigation-drawer>
     </v-layout>

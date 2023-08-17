@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
  require_once("../../connect_chd102g3.php");
 try{
-  $sql = "SELECT * FROM report WHERE report_class = '年度' AND del_flg = 0 AND is_report_online = 1;
+  $sql = "SELECT * FROM report WHERE report_class = '年度' AND del_flg = 0 AND is_report_online = 1 order by report_no;
   ";
   $location=$pdo->prepare($sql);
   $location->execute();

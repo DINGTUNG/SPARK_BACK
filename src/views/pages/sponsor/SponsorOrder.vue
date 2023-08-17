@@ -116,9 +116,9 @@ const filteredSponsorOrderList = computed(() => {
               <td class="payment_method">{{ item.payment_method }}</td>
               <td class="children_id">{{ item.children_id }}</td>
               <td class="expiry_date">{{ item.expiry_date }}</td>
-              <td class="order_status">{{ item.order_status == 1 ? "繼續" : "終止" }}</td>
+              <td class="order_status">{{ item.order_status ? "繼續" : "終止" }}</td>
               <td>
-                <v-switch v-model="item.order_status" color="#EBC483" density="compact" hide-details="true" inline inset input-value="true" true-value=1 @change="updateOrderStatus(item)"></v-switch>
+                <v-switch v-model="item.order_status" color="#EBC483" density="compact" hide-details="true" inline inset true-value=1 @change="updateOrderStatus(item)"></v-switch>
               </td>
               <td class="updater">{{ item.updater }}</td>
               <td class="update_time">{{ item.update_time }}</td>

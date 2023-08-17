@@ -15,7 +15,7 @@ try {
     throw new InvalidArgumentException($message = "參數不足(請提供dream_star_id)");
   }
 
-
+  $pdo->beginTransaction();
   // check duplicate ip
   $checkRecordAliveSql = "select count(*) as count from dream_star_vote where vote_ip = :vote_ip";
   $checkRecordAliveStmt = $pdo->prepare($checkRecordAliveSql);
@@ -29,8 +29,6 @@ try {
   }
 
   // create record
-  $pdo->beginTransaction();
-
   $createSql = "INSERT INTO dream_star_vote(vote_ip, dream_star_id,vote_time)
   VALUES(:vote_ip, :dream_star_id,now())";
   $createStmt = $pdo->prepare($createSql);

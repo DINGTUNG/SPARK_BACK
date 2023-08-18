@@ -7,7 +7,7 @@ require_once("../../connect_chd102g3.php");
 
 
 try {
-  $story_no = $_GET['story_no'];
+  $story_no = $_POST['story_no'];
   $story_title = $_POST['story_title'];
   $story_date = $_POST['story_date'];
   $story_brief = $_POST['story_brief'];

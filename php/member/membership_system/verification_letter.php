@@ -1,6 +1,6 @@
 <?php
-// header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Origin: https://tibamef2e.com");
+// header("Access-Control-Allow-Origin: http://localhost:5174");
+header("Access-Control-Allow-Origin: https://tibamef2e.com/chd102/g3");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -9,9 +9,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-include "PHPMailer/Exception.php";
-include "PHPMailer/PHPMailer.php";
-include "PHPMailer/SMTP.php";
+require "../../../PHPMailer/Exception.php";
+require "../../../PHPMailer/PHPMailer.php";
+require "../../../PHPMailer/SMTP.php";
 
 try {
   $member_account = $_POST["member_account"];
@@ -21,12 +21,12 @@ try {
   $mail = new PHPMailer(true);
   $mail->isSMTP();
   $mail->SMTPAuth = true;
-  $mail->Host = "smtp.gmail.com"; //SMTP服務器
+  $mail->Host = "mail.tibamef2e.com"; //SMTP服務器
 
 //   $mail->Port = 587; // TLS only
 //   $mail->SMTPSecure = 'tls'; // ssl is deprecated
   $mail->Port = 465; //SSL預設Port 是465, TLS預設Port 是587
-  // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+  $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
 
   // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
   $mail->Username = "_mainaccount@tibamef2e.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name

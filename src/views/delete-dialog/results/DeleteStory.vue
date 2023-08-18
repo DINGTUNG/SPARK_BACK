@@ -20,9 +20,7 @@ const deleteItemConfirm = async () => {//把要刪除的id傳到php
     const formData = new FormData();
     formData.append('story_no', props.storyNo);
     const res = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/delete_story.php', formData)
-    if(res.data.status == "ok") {
-      alert("刪除成功")
-    } else {
+    if(res.data.status !== "ok") {
       alert("刪除失敗")
     }
   } catch (error) {

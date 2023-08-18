@@ -13,7 +13,6 @@ try {
   $milestoneTitle = $_POST["milestone_title"] ?? null;
   $milestoneDate = $_POST["milestone_date"] ?? null;
   $milestoneContent = $_POST["milestone_content"] ?? null;
-  $milestoneImage = $_POST["milestone_image"] ?? null;
   $milestoneImage = $_FILES["milestone_image"] ?? null;
 
   // parameters validation 驗證確保必要的參數已提供
@@ -87,7 +86,7 @@ try {
 } catch (Exception $e) {
   http_response_code(500);
   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
-  echo $e->getMessage();
+  echo $e
   $pdo->rollBack();
 }
 

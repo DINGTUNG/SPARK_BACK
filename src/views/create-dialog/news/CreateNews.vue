@@ -48,7 +48,7 @@ const addContentToNewNews = (newNews) => {
         </v-btn>
       </template>
       <v-card>
-        <form action="http://localhost/SPARK_BACK/php/news/create_news.php" method="post" @submit.prevent="
+        <form action="https://tibamef2e.com/chd102/g3/back-end/php/news/create_news.php" method="post" @submit.prevent="
           createNews(newsForCreate)">
           <v-card-title>
             <span class="text-h5">新增消息</span>

@@ -12,12 +12,13 @@ export const useNewsStore = defineStore('news', () => {
     // make a request
     const request = {
       method: "POST",
+      // url: `http://localhost/SPARK_BACK/php/news/update_news.php`,
       url: `https://tibamef2e.com/chd102/g3/back-end/php/news/delete_news.php`,
       headers: {
         "Content-Type": "multipart/form-data",
       },
       data: payLoad,
-      
+
     };
 
     // send request to backend server
@@ -52,6 +53,7 @@ export const useNewsStore = defineStore('news', () => {
     // make a request
     const request = {
       method: "POST",
+      // url: `http://localhost/SPARK_BACK/php/news/update_news.php`,
       url: `https://tibamef2e.com/chd102/g3/back-end/php/news/news_status.php`,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -101,6 +103,7 @@ export const useNewsStore = defineStore('news', () => {
     // make a request
     const request = {
       method: "POST",
+      // url: `http://localhost/SPARK_BACK/php/news/update_news.php`,
       url: `https://tibamef2e.com/chd102/g3/back-end/php/news/update_news.php`,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -156,6 +159,7 @@ export const useNewsStore = defineStore('news', () => {
     // make a request
     const request = {
       method: "POST",
+      // url: `http://localhost/SPARK_BACK/php/news/update_news.php`,
       url: `https://tibamef2e.com/chd102/g3/back-end/php/news/create_news.php`,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -176,7 +180,7 @@ export const useNewsStore = defineStore('news', () => {
         });
     });
   }
-  
+
   return {
     newsPool,
     deleteNewsBackend,

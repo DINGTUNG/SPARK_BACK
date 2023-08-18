@@ -104,7 +104,7 @@ async function updateNewsOnline(item) {
             </tr>
           </thead>
           <tbody>
-            
+
             <tr v-for="(item, index) in displayNewsList" :key="item.news_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
               <td class="news_id">{{ item.news_id }}</td>
@@ -120,19 +120,12 @@ async function updateNewsOnline(item) {
               <td class="">{{ item.updater }}</td>
               <td class="">{{ item.update_time }}</td>
               <td class="update_and_delete">
-                <UpdateNews 
-                  :newsNoForUpdate="parseInt(item.news_no)" 
-                  :newsTitleForUpdate="item.news_title"
-                  :newsDateForUpdate="item.news_date" 
-                  :newsContentFirstUpdate="item.news_content_first"
-                  :newsImageFirstForUpdate="item.news_image_first" 
-                  :newsContentSecondUpdate="item.news_content_second"
-                  :newsImageSecondForUpdate="item.news_image_second" 
-                  :newsContentThirdUpdate="item.news_content_third"
-                  :newsImageThirdForUpdate="item.news_image_third" 
-                  :newsContentFourthUpdate="item.news_content_fourth"
-                  :newsImageFourthForUpdate="item.news_image_fourth" 
-                  />        
+                <UpdateNews :newsNoForUpdate="parseInt(item.news_no)" :newsTitleForUpdate="item.news_title"
+                  :newsDateForUpdate="item.news_date" :newsContentFirstUpdate="item.news_content_first"
+                  :newsImageFirstForUpdate="item.news_image_first" :newsContentSecondUpdate="item.news_content_second"
+                  :newsImageSecondForUpdate="item.news_image_second" :newsContentThirdUpdate="item.news_content_third"
+                  :newsImageThirdForUpdate="item.news_image_third" :newsContentFourthUpdate="item.news_content_fourth"
+                  :newsImageFourthForUpdate="item.news_image_fourth" />
                 <DeleteNews :newsNoForDelete="parseInt(item.news_no)" />
               </td>
             </tr>

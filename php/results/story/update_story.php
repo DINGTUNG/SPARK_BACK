@@ -1,6 +1,4 @@
 <?php
-// header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Origin: https://tibamef2e.com"); //緯育
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -16,6 +14,7 @@ try {
   $story_detail = $_POST['story_detail'];
   $story_detail_second = $_POST['story_detail_second'];
   $story_detail_third = $_POST['story_detail_third'];
+ 
 
   //得到原本的圖片名稱
   $sql_get_story_image = "SELECT story_image FROM story WHERE story_no = $story_no";
@@ -32,7 +31,7 @@ try {
   }
 
   //上傳圖片
-  if ($_FILES['story_image']['name']) {
+  if ($_FILES['story_image']) {
     $targetDir = '../../../images/story/';
     $storyNo = $story_id;
 
@@ -48,9 +47,11 @@ try {
     if (!file_exists($targetDir)) {
       mkdir($targetDir, 0777, true);
     }
-    move_uploaded_file($_FILES['story_image']['tmp_name'], $targetPath);
+    $from = $_FILES['story_image']['tmp_name'];
+    $to = $targetPath;
+    copy($from, $to);
   } else {
-    $newFileName = $story_image;
+     $newFileName =  $story_image;
   }
 
   $sql = "UPDATE story SET story_title = :story_title, story_date = :story_date, story_image = :newFileName, story_brief = :story_brief, story_detail = :story_detail, story_detail_second = :story_detail_second, story_detail_third = :story_detail_third WHERE story_no = :story_no";

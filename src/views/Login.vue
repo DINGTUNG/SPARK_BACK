@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 const router = useRouter();
 const showPassword = ref(true);
 const passwordField = ref(null);
+
 
 function showHide() {
   if (passwordField.value.type === 'password') {
@@ -19,23 +21,23 @@ const account = ref('');
 const password = ref('');
 const errorAccount = ref('');
 
-const login = () => {
-  const enteredAccount = account.value; // 獲取用戶的帳密
-  const enteredPassword = password.value;
-  // 進行驗證
-  if (enteredAccount === '' || enteredPassword === '') {
-    errorAccount.value = '請輸入帳號或密碼';
-  } else if (enteredAccount ==='tibame' && enteredPassword==='1234') {
-    console.log('aa')
-      errorAccount.value = '';
-      alert(`登入成功`);
-      router.push({ path: '/home' });
-      account.value = '';
-      password.value = '';
-    } else {
-      errorAccount.value = '帳號或密碼不正確';
+const handleLogin = async () => {
+    try {
+        const formData = new FormData();
+        formData.append('staff_account', account.value);
+        formData.append('staff_password', password.value);
+        const res = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/backstage_management/handle_login.php', formData,{ withCredentials: true});
+        if (res.data.status === "ok") {
+            router.push({ path: '/home' });
+        } else {
+            const msg = res.data.msg;
+            errorContent.value = msg;
+        }
+    } catch (error) {
+        console.error('網路請求錯誤:', error);
+        alert('網路請求錯誤');
     }
-  };
+}
 
 
 
@@ -54,13 +56,13 @@ const login = () => {
 
         <div class="account_wrap">
           <label for="account">帳號</label>
-          <input type="text" class="account"  v-model="account" placeholder="請輸入您的帳號或信箱"
-            :class="{ 'animate__animated animate__headShake': errorAccount }" name="memId" >
+          <input type="text" class="account"  v-model="account" placeholder="請輸入您的帳號"
+            :class="{ 'animate__animated animate__headShake': errorAccount }">
         </div>
         <div class="password_wrap">
           <label for="password">密碼</label>
           <input :type="showPassword ? 'password' : 'text'" class="password" v-model="password" placeholder="輸入您的密碼"
-              name="memPsw" autocomplete="current-password">
+              autocomplete="current-password">
           <span class="toggle" @click="showHide">
             <img class="eye" v-if="showPassword" :src="'pictures/login/eye_hide.svg'" alt="hide" />
             <img v-else class="eye" :src="'pictures/login/eye_show.svg'" alt="show" /></span>
@@ -69,7 +71,7 @@ const login = () => {
           </div>
         </div>
         <div class="btn_wrapper">
-          <button class="login_btn"  @click="login">登入
+          <button class="login_btn" type="button" @click="handleLogin">登入
           </button>
         </div>
 

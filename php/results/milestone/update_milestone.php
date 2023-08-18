@@ -1,6 +1,7 @@
 <?php
 // header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Origin: https://tibamef2e.com"); //緯育
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
@@ -14,6 +15,7 @@ try {
   $milestoneDate = $_POST["milestone_date"] ?? null;
   $milestoneContent = $_POST["milestone_content"] ?? null;
   $milestoneImage = $_FILES["milestone_image"] ?? null;
+  $milestoneImageName = $_FILES["milestone_image"]['name'] ?? null;
 
   // parameters validation 驗證確保必要的參數已提供
   if ($milestoneNo == null) {
@@ -51,7 +53,7 @@ try {
   milestone_title = :milestone_title, 
   milestone_date = :milestone_date, 
   milestone_content = :milestone_content, 
-  milestone_image = :milestone_image, 
+  milestone_image = :milestone_image_name, 
   updater='Kay', 
   update_time = Now() 
   where milestone_no = :milestone_no ";
@@ -61,17 +63,17 @@ try {
   $updateStmt->bindValue(":milestone_title", $milestoneTitle);
   $updateStmt->bindValue(":milestone_date", $milestoneDate);
   $updateStmt->bindValue(":milestone_content", $milestoneContent);
-  $updateStmt->bindValue(":milestone_image", mkFilename($milestoneNo, $milestoneImage));
+  $updateStmt->bindValue(":milestone_image_name", mkFilename($milestoneNo,$milestoneImage,$milestoneImageName));
 
   $updateResult = $updateStmt->execute();
+
 
   if (!$updateResult) {
     throw new UnexpectedValueException($message = "更新資料庫失敗(請聯絡管理人員)");
   }
-  if (!copyFileToLocal($milestonNo, $milestonImage)) {
+  if (!copyFileToLocal($milestoneNo,$milestoneImage,$milestoneImageName)) {
     throw new UnexpectedValueException($message = "檔案儲存失敗(copy failed)");
   }
-
   $pdo->commit();
   http_response_code(200);
   echo json_encode($updateResult);
@@ -86,27 +88,27 @@ try {
 } catch (Exception $e) {
   http_response_code(500);
   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
-  echo $e
+  echo $e->getMessage();
   $pdo->rollBack();
 }
 
-function copyFileToLocal($milestoneNo, $file)
+function copyFileToLocal($milestoneNo, $milestoneImage, $milestoneImageName)
 {
   $dir = "../../../images/milestone/";
   if (file_exists($dir) === false) {
     mkdir($dir);
   }
 
-  $filename = mkFilename($milestoneNo, $file);
-  $from = $file["tmp_name"];
+  $filename = mkFilename($milestoneNo, $milestoneImage, $milestoneImageName);
+  $from = $milestoneImage["tmp_name"];
   $to = $dir . $filename;
   return copy($from, $to);
 }
 
-function mkFilename($updateId, $file)
+function mkFilename($updateId, $milestoneImage, $milestoneImageName)
 {
-  $filename =  'M' . str_pad($updateId, 3, "0", STR_PAD_LEFT);
-  $fileExt = pathInfo($file["name"], PATHINFO_EXTENSION);
-  $filename = "$filename.$fileExt";
+  $filename =  'M' . str_pad($updateId, 3, "0", STR_PAD_LEFT) . '_' . 
+  $milestoneImageName;
   return $filename;
 }
+

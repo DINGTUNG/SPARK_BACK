@@ -14,6 +14,7 @@ const DonateStore = useDonateStore();
 async function donateConnection() {
   try {
     const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/donate/donate-project/get_donate_project.php')
+    // const response = await axios.post('http://localhost/SPARK_BACK/php/donate/donate-project/get_donate_project.php')
     DonateStore.donatePool.splice(0); //重新載入時把資料清空再倒進來，資料就不會重複增加
     if (response.data.length > 0) {
       response.data.forEach(element => {
@@ -81,13 +82,17 @@ const filteredDonateList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>專案編號</th>
+
               <th>專案ID</th>
               <th>專案名稱</th>
               <th>開始日期</th>
               <th>結束日期</th>
               <th>狀態</th>
               <th>功能</th>
+              <th>創建者</th>
+              <th>創建時間</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
             </tr>
           </thead>
@@ -95,7 +100,7 @@ const filteredDonateList = computed(() => {
             <tr v-for="(item, index) in displayedDonateList" :key="item.donate_project_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
-              <td class="donate_project_no">{{ item.donate_project_no }}</td>
+
               <td class="donate_project_id">{{ item.donate_project_id }}</td>
               <td class="donate_project_name">{{ item.donate_project_name }}</td>
               <td class="donate_project_start_date">{{ item.donate_project_start_date }}</td>
@@ -105,6 +110,10 @@ const filteredDonateList = computed(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
+              <td class="register">{{ item.register }}</td>
+              <td class="regist_time">{{ item.regist_time }}</td>
+              <td class="updater">{{ item.updater }}</td>
+              <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateDonateProject :donateNoForUpdate="parseInt(item.donate_project_no)"
                   :donateNameForUpdate="item.donate_project_name"

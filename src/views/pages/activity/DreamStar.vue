@@ -99,12 +99,16 @@ const filteredDreamStarList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>計畫編號</th>
+
               <th>計畫ID</th>
               <th>計畫名稱</th>
               <th>計畫票數</th>
               <th>狀態</th>
               <th>功能</th>
+              <th>創建者</th>
+              <th>創建時間</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
 
             </tr>
@@ -113,7 +117,7 @@ const filteredDreamStarList = computed(() => {
             <tr v-for="(item, index) in filteredDreamStarList" :key="item.dream_star_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
-              <td class="dream_star_no">{{ item.dream_star_no }}</td>
+
               <td class="dream_star_id">{{ item.dream_star_id }}</td>
               <td class="dream_star_name">{{ item.dream_star_name }}</td>
               <td class="dream_star_votes">{{ item.dream_star_votes }}</td>
@@ -122,6 +126,10 @@ const filteredDreamStarList = computed(() => {
                 <v-switch v-model="item.online" color="#EBC483" density="compact" hide-details="true" inline
                   inset></v-switch>
               </td>
+              <td class="register">{{ item.register }}</td>
+              <td class="regist_time">{{ item.regist_time }}</td>
+              <td class="updater">{{ item.updater }}</td>
+              <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateDreamStar />
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item)">

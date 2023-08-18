@@ -80,13 +80,17 @@ const filteredStaffList = computed(() => {
           <thead>
             <tr>
               <th>No.</th>
-              <th>人員編號</th>
+
               <th>人員ID</th>
               <th>人員姓名</th>
               <th>權限名稱</th>
               <th>Email</th>
               <th>帳號</th>
               <th>密碼</th>
+              <th>創建者</th>
+              <th>創建時間</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
             </tr>
           </thead>
@@ -94,13 +98,17 @@ const filteredStaffList = computed(() => {
             <tr v-for="(item, index) in displayedStaffList" :key="item.staff_id" class="no-border">
               <td class="td_no">{{ ((page - 1) * itemsPerPage) + index + 1 }}</td>
 
-              <td class="staff_no">{{ item.staff_no }}</td>
+
               <td class="staff_id">{{ item.staff_id }}</td>
               <td class="staff_name">{{ item.staff_name }}</td>
               <td class="staff_permission">{{ item.staff_permission }}</td>
               <td class="staff_email">{{ item.staff_email }}</td>
               <td class="staff_account">{{ item.staff_account }}</td>
               <td class="staff_password">{{ item.staff_password }}</td>
+              <td class="register">{{ item.register }}</td>
+              <td class="regist_time">{{ item.regist_time }}</td>
+              <td class="updater">{{ item.updater }}</td>
+              <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateCmsStaff :staffNoForUpdate="parseInt(item.staff_no)" :staffAccountForUpdate="item.staff_account"
                   :staffPasswordForUpdate="item.staff_password" />

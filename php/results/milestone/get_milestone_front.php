@@ -7,7 +7,7 @@ require_once("../../connect_chd102g3.php");
 try {
   $sql = "
   select * from milestone 
-  where del_flg = 0 order by milestone_no"; 
+  where del_flg = 0 and is_milestone_online = 1 order by milestone_no"; 
   $milestone = $pdo->query($sql);
 
   if ($milestone->rowCount() == 0) { //找不到

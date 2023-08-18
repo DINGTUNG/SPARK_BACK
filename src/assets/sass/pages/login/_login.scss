@@ -68,10 +68,10 @@ div.login_container {
 
   img.three_stars {
     @include shine(star_shine, 2.5s, 0.5s);
-    width: 15vw;
+    width: 13vw;
     position: absolute;
-    top: 60vh;
-    left: 5vw;
+    top: 65vh;
+    left: 3vw;
   }
 
 

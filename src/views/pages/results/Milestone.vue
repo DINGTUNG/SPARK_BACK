@@ -104,6 +104,10 @@ async function UpdateMilestoneOnlineStatus(item) {
               <th>年度/月份</th>
               <th>狀態</th>
               <th>功能</th>
+              <th>創建者</th>
+              <th>創建時間</th>
+              <th>更新者</th>
+              <th>更新時間</th>
               <th>刪改</th>
             </tr>
           </thead>
@@ -119,6 +123,10 @@ async function UpdateMilestoneOnlineStatus(item) {
                 <v-switch v-model="item.is_milestone_online" color="#EBC483" density="compact" hide-details="true" inline
                   inset true-value=1 @change="UpdateMilestoneOnlineStatus(item)"></v-switch>
               </td>
+              <td class="register">{{ item.register }}</td>
+              <td class="regist_time">{{ item.regist_time }}</td>
+              <td class="updater">{{ item.updater }}</td>
+              <td class="update_time">{{ item.update_time }}</td>
               <td class="update_and_delete">
                 <UpdateMilestone :milestoneNoForUpdate="parseInt(item.milestone_no)" 
                 :milestoneTitleForUpdate="item.milestone_title" 

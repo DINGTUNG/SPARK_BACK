@@ -10,6 +10,7 @@ const page = ref(1)
 const storyList = reactive([])
 async function getData() {
   try {
+    // http://localhost/SPARK_BACK/php/results/story/read_story.php
     //https://tibamef2e.com/chd102/g3/back-end/php/results/story/read_story.php
     const response = await axios.get('https://tibamef2e.com/chd102/g3/back-end/php/results/story/read_story.php')
     if(response.data.length > 0) {
@@ -47,13 +48,32 @@ const onlineCount = ref(0)
 const sumOnlineCount = () => {
    onlineCount.value = storyList.filter(item => item.is_story_online == 1).length
   }
+async function handleSwitch (no, online) {
+  // https://tibamef2e.com/chd102/g3/back-end/php/results/story/upload_story.php
+  // http://localhost/SPARK_BACK/php/results/story/upload_story.php
+  try {
+    const formData = new FormData()
+    formData.append('story_no', no)
+    formData.append('is_story_online', online)
+    const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/upload_story.php', formData)
+    console.log(response.data)
+    if (response.data.ok) {
+      alert('上下架成功')
+    } else {
+      alert('上下架失敗')
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const switchOnline =  ( no, online ) => {
     sumOnlineCount()
     if (onlineCount.value >= 18 && online == 0) {  
       alert('上架數量已達上限(18篇)')
+    } else {
+      handleSwitch(no, online)
     } 
-      window.location.assign(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/upload_story.php?story_no=${no}&is_story_online=${online}`)
 }
 </script>
 

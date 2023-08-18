@@ -23,19 +23,15 @@ try {
   $mail->SMTPAuth = true;
   $mail->Host = "mail.tibamef2e.com"; //SMTP服務器
 
-//   $mail->Port = 587; // TLS only
-//   $mail->SMTPSecure = 'tls'; // ssl is deprecated
   $mail->Port = 465; //SSL預設Port 是465, TLS預設Port 是587
   $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
-
-  // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
   $mail->Username = "_mainaccount@tibamef2e.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
   $mail->Password = "8Dz#IEdu9]52jW"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼
 
   //設定郵件資訊
   $mail->From = "spark.children.org@gmail.com"; //設定寄件人電郵
   $mail->FromName = "=?UTF-8?B?" . base64_encode("星火兒童認養協會") . "?="; //設定寄件人名稱
-  $mail->Subject = "=?UTF-8?B?" . base64_encode("星火兒童認養協會會員驗證信") . "?="; //設定郵件主題
+  $mail->Subject = "=?UTF-8?B?" . base64_encode("【星火兒童認養協會】會員註冊驗證信") . "?="; //設定郵件主題
   $mail->Body = "
     <div style = 'background-color:#1d3d6c; padding:30px 0;'>
     <div style = 'text-align:center; margin:20px 50px;padding:20px; color:#3d3a35; font-weight: bold; border-radius:15px; letter-spacing: 2px; background-color:#f5f4ef'>

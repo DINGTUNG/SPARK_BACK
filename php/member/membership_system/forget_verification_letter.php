@@ -33,16 +33,16 @@ try {
                 $mail = new PHPMailer(true);
                 $mail->isSMTP();
                 $mail->SMTPAuth = true;
-                $mail->Host = "smtp.gmail.com"; //SMTP服務器
+                $mail->Host = "mail.tibamef2e.com"; //SMTP服務器
                 $mail->Port = 465; //SSL預設Port 是465, TLS預設Port 是587
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //使用SSL, 如果是TLS 請改為 PHPMailer::ENCRYPTION_STARTTLS
-                $mail->Username = "spark.children.org@gmail.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
-                $mail->Password = "sykgftthshieczus"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Username = "_mainaccount@tibamef2e.com"; // 這裡填寫你的SMTP登入帳號, 例如 your.gmail.name@gmail.com 則填寫your.gmail.name
+                $mail->Password = "8Dz#IEdu9]52jW"; //這裡填寫你的SMTP登入密碼. 即是應用程式密碼
             
                 //設定郵件資訊
                 $mail->From = "spark.children.org@gmail.com"; //設定寄件人電郵
                 $mail->FromName = "=?UTF-8?B?" . base64_encode("星火兒童認養協會") . "?="; //設定寄件人名稱
-                $mail->Subject = "=?UTF-8?B?" . base64_encode("星火兒童認養協會忘記密碼驗證信") . "?="; //設定郵件主題
+                $mail->Subject = "=?UTF-8?B?" . base64_encode("【星火兒童認養協會】忘記密碼驗證信") . "?="; //設定郵件主題
                 $mail->Body = "<p>要修改您的密碼請複製: ".$verification_code." 至忘記密碼頁面</p>";  //設定郵件內容
                 $mail->IsHTML(true);  //設定是否使用HTML格式
                 $mail->addAddress($member_account); //設定收件人電郵及名稱

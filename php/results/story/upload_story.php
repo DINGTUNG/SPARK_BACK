@@ -5,8 +5,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 require_once("../../connect_chd102g3.php");
 try {
-  $story_no = $_GET['story_no'];
-  $is_story_online = $_GET['is_story_online'];
+  $story_no = $_POST['story_no'];
+  $is_story_online = $_POST['is_story_online'];
   if ($is_story_online == 1) {
     $status_code = 0;
   } else {
@@ -23,7 +23,20 @@ try {
   $stmt->bindValue(':status_code', $status_code);
   $stmt->bindValue(':story_no', $story_no);
   $stmt->execute();
-  header("Location:https://tibamef2e.com/chd102/g3/back-end/story");
+  
+  if( $stmt->execute()) {
+    $json = array(
+      "ok" => true,
+      "message" => "修改成功"
+    );
+    echo json_encode($json);
+  } else {
+    $json = array(
+      "ok" => false,
+      "message" => "修改失敗"
+    );
+    echo json_encode($json);
+  }
 } catch (PDOException $e) {
   echo "錯誤行號 : ", $e->getLine(), "<br>";
   echo "錯誤原因 : ", $e->getMessage(), "<br>";

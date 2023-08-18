@@ -20,7 +20,6 @@ const handleSubmit = async (event) => {
     const formData = new FormData(storyForm);
     const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/add_story.php', formData)
     if (response.data.ok) {
-      alert('新增成功');
       window.location.reload();
     } else {
       alert('新增失敗');

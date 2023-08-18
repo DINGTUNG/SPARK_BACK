@@ -64,22 +64,8 @@
         $addStory->bindValue(":story_date", $story_date);
         $result = $addStory->execute();
 
-        if ($result) {
-            $json = array(
-                "ok" => true,
-                "massage" => "新增成功"
-            );
-            $response = json_encode($json);
-            echo $response;
-            header("Location:https://tibamef2e.com/chd102/g3/back-end/story");
-        } else {
-            $json = array(
-                "ok" => false,
-                "massage" => "新增失敗" . $conn->error
-            );
-            $response = json_encode($json);
-            echo $response;
-        }
+        header("Location:https://tibamef2e.com/chd102/g3/back-end/story");
+
     
     }catch(PDOException $e){
         echo $e->getMessage();

@@ -1,6 +1,7 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 const router = useRouter();
 
 const open = ref(['Member']);
@@ -102,6 +103,31 @@ const backstageItem = reactive(
   }
   ])
 
+const staffName = ref('');
+const getStaffInfo = async () => {
+  try{
+    const res = await axios.get('https://tibamef2e.com/chd102/g3/back-end/php/backstage_management/get_staff_info.php', { withCredentials: true });
+    console.log(res.data);
+    staffName.value = res.data.staff_name;
+  } catch(error) {
+    console.error('網路請求錯誤:', error);
+    alert('網路請求錯誤');
+  }
+}
+onMounted(() => {
+    getStaffInfo();
+})
+
+const handleLogout = async () => {
+  try{
+    const res = await axios.get('https://tibamef2e.com/chd102/g3/back-end/php/backstage_management/handle_logout.php', { withCredentials: true });
+    console.log(res.data);
+    router.push({ path: '/' });
+  } catch(error) {
+    console.error('網路請求錯誤:', error);
+    alert('網路請求錯誤');
+  }
+}
 </script>
 
 <template>
@@ -189,7 +215,7 @@ const backstageItem = reactive(
         </v-list>
         <v-sheet color="#1D3D6C" class="bottom" style="width: 15vw;height:8vh">
           <p class="text-white">
-            管理員<a href="/chd102/g3/back-end/" class="text-white ms-4">登出</a></p>
+            {{ staffName }}<button type="button" @click="handleLogout" class="text-white ms-4">登出</button></p>
         </v-sheet>
       </v-navigation-drawer>
     </v-layout>

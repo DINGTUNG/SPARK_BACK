@@ -10,6 +10,7 @@ const page = ref(1)
 const storyList = reactive([])
 async function getData() {
   try {
+    //https://tibamef2e.com/chd102/g3/back-end/php/results/story/read_story.php
     const response = await axios.get('https://tibamef2e.com/chd102/g3/back-end/php/results/story/read_story.php')
     if(response.data.length > 0) {
       response.data.forEach(element => {

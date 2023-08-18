@@ -15,23 +15,22 @@ function closeDeleteDialog() {
 //獲取外層傳進的 story_no
 const props = defineProps(['storyNo']);
 
-const deleteItemConfirm = () => {//把要刪除的id傳到php
+const deleteItemConfirm = async () => {//把要刪除的id傳到php
+  try {
     const formData = new FormData();
     formData.append('story_no', props.storyNo);
-    axios.post('https://tibamef2e.com/chd102/g3/back-end/php/story/delet_story.php', formData)
-      .then((res) => {
-        console.log(res);
-        if (res.data.status == "ok") {
-          alert('刪除成功');
-          closeDeleteDialog();
-          location.reload();
-        } else {
-          alert('刪除失敗');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const res = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/delete_story.php', formData)
+    if(res.data.status == "ok") {
+      alert("刪除成功")
+    } else {
+      alert("刪除失敗")
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    closeDeleteDialog();
+    window.location.reload();
+  }
 }
 
 

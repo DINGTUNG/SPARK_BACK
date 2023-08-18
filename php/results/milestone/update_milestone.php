@@ -88,7 +88,11 @@ try {
 } catch (Exception $e) {
   http_response_code(500);
   echo "狸猫正在搗亂伺服器!請聯絡後端管理員!(或地瓜教主!)";
+<<<<<<< HEAD
+  echo $e;
+=======
   echo $e->getMessage();
+>>>>>>> d274fa03f9caaf3f15b61a5a0b3a04352a17c898
   $pdo->rollBack();
 }
 

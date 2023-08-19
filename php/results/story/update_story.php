@@ -65,7 +65,7 @@ try {
     $statement->execute();
     $row = $statement->fetch(PDO::FETCH_ASSOC);
     if ($row) {
-      $story_image = $row['story_image'];
+      $newFileName = $row['story_image'];
     }
   }
 

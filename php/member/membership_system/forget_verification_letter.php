@@ -43,7 +43,16 @@ try {
                 $mail->From = "spark.children.org@gmail.com"; //設定寄件人電郵
                 $mail->FromName = "=?UTF-8?B?" . base64_encode("星火兒童認養協會") . "?="; //設定寄件人名稱
                 $mail->Subject = "=?UTF-8?B?" . base64_encode("【星火兒童認養協會】忘記密碼驗證信") . "?="; //設定郵件主題
-                $mail->Body = "<p>要修改您的密碼請複製: ".$verification_code." 至忘記密碼頁面</p>";  //設定郵件內容
+                $mail->Body = "
+                <div style = 'background-color:#1d3d6c; padding:30px 0;'>
+                <div style = 'text-align:center; margin:20px 50px;padding:20px; color:#3d3a35; font-weight: bold; border-radius:15px; letter-spacing: 2px; background-color:#f5f4ef'>
+                    <p>親愛的&nbsp;" . $member_account . "<span><p>
+                    <br>
+                    <p>要重設您的密碼請複製以下驗證碼: <span style =' color:#d8b06c; '>" . $verification_code . "</span> 至註冊頁面
+                    </p>
+                </div>
+                </div>
+                ";  //設定郵件內容
                 $mail->IsHTML(true);  //設定是否使用HTML格式
                 $mail->addAddress($member_account); //設定收件人電郵及名稱
             

@@ -73,7 +73,7 @@ const show = (length) => {
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">編輯消息</span>
+          <span class="text-h5">編輯故事</span>
         </v-card-title>
         <v-card-text>
           <form id="storyForm" method="POST" action="https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php" enctype="multipart/form-data">

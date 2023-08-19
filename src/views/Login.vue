@@ -31,7 +31,7 @@ const handleLogin = async () => {
             router.push({ path: '/home' });
         } else {
             const msg = res.data.msg;
-            errorContent.value = msg;
+            alert(msg);
         }
     } catch (error) {
         console.error('網路請求錯誤:', error);

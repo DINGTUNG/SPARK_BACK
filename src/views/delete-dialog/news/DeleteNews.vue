@@ -42,7 +42,7 @@ async function deleteMessage(newsNoForDelete) {
       </template>
       <v-card class="delete_dialog" style="border-radius: 50px;">
         <v-card-title class="text-center title">
-          確定是否要刪除此捐款專案？
+          確定是否要刪除此消息？
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>

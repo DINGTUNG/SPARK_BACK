@@ -32,6 +32,15 @@ try {
     $targetDir = '../../../images/story/';
     $storyNo = $story_id;
 
+    // 刪除舊的圖片，如果有的話
+    $oldImagePathJPG = $targetDir . "story_" . $storyNo . ".jpg";
+    $oldImagePathPNG = $targetDir . "story_" . $storyNo . ".png";
+    if (is_file($oldImagePathJPG)) {
+        unlink($oldImagePathJPG);
+    } else if (is_file($oldImagePathPNG)) {
+        unlink($oldImagePathPNG);
+    }
+
     // 得到上傳檔案的副檔名。
     $originalFileName = $_FILES['story_image']['name'];
     $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
@@ -39,15 +48,6 @@ try {
     // 創建新名稱。
     $newFileName = "story_" . $storyNo . "." . $fileExtension;
     $targetPath = $targetDir . $newFileName;
-
-    // 刪除舊的圖片，如果有的話
-    $oldImagePathJPG = $targetDir . "story_" . $storyNo . ".jpg";
-    $oldImagePathPNG = $targetDir . "story_" . $storyNo . ".png";
-    if (is_file($oldImagePathJPG)) {
-       unlink($oldImagePathJPG);
-    } else if (is_file($oldImagePathPNG)) {
-       unlink($oldImagePathPNG);
-    }
 
     // 檢查目標目錄是否存在，不存在則創建它。
     if (!file_exists($targetDir)) {

@@ -33,7 +33,7 @@ try {
   } else {
     $json = array(
       "ok" => false,
-      "message" => "修改失敗"
+      "message" => "修改失敗" . $stmt->errorInfo()
     );
     echo json_encode($json);
   }

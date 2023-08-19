@@ -56,11 +56,12 @@ async function handleSwitch (no, online) {
     formData.append('story_no', no)
     formData.append('is_story_online', online)
     const response = await axios.post('https://tibamef2e.com/chd102/g3/back-end/php/results/story/upload_story.php', formData)
-    console.log(response.data)
     if (response.data.ok) {
       alert('上下架成功')
+      console.log(response.data)
     } else {
       alert('上下架失敗')
+      console.log(response.data)
     }
   } catch (error) {
     console.error(error);

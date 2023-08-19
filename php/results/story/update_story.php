@@ -65,6 +65,20 @@ try {
   $statement->bindValue(':story_detail_second', $story_detail_second);
   $statement->bindValue(':story_detail_third', $story_detail_third);
   $result = $statement->execute();
+  if ($result) {
+    $json = array(
+      "ok" => true,
+      "massage" => "編輯成功"
+    );
+    $response = json_encode($json);
+
+  } else {
+    $json = array(
+      "ok" => false,
+      "massage" => "編輯失敗"
+    );
+    $response = json_encode($json);
+  }
   header("Location: https://tibamef2e.com/chd102/g3/back-end/story");
 } catch (PDOException $e) {
   echo "錯誤行號 : ", $e->getLine(), "<br>";

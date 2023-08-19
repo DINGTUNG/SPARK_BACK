@@ -15,7 +15,6 @@ const storyFormData = reactive({
   story_image: '',
 });
 // 獲取該 story_no 的資料
-const url = `https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php?story_no=${props.storyNo}`;
 async function getUpdateNo() {
   try {
     const response = await axios.post(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_data_story.php?story_no=${props.storyNo}`)
@@ -33,25 +32,24 @@ async function getUpdateNo() {
     console.error(error);
   }
 }
-// 監聽表單提交事件，呼叫 handleSubmit 處理
-const storyForm = document.getElementById('storyForm');
-if (storyForm) {
-  storyForm.addEventListener('submit', handleSubmit);
-}
-//更新資料
-async function handleSubmit(e) {
-  e.preventDefault();
-  const formData = new FormData(storyForm);
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
+
+async function handleUpdate () {
+  try{
+    const storyForm = document.getElementById('storyForm')
+    const formData = new FormData(storyForm);
+    formData.append('story_no', props.storyNo);
+    const response = await axios.post("https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php", formData)
+    if (response.data.ok) {
+      window.location.reload();
+    } else {
+      alert('新增失敗');
+    }
   } catch (error) {
     console.error(error);
-    alert('更新失败');
   }
-}
+} 
+
+
 
 //字數提醒
 const getStyle = (count, maxCount) => {
@@ -75,7 +73,7 @@ const show = (length) => {
           <span class="text-h5">編輯消息</span>
         </v-card-title>
         <v-card-text>
-          <form id="storyForm" method="POST" :action="url" enctype="multipart/form-data">
+          <form id="storyForm" method="POST" action="https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php" enctype="multipart/form-data">
             <div class="form_item">
               <div class="name"><span>標題</span></div>
               <input type="text" :value="storyFormData.story_title" id="title" name="story_title">     
@@ -117,7 +115,7 @@ const show = (length) => {
               <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
                 取消
               </v-btn>
-              <v-btn type="submit" color="blue-darken-1" variant="text">
+              <v-btn type="button" @click="handleUpdate" color="blue-darken-1" variant="text">
                 儲存
               </v-btn>
           </v-card-actions>

@@ -17,6 +17,8 @@ const storyFormData = reactive({
 // 獲取該 story_no 的資料
 async function getUpdateNo() {
   try {
+    // https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_data_story.php?story_no=${props.storyNo}
+    // http://localhost/SPARK_BACK/php/results/story/update_data_story.php?story_no=${props.storyNo}
     const response = await axios.post(`https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_data_story.php?story_no=${props.storyNo}`)
     const data = response.data;
     if( data )  {
@@ -42,7 +44,7 @@ async function handleUpdate () {
     if (response.data.ok) {
       window.location.reload();
     } else {
-      alert('新增失敗');
+      alert('編輯失敗');
     }
   } catch (error) {
     console.error(error);

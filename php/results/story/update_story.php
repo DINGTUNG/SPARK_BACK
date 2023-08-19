@@ -14,24 +14,21 @@ try {
   $story_detail = $_POST['story_detail'];
   $story_detail_second = $_POST['story_detail_second'];
   $story_detail_third = $_POST['story_detail_third'];
+  $story_image = $_FILES['story_image'];
  
 
-  //得到原本的圖片名稱
-  $sql_get_story_image = "SELECT story_image FROM story WHERE story_no = $story_no";
-  $result_get_story_image = $pdo->query($sql_get_story_image);
-  if ($row = $result_get_story_image->fetch(PDO::FETCH_ASSOC)) {
-    $story_image = $row['story_image'];
-  }
-
   //得到 story_id
-  $sql_get_story_id = "SELECT story_id FROM story WHERE story_no = $story_no";
-  $result_get_story_id = $pdo->query($sql_get_story_id);
-  if ($row = $result_get_story_id->fetch(PDO::FETCH_ASSOC)) {
+  $sql_get_story_id = "SELECT story_id FROM story WHERE story_no = :story_no";
+  $statement = $pdo->prepare($sql_get_story_id);
+  $statement->bindValue(':story_no', $story_no);
+  $statement->execute();
+  $row = $statement->fetch(PDO::FETCH_ASSOC);
+  if ($row) {
     $story_id = $row['story_id'];
   }
 
   //上傳圖片
-  if ($_FILES['story_image']) {
+  if ($story_image['name']) {  // 檢查是否有新的圖片上傳
     $targetDir = '../../../images/story/';
     $storyNo = $story_id;
 
@@ -43,15 +40,33 @@ try {
     $newFileName = "story_" . $storyNo . "." . $fileExtension;
     $targetPath = $targetDir . $newFileName;
 
+    // 刪除舊的圖片，如果有的話
+    if ($story_image) {
+      $oldImagePath = $targetDir . $story_image;
+      if (file_exists($oldImagePath)) {
+        unlink($oldImagePath);  // 刪除舊的圖片
+      }
+    }
+
     // 檢查目標目錄是否存在，不存在則創建它。
     if (!file_exists($targetDir)) {
       mkdir($targetDir, 0777, true);
     }
+
+    // 移動新的圖片到目標位置
     $from = $_FILES['story_image']['tmp_name'];
     $to = $targetPath;
     copy($from, $to);
   } else {
-     $newFileName =  $story_image;
+    //得到原本的圖片名稱
+    $sql_get_story_image = "SELECT story_image FROM story WHERE story_no = :story_no";
+    $statement = $pdo->prepare($sql_get_story_image);
+    $statement->bindValue(':story_no', $story_no);
+    $statement->execute();
+    $row = $statement->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+      $story_image = $row['story_image'];
+    }
   }
 
   $sql = "UPDATE story SET story_title = :story_title, story_date = :story_date, story_image = :newFileName, story_brief = :story_brief, story_detail = :story_detail, story_detail_second = :story_detail_second, story_detail_third = :story_detail_third WHERE story_no = :story_no";

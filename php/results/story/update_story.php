@@ -41,7 +41,7 @@ try {
     $targetPath = $targetDir . $newFileName;
 
     // 刪除舊的圖片，如果有的話
-    if ($story_image) {
+    if ($newFileName) {
       $oldImagePath = $targetDir . $story_image;
       if (file_exists($oldImagePath)) {
         unlink($oldImagePath);  // 刪除舊的圖片

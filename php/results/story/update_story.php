@@ -41,11 +41,9 @@ try {
     $targetPath = $targetDir . $newFileName;
 
     // 刪除舊的圖片，如果有的話
-    if ($newFileName) {
-      $oldImagePath = $targetDir . $story_image;
-      if (file_exists($oldImagePath)) {
-        unlink($oldImagePath);  // 刪除舊的圖片
-      }
+    $oldImagePath = $targetDir . $newFileName;
+    if (file_exists($oldImagePath)) {
+      unlink($oldImagePath);
     }
 
     // 檢查目標目錄是否存在，不存在則創建它。

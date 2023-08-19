@@ -80,7 +80,7 @@ try {
   $statement->bindValue(':story_detail_second', $story_detail_second);
   $statement->bindValue(':story_detail_third', $story_detail_third);
   $result = $statement->execute();
-  if ($result) {
+  if ($result->rowCount() == 1) {
     $json = array(
       "ok" => true,
       "massage" => "編輯成功"

@@ -12,7 +12,8 @@ try {
   } else {
     $status_code = 1;
   }
-  $online_count = "SELECT COUNT(is_story_online) FROM story WHERE is_story_online = 1";
+
+  $online_count = "SELECT COUNT(*) FROM story WHERE is_story_online = 1 AND del_flg = 0";
   $online_count_result = $pdo->query($online_count);
   $online_count_row = $online_count_result->fetch(PDO::FETCH_ASSOC);
   if ($online_count_row['COUNT(is_story_online)'] >= 18 && $status_code == 1) {

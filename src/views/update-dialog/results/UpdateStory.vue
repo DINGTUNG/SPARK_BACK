@@ -43,6 +43,7 @@ async function handleUpdate () {
     const response = await axios.post("https://tibamef2e.com/chd102/g3/back-end/php/results/story/update_story.php", formData)
     if (response.data.ok) {
       window.location.reload();
+      alert('編輯成功');
     } else {
       alert('編輯失敗');
     }

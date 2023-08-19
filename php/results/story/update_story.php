@@ -18,8 +18,8 @@ try {
  
 
   //得到 story_id
-  $sql_get_story_id = "SELECT story_id FROM story WHERE story_no = :story_no";
-  $statement = $pdo->prepare($sql_get_story_id);
+  $get_story_id = "SELECT story_id FROM story WHERE story_no = :story_no";
+  $statement = $pdo->prepare($get_story_id);
   $statement->bindValue(':story_no', $story_no);
   $statement->execute();
   $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -80,21 +80,22 @@ try {
   $statement->bindValue(':story_detail_second', $story_detail_second);
   $statement->bindValue(':story_detail_third', $story_detail_third);
   $result = $statement->execute();
-  if ($result->rowCount() == 1) {
+  if ($result) {
     $json = array(
       "ok" => true,
       "massage" => "編輯成功"
     );
     $response = json_encode($json);
+    echo $response;
 
   } else {
     $json = array(
       "ok" => false,
-      "massage" => "編輯失敗"
+      "massage" => "編輯失敗" . $result
     );
     $response = json_encode($json);
+    echo $response;
   }
-  header("Location: https://tibamef2e.com/chd102/g3/back-end/story");
 } catch (PDOException $e) {
   echo "錯誤行號 : ", $e->getLine(), "<br>";
   echo "錯誤原因 : ", $e->getMessage(), "<br>";
